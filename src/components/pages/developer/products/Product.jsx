@@ -1,6 +1,7 @@
 import Breadcrumbs from "@/components/partials/Breadcrumbs.jsx";
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
+import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import { Plus } from "lucide-react";
 import ModalProduct from "./ModalProduct.jsx";
@@ -37,6 +38,7 @@ const Product = () => {
         </main>
       </div>
       {/* <ModalProduct /> */}
+      <ModalConfirm />
     </>
   );
 };

@@ -41,7 +41,7 @@
   }
 
   body {
-    @apply text-dark leading-relaxed font-regular font-normal;
+    @apply text-dark leading-relaxed font-regular;
   }
 
   a {
@@ -57,7 +57,7 @@
   }
 
   p {
-    @apply text-balance mb-1.5;
+    @apply mb-1.5 text-sm text-gray-500;
   }
   h1,
   h2,
@@ -241,6 +241,10 @@
   .btn-accent {
     @apply bg-accent text-light hover:bg-opacity-90;
   }
+  .btn-warning {
+    @apply text-light bg-warning hover:bg-opacity-5;
+  }
+
   .btn-discard {
     @apply text-gray-600 bg-line hover:bg-opacity-5;
   }
