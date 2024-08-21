@@ -10,11 +10,11 @@ const Navigation = () => {
         <div className="p-2 py-3 bg-accent rounded-2xl inline-block">
           <Logo />
         </div>
-        <div>
+        <div className="translate-y-1">
           <h4 className="leading-none uppercase text-[19px] font-medium">
             Sambahayan
           </h4>
-          <span className="text-[11px] leading-none -translate-y-0.5 block font-regular">
+          <span className="text-[11px] leading-none -translate-y-2 block font-regular">
             Consumer Cooperative
           </span>
         </div>

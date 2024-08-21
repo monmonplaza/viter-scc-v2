@@ -19,6 +19,7 @@ export default {
         success: "rgba(var(--success), <alpha-value>)",
         warning: "rgba(var(--warning), <alpha-value>)",
         info: "rgba(var(--info), <alpha-value>)",
+        body: "rgba(var(--body), <alpha-value>)",
       },
       backgroundColor: {
         accent: "rgba(var(--accent), <alpha-value>)",
@@ -33,6 +34,7 @@ export default {
         success: "rgba(var(--success), <alpha-value>)",
         warning: "rgba(var(--warning), <alpha-value>)",
         info: "rgba(var(--info), <alpha-value>)",
+        body: "rgba(var(--body), <alpha-value>)",
       },
       borderColor: {
         accent: "rgba(var(--accent), <alpha-value>)",
@@ -43,10 +45,11 @@ export default {
         orange: "rgba(var(--orange), <alpha-value>)",
         dark: "rgba(var(--dark), <alpha-value>)",
         line: "rgba(var(--line), <alpha-value>)",
-        alert: "rgba(var(--alert), <alpha-value>)",
+        alert: "hsl(var(--alert) / <alpha-value>)",
         success: "rgba(var(--success), <alpha-value>)",
         warning: "rgba(var(--warning), <alpha-value>)",
         info: "rgba(var(--info), <alpha-value>)",
+        body: "rgba(var(--body), <alpha-value>)",
       },
       stroke: {
         accent: "rgba(var(--accent), <alpha-value>)",

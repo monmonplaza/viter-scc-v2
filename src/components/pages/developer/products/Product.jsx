@@ -6,6 +6,9 @@ import Navigation from "@/components/partials/Navigation.jsx";
 import { Plus } from "lucide-react";
 import ModalProduct from "./ModalProduct.jsx";
 import ProductList from "./ProductList.jsx";
+import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
+import SpinnerWindow from "@/components/partials/spinners/SpinnerWindow.jsx";
+import ToastSuccess from "@/components/partials/ToastSuccess.jsx";
 
 const Product = () => {
   return (
@@ -18,7 +21,7 @@ const Product = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8">
+            <div className="main-wrapper p-2 md:p-8 bg-secondary">
               <Breadcrumbs />
 
               <div className="flex justify-between items-center my-5">
@@ -37,8 +40,11 @@ const Product = () => {
           </div>
         </main>
       </div>
+      {/* <SpinnerWindow /> */}
       {/* <ModalProduct /> */}
-      <ModalConfirm />
+      {/* <ModalConfirm /> */}
+      {/* <ModalDelete /> */}
+      <ToastSuccess />
     </>
   );
 };

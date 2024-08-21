@@ -4,7 +4,7 @@ import React from "react";
 const ProductList = () => {
   return (
     <>
-      <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-5">
+      <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-1">
         <div className="input-wrap filter w-full md:w-auto">
           <select name="" id="">
             <option value="">All</option>
@@ -24,7 +24,7 @@ const ProductList = () => {
           <thead>
             <tr>
               <td className="w-[30px]">#</td>
-              <td className="w-[300px]">Company</td>
+              <td className="w-[200px]">Company</td>
               <td>Representative</td>
               <td>Address</td>
               <td>Email</td>

@@ -22,6 +22,7 @@
   font-display: swap;
 }
 
+
 :root {
   --accent: 0, 51, 143;
   --light: 255, 255, 255;
@@ -33,15 +34,34 @@
   --success: 14, 165, 38;
   --warning: 211, 180, 14;
   --info: 58, 27, 248;
+  --body:99, 99, 99;
 }
 
+.dark {
+  --accent: 7, 70, 184;
+  --light: 64, 64, 64;
+  --primary: 43, 43, 43;
+  --secondary: 55, 55, 55;
+  --dark: 255, 255, 255;
+  --line: 75, 75, 75;
+  --alert: 180, 19, 19;
+  --success: 14, 165, 38;
+  --warning: 211, 180, 14;
+  --info: 58, 27, 248;
+  --body:188, 188, 188;
+}
+
+
+
 @layer base {
+
+
   html {
     @apply h-full;
   }
 
   body {
-    @apply text-dark leading-relaxed font-regular;
+    @apply text-body leading-relaxed font-regular;
   }
 
   a {
@@ -57,7 +77,7 @@
   }
 
   p {
-    @apply mb-1.5 text-sm text-gray-500;
+    @apply mb-1.5 text-xs text-body;
   }
   h1,
   h2,
@@ -65,7 +85,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold text-dark;
   }
 
   h1 {
@@ -78,7 +98,7 @@
   /* add mo to pg madami nng data sticky top-0 */
 
   .table-wrapper {
-    @apply overflow-x-auto bg-light rounded-md px-4 pb-4 border border-line  overflow-y-auto max-h-[75dvh] w-[calc(100vw-1rem)] md:w-[calc(100vw-314px)];
+    @apply overflow-x-auto bg-light rounded-md px-4 pb-4 border border-line  overflow-y-auto max-h-[75dvh] w-[calc(100vw-1rem)] md:w-[calc(100vw-314px)] custom-scroll;
   }
   table {
     @apply w-full table-auto;
@@ -94,7 +114,7 @@
   }
 
   table thead tr {
-    @apply border-b border-line;
+    @apply border-b border-line text-dark;
   }
 
   table thead tr td {
@@ -105,7 +125,7 @@
     @apply border-b border-line opacity-80 relative  hover:shadow-custom;
   }
   table tbody tr td {
-    @apply whitespace-nowrap;
+    @apply whitespace-nowrap text-body;
   }
 
   table tbody tr .table-action ul {
@@ -132,12 +152,12 @@
     @apply opacity-50 cursor-not-allowed;
   }
   label {
-    @apply text-xs text-gray-400;
+    @apply text-xs text-body;
   }
   input,
   select,
   textarea {
-    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs;
+    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs bg-light;
   }
   textarea {
     @apply resize-none min-h-[150px] overflow-y-auto mb-0;
@@ -207,11 +227,11 @@
   }
 
   .modal .modal-main {
-    @apply -right-full transition-all absolute top-0 w-[300px] h-[calc(100%-16px)]  bg-white animate-slideRight;
+    @apply -right-full transition-all absolute top-0 w-[300px] h-[calc(100%-16px)]  bg-light animate-slideRight;
   }
 
   .modal .modal-center {
-    @apply transition-all absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[450px] w-full  bg-white animate-slideUp min-h-[130px] opacity-0;
+    @apply transition-all absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[370px] w-full  bg-white animate-slideUp min-h-[130px] opacity-0;
   }
 
   .modal .modal-header {
@@ -235,18 +255,22 @@
   }
 
   .btn {
-    @apply flex gap-1  p-3 rounded-md text-xs leading-none items-center;
+    @apply flex gap-1  p-3 rounded-md text-xs leading-none items-center transition-colors;
   }
 
   .btn-accent {
-    @apply bg-accent text-light hover:bg-opacity-90;
+    @apply bg-accent text-white hover:brightness-110;
   }
   .btn-warning {
-    @apply text-light bg-warning hover:bg-opacity-5;
+    @apply text-white bg-warning hover:brightness-110;
+  }
+
+  .btn-alert {
+    @apply text-white bg-alert hover:brightness-110;
   }
 
   .btn-discard {
-    @apply text-gray-600 bg-line hover:bg-opacity-5;
+    @apply text-gray-400 bg-line hover:brightness-90;
   }
 }
 
@@ -289,10 +313,11 @@
 }
 
 .custom-scroll::-webkit-scrollbar {
-  @apply w-4;
+  @apply w-2;
 }
-.custom-scroll::-webkit-scrollbar:vertical {
-  @apply w-3;
+.custom-scroll::-webkit-scrollbar:vertical,
+.custom-scroll::-webkit-scrollbar:horizontal {
+  @apply w-1;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
@@ -300,7 +325,7 @@
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  @apply w-2 bg-gray-400;
+  @apply w-3 bg-secondary;
 }
 
 .loading-bar {

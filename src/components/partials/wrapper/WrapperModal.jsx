@@ -12,7 +12,7 @@ const WrapperModal = (props) => {
     >
       <div
         onClick={props.close}
-        className="backdrop w-full h-full bg-dark  animate-fadeIn bg-opacity-0 transition-all"
+        className="backdrop w-full h-full bg-black  animate-fadeIn bg-opacity-0 transition-all"
       ></div>
       {props.children}
     </div>
