@@ -8,6 +8,8 @@ import { Plus } from "lucide-react";
 import React from "react";
 import ModalProduct from "./ModalProduct.jsx";
 import ProductList from "./ProductList.jsx";
+import ModalValidate from "@/components/partials/modal/ModalValidate.jsx";
+import ToastSuccess from "@/components/partials/ToastSuccess.jsx";
 const Product = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -52,8 +54,8 @@ const Product = () => {
 
       {store.isAdd && <ModalProduct itemEdit={itemEdit} />}
 
-      {/* {store.success && <ToastSuccess />} */}
-      {/* {store.validate && <ModalValidate />} */}
+      {store.success && <ToastSuccess />}
+      {store.validate && <ModalValidate />}
     </>
   );
 };

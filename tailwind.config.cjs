@@ -74,8 +74,8 @@ export default {
           "100%": { opacity: "60" },
         },
         slideRight: {
-          "0%": { right: "-100%" },
-          "100%": { right: "0%" },
+          "0%": { right: "-100%", opacity: 0 },
+          "100%": { right: "0%", opacity: 1 },
         },
         slideUp: {
           "0%": { top: "55%", opacity: 0 },

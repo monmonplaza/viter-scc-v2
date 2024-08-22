@@ -281,9 +281,11 @@
   }
 
   .toast.open {
-    @apply right-5 opacity-100;
+    @apply right-[20px] ;
   }
 }
+
+
 
 @layer utilities {
   .center-all {

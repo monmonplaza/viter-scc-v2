@@ -141,7 +141,7 @@ const ProductList = ({ setItemEdit }) => {
                       <tr key={key}>
                         <td>{counter++}</td>
                         <td>{item.product_name}</td>
-                        <td>{item.product_SKU}</td>
+                        <td>{item.product_sku}</td>
                         <td>
                           <p className="max-w-[500px] truncate mb-0">
                             {item.product_description}
