@@ -1,9 +1,28 @@
 import { ArrowRightLeft, ClipboardList, LayoutDashboard } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { devNavUrl } from "../helpers/functions-general.jsx";
 import Logo from "./icons/Logo.jsx";
 
-const Navigation = () => {
+const Navigation = ({ menu }) => {
+  const links = [
+    {
+      icon: <LayoutDashboard size={18} />,
+      text: "Overview",
+      slug: "overview",
+    },
+    {
+      icon: <ClipboardList size={18} />,
+      text: "Inventory",
+      slug: "inventory",
+    },
+    {
+      icon: <ArrowRightLeft size={18} />,
+      text: "Products",
+      slug: "products",
+    },
+  ];
+
   return (
     <nav className="py-2 px-4">
       <div className=" flex gap-2 items-center">
@@ -21,32 +40,23 @@ const Navigation = () => {
       </div>
 
       <ul className="mt-10">
-        <li className="mb-2 opacity-80 hover:opacity-100">
-          <Link
-            to="#"
-            className="flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all"
-          >
-            <LayoutDashboard size={16} /> Overview
-          </Link>
-        </li>
-
-        <li className="mb-2 opacity-80 hover:opacity-100">
-          <Link
-            to="#"
-            className="flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all "
-          >
-            <ClipboardList size={16} /> Inventory
-          </Link>
-        </li>
-
-        <li className="mb-2 opacity-80 hover:opacity-100">
-          <Link
-            to="#"
-            className="flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all "
-          >
-            <ArrowRightLeft size={16} /> Receiving
-          </Link>
-        </li>
+        {links.map((link, key) => {
+          return (
+            <li
+              className="nav-link mb-2 opacity-80 hover:opacity-100"
+              key={key}
+            >
+              <Link
+                to={`${devNavUrl}/system/${link.slug}`}
+                className={`flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
+                  menu === link.slug ? "active" : ""
+                }`}
+              >
+                {link.icon} {link.text}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

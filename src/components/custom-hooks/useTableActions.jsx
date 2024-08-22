@@ -2,7 +2,7 @@ import React from "react";
 import { setIsAdd, setIsConfirm, setIsDelete } from "../store/StoreAction";
 import { StoreContext } from "../store/StoreContext";
 
-const useEditDeleteArchiveRestore = ({ setItemEdit }) => {
+const useTableActions = ({ setItemEdit }) => {
   const { dispatch } = React.useContext(StoreContext);
   const [id, setId] = React.useState(null);
   const [data, setData] = React.useState("");
@@ -40,4 +40,4 @@ const useEditDeleteArchiveRestore = ({ setItemEdit }) => {
     isActive,
   ];
 };
-export default useEditDeleteArchiveRestore;
+export default useTableActions;

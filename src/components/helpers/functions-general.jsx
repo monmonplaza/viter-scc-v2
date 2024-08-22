@@ -3,9 +3,9 @@ import { setIsAnimating } from "../store/StoreAction";
 import { StoreContext } from "../store/StoreContext";
 
 export const urlPathSinglePageWebsite =
-  "http://localhost/react-vite/viter-viter-scc-v2";
+  "http://localhost/react-vite/viter-scc-v2";
 export const imgUrlPathSinglePageWebsite =
-  "http://localhost/react-vite/viter-viter-scc-v2/public";
+  "http://localhost/react-vite/viter-scc-v2/public";
 
 export const devApiUrl = `${urlPathSinglePageWebsite}/rest`;
 export const devBaseUrl = `${urlPathSinglePageWebsite}`;

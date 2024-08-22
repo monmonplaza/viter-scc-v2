@@ -1,6 +1,6 @@
 import { useField } from "formik";
+import { Check } from "lucide-react";
 import React from "react";
-import { FaCheck } from "react-icons/fa6";
 
 export const InputTextArea = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -121,7 +121,7 @@ export const InputCheckbox = ({ label, ...props }) => {
             type="checkbox"
           />
           <span className="absolute text-white  opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100 ">
-            <FaCheck className="size-3" />
+            <Check />
           </span>
         </span>
 

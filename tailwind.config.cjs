@@ -55,6 +55,15 @@ export default {
         accent: "rgba(var(--accent), <alpha-value>)",
       },
 
+      fill: {
+        alert: "rgba(var(--alert), <alpha-value>)",
+      },
+
+      backgroundImage: {
+        skeleton:
+          "linear-gradient(90deg, transparent, rgba(var(--primary), .8), transparent )",
+      },
+
       boxShadow: {
         custom: "0px 4px 4px 0px rgba(0,0,0,0.05)",
       },

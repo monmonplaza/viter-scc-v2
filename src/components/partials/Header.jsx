@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <header className="p-4 flex justify-end bg-light border-b border-line">
+    <header className="p-4 flex justify-end bg-primary border-b border-line">
       <div className="profile flex items-center gap-3">
         <div className="flex items-center gap-3">
           <div>
