@@ -7,10 +7,6 @@ export const urlPathSinglePageWebsite =
 export const imgUrlPathSinglePageWebsite =
   "http://localhost/react-vite/viter-scc-v2/public";
 
-// const urlPathSinglePageWebsite = "http://localhost/react-vite/viter-scc-v2";
-// const imgUrlPathSinglePageWebsite =
-//   "http://localhost/react-vite/viter-scc-v2/public/img";
-
 export const devApiUrl = `${urlPathSinglePageWebsite}/rest`;
 export const devBaseUrl = `${urlPathSinglePageWebsite}`;
 export const devBaseImgUrl = `${imgUrlPathSinglePageWebsite}`;
