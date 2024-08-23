@@ -3,12 +3,18 @@ import Category from "@/components/pages/developer/category/Category.jsx";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import Product from "@/components/pages/developer/product/Product.jsx";
+import Receiving from "@/components/pages/developer/receiving/Receiving.jsx";
 import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
 
 export const routesSystem = [
   {
     path: `${devNavUrl}/system/overview`,
     element: <Overview />,
+  },
+
+  {
+    path: `${devNavUrl}/system/receiving`,
+    element: <Receiving />,
   },
 
   {
