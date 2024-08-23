@@ -1,27 +1,31 @@
 <?php
 $conn = null;
 $conn = checkDbConnection();
-$category = new Category($conn);
+$supplier = new Supplier($conn);
 $error = [];
 $returnData = [];
-if (array_key_exists("categoryid", $_GET)) {
+if (array_key_exists("supplierid", $_GET)) {
     checkPayload($data);
 
-    $category->category_aid = $_GET['categoryid'];
-    $category->category_name = checkIndex($data, "category_name");
-    $category->category_description = checkIndex($data, "category_description");
+    $supplier->supplier_aid = $_GET['supplierid'];
+    $supplier->supplier_name = checkIndex($data, "supplier_name");
+    $supplier->supplier_representative = checkIndex($data, "supplier_representative");
+    $supplier->supplier_representative_phone = checkIndex($data, "supplier_representative_phone");
+    $supplier->supplier_phone = checkIndex($data, "supplier_phone");
+    $supplier->supplier_address = checkIndex($data, "supplier_address");
+    $supplier->supplier_email = checkIndex($data, "supplier_email");
 
-    $category->category_is_active = 1;
-    $category->category_datetime = date("Y-m-d H:i:s");
-    $category_name_old = strtolower($data["category_name_old"]);
+    $supplier->supplier_is_active = 1;
+    $supplier->supplier_datetime = date("Y-m-d H:i:s");
+    $supplier_name_old = strtolower($data["supplier_name_old"]);
 
-    checkId($category->category_aid);
+    checkId($supplier->supplier_aid);
 
-    compareName($category, $category_name_old, $category->category_name);
+    compareName($supplier, $supplier_name_old, $supplier->supplier_name);
 
 
-    $query = checkUpdate($category);
-    returnSuccess($category, "category", $query);
+    $query = checkUpdate($supplier);
+    returnSuccess($supplier, "supplier", $query);
 }
 
 checkEndpoint();

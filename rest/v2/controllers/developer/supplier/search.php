@@ -1,39 +1,39 @@
 <?php
 require '../../../core/header.php';
 require '../../../core/functions.php';
-require '../../../models/developer/category/Category.php';
+require '../../../models/developer/supplier/Supplier.php';
 
 $conn = null;
 $conn = checkDbConnection();
 
-$category = new Category($conn);
+$supplier = new Supplier($conn);
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
 
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     checkPayload($data);
-    $category->category_search = $data["searchValue"];    // get data
+    $supplier->supplier_search = $data["searchValue"];    // get data
     if ($data["isFilter"] == true) {
 
-        if ($category->category_search != "") {
+        if ($supplier->supplier_search != "") {
 
-            checkKeyword($category->category_search);
-            $category->category_is_active = checkIndex($data, "category_is_active");
-            $query = checkFilterByStatusAndSearch($category);
+            checkKeyword($supplier->supplier_search);
+            $supplier->supplier_is_active = checkIndex($data, "supplier_is_active");
+            $query = checkFilterByStatusAndSearch($supplier);
             http_response_code(200);
             getQueriedData($query);
         }
 
 
-        $category->category_is_active = checkIndex($data, "category_is_active");
-        $query = checkFilterByStatus($category);
+        $supplier->supplier_is_active = checkIndex($data, "supplier_is_active");
+        $query = checkFilterByStatus($supplier);
         http_response_code(200);
         getQueriedData($query);
     }
 
-    checkKeyword($category->category_search);
-    $query = checkSearch($category);
+    checkKeyword($supplier->supplier_search);
+    $query = checkSearch($supplier);
     http_response_code(200);
     getQueriedData($query);
 
