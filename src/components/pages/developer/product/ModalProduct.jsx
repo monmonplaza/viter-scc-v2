@@ -1,10 +1,14 @@
-import { InputText, InputTextArea } from "@/components/helpers/FormInputs";
+import useQueryData from "@/components/custom-hooks/useQueryData";
+import {
+  InputSelect,
+  InputText,
+  InputTextArea,
+} from "@/components/helpers/FormInputs";
 import { handleEscape, ver } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
-  setError,
   setIsAdd,
   setIsAnimating,
   setMessage,
@@ -63,18 +67,27 @@ const ModalProduct = ({ itemEdit }) => {
     : {
         product_aid: "",
         product_name: "",
-        product_sku: "",
         product_description: "",
+        product_category_id: "",
         product_barcode: "",
         product_name_old: "",
       };
 
   const yupSchema = Yup.object({
     product_name: Yup.string().required("Require"),
-    product_sku: Yup.string().required("Require"),
+    product_category_id: Yup.string().required("Require"),
     product_description: Yup.string().required("Require"),
-    product_barcode: Yup.string().required("Require"),
   });
+
+  const {
+    isLoading: loadingCategory,
+    error: errorCategory,
+    data: category,
+  } = useQueryData(
+    `/${ver}/product/read-all-category`, // endpoint
+    "get", // method
+    "read-all-category" // key
+  );
 
   React.useEffect(() => handleEscape(handleClose), []);
 
@@ -103,6 +116,12 @@ const ModalProduct = ({ itemEdit }) => {
               <Form>
                 <div className=" modal-body  ">
                   <div className="modal-form">
+                    {itemEdit && (
+                      <p>
+                        <span className="font-bold">SKU:</span>{" "}
+                        {itemEdit?.product_sku}
+                      </p>
+                    )}
                     <div className="input-wrap">
                       <InputText
                         label="Name"
@@ -111,14 +130,7 @@ const ModalProduct = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="input-wrap">
-                      <InputText
-                        label="SKU"
-                        type="text"
-                        name="product_sku"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
+
                     <div className="input-wrap">
                       <InputTextArea
                         label="Description"
@@ -134,6 +146,54 @@ const ModalProduct = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
+
+                    <div className="input-wrap">
+                      <InputSelect
+                        label="Category"
+                        name="product_category_id"
+                        disabled={mutation.isLoading || loadingCategory}
+                      >
+                        {loadingCategory ? (
+                          <option value="" hidden>
+                            Loading...
+                          </option>
+                        ) : errorCategory ? (
+                          <option value="" disabled>
+                            Error
+                          </option>
+                        ) : (
+                          <optgroup label="Select Category">
+                            <option value="" hidden></option>
+                            {category?.data.length > 0 ? (
+                              <>
+                                {category?.data.map((cItem, key) => {
+                                  return (
+                                    (cItem.category_is_active === 1 ||
+                                      (itemEdit &&
+                                        Number(cItem.category_aid) ===
+                                          Number(
+                                            itemEdit.product_category_id
+                                          ))) && (
+                                      <option
+                                        value={cItem.category_aid}
+                                        key={key}
+                                      >
+                                        {cItem.category_name} -{" "}
+                                        {cItem.category_description}
+                                      </option>
+                                    )
+                                  );
+                                })}
+                              </>
+                            ) : (
+                              <option value="" disabled>
+                                No data
+                              </option>
+                            )}
+                          </optgroup>
+                        )}
+                      </InputSelect>
+                    </div>
                   </div>
 
                   <div className="modal-action ">
@@ -142,7 +202,13 @@ const ModalProduct = ({ itemEdit }) => {
                       type="submit"
                       disabled={mutation.isPending}
                     >
-                      {mutation.isPending ? <SpinnerButton /> : "Add"}
+                      {mutation.isPending ? (
+                        <SpinnerButton />
+                      ) : itemEdit ? (
+                        "Save"
+                      ) : (
+                        "Add"
+                      )}
                     </button>
                     <button
                       className="btn btn-discard"

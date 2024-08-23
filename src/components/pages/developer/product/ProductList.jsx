@@ -131,6 +131,7 @@ const ProductList = ({ setItemEdit }) => {
                 <th className="w-[40px]">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
+                <th className="w-[200px]">Category</th>
                 <th>SKU</th>
 
                 <th>Barcode</th>
@@ -168,6 +169,7 @@ const ProductList = ({ setItemEdit }) => {
                         <td>{<Pill isActive={item.product_is_active} />}</td>
 
                         <td>{item.product_name}</td>
+                        <td>{item.category_name}</td>
                         <td>{item.product_sku}</td>
 
                         <td>{item.product_barcode}</td>

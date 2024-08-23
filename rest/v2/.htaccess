@@ -16,6 +16,7 @@ RewriteRule ^product/([0-9]+)$ controllers/developer/product/product.php?product
 RewriteRule ^product/active/([0-9]+)$ controllers/developer/product/active.php?productid=$1 [L]
 RewriteRule ^product/page/([0-9]+)$ controllers/developer/product/page.php?start=$1 [L]
 RewriteRule ^product/search$ controllers/developer/product/search.php [L]
+RewriteRule ^product/read-all-category$ controllers/developer/product/read-all-category.php [L]
 
 
 ### CATEGORY ###

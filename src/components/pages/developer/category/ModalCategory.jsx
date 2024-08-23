@@ -123,7 +123,13 @@ const ModalCategory = ({ itemEdit }) => {
                       type="submit"
                       disabled={mutation.isPending}
                     >
-                      {mutation.isPending ? <SpinnerButton /> : "Add"}
+                      {mutation.isPending ? (
+                        <SpinnerButton />
+                      ) : itemEdit ? (
+                        "Save"
+                      ) : (
+                        "Add"
+                      )}
                     </button>
                     <button
                       className="btn btn-discard"

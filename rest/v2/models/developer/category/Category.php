@@ -131,7 +131,7 @@ class Category
         try {
             $sql = "update {$this->tblCategory} set ";
             $sql .= "category_name = :category_name, ";
-            $sql .= "category_description = :category_description ";
+            $sql .= "category_description = :category_description, ";
             $sql .= "category_datetime = :category_datetime ";
             $sql .= "where category_aid = :category_aid ";
             $query = $this->connection->prepare($sql);
