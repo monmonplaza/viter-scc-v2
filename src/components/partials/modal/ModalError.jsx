@@ -23,7 +23,7 @@ const ModalError = () => {
         onClick={handleClose}
         className="backdrop w-full h-full bg-black  animate-fadeIn bg-opacity-0 transition-all"
       ></div>
-      <div className="modal-center rounded-md !bg-light">
+      <div className="modal-center rounded-md !bg-light border border-line">
         <div className="p-5 pb-0">
           <TriangleAlert
             size={70}

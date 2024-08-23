@@ -137,11 +137,13 @@ class Product
             $sql = "update {$this->tblProduct} set ";
             $sql .= "product_name = :product_name, ";
             $sql .= "product_description = :product_description ";
+            $sql .= "product_datetime = :product_datetime ";
             $sql .= "where product_aid = :product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "product_name" => $this->product_name,
                 "product_description" => $this->product_description,
+                "product_datetime" => $this->product_datetime,
                 "product_aid" => $this->product_aid,
             ]);
         } catch (PDOException $ex) {
@@ -195,6 +197,45 @@ class Product
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "product_name" => "{$this->product_name}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    public function filterByStatus()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblProduct} ";
+            $sql .= "where product_is_active = :product_is_active  ";
+            $sql .= "order by product_is_active desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_is_active" => $this->product_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterByStatusAndSearch()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblProduct} ";
+            $sql .= "where ";
+            $sql .= "product_is_active = :product_is_active ";
+            $sql .= "and product_name like :product_name ";
+            $sql .= "order by product_is_active desc, ";
+            $sql .= "product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_name" => "%{$this->product_search}%",
+                "product_is_active" => $this->product_is_active,
             ]);
         } catch (PDOException $ex) {
             $query = false;

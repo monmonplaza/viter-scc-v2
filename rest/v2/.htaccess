@@ -10,9 +10,17 @@ Header set Access-Control-Allow-Origin *
 #################################### ALL FOR DEVELOPER #################################
 
 
-
+### PRODUCT ###
 RewriteRule ^product$ controllers/developer/product/product.php [L]
 RewriteRule ^product/([0-9]+)$ controllers/developer/product/product.php?productid=$1 [L]
 RewriteRule ^product/active/([0-9]+)$ controllers/developer/product/active.php?productid=$1 [L]
 RewriteRule ^product/page/([0-9]+)$ controllers/developer/product/page.php?start=$1 [L]
 RewriteRule ^product/search$ controllers/developer/product/search.php [L]
+
+
+### CATEGORY ###
+RewriteRule ^category$ controllers/developer/category/category.php [L]
+RewriteRule ^category/([0-9]+)$ controllers/developer/category/category.php?categoryid=$1 [L]
+RewriteRule ^category/active/([0-9]+)$ controllers/developer/category/active.php?categoryid=$1 [L]
+RewriteRule ^category/page/([0-9]+)$ controllers/developer/category/page.php?start=$1 [L]
+RewriteRule ^category/search$ controllers/developer/category/search.php [L]

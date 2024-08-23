@@ -6,24 +6,20 @@ import { StoreContext } from "../store/StoreContext.jsx";
 const ToastSuccess = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const handleClose = () => {
-    dispatch(setIsAnimating(false));
-    setTimeout(() => {
-      dispatch(setIsAnimating(true));
-      dispatch(setSuccess(false));
-    }, 2000);
+    dispatch(setSuccess(false));
   };
 
   React.useEffect(() => {
     setTimeout(() => {
       handleClose();
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
     <>
       <div
-        className={`toast transition-all fixed bottom-20 z-40 flex item-center -right-full animate-slideRight ${
-          store.isAnimating ? "open" : ""
+        className={`toast transition-all fixed bottom-20 z-40 flex item-center -right-full  ${
+          store.success ? "open" : ""
         }`}
       >
         <div className="p-2 px-3 bg-success  center-all rounded-l-md">

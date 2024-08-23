@@ -4,27 +4,27 @@ import { StoreContext } from "../store/StoreContext";
 
 const useTableActions = ({ setItemEdit }) => {
   const { dispatch } = React.useContext(StoreContext);
-  const [id, setId] = React.useState(null);
+  const [aid, setAid] = React.useState(null);
   const [data, setData] = React.useState("");
   const [isActive, setIsActive] = React.useState(true);
 
-  const handleRemove = (aid, item) => {
-    setId(aid);
+  const handleRemove = (item_aid, item) => {
+    setAid(item_aid);
     dispatch(setIsDelete(true));
     setData(item);
   };
-  const handleEdit = (aid, item) => {
+  const handleEdit = (item_aid, item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
   };
-  const handleArchive = (aid, item) => {
-    setId(aid);
+  const handleArchive = (item_aid, item) => {
+    setAid(item_aid);
     dispatch(setIsConfirm(true));
     setIsActive(false);
     setData(item);
   };
-  const handleRestore = (aid, item) => {
-    setId(aid);
+  const handleRestore = (item_aid, item) => {
+    setAid(item_aid);
     dispatch(setIsConfirm(true));
     setIsActive(true);
     setData(item);
@@ -35,7 +35,7 @@ const useTableActions = ({ setItemEdit }) => {
     handleEdit,
     handleArchive,
     handleRestore,
-    id,
+    aid,
     data,
     isActive,
   ];

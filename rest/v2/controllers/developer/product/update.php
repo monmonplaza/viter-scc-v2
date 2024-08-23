@@ -19,6 +19,7 @@ if (array_key_exists("productid", $_GET)) {
 
     checkId($product->product_aid);
 
+    compareName($product, $product_name_old, $product->product_name);
 
     $query = checkUpdate($product);
     returnSuccess($product, "product", $query);

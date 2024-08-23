@@ -26,7 +26,7 @@ const ModalValidate = () => {
         onClick={handleClose}
         className="backdrop w-full h-full bg-black  animate-fadeIn bg-opacity-0 transition-all"
       ></div>
-      <div className="modal-center rounded-md !bg-secondary">
+      <div className="modal-center rounded-md !bg-secondary border border-line">
         <div className="p-5 pb-0">
           <Files size={70} className="mx-auto mb-2 text-info !stroke-[4px]" />
           <p className="text-base text-center text-balance py-5">

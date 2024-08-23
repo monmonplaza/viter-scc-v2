@@ -92,6 +92,10 @@
   }
   /* add mo to pg madami nng data sticky top-0 */
 
+  aside {
+    @apply min-w-[250px] border-r border-line min-h-[100dvh] sticky top-0 bg-primary;
+  }
+
   .table-wrapper {
     @apply bg-primary rounded-md px-4 pb-4 border border-line  overflow-y-hidden hover:overflow-y-scroll max-h-[60dvh] w-[calc(100vw-1rem)] md:w-[calc(100vw-314px)] custom-scroll gutter-scroll;
   }
@@ -103,7 +107,7 @@
     @apply z-10 bg-primary border-b border-line;
   }
 
-  table thead tr td,
+  table thead tr th,
   table tbody tr td {
     @apply p-2  text-xs;
   }
@@ -112,8 +116,8 @@
     @apply border-b border-line text-dark;
   }
 
-  table thead tr td {
-    @apply font-bold  pt-4;
+  table thead tr th {
+    @apply font-bold  pt-4 text-left;
   }
 
   table tbody tr {
@@ -132,7 +136,7 @@
   }
 
   table tbody tr .table-action {
-    @apply absolute right-0 top-0 h-[22px] pl-6  after:absolute after:top-0.5 after:left-0.5  after:content-['...'] after:text-xl bg-primary z-30 hidden;
+    @apply absolute right-0 top-0 h-[26px] pl-6  after:absolute after:top-0.5 after:left-0.5  after:content-['...'] after:text-xl bg-primary z-30 hidden;
   }
 
   button.tooltip {
@@ -281,11 +285,9 @@
   }
 
   .toast.open {
-    @apply right-[20px] ;
+    @apply right-[20px];
   }
 }
-
-
 
 @layer utilities {
   .center-all {

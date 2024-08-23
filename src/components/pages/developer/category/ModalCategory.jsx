@@ -17,7 +17,7 @@ import { Form, Formik } from "formik";
 import { File, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-const ModalProduct = ({ itemEdit }) => {
+const ModalCategory = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
 
   const queryClient = useQueryClient();
@@ -25,15 +25,15 @@ const ModalProduct = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/product/${itemEdit.product_aid}`
-          : `/${ver}/product`,
+          ? `/${ver}/category/${itemEdit.category_aid}`
+          : `/${ver}/category`,
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["product"],
+        queryKey: ["category"],
       });
 
       // show error box
@@ -59,21 +59,17 @@ const ModalProduct = ({ itemEdit }) => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = itemEdit
-    ? { ...itemEdit, product_name_old: itemEdit.product_name }
+    ? { ...itemEdit, category_name_old: itemEdit.category_name }
     : {
-        product_aid: "",
-        product_name: "",
-        product_sku: "",
-        product_description: "",
-        product_barcode: "",
-        product_name_old: "",
+        category_aid: "",
+        category_name: "",
+        category_description: "",
+        category_name_old: "",
       };
 
   const yupSchema = Yup.object({
-    product_name: Yup.string().required("Require"),
-    product_sku: Yup.string().required("Require"),
-    product_description: Yup.string().required("Require"),
-    product_barcode: Yup.string().required("Require"),
+    category_name: Yup.string().required("Require"),
+    category_description: Yup.string().required("Require"),
   });
 
   React.useEffect(() => handleEscape(handleClose), []);
@@ -85,7 +81,7 @@ const ModalProduct = ({ itemEdit }) => {
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
             {itemEdit ? "Edit " : "Add "}
-            Product
+            Category
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
@@ -107,30 +103,15 @@ const ModalProduct = ({ itemEdit }) => {
                       <InputText
                         label="Name"
                         type="text"
-                        name="product_name"
+                        name="category_name"
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="input-wrap">
-                      <InputText
-                        label="SKU"
-                        type="text"
-                        name="product_sku"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
+
                     <div className="input-wrap">
                       <InputTextArea
                         label="Description"
-                        name="product_description"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="input-wrap">
-                      <InputText
-                        label="Barcode"
-                        type="text"
-                        name="product_barcode"
+                        name="category_description"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -162,4 +143,4 @@ const ModalProduct = ({ itemEdit }) => {
   );
 };
 
-export default ModalProduct;
+export default ModalCategory;

@@ -8,9 +8,9 @@ import { setIsAdd } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
 import React from "react";
-import ModalProduct from "./ModalProduct.jsx";
-import ProductList from "./ProductList.jsx";
-const Product = () => {
+import CategoryList from "./CategoryList.jsx";
+import { default as ModalCategory } from "./ModalCategory.jsx";
+const Category = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -23,7 +23,7 @@ const Product = () => {
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
         <aside>
-          <Navigation menu="products" />
+          <Navigation menu="category" />
         </aside>
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
@@ -33,7 +33,7 @@ const Product = () => {
               <Breadcrumbs />
 
               <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">Product</h1>
+                <h1 className="mb-0">Category</h1>
                 <div>
                   <button
                     className="btn btn-accent h-[34px]"
@@ -44,7 +44,7 @@ const Product = () => {
                 </div>
               </div>
 
-              <ProductList setItemEdit={setItemEdit} />
+              <CategoryList setItemEdit={setItemEdit} />
             </div>
 
             <Footer />
@@ -52,7 +52,7 @@ const Product = () => {
         </main>
       </div>
 
-      {store.isAdd && <ModalProduct itemEdit={itemEdit} />}
+      {store.isAdd && <ModalCategory itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}
@@ -60,4 +60,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Category;

@@ -23,7 +23,7 @@ import {
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
-const ProductList = ({ setItemEdit }) => {
+const CategoryList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
@@ -54,16 +54,16 @@ const ProductList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["product", search.current.value, store.isSearch, filterData],
+    queryKey: ["category", search.current.value, store.isSearch, filterData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/product/search`, // search endpoint
-        `/${ver}/product/page/${pageParam}`, // list endpoint
+        `/${ver}/category/search`, // search endpoint
+        `/${ver}/category/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
-          product_is_active: filterData,
+          category_is_active: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -131,9 +131,7 @@ const ProductList = ({ setItemEdit }) => {
                 <th className="w-[40px]">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
-                <th>SKU</th>
 
-                <th>Barcode</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -165,27 +163,25 @@ const ProductList = ({ setItemEdit }) => {
                     return (
                       <tr key={key}>
                         <td>{counter++}</td>
-                        <td>{<Pill isActive={item.product_is_active} />}</td>
+                        <td>{<Pill isActive={item.category_is_active} />}</td>
 
-                        <td>{item.product_name}</td>
-                        <td>{item.product_sku}</td>
+                        <td>{item.category_name}</td>
 
-                        <td>{item.product_barcode}</td>
                         <td>
                           <p className="max-w-[500px] truncate mb-0">
-                            {item.product_description}
+                            {item.category_description}
                           </p>
                         </td>
                         <td className="table-action">
                           <ul>
-                            {item.product_is_active === 1 ? (
+                            {item.category_is_active === 1 ? (
                               <>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleEdit(item.product_aid, item)
+                                      handleEdit(item.category_aid, item)
                                     }
                                   >
                                     <SquarePen size={14} />
@@ -197,7 +193,7 @@ const ProductList = ({ setItemEdit }) => {
                                     data-tooltip="Archive"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleArchive(item.product_aid, item)
+                                      handleArchive(item.category_aid, item)
                                     }
                                   >
                                     <Archive size={14} />
@@ -211,7 +207,7 @@ const ProductList = ({ setItemEdit }) => {
                                     data-tooltip="Restore"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(item.product_aid, item)
+                                      handleRestore(item.category_aid, item)
                                     }
                                   >
                                     <ArchiveRestore size={14} />
@@ -222,7 +218,7 @@ const ProductList = ({ setItemEdit }) => {
                                     data-tooltip="Delete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRemove(item.product_aid, item)
+                                      handleRemove(item.category_aid, item)
                                     }
                                   >
                                     <Trash size={14} />
@@ -256,16 +252,16 @@ const ProductList = ({ setItemEdit }) => {
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/product/${aid}`}
-          queryKey="product"
-          item={data.product_name}
+          mysqlApiDelete={`/${ver}/category/${aid}`}
+          queryKey="category"
+          item={data.category_name}
         />
       )}
       {store.isConfirm && (
         <ModalConfirm
-          mysqlApiArchive={`/${ver}/product/active/${aid}`}
-          queryKey="product"
-          item={data.product_name}
+          mysqlApiArchive={`/${ver}/category/active/${aid}`}
+          queryKey="category"
+          item={data.category_name}
           active={isActive}
         />
       )}
@@ -273,4 +269,4 @@ const ProductList = ({ setItemEdit }) => {
   );
 };
 
-export default ProductList;
+export default CategoryList;
