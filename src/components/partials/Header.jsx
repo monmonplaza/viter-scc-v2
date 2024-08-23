@@ -4,20 +4,21 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   const [show, setShow] = React.useState(false);
-  const [isDark, setIsDark] = React.useState(true);
+  const [isDark, setIsDark] = React.useState(
+    localStorage.getItem("theme") === "dark" ? true : false
+  );
   const [theme, setTheme] = React.useState(localStorage.getItem("theme"));
 
   let menuRef = React.useRef();
 
   const handleTheme = () => {
+    setIsDark(!isDark);
     if (isDark) {
       document.querySelector("body").classList.remove("dark");
       localStorage.setItem("theme", "light");
-      setIsDark(false);
     } else {
       document.querySelector("body").classList.add("dark");
       localStorage.setItem("theme", "dark");
-      setIsDark(true);
     }
   };
 
