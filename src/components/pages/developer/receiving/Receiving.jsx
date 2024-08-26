@@ -9,6 +9,7 @@ import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
 import React from "react";
 import ReceivingList from "./ReceivingList.jsx";
+import ModalAddReceiving from "./ModalAddReceiving.jsx";
 
 const Receiving = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -23,7 +24,7 @@ const Receiving = () => {
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
         <aside>
-          <Navigation menu="products" />
+          <Navigation menu="receiving" />
         </aside>
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
@@ -43,16 +44,14 @@ const Receiving = () => {
                   </button>
                 </div>
               </div>
-
               <ReceivingList setItemEdit={setItemEdit} />
             </div>
-
             <Footer />
           </div>
         </main>
       </div>
 
-      {/* {store.isAdd && <ModalProduct itemEdit={itemEdit} />} */}
+      {store.isAdd && <ModalAddReceiving itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}

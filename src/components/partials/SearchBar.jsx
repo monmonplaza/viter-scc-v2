@@ -9,11 +9,15 @@ const SearchBar = ({
   isFetching,
   setOnSearch,
   onSearch,
+  isFilter = false,
 }) => {
   const handleChange = (e) => {
     if (e.target.value === "") {
       setOnSearch(!onSearch);
       dispatch(setIsSearch(false));
+    }
+    if (isFilter === true) {
+      dispatch(setIsSearch(true));
     }
   };
 
@@ -24,9 +28,8 @@ const SearchBar = ({
     if (val === " " || val === "") {
       setOnSearch(!onSearch);
       dispatch(setIsSearch(false));
-      return;
-      // dispatch(setError(true));
-      // dispatch(setMessage("Search keyword cannot be space only or blank."));
+      dispatch(setError(true));
+      dispatch(setMessage("Search keyword cannot be space only or blank."));
     } else {
       setOnSearch(!onSearch);
       dispatch(setIsSearch(true));

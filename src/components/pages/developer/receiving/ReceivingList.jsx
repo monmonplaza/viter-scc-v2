@@ -8,21 +8,34 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Archive, SquarePen } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  Package,
+  SquarePen,
+  Trash,
+} from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 import ModalSupplierProduct from "./ModalSupplierProduct.jsx";
+import LoaderTable from "@/components/partials/LoaderTable.jsx";
+import NoData from "@/components/partials/icons/NoData.jsx";
+import ServerError from "@/components/partials/icons/ServerError.jsx";
+import Pill from "@/components/partials/Pill.jsx";
+import Loadmore from "@/components/partials/Loadmore.jsx";
 
 const ReceivingList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [row, setRow] = React.useState(null);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
   const [onSearch, setOnSearch] = React.useState(false);
   const [isFilter, setIsFilter] = React.useState(false);
   const [filterData, setFilterData] = React.useState("all");
+  const [showManageSupplierProduct, setShowManageSupplierProduct] =
+    React.useState(false);
   const search = React.useRef({ value: "" });
   let counter = 1;
-
   const [
     handleRemove,
     handleEdit,
@@ -44,16 +57,16 @@ const ReceivingList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["product", search.current.value, store.isSearch, filterData],
+    queryKey: ["receiving", search.current.value, store.isSearch, filterData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/product/search`, // search endpoint
-        `/${ver}/product/page/${pageParam}`, // list endpoint
-        store.isSearch || isFilter, // search boolean, // search boolean
+        `/${ver}/receiving/search`, // search endpoint
+        `/${ver}/receiving/page/${pageParam}`, // list endpoint
+        store.isSearch, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
-          product_is_active: filterData,
+          receiving_is_active: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -65,6 +78,11 @@ const ReceivingList = ({ setItemEdit }) => {
     },
     refetchOnWindowFocus: false,
   });
+
+  const handleManageSupplierProduct = (item) => {
+    setShowManageSupplierProduct(true);
+    setRow(item);
+  };
 
   const handleChangefilterData = (e) => {
     setFilterData(e.target.value);
@@ -109,6 +127,7 @@ const ReceivingList = ({ setItemEdit }) => {
           isFetching={isFetching}
           setOnSearch={setOnSearch}
           onSearch={onSearch}
+          isFilter={isFilter}
         />
       </div>
       <div className="relative">
@@ -119,6 +138,7 @@ const ReceivingList = ({ setItemEdit }) => {
             <thead>
               <tr>
                 <th className="w-[40px]">#</th>
+                <th className="w-[90px]">Status</th>
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
                 <th className="">Total Amount</th>
@@ -126,53 +146,143 @@ const ReceivingList = ({ setItemEdit }) => {
             </thead>
 
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>10/20/24</td>
-                <td>222-222-2212</td>
-                <td>4000</td>
-                <td className="table-action">
-                  <ul>
-                    <li>
-                      <button
-                        data-tooltip="Edit"
-                        className="tooltip"
-                        onClick={() => handleEdit(item.supplier_aid, item)}
-                      >
-                        <SquarePen size={14} />
-                      </button>
-                    </li>
+              {(status === "loading" || result?.pages[0].data.length === 0) && (
+                <tr>
+                  <td colSpan="100%">
+                    {status === "loading" ? (
+                      <LoaderTable count={30} cols={6} />
+                    ) : (
+                      <NoData />
+                    )}
+                  </td>
+                </tr>
+              )}
 
-                    <li>
-                      <button
-                        data-tooltip="Archive"
-                        className="tooltip"
-                        onClick={() => handleArchive(item.supplier_aid, item)}
-                      >
-                        <Archive size={14} />
-                      </button>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
+              {error && (
+                <tr>
+                  <td colSpan="100%" className="p-10">
+                    <ServerError />
+                  </td>
+                </tr>
+              )}
+
+              {result?.pages.map((page, key) => (
+                <React.Fragment key={key}>
+                  {page.data.map((item, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{counter++}</td>
+                        <td>{<Pill isActive={item.receiving_is_active} />}</td>
+                        <td>{item.receiving_date}</td>
+                        <td>{item.receiving_reference_no}</td>
+                        <td></td>
+                        <td className="table-action">
+                          <ul>
+                            {item.receiving_is_active === 1 ? (
+                              <>
+                                <li>
+                                  <button
+                                    data-tooltip="View"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleManageSupplierProduct(item)
+                                    }
+                                  >
+                                    <Package size={14} />
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    data-tooltip="Edit"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleEdit(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <SquarePen size={14} />
+                                  </button>
+                                </li>
+
+                                <li>
+                                  <button
+                                    data-tooltip="Archive"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleArchive(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <Archive size={14} />
+                                  </button>
+                                </li>
+                              </>
+                            ) : (
+                              <>
+                                <li>
+                                  <button
+                                    data-tooltip="Restore"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleRestore(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <ArchiveRestore size={14} />
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    data-tooltip="Delete"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleRemove(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <Trash size={14} />
+                                  </button>
+                                </li>
+                              </>
+                            )}
+                          </ul>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </React.Fragment>
+              ))}
             </tbody>
           </table>
+          <div className="loadmore flex justify-center flex-col items-center ">
+            <Loadmore
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
+              result={result?.pages[0]}
+              setPage={setPage}
+              page={page}
+              refView={ref}
+              isSearchOrFilter={store.isSearch || isFilter}
+            />
+          </div>
         </div>
       </div>
-      <ModalSupplierProduct />
+      {showManageSupplierProduct && (
+        <ModalSupplierProduct
+          setShowManageSupplierProduct={setShowManageSupplierProduct}
+          row={row}
+        />
+      )}
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/product/${aid}`}
-          queryKey="product"
-          item={data.product_name}
+          mysqlApiDelete={`/${ver}/receiving/${aid}`}
+          queryKey="receiving"
+          item={data.receiving_date}
         />
       )}
       {store.isConfirm && (
         <ModalConfirm
-          mysqlApiArchive={`/${ver}/product/active/${aid}`}
-          queryKey="product"
-          item={data.product_name}
+          mysqlApiArchive={`/${ver}/receiving/active/${aid}`}
+          queryKey="receiving"
+          item={data.receiving_date}
           active={isActive}
         />
       )}

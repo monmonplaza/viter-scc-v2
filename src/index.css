@@ -90,6 +90,10 @@
   h4 {
     @apply text-[clamp(12px,4vw,14px)] leading-none mb-2;
   }
+
+  h5 {
+    @apply text-xs leading-none mb-2;
+  }
   /* add mo to pg madami nng data sticky top-0 */
 
   aside {
@@ -156,7 +160,7 @@
   input,
   select,
   textarea {
-    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs bg-primary;
+    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs bg-primary disabled:cursor-not-allowed disabled:opacity-50
   }
   textarea {
     @apply resize-none min-h-[150px] overflow-y-auto mb-0;
