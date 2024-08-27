@@ -24,9 +24,19 @@ import ServerError from "@/components/partials/icons/ServerError";
 import NoData from "@/components/partials/icons/NoData";
 import LoaderTable from "@/components/partials/LoaderTable";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
+import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
+import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
+import useTableActions from "@/components/custom-hooks/useTableActions";
+import ModalDelete from "@/components/partials/modal/ModalDelete";
+import ModalConfirm from "@/components/partials/modal/ModalConfirm";
 
 const ModalAddSupplierProduct = () => {
   const { dispatch, store } = React.useContext(StoreContext);
+  const [supplierData, setSupplierData] = React.useState(null);
+  const [itemEdit, setItemEdit] = React.useState(null);
+  const [isRequiredSupplierYup, setIsRequiredSupplierYup] = React.useState("");
+  const [productData, setProductData] = React.useState(null);
+  const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   let counter = 1;
 
   const queryClient = useQueryClient();
@@ -51,32 +61,55 @@ const ModalAddSupplierProduct = () => {
     },
   });
 
+  const [
+    handleRemove,
+    handleEdit,
+    handleArchive,
+    handleRestore,
+    aid,
+    data,
+    isActive,
+  ] = useTableActions({
+    setItemEdit,
+  });
+
   const handleClose = () => {
     dispatch(setIsAnimating(false));
+    setSupplierData(null);
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       dispatch(setIsAdd(false));
     }, 300);
   };
 
+  const handleSearch = () => {
+    if (supplierData === null || typeof supplierData === "undefined") {
+      setIsRequiredSupplierYup(Yup.string().required("Required"));
+    }
+    if (productData === null || typeof productData === "undefined") {
+      setIsRequiredProductYup(Yup.string().required("Required"));
+    }
+  };
+
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = {
     receiving_date: "",
-    receiving_supply_product_id: "",
-    receiving_supply_supplier_id: "",
+    receiving_supply_received_id: "",
     receiving_supply_unit_id: "",
     receiving_supply_quantity: "",
     receiving_supply_price: "",
+    searchSupplier: "",
+    searchProduct: "",
   };
 
   const yupSchema = Yup.object({
     receiving_date: Yup.string().required("Require"),
-    receiving_supply_product_id: Yup.string().required("Require"),
-    receiving_supply_supplier_id: Yup.string().required("Require"),
     receiving_supply_unit_id: Yup.string().required("Require"),
     receiving_supply_quantity: Yup.string().required("Require"),
     receiving_supply_price: Yup.string().required("Require"),
+    searchSupplier: isRequiredSupplierYup,
+    searchProduct: isRequiredProductYup,
   });
 
   const {
@@ -95,9 +128,9 @@ const ModalAddSupplierProduct = () => {
     error: errorReceiving,
     data: receivingData,
   } = useQueryData(
-    `/${ver}/receiving/read-all-unit`, // endpoint
+    `/${ver}/receiving-supply/read-new-receive`, // endpoint
     "get", // method
-    "receiving-read-all-unit" // key
+    "receiving-supply-read-new-receive" // key
   );
   return (
     <>
@@ -118,10 +151,21 @@ const ModalAddSupplierProduct = () => {
               initialValues={initVal}
               validationSchema={yupSchema}
               onSubmit={async (values, { setSubmitting, resetForm }) => {
+                const receiving_supply_supplier_id =
+                  supplierData !== null ? supplierData?.supplier_aid : 0;
+                const receiving_supply_product_id =
+                  productData !== null ? productData?.product_aid : 0;
+
                 const receiving_supply_amount =
                   Number(values.receiving_supply_price) *
                   Number(values.receiving_supply_quantity);
-                mutation.mutate({ ...values, receiving_supply_amount });
+
+                mutation.mutate({
+                  ...values,
+                  receiving_supply_amount,
+                  receiving_supply_supplier_id,
+                  receiving_supply_product_id,
+                });
               }}
             >
               {(props) => {
@@ -138,26 +182,30 @@ const ModalAddSupplierProduct = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-5 gap-4 mb-5">
+                    <div className="md:grid md:grid-cols-[1fr_1fr_1fr_1fr_1fr_5rem] gap-4 mb-5 items-end">
                       <div className="input-wrap">
-                        <InputText
+                        <SearchModalSupplier
+                          setData={setSupplierData}
+                          props={props}
                           label="Search Supplier"
-                          type="search"
-                          name="receiving_supply_supplier_id"
-                          disabled={mutation.isPending}
+                          name="searchSupplier"
+                          mutation={mutation}
+                          setIsRequiredYup={setIsRequiredSupplierYup}
                         />
                       </div>
                       <div className="input-wrap">
-                        <InputText
+                        <SearchModalProduct
+                          setData={setProductData}
+                          props={props}
                           label="Search Product"
-                          type="search"
-                          name="receiving_supply_product_id"
-                          disabled={mutation.isPending}
+                          name="searchProduct"
+                          mutation={mutation}
+                          setIsRequiredYup={setIsRequiredProductYup}
                         />
                       </div>
                       <div className="input-wrap">
                         <InputText
-                          label="Quantity"
+                          label="Qty"
                           type="text"
                           number="number"
                           name="receiving_supply_quantity"
@@ -214,20 +262,21 @@ const ModalAddSupplierProduct = () => {
                           disabled={mutation.isPending}
                         />
                       </div>
+                      <button
+                        className="btn btn-accent ml-auto md:mt-0 mt-5 !py-1 md:text-left md:mb-2"
+                        type="submit"
+                        disabled={mutation.isPending}
+                        onClick={handleSearch}
+                      >
+                        {mutation.isPending ? (
+                          <SpinnerButton />
+                        ) : (
+                          <>
+                            <Plus /> Add
+                          </>
+                        )}
+                      </button>
                     </div>
-                    <button
-                      className=" btn btn-accent ml-auto"
-                      type="submit"
-                      disabled={mutation.isPending}
-                    >
-                      {mutation.isPending ? (
-                        <SpinnerButton />
-                      ) : (
-                        <>
-                          <Plus /> Add Product
-                        </>
-                      )}
-                    </button>
                   </Form>
                 );
               }}
@@ -276,13 +325,13 @@ const ModalAddSupplierProduct = () => {
                         <tr key={key}>
                           <td className="w-counter">{counter++}.</td>
                           <td>
-                            {<Pill isActive={item.settings_unit_is_active} />}
+                            <Pill isActive={item.settings_unit_is_active} />
                           </td>
-                          <td>{item.settings_unit_name}</td>
+                          <td>{item.supplier_name}</td>
 
-                          <td>{item.settings_unit_name}</td>
-                          <td>{item.settings_unit_name}</td>
-                          <td>{item.settings_unit_name}</td>
+                          <td>{item.product_name}</td>
+                          <td>{item.receiving_supply_quantity}</td>
+                          <td>{item.receiving_supply_price}</td>
                           <td>{item.settings_unit_name}</td>
                           <td className="text-right">
                             {item.receiving_supply_amount}
@@ -369,6 +418,22 @@ const ModalAddSupplierProduct = () => {
             </div>
           </div>
         </div>
+
+        {store.isDelete && (
+          <ModalDelete
+            mysqlApiDelete={`/${ver}/product/${aid}`}
+            queryKey="product"
+            item={data.product_name}
+          />
+        )}
+        {store.isConfirm && (
+          <ModalConfirm
+            mysqlApiArchive={`/${ver}/product/active/${aid}`}
+            queryKey="product"
+            item={data.product_name}
+            active={isActive}
+          />
+        )}
       </WrapperModal>
     </>
   );

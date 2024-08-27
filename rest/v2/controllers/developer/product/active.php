@@ -21,6 +21,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $product->product_aid = $_GET['productid'];
         $product->product_is_active = trim($data["isActive"]);
+        $product->product_datetime = date("Y-m-d H:i:s");
+
         checkId($product->product_aid);
         $query = checkActive($product);
         http_response_code(200);

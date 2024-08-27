@@ -47,7 +47,7 @@ export const InputText = ({
           autoComplete="off"
           className={`${
             meta.touched && meta.error ? "error-show" : null
-          }  ${className}`}
+          } ${className}`}
           onChange={(e) => {
             onChange !== null && onChange(e);
             field.onChange(e);
@@ -205,6 +205,36 @@ export const InputSelect = ({
         }}
       />
 
+      {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};
+
+export const InputSearch = ({ label, onChange, refVal = null, ...props }) => {
+  const [field, meta] = useField(props);
+
+  return (
+    <>
+      <label
+        htmlFor={props.id || props.name}
+        className={meta.touched && meta.error ? "custom error-show" : "custom"}
+      >
+        {label}
+      </label>
+      <input
+        {...field}
+        {...props}
+        className={meta.touched && meta.error ? "error-show" : null}
+        autoComplete="off"
+        placeholder="Search here..."
+        onChange={(e) => {
+          onChange(e);
+          field.onChange(e);
+        }}
+        ref={refVal}
+      />
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>
       ) : null}

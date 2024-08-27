@@ -200,7 +200,8 @@
   .input-wrap:has(.error-show) label {
     @apply text-alert;
   }
-  .input-wrap:has(.error-show) input {
+  .input-wrap:has(.error-show) input,
+  .input-wrap:has(.error-show) select {
     @apply border border-alert;
   }
 

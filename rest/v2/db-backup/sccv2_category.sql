@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2024 at 02:26 PM
+-- Generation Time: Aug 27, 2024 at 02:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,39 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sccv2_receiving`
+-- Table structure for table `sccv2_category`
 --
 
-CREATE TABLE `sccv2_receiving` (
-  `receiving_aid` int(11) NOT NULL,
-  `receiving_date` varchar(20) NOT NULL,
-  `receiving_reference_no` varchar(50) NOT NULL,
-  `receiving_total_amount` varchar(20) NOT NULL,
-  `receiving_is_active` tinyint(1) NOT NULL,
-  `receiving_is_new_data` tinyint(1) NOT NULL,
-  `receiving_datetime` varchar(20) NOT NULL,
-  `receiving_created` varchar(20) NOT NULL
+CREATE TABLE `sccv2_category` (
+  `category_aid` int(11) NOT NULL,
+  `category_name` varchar(20) NOT NULL,
+  `category_description` text NOT NULL,
+  `category_is_active` tinyint(1) NOT NULL,
+  `category_datetime` varchar(20) NOT NULL,
+  `category_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_category`
+--
+
+INSERT INTO `sccv2_category` (`category_aid`, `category_name`, `category_description`, `category_is_active`, `category_datetime`, `category_created`) VALUES
+(1, 'Dairy Products', 'Dairy Products', 1, '2024-08-27 18:53:16', '2024-08-27 18:53:16');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `sccv2_receiving`
+-- Indexes for table `sccv2_category`
 --
-ALTER TABLE `sccv2_receiving`
-  ADD PRIMARY KEY (`receiving_aid`);
+ALTER TABLE `sccv2_category`
+  ADD PRIMARY KEY (`category_aid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `sccv2_receiving`
+-- AUTO_INCREMENT for table `sccv2_category`
 --
-ALTER TABLE `sccv2_receiving`
-  MODIFY `receiving_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `sccv2_category`
+  MODIFY `category_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

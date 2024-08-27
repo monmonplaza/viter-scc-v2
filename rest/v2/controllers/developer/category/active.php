@@ -21,6 +21,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $category->category_aid = $_GET['categoryid'];
         $category->category_is_active = trim($data["isActive"]);
+        $category->category_datetime = date("Y-m-d H:i:s");
+
         checkId($category->category_aid);
         $query = checkActive($category);
         http_response_code(200);

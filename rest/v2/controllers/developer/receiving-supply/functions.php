@@ -7,3 +7,11 @@ function checkCreateReceiving($object)
     checkQuery($query, "There's a problem processing your request. (create receiving)");
     return $query;
 }
+
+// Read all
+function checkReadAllNewReceiveSupply($object)
+{
+    $query = $object->readAllNewReceiveSupply();
+    checkQuery($query, "Empty records. (read all new receive supply)");
+    return $query;
+}

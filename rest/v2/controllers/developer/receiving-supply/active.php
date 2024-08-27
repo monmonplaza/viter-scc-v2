@@ -22,6 +22,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $receiving_supply->receiving_supply_aid = $_GET['receivingsupplyid'];
         $receiving_supply->receiving_supply_is_active = trim($data["isActive"]);
+        $receiving_supply->receiving_supply_datetime = date("Y-m-d H:i:s");
+
         checkId($receiving_supply->receiving_supply_aid);
         $query = checkActive($receiving_supply);
         http_response_code(200);

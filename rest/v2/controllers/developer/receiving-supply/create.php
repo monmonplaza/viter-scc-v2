@@ -11,7 +11,6 @@ if (array_key_exists("receiving_supplyid", $_GET)) {
 checkPayload($data);
 
 $receiving_supply->receiving_date = checkIndex($data, "receiving_date");
-$receiving_supply->receiving_supply_received_id = checkIndex($data, "receiving_supply_received_id");
 $receiving_supply->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
 $receiving_supply->receiving_supply_supplier_id = checkIndex($data, "receiving_supply_supplier_id");
 $receiving_supply->receiving_supply_unit_id = checkIndex($data, "receiving_supply_unit_id");
@@ -21,13 +20,16 @@ $receiving_supply->receiving_supply_amount = checkIndex($data, "receiving_supply
 
 $receiving_supply->receiving_supply_is_active = 1;
 $receiving_supply->receiving_is_active = 1;
+$receiving_supply->receiving_is_new_data = 1;
 $receiving_supply->receiving_supply_created = date("Y-m-d H:i:s");
 $receiving_supply->receiving_supply_datetime = date("Y-m-d H:i:s");
 
-if (intval($receiving_supply->receiving_supply_received_id) > 0) {
+
+$isNewData = getResultData($receiving_supply->checkDateGetLastAid());
+if (count($isNewData) == 0) {
     checkCreateReceiving($receiving_supply);
 } else {
-    $receiving_supply->lastInsertedId = checkIndex($data, "receiving_supply_received_id");
+    $receiving_supply->lastInsertedId = checkIndex($isNewData[0], "receiving_aid");
 }
 
 $query = checkCreate($receiving_supply);

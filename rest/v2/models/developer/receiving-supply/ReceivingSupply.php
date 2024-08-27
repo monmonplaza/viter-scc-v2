@@ -12,7 +12,7 @@ class ReceivingSupply
     public $receiving_supply_datetime;
     public $receiving_supply_created;
 
-
+    public $receiving_is_new_data;
     public $receiving_supply_received_id;
     public $receiving_date;
     public $receiving_is_active;
@@ -49,20 +49,20 @@ class ReceivingSupply
         try {
             $sql = "insert into {$this->tblReceiving} ";
             $sql .= "( receiving_date, ";
-            $sql .= "receiving_reference_no, ";
             $sql .= "receiving_is_active, ";
+            $sql .= "receiving_is_new_data, ";
             $sql .= "receiving_datetime, ";
             $sql .= "receiving_created ) values ( ";
             $sql .= ":receiving_date, ";
-            $sql .= ":receiving_reference_no, ";
             $sql .= ":receiving_is_active, ";
+            $sql .= ":receiving_is_new_data, ";
             $sql .= ":receiving_datetime, ";
             $sql .= ":receiving_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_date" => $this->receiving_date,
-                "receiving_reference_no" => $this->receiving_reference_no,
                 "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_new_data" => $this->receiving_is_new_data,
                 "receiving_datetime" => $this->receiving_supply_datetime,
                 "receiving_created" => $this->receiving_supply_created,
             ]);
@@ -111,6 +111,34 @@ class ReceivingSupply
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
                 "receiving_supply_created" => $this->receiving_supply_created,
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all New Receive Supply
+    public function readAllNewReceiveSupply()
+    {
+        try {
+            $sql = "select r.*, ";
+            $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "s.supplier_name, ";
+            $sql .= "p.product_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblReceiving} as r, ";
+            $sql .= "{$this->tblUnit} as u, ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSupplier} as s ";
+            $sql .= "where r.receiving_is_new_data = '1' ";
+            $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
+            $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
+            $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
+            $sql .= "order by receiving_supply_is_active desc ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }
@@ -253,12 +281,9 @@ class ReceivingSupply
     public function checkDateGetLastAid()
     {
         try {
-            $sql = "select receiving_date from {$this->tblReceiving} ";
-            $sql .= "where receiving_date = :receiving_date ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "receiving_date" => "{$this->receiving_date}",
-            ]);
+            $sql = "select * from {$this->tblReceiving} ";
+            $sql .= "where receiving_is_new_data = '1' ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

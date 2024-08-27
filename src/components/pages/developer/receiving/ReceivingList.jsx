@@ -36,6 +36,7 @@ const ReceivingList = ({ setItemEdit }) => {
     React.useState(false);
   const search = React.useRef({ value: "" });
   let counter = 1;
+
   const [
     handleRemove,
     handleEdit,
