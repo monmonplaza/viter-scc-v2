@@ -1,13 +1,8 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
 import { ver } from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
-import NoData from "@/components/partials/icons/Nodata.jsx";
-import ServerError from "@/components/partials/icons/ServerError.jsx";
-import LoaderTable from "@/components/partials/LoaderTable.jsx";
-import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
-import Pill from "@/components/partials/Pill.jsx";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
@@ -16,24 +11,31 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   Archive,
   ArchiveRestore,
-  Search,
+  Package,
   SquarePen,
   Trash,
 } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
+import ModalSupplierProduct from "./ModalSupplierProduct.jsx";
+import LoaderTable from "@/components/partials/LoaderTable.jsx";
+import NoData from "@/components/partials/icons/NoData.jsx";
+import ServerError from "@/components/partials/icons/ServerError.jsx";
+import Pill from "@/components/partials/Pill.jsx";
+import Loadmore from "@/components/partials/Loadmore.jsx";
 
-const CategoryList = ({ setItemEdit }) => {
+const ReceivingList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [row, setRow] = React.useState(null);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
   const [onSearch, setOnSearch] = React.useState(false);
   const [isFilter, setIsFilter] = React.useState(false);
   const [filterData, setFilterData] = React.useState("all");
+  const [showManageSupplierProduct, setShowManageSupplierProduct] =
+    React.useState(false);
   const search = React.useRef({ value: "" });
   let counter = 1;
-  console.log(store.isSearch);
-
   const [
     handleRemove,
     handleEdit,
@@ -55,16 +57,16 @@ const CategoryList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["category", search.current.value, store.isSearch, filterData],
+    queryKey: ["receiving", search.current.value, store.isSearch, filterData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/category/search`, // search endpoint
-        `/${ver}/category/page/${pageParam}`, // list endpoint
+        `/${ver}/receiving/search`, // search endpoint
+        `/${ver}/receiving/page/${pageParam}`, // list endpoint
         store.isSearch, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
-          category_is_active: filterData,
+          receiving_is_active: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -76,6 +78,11 @@ const CategoryList = ({ setItemEdit }) => {
     },
     refetchOnWindowFocus: false,
   });
+
+  const handleManageSupplierProduct = (item) => {
+    setShowManageSupplierProduct(true);
+    setRow(item);
+  };
 
   const handleChangefilterData = (e) => {
     setFilterData(e.target.value);
@@ -132,9 +139,9 @@ const CategoryList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-[40px]">#</th>
                 <th className="w-[90px]">Status</th>
-                <th className="w-[200px]">Name</th>
-
-                <th>Description</th>
+                <th className="">Date</th>
+                <th className="">Reference No.</th>
+                <th className="">Total Amount</th>
               </tr>
             </thead>
 
@@ -165,25 +172,31 @@ const CategoryList = ({ setItemEdit }) => {
                     return (
                       <tr key={key}>
                         <td>{counter++}</td>
-                        <td>{<Pill isActive={item.category_is_active} />}</td>
-
-                        <td>{item.category_name}</td>
-
-                        <td>
-                          <p className="max-w-[500px] truncate mb-0">
-                            {item.category_description}
-                          </p>
-                        </td>
+                        <td>{<Pill isActive={item.receiving_is_active} />}</td>
+                        <td>{item.receiving_date}</td>
+                        <td>{item.receiving_reference_no}</td>
+                        <td></td>
                         <td className="table-action">
                           <ul>
-                            {item.category_is_active === 1 ? (
+                            {item.receiving_is_active === 1 ? (
                               <>
+                                <li>
+                                  <button
+                                    data-tooltip="View"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleManageSupplierProduct(item)
+                                    }
+                                  >
+                                    <Package size={14} />
+                                  </button>
+                                </li>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleEdit(item.category_aid, item)
+                                      handleEdit(item.receiving_aid, item)
                                     }
                                   >
                                     <SquarePen size={14} />
@@ -195,7 +208,7 @@ const CategoryList = ({ setItemEdit }) => {
                                     data-tooltip="Archive"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleArchive(item.category_aid, item)
+                                      handleArchive(item.receiving_aid, item)
                                     }
                                   >
                                     <Archive size={14} />
@@ -209,7 +222,7 @@ const CategoryList = ({ setItemEdit }) => {
                                     data-tooltip="Restore"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(item.category_aid, item)
+                                      handleRestore(item.receiving_aid, item)
                                     }
                                   >
                                     <ArchiveRestore size={14} />
@@ -220,7 +233,7 @@ const CategoryList = ({ setItemEdit }) => {
                                     data-tooltip="Delete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRemove(item.category_aid, item)
+                                      handleRemove(item.receiving_aid, item)
                                     }
                                   >
                                     <Trash size={14} />
@@ -251,19 +264,25 @@ const CategoryList = ({ setItemEdit }) => {
           </div>
         </div>
       </div>
+      {showManageSupplierProduct && (
+        <ModalSupplierProduct
+          setShowManageSupplierProduct={setShowManageSupplierProduct}
+          row={row}
+        />
+      )}
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/category/${aid}`}
-          queryKey="category"
-          item={data.category_name}
+          mysqlApiDelete={`/${ver}/receiving/${aid}`}
+          queryKey="receiving"
+          item={data.receiving_date}
         />
       )}
       {store.isConfirm && (
         <ModalConfirm
-          mysqlApiArchive={`/${ver}/category/active/${aid}`}
-          queryKey="category"
-          item={data.category_name}
+          mysqlApiArchive={`/${ver}/receiving/active/${aid}`}
+          queryKey="receiving"
+          item={data.receiving_date}
           active={isActive}
         />
       )}
@@ -271,4 +290,4 @@ const CategoryList = ({ setItemEdit }) => {
   );
 };
 
-export default CategoryList;
+export default ReceivingList;

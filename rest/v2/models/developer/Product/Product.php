@@ -294,6 +294,7 @@ class Product
         return $query;
     }
 
+
     // update
     public function updateProductSKUByLastInsertedId()
     {

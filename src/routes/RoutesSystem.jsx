@@ -4,7 +4,7 @@ import Customers from "@/components/pages/developer/customers/Customers";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import Product from "@/components/pages/developer/product/Product.jsx";
-import Receiving from "@/components/pages/developer/receiving/Receiving";
+import Receiving from "@/components/pages/developer/receiving/Receiving.jsx";
 import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
 
 export const routesSystem = [

@@ -33,3 +33,18 @@ RewriteRule ^supplier/([0-9]+)$ controllers/developer/supplier/supplier.php?supp
 RewriteRule ^supplier/active/([0-9]+)$ controllers/developer/supplier/active.php?supplierid=$1 [L]
 RewriteRule ^supplier/page/([0-9]+)$ controllers/developer/supplier/page.php?start=$1 [L]
 RewriteRule ^supplier/search$ controllers/developer/supplier/search.php [L]
+
+### RECEIVING ###
+RewriteRule ^receiving$ controllers/developer/receiving/receiving.php [L]
+RewriteRule ^receiving/([0-9]+)$ controllers/developer/receiving/receiving.php?receivingid=$1 [L]
+RewriteRule ^receiving/active/([0-9]+)$ controllers/developer/receiving/active.php?receivingid=$1 [L]
+RewriteRule ^receiving/page/([0-9]+)$ controllers/developer/receiving/page.php?start=$1 [L]
+RewriteRule ^receiving/search$ controllers/developer/receiving/search.php [L]
+RewriteRule ^receiving/read-all-supplier$ controllers/developer/receiving/read-all-supplier.php [L]
+RewriteRule ^receiving/read-all-product$ controllers/developer/receiving/read-all-product.php [L]
+
+
+### RECEIVING SUPPLY ###
+RewriteRule ^receiving-supply$ controllers/developer/receiving-supply/receiving-supply.php [L]
+RewriteRule ^receiving-supply/([0-9]+)$ controllers/developer/receiving-supply/receiving-supply.php?receivingsupplyid=$1 [L]
+

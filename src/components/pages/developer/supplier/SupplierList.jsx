@@ -32,7 +32,7 @@ const SupplierList = ({ setItemEdit }) => {
   const [filterData, setFilterData] = React.useState("all");
   const search = React.useRef({ value: "" });
   let counter = 1;
-
+  console.log(store.isSearch);
   const [
     handleRemove,
     handleEdit,
@@ -59,7 +59,7 @@ const SupplierList = ({ setItemEdit }) => {
       await queryDataInfinite(
         `/${ver}/supplier/search`, // search endpoint
         `/${ver}/supplier/page/${pageParam}`, // list endpoint
-        store.isSearch || isFilter, // search boolean, // search boolean
+        store.isSearch, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
@@ -119,6 +119,7 @@ const SupplierList = ({ setItemEdit }) => {
           isFetching={isFetching}
           setOnSearch={setOnSearch}
           onSearch={onSearch}
+          isFilter={isFilter}
         />
       </div>
       <div className="relative">

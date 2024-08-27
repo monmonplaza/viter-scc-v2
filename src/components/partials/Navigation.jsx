@@ -12,8 +12,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "../helpers/functions-general.jsx";
 import Logo from "./icons/Logo.jsx";
+import { StoreContext } from "../store/StoreContext.jsx";
+import { setIsSearch } from "../store/StoreAction.jsx";
 
 const Navigation = ({ menu }) => {
+  const { dispatch } = React.useContext(StoreContext);
   const links = [
     {
       icon: <LayoutDashboard size={18} />,
@@ -59,6 +62,8 @@ const Navigation = ({ menu }) => {
     },
   ];
 
+  const handleResetSearch = () => dispatch(setIsSearch(false));
+
   return (
     <nav className="py-2 px-4">
       <div className=" flex gap-2 items-center mt-2">
@@ -83,6 +88,7 @@ const Navigation = ({ menu }) => {
               key={key}
             >
               <Link
+                onClick={handleResetSearch}
                 to={`${devNavUrl}/system/${link.slug}`}
                 className={`flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
                   menu === link.slug ? "active" : ""
