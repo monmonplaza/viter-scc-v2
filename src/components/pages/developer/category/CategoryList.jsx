@@ -130,7 +130,7 @@ const CategoryList = ({ setItemEdit }) => {
           <table>
             <thead>
               <tr>
-                <th className="w-[40px]">#</th>
+                <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
 
@@ -164,7 +164,7 @@ const CategoryList = ({ setItemEdit }) => {
                   {page.data.map((item, key) => {
                     return (
                       <tr key={key}>
-                        <td>{counter++}</td>
+                        <td className="w-counter">{counter++}</td>
                         <td>{<Pill isActive={item.category_is_active} />}</td>
 
                         <td>{item.category_name}</td>

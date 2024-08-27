@@ -1,8 +1,13 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
 import { ver } from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
+import NoData from "@/components/partials/icons/NoData.jsx";
+import ServerError from "@/components/partials/icons/ServerError.jsx";
+import LoaderTable from "@/components/partials/LoaderTable.jsx";
+import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
+import Pill from "@/components/partials/Pill.jsx";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
@@ -17,12 +22,10 @@ import {
 } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import ModalSupplierProduct from "./ModalSupplierProduct.jsx";
-import LoaderTable from "@/components/partials/LoaderTable.jsx";
-import NoData from "@/components/partials/icons/NoData.jsx";
-import ServerError from "@/components/partials/icons/ServerError.jsx";
-import Pill from "@/components/partials/Pill.jsx";
-import Loadmore from "@/components/partials/Loadmore.jsx";
+import {
+  default as ModalAddSupplierProduct,
+  default as ModalSupplierProduct,
+} from "./ModalAddSupplierProduct.jsx";
 
 const ReceivingList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -137,7 +140,7 @@ const ReceivingList = ({ setItemEdit }) => {
           <table>
             <thead>
               <tr>
-                <th className="w-[40px]">#</th>
+                <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
@@ -171,7 +174,7 @@ const ReceivingList = ({ setItemEdit }) => {
                   {page.data.map((item, key) => {
                     return (
                       <tr key={key}>
-                        <td>{counter++}</td>
+                        <td className="w-counter">{counter++}</td>
                         <td>{<Pill isActive={item.receiving_is_active} />}</td>
                         <td>{item.receiving_date}</td>
                         <td>{item.receiving_reference_no}</td>
@@ -264,12 +267,7 @@ const ReceivingList = ({ setItemEdit }) => {
           </div>
         </div>
       </div>
-      {showManageSupplierProduct && (
-        <ModalSupplierProduct
-          setShowManageSupplierProduct={setShowManageSupplierProduct}
-          row={row}
-        />
-      )}
+      {store.isAdd && <ModalAddSupplierProduct />}
 
       {store.isDelete && (
         <ModalDelete

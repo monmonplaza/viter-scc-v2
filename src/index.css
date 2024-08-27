@@ -160,7 +160,7 @@
   input,
   select,
   textarea {
-    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs bg-primary disabled:cursor-not-allowed disabled:opacity-50
+    @apply p-2 border border-line rounded-md w-full focus:outline-none text-xs bg-primary disabled:cursor-not-allowed disabled:opacity-50;
   }
   textarea {
     @apply resize-none min-h-[150px] overflow-y-auto mb-0;
@@ -296,6 +296,9 @@
 @layer utilities {
   .center-all {
     @apply flex items-center justify-center;
+  }
+  .w-counter {
+    @apply w-[30px] text-center;
   }
 }
 

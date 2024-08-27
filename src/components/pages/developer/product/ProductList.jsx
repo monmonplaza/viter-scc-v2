@@ -130,7 +130,7 @@ const ProductList = ({ setItemEdit }) => {
           <table>
             <thead>
               <tr>
-                <th className="w-[40px]">#</th>
+                <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
                 <th className="w-[200px]">Category</th>
@@ -167,7 +167,7 @@ const ProductList = ({ setItemEdit }) => {
                   {page.data.map((item, key) => {
                     return (
                       <tr key={key}>
-                        <td>{counter++}</td>
+                        <td className="w-counter">{counter++}</td>
                         <td>{<Pill isActive={item.product_is_active} />}</td>
 
                         <td>{item.product_name}</td>

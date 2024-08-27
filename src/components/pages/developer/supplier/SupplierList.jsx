@@ -129,7 +129,7 @@ const SupplierList = ({ setItemEdit }) => {
           <table>
             <thead>
               <tr>
-                <th className="w-[40px]">#</th>
+                <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
                 <th>Phone</th>
