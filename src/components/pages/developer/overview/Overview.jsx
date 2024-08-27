@@ -9,7 +9,7 @@ const Overview = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside className="min-w-[250px] border-r border-line min-h-[100dvh] sticky top-0 bg-light">
+        <aside>
           <Navigation menu="overview" />
         </aside>
         <main className="w-full ">
@@ -22,9 +22,9 @@ const Overview = () => {
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Overview</h1>
 
-                <button className="btn btn-accent h-[34px] ">
+                {/* <button className="btn btn-accent h-[34px] ">
                   <Plus size={20} className="!stroke-[2px]" /> Add
-                </button>
+                </button> */}
               </div>
             </div>
 

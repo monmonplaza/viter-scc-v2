@@ -23,7 +23,7 @@ const Supplier = () => {
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
         <aside>
-          <Navigation menu="supplier" />
+          <Navigation menu="suppliers" />
         </aside>
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
@@ -33,7 +33,7 @@ const Supplier = () => {
               <Breadcrumbs />
 
               <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">Supplier</h1>
+                <h1 className="mb-0">Suppliers</h1>
                 <div>
                   <button
                     className="btn btn-accent h-[34px]"
