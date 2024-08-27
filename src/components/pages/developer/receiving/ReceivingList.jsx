@@ -22,10 +22,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import {
-  default as ModalAddSupplierProduct,
-  default as ModalSupplierProduct,
-} from "./ModalAddSupplierProduct.jsx";
+import { default as ModalAddSupplierProduct } from "./ModalAddSupplierProduct.jsx";
 
 const ReceivingList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);

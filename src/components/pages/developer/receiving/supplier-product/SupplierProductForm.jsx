@@ -64,10 +64,10 @@ const SupplierProductForm = ({ itemEdit, setIsAdd, row }) => {
     ? { ...itemEdit }
     : {
         receiving_supply_aid: "",
-        receiving_supply_id: row.receiving_aid,
+        receiving_supply_received_id: row.receiving_aid,
         receiving_supply_supplier_id: "",
         receiving_supply_product_id: "",
-        receiving_supply_unit: "",
+        receiving_supply_unit_id: "",
         receiving_supply_quantity: 0,
         receiving_supply_price: 0,
         receiving_supply_amount: "",
@@ -76,7 +76,7 @@ const SupplierProductForm = ({ itemEdit, setIsAdd, row }) => {
   const yupSchema = Yup.object({
     receiving_supply_product_id: Yup.string().required("Require"),
     receiving_supply_supplier_id: Yup.string().required("Require"),
-    receiving_supply_unit: Yup.string().required("Require"),
+    receiving_supply_unit_id: Yup.string().required("Require"),
     receiving_supply_quantity: Yup.string().required("Require"),
     receiving_supply_price: Yup.string().required("Require"),
   });
@@ -201,7 +201,7 @@ const SupplierProductForm = ({ itemEdit, setIsAdd, row }) => {
                     </InputSelect>
                   </div>
                   <div className="input-wrap">
-                    <InputSelect label="Unit" name="receiving_supply_unit">
+                    <InputSelect label="Unit" name="receiving_supply_unit_id">
                       <optgroup label="Select Unit">
                         <option value="" hidden></option>
                         <option value="per piece">Per Piece</option>

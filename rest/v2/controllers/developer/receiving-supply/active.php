@@ -2,6 +2,7 @@
 
 require '../../../core/header.php';
 require '../../../core/functions.php';
+require 'functions.php';
 require '../../../models/developer/receiving-supply/ReceivingSupply.php';
 $conn = null;
 $conn = checkDbConnection();

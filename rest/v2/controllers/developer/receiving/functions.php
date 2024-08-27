@@ -16,3 +16,11 @@ function checkReadAllProduct($object)
     checkQuery($query, "Empty records. (read all product)");
     return $query;
 }
+
+// Read all unit
+function checkReadAllUnit($object)
+{
+    $query = $object->readAllUnit();
+    checkQuery($query, "Empty records. (read all unit)");
+    return $query;
+}

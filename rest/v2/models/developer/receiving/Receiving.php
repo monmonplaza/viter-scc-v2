@@ -5,7 +5,6 @@ class Receiving
     public $receiving_date;
     public $receiving_reference_no;
     public $receiving_total_amount;
-
     public $receiving_is_active;
     public $receiving_datetime;
     public $receiving_created;
@@ -13,13 +12,15 @@ class Receiving
     public $connection;
     public $lastInsertedId;
 
-    public $tblReceiving;
-    public $tblSupplier;
-    public $tblProduct;
-
     public $receiving_start;
     public $receiving_total;
     public $receiving_search;
+
+    public $tblReceiving;
+    public $tblSupplier;
+    public $tblProduct;
+    public $tblUnit;
+
 
     public function __construct($db)
     {
@@ -27,6 +28,7 @@ class Receiving
         $this->tblReceiving = "sccv2_receiving";
         $this->tblSupplier = "sccv2_supplier";
         $this->tblProduct = "sccv2_product";
+        $this->tblUnit = "sccv2_settings_unit";
     }
 
     // create
@@ -259,6 +261,23 @@ class Receiving
             $sql = "select * from {$this->tblProduct} ";
             $sql .= "order by product_is_active desc, ";
             $sql .= "product_name asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // read all
+    public function readAllUnit()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "* ";
+            $sql .= "from ";
+            $sql .= "{$this->tblUnit} ";
+            $sql .= "order by settings_unit_is_active desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

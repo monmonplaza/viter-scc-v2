@@ -1,6 +1,7 @@
 import { useField } from "formik";
 import { Check } from "lucide-react";
 import React from "react";
+import { NumericFormat } from "react-number-format";
 
 export const InputTextArea = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -26,8 +27,40 @@ export const InputTextArea = ({ label, ...props }) => {
   );
 };
 
-export const InputText = ({ label, ...props }) => {
+export const InputText = ({
+  label,
+  className = "",
+  onChange = null,
+  refVal = null,
+  ...props
+}) => {
   const [field, meta] = useField(props);
+
+  if (props.number === "number") {
+    return (
+      <>
+        <label htmlFor={props.id || props.name}>{label}</label>
+        <NumericFormat
+          {...field}
+          {...props}
+          allowLeadingZeros
+          autoComplete="off"
+          className={`${
+            meta.touched && meta.error ? "error-show" : null
+          }  ${className}`}
+          onChange={(e) => {
+            onChange !== null && onChange(e);
+            field.onChange(e);
+          }}
+        />
+
+        {meta.touched && meta.error ? (
+          <span className={`error-show ${top}`}>{meta.error}</span>
+        ) : null}
+      </>
+    );
+  }
+
   return (
     <>
       <label
@@ -39,8 +72,17 @@ export const InputText = ({ label, ...props }) => {
       <input
         {...field}
         {...props}
-        className={meta.touched && meta.error ? "error-show" : null}
+        className={
+          meta.touched && meta.error
+            ? `error-show ${className}`
+            : `${className}`
+        }
+        ref={refVal}
         autoComplete="off"
+        onChange={(e) => {
+          onChange !== null && onChange(e);
+          field.onChange(e);
+        }}
       />
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>

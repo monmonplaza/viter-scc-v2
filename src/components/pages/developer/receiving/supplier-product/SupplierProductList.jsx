@@ -99,7 +99,7 @@ const SupplierProductList = ({ setIsAdd, setItemEdit, row }) => {
                     <td>{item.product_name}</td>
                     <td>{item.receiving_supply_quantity}</td>
                     <td>{item.receiving_supply_price}</td>
-                    <td>{item.receiving_supply_unit}</td>
+                    <td>{item.receiving_supply_unit_id}</td>
                     <td>{item.receiving_supply_amount}</td>
                     <td className="table-action">
                       <ul>

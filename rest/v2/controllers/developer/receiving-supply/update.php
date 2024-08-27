@@ -8,10 +8,10 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
     checkPayload($data);
 
     $receiving_supply->receiving_supply_aid = $_GET['receivingsupplyid'];
-    $receiving_supply->receiving_supply_id = checkIndex($data, "receiving_supply_id");
+    $receiving_supply->receiving_supply_received_id = checkIndex($data, "receiving_supply_received_id");
     $receiving_supply->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
     $receiving_supply->receiving_supply_supplier_id = checkIndex($data, "receiving_supply_supplier_id");
-    $receiving_supply->receiving_supply_unit = checkIndex($data, "receiving_supply_unit");
+    $receiving_supply->receiving_supply_unit_id = checkIndex($data, "receiving_supply_unit_id");
     $receiving_supply->receiving_supply_quantity = checkIndex($data, "receiving_supply_quantity");
     $receiving_supply->receiving_supply_price = checkIndex($data, "receiving_supply_price");
     $receiving_supply->receiving_supply_amount = checkIndex($data, "receiving_supply_amount");

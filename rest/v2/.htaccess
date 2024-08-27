@@ -42,9 +42,15 @@ RewriteRule ^receiving/page/([0-9]+)$ controllers/developer/receiving/page.php?s
 RewriteRule ^receiving/search$ controllers/developer/receiving/search.php [L]
 RewriteRule ^receiving/read-all-supplier$ controllers/developer/receiving/read-all-supplier.php [L]
 RewriteRule ^receiving/read-all-product$ controllers/developer/receiving/read-all-product.php [L]
+RewriteRule ^receiving/read-all-unit$ controllers/developer/receiving/read-all-unit.php [L]
 
 
 ### RECEIVING SUPPLY ###
 RewriteRule ^receiving-supply$ controllers/developer/receiving-supply/receiving-supply.php [L]
 RewriteRule ^receiving-supply/([0-9]+)$ controllers/developer/receiving-supply/receiving-supply.php?receivingsupplyid=$1 [L]
 
+### RECEIVING SUPPLY ###
+RewriteRule ^settings-unit$ controllers/developer/settings/unit/unit.php [L]
+RewriteRule ^settings-unit/([0-9]+)$ controllers/developer/settings/unit/unit.php?unitid=$1 [L]
+RewriteRule ^settings-unit/active/([0-9]+)$ controllers/developer/settings/unit/active.php?unitid=$1 [L]
+ 

@@ -131,15 +131,18 @@
     @apply whitespace-nowrap text-body;
   }
 
-  table tbody tr .table-action ul {
+  table tbody tr .table-action ul,
+  ul li .table-action {
     @apply flex gap-3 -translate-y-0.5;
   }
 
-  table tbody tr:hover .table-action {
+  table tbody tr:hover .table-action,
+  ul li:hover .table-action {
     @apply block;
   }
 
-  table tbody tr .table-action {
+  table tbody tr .table-action,
+  ul li .table-action {
     @apply absolute right-0 top-0 h-[26px] pl-6  after:absolute after:top-0.5 after:left-0.5  after:content-['...'] after:text-xl bg-primary z-30 hidden;
   }
 

@@ -4,6 +4,7 @@ import {
   ClipboardList,
   Group,
   LayoutDashboard,
+  List,
   PillBottle,
   Settings,
   Users,
@@ -15,7 +16,7 @@ import Logo from "./icons/Logo.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 import { setIsSearch } from "../store/StoreAction.jsx";
 
-const Navigation = ({ menu }) => {
+const Navigation = ({ menu, submenu }) => {
   const { dispatch } = React.useContext(StoreContext);
   const links = [
     {
@@ -62,6 +63,14 @@ const Navigation = ({ menu }) => {
     },
   ];
 
+  const subLinks = [
+    {
+      icon: <List size={18} />,
+      text: "Unit",
+      slug: "unit",
+    },
+  ];
+
   const handleResetSearch = () => dispatch(setIsSearch(false));
 
   return (
@@ -80,26 +89,49 @@ const Navigation = ({ menu }) => {
         </div>
       </div>
 
-      <ul className="mt-10">
+      <div className="mt-10">
         {links.map((link, key) => {
           return (
-            <li
-              className="nav-link mb-2 opacity-60 hover:opacity-100"
-              key={key}
-            >
-              <Link
-                onClick={handleResetSearch}
-                to={`${devNavUrl}/system/${link.slug}`}
-                className={`flex gap-4 text-sm  items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
-                  menu === link.slug ? "active" : ""
-                }`}
-              >
-                {link.icon} {link.text}
-              </Link>
-            </li>
+            <ul key={key}>
+              <li className="nav-link mb-2 opacity-60 hover:opacity-100">
+                <Link
+                  onClick={handleResetSearch}
+                  to={`${devNavUrl}/system/${link.slug}`}
+                  className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
+                    link.slug !== "settings"
+                      ? menu === link.slug
+                        ? "active"
+                        : ""
+                      : menu === "settings" && "bg-secondary text-dark"
+                  }`}
+                >
+                  {link.icon} {link.text}
+                </Link>
+              </li>
+
+              {link.slug === "settings" &&
+                subLinks.map((link, key) => {
+                  return (
+                    <li
+                      className="nav-link mb-2 opacity-60 hover:opacity-100 ml-5"
+                      key={key}
+                    >
+                      <Link
+                        onClick={handleResetSearch}
+                        to={`${devNavUrl}/system/${link.slug}`}
+                        className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
+                          submenu === link.slug ? "active" : ""
+                        }`}
+                      >
+                        {link.icon} {link.text}
+                      </Link>
+                    </li>
+                  );
+                })}
+            </ul>
           );
         })}
-      </ul>
+      </div>
     </nav>
   );
 };
