@@ -60,7 +60,7 @@ const SupplierProductList = ({ setIsAdd, setItemEdit, row }) => {
         <table>
           <thead>
             <tr>
-              <th>#</th>
+              <th className="w-counter">#</th>
               <th>Supplier</th>
               <th>Product</th>
               <th>Quantity</th>
@@ -94,7 +94,7 @@ const SupplierProductList = ({ setIsAdd, setItemEdit, row }) => {
               data.data.map((item, key) => {
                 return (
                   <tr key={key}>
-                    <td>{counter++}</td>
+                    <td className="w-counter">{counter++}</td>
                     <td>{item.supplier_name}</td>
                     <td>{item.product_name}</td>
                     <td>{item.receiving_supply_quantity}</td>
