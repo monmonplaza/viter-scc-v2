@@ -23,7 +23,7 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
 
     $receiving_supply->receiving_aid = checkIndex($data, "receiving_supply_received_id");
     $receiving_supply->receiving_date = checkIndex($data, "receiving_date");
-    $receiving_supply->receiving_is_active = 1;
+    $receiving_supply->receiving_is_complete = 0;
     $receiving_supply->receiving_datetime = date("Y-m-d H:i:s");
 
     $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;

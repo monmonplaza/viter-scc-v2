@@ -353,7 +353,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                   <thead className="relative">
                     <tr className="sticky top-0 bg-inherit">
                       <th>#</th>
-                      <th>Status</th>
+                      {/* <th>Status</th> */}
                       <th>Supplier</th>
                       <th>Product</th>
                       <th>Barcode</th>
@@ -390,9 +390,9 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       return (
                         <tr key={key}>
                           <td className="w-counter">{counter++}.</td>
-                          <td>
+                          {/* <td>
                             <Pill isActive={item.receiving_supply_is_active} />
-                          </td>
+                          </td> */}
                           <td>{item.supplier_name}</td>
 
                           <td>{item.product_name}</td>
@@ -417,14 +417,14 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             )}
                           </td>
 
-                          <td className="table-action">
+                          <td className="table-action ">
                             <ul>
                               {item.receiving_supply_is_active === 1 ? (
                                 <>
-                                  <li>
+                                  <li className="!overflow-visible">
                                     <button
                                       data-tooltip="Edit"
-                                      className="tooltip"
+                                      className="tooltip "
                                       onClick={() =>
                                         handleEditSupplier({
                                           ...item,
@@ -440,8 +440,22 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                                   </li>
                                   <li>
                                     <button
-                                      data-tooltip="Archive"
+                                      data-tooltip="Delete"
                                       className="tooltip"
+                                      onClick={() =>
+                                        handleRemove(
+                                          item.receiving_supply_aid,
+                                          item
+                                        )
+                                      }
+                                    >
+                                      <Trash size={14} />
+                                    </button>
+                                  </li>
+                                  {/* <li>
+                                    <button
+                                      data-tooltip="Archive"
+                                      className="tooltip "
                                       onClick={() =>
                                         handleArchive(
                                           item.receiving_supply_aid,
@@ -451,7 +465,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                                     >
                                       <Archive size={14} />
                                     </button>
-                                  </li>
+                                  </li> */}
                                 </>
                               ) : (
                                 <>

@@ -8,8 +8,9 @@ const Loadmore = ({
   setPage,
   page,
   refView,
+  isSearchOrFilter,
 }) => {
-  if (page === result?.total_pages) {
+  if (page === result?.total_pages && !isSearchOrFilter) {
     return (
       <>
         {isFetchingNextPage ? (
@@ -26,12 +27,12 @@ const Loadmore = ({
       </>
     );
   }
-  if (!hasNextPage) {
+  if (!hasNextPage && !isSearchOrFilter) {
     return (
       <div className="my-3 mb-1 p-1.5 text-xs opacity-60">End of list.</div>
     );
   }
-  if (hasNextPage) {
+  if (hasNextPage && !isSearchOrFilter) {
     return (
       <button
         ref={refView}

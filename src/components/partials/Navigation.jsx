@@ -7,6 +7,7 @@ import {
   List,
   PillBottle,
   Settings,
+  TicketX,
   Users,
 } from "lucide-react";
 import React from "react";
@@ -36,6 +37,11 @@ const Navigation = ({ menu, submenu }) => {
       slug: "receiving",
     },
 
+    {
+      icon: <TicketX size={18} />,
+      text: "Defective Product",
+      slug: "defective-product",
+    },
     {
       icon: <Barcode size={18} />,
       text: "Products",

@@ -32,7 +32,7 @@ CREATE TABLE `sccv2_receiving` (
   `receiving_date` varchar(20) NOT NULL,
   `receiving_reference_no` varchar(50) NOT NULL,
   `receiving_total_amount` varchar(20) NOT NULL,
-  `receiving_is_active` tinyint(1) NOT NULL,
+  `receiving_is_complete` tinyint(1) NOT NULL,
   `receiving_is_new_data` tinyint(1) NOT NULL,
   `receiving_datetime` varchar(20) NOT NULL,
   `receiving_created` varchar(20) NOT NULL

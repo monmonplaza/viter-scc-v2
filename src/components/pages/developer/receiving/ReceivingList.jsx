@@ -12,32 +12,21 @@ import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
-import Pill from "@/components/partials/Pill";
-import SearchBar from "@/components/partials/SearchBar.jsx";
+import PillStatus from "@/components/partials/PillStatus";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
-import { setIsSearch } from "@/components/store/StoreAction.jsx";
+import { setIsSearch } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import {
-  Archive,
-  ArchiveRestore,
-  Package,
-  SquarePen,
-  Trash,
-} from "lucide-react";
+import { ArchiveRestore, SquarePen, Trash } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
-const ReceivingList = ({ setItemEdit }) => {
+const ReceivingList = ({ setItemEdit, setIsView }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [row, setRow] = React.useState(null);
+  const [filterDate, setFilterDate] = React.useState("");
+  const [isFilter, setIsFilter] = React.useState(false);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
-  const [onSearch, setOnSearch] = React.useState(false);
-  const [isFilter, setIsFilter] = React.useState(false);
-  const [filterData, setFilterData] = React.useState("all");
-  const [showManageSupplierProduct, setShowManageSupplierProduct] =
-    React.useState(false);
   const search = React.useRef({ value: "" });
   let counter = 1;
 
@@ -62,7 +51,7 @@ const ReceivingList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["receiving", search.current.value, store.isSearch, filterData],
+    queryKey: ["receiving", search.current.value, store.isSearch, filterDate],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         `/${ver}/receiving/search`, // search endpoint
@@ -71,7 +60,7 @@ const ReceivingList = ({ setItemEdit }) => {
         {
           aid: "",
           isFilter,
-          receiving_is_active: filterData,
+          filterDate,
           searchValue: search?.current?.value,
         }
       ),
@@ -84,20 +73,27 @@ const ReceivingList = ({ setItemEdit }) => {
     refetchOnWindowFocus: false,
   });
 
-  const handleManageSupplierProduct = (item) => {
-    setShowManageSupplierProduct(true);
-    setRow(item);
+  const handleFilterDate = (e) => {
+    setFilterDate(e.target.value);
+    setIsFilter(true);
+    dispatch(setIsSearch(true));
+    search.current.value = "";
+    if (e.target.value === "") {
+      setFilterDate("");
+      setIsFilter(false);
+      dispatch(setIsSearch(false));
+    }
+    setPage(1);
   };
 
-  const handleChangefilterData = (e) => {
-    setFilterData(e.target.value);
+  const handleView = (item) => {
+    setIsView(true);
+    setItemEdit(item);
+  };
+  const handleClear = () => {
+    setFilterDate("");
     setIsFilter(false);
     dispatch(setIsSearch(false));
-    search.current.value = "";
-    if (e.target.value !== "all") {
-      setIsFilter(true);
-      dispatch(setIsSearch(true));
-    }
     setPage(1);
   };
 
@@ -110,30 +106,23 @@ const ReceivingList = ({ setItemEdit }) => {
 
   return (
     <>
-      <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-1">
+      <div className="table-filter flex flex-col md:flex-row items-end gap-4 mb-1 ">
         <div className="input-wrap filter w-full md:w-auto">
-          <select
-            name=""
-            id=""
-            value={filterData}
-            onChange={(e) => handleChangefilterData(e)}
-          >
-            <option value="all">All</option>
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-          </select>
+          <label>Filter</label>
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => handleFilterDate(e)}
+          />
         </div>
-
-        <SearchBar
-          search={search}
-          dispatch={dispatch}
-          store={store}
-          result={result?.pages}
-          isFetching={isFetching}
-          setOnSearch={setOnSearch}
-          onSearch={onSearch}
-          isFilter={isFilter}
-        />
+        {filterDate !== "" && (
+          <p
+            className="hover:underline text-accent cursor-pointer"
+            onClick={handleClear}
+          >
+            Clear
+          </p>
+        )}
       </div>
       <div className="relative">
         {status !== "loading" && isFetching && <SpinnerTable />}
@@ -177,7 +166,9 @@ const ReceivingList = ({ setItemEdit }) => {
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}</td>
-                        {/* <td>{<Pill isActive={item.receiving_is_active} />}</td> */}
+                        <td>
+                          {<PillStatus isActive={item.receiving_is_complete} />}
+                        </td>
                         <td>{formatDate(item.receiving_date)}</td>
                         <td>{item.receiving_reference_no}</td>
                         <td>
@@ -186,19 +177,8 @@ const ReceivingList = ({ setItemEdit }) => {
                         </td>
                         <td className="table-action">
                           <ul>
-                            {item.receiving_is_active === 1 ? (
+                            {item.receiving_is_complete === 0 ? (
                               <>
-                                <li>
-                                  <button
-                                    data-tooltip="View"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleManageSupplierProduct(item)
-                                    }
-                                  >
-                                    <Package size={14} />
-                                  </button>
-                                </li>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
@@ -221,29 +201,49 @@ const ReceivingList = ({ setItemEdit }) => {
                                     <Trash size={14} />
                                   </button>
                                 </li>
-                                {/* <li>
-                                  <button
-                                    data-tooltip="Archive"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleArchive(item.receiving_aid, item)
-                                    }
-                                  >
-                                    <Archive size={14} />
-                                  </button>
-                                </li> */}
-                              </>
-                            ) : (
-                              <>
                                 <li>
                                   <button
-                                    data-tooltip="Restore"
+                                    data-tooltip="Complete"
                                     className="tooltip"
                                     onClick={() =>
                                       handleRestore(item.receiving_aid, item)
                                     }
                                   >
                                     <ArchiveRestore size={14} />
+                                  </button>
+                                </li>
+                              </>
+                            ) : (
+                              <>
+                                <li>
+                                  <button
+                                    data-tooltip="View"
+                                    className="tooltip"
+                                    onClick={() => handleView(item)}
+                                  >
+                                    <SquarePen size={14} />
+                                  </button>
+                                </li>
+                                {/* <li>
+                                  <button
+                                    data-tooltip="Edit"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleEdit(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <SquarePen size={14} />
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    data-tooltip="Restore"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleArchive(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <Archive size={14} />
                                   </button>
                                 </li>
                                 <li>
@@ -256,7 +256,7 @@ const ReceivingList = ({ setItemEdit }) => {
                                   >
                                     <Trash size={14} />
                                   </button>
-                                </li>
+                                </li> */}
                               </>
                             )}
                           </ul>

@@ -82,7 +82,7 @@ CREATE TABLE `sccv2_receiving` (
   `receiving_date` varchar(20) NOT NULL,
   `receiving_reference_no` varchar(50) NOT NULL,
   `receiving_total_amount` varchar(20) NOT NULL,
-  `receiving_is_active` tinyint(1) NOT NULL,
+  `receiving_is_complete` tinyint(1) NOT NULL,
   `receiving_is_new_data` tinyint(1) NOT NULL,
   `receiving_datetime` varchar(20) NOT NULL,
   `receiving_created` varchar(20) NOT NULL
@@ -92,7 +92,7 @@ CREATE TABLE `sccv2_receiving` (
 -- Dumping data for table `sccv2_receiving`
 --
 
-INSERT INTO `sccv2_receiving` (`receiving_aid`, `receiving_date`, `receiving_reference_no`, `receiving_total_amount`, `receiving_is_active`, `receiving_is_new_data`, `receiving_datetime`, `receiving_created`) VALUES
+INSERT INTO `sccv2_receiving` (`receiving_aid`, `receiving_date`, `receiving_reference_no`, `receiving_total_amount`, `receiving_is_complete`, `receiving_is_new_data`, `receiving_datetime`, `receiving_created`) VALUES
 (1, '2024-08-26', '2861-416-716', '4240', 1, 0, '2024-08-28 10:02:48', '2024-08-28 08:49:07'),
 (2, '2024-08-02', '7830-623-942', '', 1, 0, '2024-08-28 09:54:53', '2024-08-28 09:54:53'),
 (3, '2024-08-03', '2419-935-988', '600', 1, 0, '2024-08-28 10:00:40', '2024-08-28 09:57:57'),

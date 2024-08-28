@@ -25,6 +25,14 @@ function checkReadAllUnit($object)
     return $query;
 }
 
+// Read all unit
+function checkFilterByDate($object)
+{
+    $query = $object->filterByDate();
+    checkQuery($query, "Empty records. (filter by date)");
+    return $query;
+}
+
 // Update receiving reference no.
 function checkUpdateAllNewData($object)
 {

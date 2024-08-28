@@ -34,7 +34,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $receiving_supply->receiving_supply_created = date("Y-m-d H:i:s");
         $receiving_supply->receiving_supply_datetime = date("Y-m-d H:i:s");
 
-        $receiving_supply->receiving_is_active = 1;
+        $receiving_supply->receiving_is_complete = 0;
         $receiving_supply->receiving_datetime = date("Y-m-d H:i:s");
 
         $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;

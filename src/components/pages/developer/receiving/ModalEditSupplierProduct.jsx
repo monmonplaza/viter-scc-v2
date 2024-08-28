@@ -281,7 +281,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                         Save
                       </button>
                       <button
-                        className="btn btn-accent"
+                        className="btn btn-discard "
                         type="button"
                         onClick={handleClose}
                       >

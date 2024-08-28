@@ -1,6 +1,7 @@
 import { devNavUrl } from "@/components/helpers/functions-general";
 import Category from "@/components/pages/developer/category/Category.jsx";
 import Customers from "@/components/pages/developer/customers/Customers";
+import DefectiveProduct from "@/components/pages/developer/defective-product/DefectiveProduct";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import Product from "@/components/pages/developer/product/Product.jsx";
@@ -21,6 +22,10 @@ export const routesSystem = [
   {
     path: `${devNavUrl}/system/receiving`,
     element: <Receiving />,
+  },
+  {
+    path: `${devNavUrl}/system/defective-product`,
+    element: <DefectiveProduct />,
   },
   {
     path: `${devNavUrl}/system/products`,

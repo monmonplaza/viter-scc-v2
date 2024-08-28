@@ -5,7 +5,7 @@ class Receiving
     public $receiving_date;
     public $receiving_reference_no;
     public $receiving_total_amount;
-    public $receiving_is_active;
+    public $receiving_is_complete;
     public $receiving_datetime;
     public $receiving_created;
 
@@ -40,19 +40,19 @@ class Receiving
             $sql = "insert into {$this->tblReceiving} ";
             $sql .= "( receiving_date, ";
             $sql .= "receiving_reference_no, ";
-            $sql .= "receiving_is_active, ";
+            $sql .= "receiving_is_complete, ";
             $sql .= "receiving_datetime, ";
             $sql .= "receiving_created ) values ( ";
             $sql .= ":receiving_date, ";
             $sql .= ":receiving_reference_no, ";
-            $sql .= ":receiving_is_active, ";
+            $sql .= ":receiving_is_complete, ";
             $sql .= ":receiving_datetime, ";
             $sql .= ":receiving_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_date" => $this->receiving_date,
                 "receiving_reference_no" => $this->receiving_reference_no,
-                "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_complete" => $this->receiving_is_complete,
                 "receiving_datetime" => $this->receiving_datetime,
                 "receiving_created" => $this->receiving_created,
             ]);
@@ -68,7 +68,7 @@ class Receiving
     {
         try {
             $sql = "select * from {$this->tblReceiving} ";
-            $sql .= "order by receiving_is_active desc, ";
+            $sql .= "order by receiving_is_complete desc, ";
             $sql .= "DATE(receiving_date) desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -82,7 +82,7 @@ class Receiving
     {
         try {
             $sql = "select * from {$this->tblReceiving} ";
-            $sql .= "order by receiving_is_active desc, ";
+            $sql .= "order by receiving_is_complete desc, ";
             $sql .= "DATE(receiving_date) desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -106,7 +106,7 @@ class Receiving
             $sql .= "or MONTHNAME(receiving_date) like :monthName ";
             $sql .= "or receiving_reference_no like :receiving_reference_no ";
             $sql .= ") ";
-            $sql .= "order by receiving_is_active desc, ";
+            $sql .= "order by receiving_is_complete desc, ";
             $sql .= "DATE(receiving_date) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -126,7 +126,7 @@ class Receiving
         try {
             $sql = "select * from {$this->tblReceiving} ";
             $sql .= "where receiving_aid  = :receiving_aid ";
-            $sql .= "order by receiving_is_active desc ";
+            $sql .= "order by receiving_is_complete desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_aid " => $this->receiving_aid,
@@ -161,12 +161,12 @@ class Receiving
     {
         try {
             $sql = "update {$this->tblReceiving} set ";
-            $sql .= "receiving_is_active = :receiving_is_active, ";
+            $sql .= "receiving_is_complete = :receiving_is_complete, ";
             $sql .= "receiving_datetime = :receiving_datetime ";
             $sql .= "where receiving_aid = :receiving_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_complete" => $this->receiving_is_complete,
                 "receiving_datetime" => $this->receiving_datetime,
                 "receiving_aid" => $this->receiving_aid,
             ]);
@@ -208,16 +208,34 @@ class Receiving
     }
 
 
+    public function filterByDate()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblReceiving} ";
+            $sql .= "where DATE(receiving_date) = DATE(:receiving_date) ";
+            $sql .= "order by receiving_is_complete desc, ";
+            $sql .= "DATE(receiving_date) desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_date" => $this->receiving_date,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     public function filterByStatus()
     {
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblReceiving} ";
-            $sql .= "where receiving_is_active = :receiving_is_active  ";
-            $sql .= "order by receiving_is_active desc ";
+            $sql .= "where receiving_is_complete = :receiving_is_complete  ";
+            $sql .= "order by receiving_is_complete desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_complete" => $this->receiving_is_complete,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -231,19 +249,19 @@ class Receiving
             $sql = "select * ";
             $sql .= "from {$this->tblReceiving} ";
             $sql .= "where ";
-            $sql .= "receiving_is_active = :receiving_is_active ";
+            $sql .= "receiving_is_complete = :receiving_is_complete ";
             $sql .= "and (receiving_date like :receiving_date ";
             $sql .= "or MONTHNAME(receiving_date) like :monthName ";
             $sql .= "or receiving_reference_no like :receiving_reference_no ";
             $sql .= ") ";
-            $sql .= "order by receiving_is_active desc, ";
+            $sql .= "order by receiving_is_complete desc, ";
             $sql .= "DATE(receiving_date) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_date" => "%{$this->receiving_search}%",
                 "monthName" => "%{$this->receiving_search}%",
                 "receiving_reference_no" => "%{$this->receiving_search}%",
-                "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_complete" => $this->receiving_is_complete,
             ]);
         } catch (PDOException $ex) {
             $query = false;

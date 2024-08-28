@@ -13,7 +13,7 @@ checkPayload($data);
 $receiving->receiving_date = checkIndex($data, "receiving_date");
 $receiving->receiving_reference_no = checkIndex($data, "receiving_reference_no");
 
-$receiving->receiving_is_active = 1;
+$receiving->receiving_is_complete = 0;
 $receiving->receiving_created = date("Y-m-d H:i:s");
 $receiving->receiving_datetime = date("Y-m-d H:i:s");
 

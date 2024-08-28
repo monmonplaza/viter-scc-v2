@@ -9,11 +9,13 @@ import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
 import React from "react";
 import ModalAddSupplierProduct from "./ModalAddSupplierProduct.jsx";
+import ModalViewSupplierProduct from "./ModalViewSupplierProduct.jsx";
 import ReceivingList from "./ReceivingList.jsx";
 
 const Receiving = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
+  const [isView, setIsView] = React.useState(false);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -44,13 +46,16 @@ const Receiving = () => {
                   </button>
                 </div>
               </div>
-              <ReceivingList setItemEdit={setItemEdit} />
+              <ReceivingList setItemEdit={setItemEdit} setIsView={setIsView} />
             </div>
             <Footer />
           </div>
         </main>
       </div>
       {store.isAdd && <ModalAddSupplierProduct itemEdit={itemEdit} />}
+      {isView && (
+        <ModalViewSupplierProduct itemEdit={itemEdit} setIsView={setIsView} />
+      )}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}

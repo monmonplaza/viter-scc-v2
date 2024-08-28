@@ -18,7 +18,7 @@ class ReceivingSupply
     public $receiving_is_new_data;
     public $receiving_supply_received_id;
     public $receiving_date;
-    public $receiving_is_active;
+    public $receiving_is_complete;
     public $receiving_reference_no;
     public $receiving_total_amount;
     public $receiving_datetime;
@@ -53,19 +53,19 @@ class ReceivingSupply
         try {
             $sql = "insert into {$this->tblReceiving} ";
             $sql .= "( receiving_date, ";
-            $sql .= "receiving_is_active, ";
+            $sql .= "receiving_is_complete, ";
             $sql .= "receiving_is_new_data, ";
             $sql .= "receiving_datetime, ";
             $sql .= "receiving_created ) values ( ";
             $sql .= ":receiving_date, ";
-            $sql .= ":receiving_is_active, ";
+            $sql .= ":receiving_is_complete, ";
             $sql .= ":receiving_is_new_data, ";
             $sql .= ":receiving_datetime, ";
             $sql .= ":receiving_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_date" => $this->receiving_date,
-                "receiving_is_active" => $this->receiving_is_active,
+                "receiving_is_complete" => $this->receiving_is_complete,
                 "receiving_is_new_data" => $this->receiving_is_new_data,
                 "receiving_datetime" => $this->receiving_supply_datetime,
                 "receiving_created" => $this->receiving_supply_created,
