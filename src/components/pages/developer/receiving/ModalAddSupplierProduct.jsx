@@ -350,8 +350,8 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
               <div className="table-wrapper w-full">
                 <table>
-                  <thead>
-                    <tr>
+                  <thead className="relative">
+                    <tr className="sticky top-0 bg-inherit">
                       <th>#</th>
                       <th>Status</th>
                       <th>Supplier</th>
@@ -492,16 +492,16 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                     })}
                   </tbody>
                 </table>
-                <h3 className="text-right mt-5">
-                  Total:{pesoSign}
-                  {numberWithCommasToFixed(
-                    receivingData?.count > 0 ? receivingData?.amount : 0,
-                    2
-                  )}
-                </h3>
               </div>
             </div>
 
+            <h3 className="text-right mt-5 mr-7">
+              Total:{pesoSign}
+              {numberWithCommasToFixed(
+                receivingData?.count > 0 ? receivingData?.amount : 0,
+                2
+              )}
+            </h3>
             <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
