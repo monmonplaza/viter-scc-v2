@@ -17,7 +17,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     if ($data["isFilter"] == true) {
 
         if ($receiving->receiving_search != "") {
-
             checkKeyword($receiving->receiving_search);
             $receiving->receiving_is_active = checkIndex($data, "receiving_is_active");
             $query = checkFilterByStatusAndSearch($receiving);
