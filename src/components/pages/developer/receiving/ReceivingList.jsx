@@ -1,5 +1,10 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
-import { ver } from "@/components/helpers/functions-general.jsx";
+import {
+  formatDate,
+  numberWithCommasToFixed,
+  pesoSign,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
 import NoData from "@/components/partials/icons/NoData.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
@@ -7,7 +12,7 @@ import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
-import Pill from "@/components/partials/Pill.jsx";
+import Pill from "@/components/partials/Pill";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
@@ -22,7 +27,6 @@ import {
 } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import { default as ModalAddSupplierProduct } from "./ModalAddSupplierProduct.jsx";
 
 const ReceivingList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -139,7 +143,7 @@ const ReceivingList = ({ setItemEdit }) => {
             <thead>
               <tr>
                 <th className="w-counter">#</th>
-                <th className="w-[90px]">Status</th>
+                {/* <th className="w-[90px]">Status</th> */}
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
                 <th className="">Total Amount</th>
@@ -173,10 +177,13 @@ const ReceivingList = ({ setItemEdit }) => {
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}</td>
-                        <td>{<Pill isActive={item.receiving_is_active} />}</td>
-                        <td>{item.receiving_date}</td>
+                        {/* <td>{<Pill isActive={item.receiving_is_active} />}</td> */}
+                        <td>{formatDate(item.receiving_date)}</td>
                         <td>{item.receiving_reference_no}</td>
-                        <td></td>
+                        <td>
+                          {pesoSign}
+                          {numberWithCommasToFixed(item.receiving_total_amount)}
+                        </td>
                         <td className="table-action">
                           <ul>
                             {item.receiving_is_active === 1 ? (
@@ -203,8 +210,18 @@ const ReceivingList = ({ setItemEdit }) => {
                                     <SquarePen size={14} />
                                   </button>
                                 </li>
-
                                 <li>
+                                  <button
+                                    data-tooltip="Delete"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleRemove(item.receiving_aid, item)
+                                    }
+                                  >
+                                    <Trash size={14} />
+                                  </button>
+                                </li>
+                                {/* <li>
                                   <button
                                     data-tooltip="Archive"
                                     className="tooltip"
@@ -214,7 +231,7 @@ const ReceivingList = ({ setItemEdit }) => {
                                   >
                                     <Archive size={14} />
                                   </button>
-                                </li>
+                                </li> */}
                               </>
                             ) : (
                               <>
@@ -265,20 +282,19 @@ const ReceivingList = ({ setItemEdit }) => {
           </div>
         </div>
       </div>
-      {store.isAdd && <ModalAddSupplierProduct />}
 
-      {store.isDelete && (
+      {!store.isAdd && store.isDelete && (
         <ModalDelete
           mysqlApiDelete={`/${ver}/receiving/${aid}`}
           queryKey="receiving"
-          item={data.receiving_date}
+          item={formatDate(data.receiving_date)}
         />
       )}
-      {store.isConfirm && (
+      {!store.isAdd && store.isConfirm && (
         <ModalConfirm
           mysqlApiArchive={`/${ver}/receiving/active/${aid}`}
           queryKey="receiving"
-          item={data.receiving_date}
+          item={formatDate(data.receiving_date)}
           active={isActive}
         />
       )}

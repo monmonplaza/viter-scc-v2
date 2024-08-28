@@ -12,12 +12,16 @@ class ReceivingSupply
     public $receiving_supply_datetime;
     public $receiving_supply_created;
 
+    public $receiving_supply_expiration_date;
+    public $receiving_supply_barcode;
+    public $receiving_aid;
     public $receiving_is_new_data;
     public $receiving_supply_received_id;
     public $receiving_date;
     public $receiving_is_active;
     public $receiving_reference_no;
     public $receiving_total_amount;
+    public $receiving_datetime;
 
     public $connection;
     public $lastInsertedId;
@@ -85,6 +89,8 @@ class ReceivingSupply
             $sql .= "receiving_supply_quantity, ";
             $sql .= "receiving_supply_price, ";
             $sql .= "receiving_supply_amount, ";
+            $sql .= "receiving_supply_expiration_date, ";
+            $sql .= "receiving_supply_barcode, ";
             $sql .= "receiving_supply_is_active, ";
             $sql .= "receiving_supply_datetime, ";
             $sql .= "receiving_supply_created ) values ( ";
@@ -95,18 +101,22 @@ class ReceivingSupply
             $sql .= ":receiving_supply_quantity, ";
             $sql .= ":receiving_supply_price, ";
             $sql .= ":receiving_supply_amount, ";
+            $sql .= ":receiving_supply_expiration_date, ";
+            $sql .= ":receiving_supply_barcode, ";
             $sql .= ":receiving_supply_is_active, ";
             $sql .= ":receiving_supply_datetime, ";
             $sql .= ":receiving_supply_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "receiving_supply_received_id" => $this->lastInsertedId,
+                "receiving_supply_received_id" => $this->receiving_aid,
                 "receiving_supply_product_id" => $this->receiving_supply_product_id,
                 "receiving_supply_supplier_id" => $this->receiving_supply_supplier_id,
                 "receiving_supply_unit_id" => $this->receiving_supply_unit_id,
                 "receiving_supply_quantity" => $this->receiving_supply_quantity,
                 "receiving_supply_price" => $this->receiving_supply_price,
                 "receiving_supply_amount" => $this->receiving_supply_amount,
+                "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
+                "receiving_supply_barcode" => $this->receiving_supply_barcode,
                 "receiving_supply_is_active" => $this->receiving_supply_is_active,
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
                 "receiving_supply_created" => $this->receiving_supply_created,
@@ -137,7 +147,8 @@ class ReceivingSupply
             $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by receiving_supply_is_active desc ";
+            $sql .= "order by rs.receiving_supply_is_active desc, ";
+            $sql .= "rs.receiving_supply_created desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -145,6 +156,37 @@ class ReceivingSupply
         return $query;
     }
 
+    // read all New Receive Supply
+    public function readAllNewReceiveSupplyById()
+    {
+        try {
+            $sql = "select r.*, ";
+            $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "s.supplier_name, ";
+            $sql .= "p.product_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblReceiving} as r, ";
+            $sql .= "{$this->tblUnit} as u, ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSupplier} as s ";
+            $sql .= "where rs.receiving_supply_received_id = :receiving_supply_received_id ";
+            $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
+            $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
+            $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
+            $sql .= "order by rs.receiving_supply_is_active desc, ";
+            $sql .= "rs.receiving_supply_created desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_received_id" => "{$this->receiving_supply_received_id}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
     // read all
     public function readAll()
     {
@@ -214,26 +256,72 @@ class ReceivingSupply
     {
         try {
             $sql = "update {$this->tblReceivingSupply} set ";
-            $sql .= "receiving_supply_received_id = :receiving_supply_received_id, ";
             $sql .= "receiving_supply_product_id = :receiving_supply_product_id, ";
             $sql .= "receiving_supply_supplier_id = :receiving_supply_supplier_id, ";
             $sql .= "receiving_supply_unit_id = :receiving_supply_unit_id, ";
             $sql .= "receiving_supply_quantity = :receiving_supply_quantity, ";
             $sql .= "receiving_supply_price = :receiving_supply_price, ";
+            $sql .= "receiving_supply_expiration_date = :receiving_supply_expiration_date, ";
+            $sql .= "receiving_supply_barcode = :receiving_supply_barcode, ";
             $sql .= "receiving_supply_amount = :receiving_supply_amount, ";
             $sql .= "receiving_supply_datetime = :receiving_supply_datetime ";
-            $sql .= "where receiving_supply_aid  = :receiving_supply_aid  ";
+            $sql .= "where receiving_supply_aid = :receiving_supply_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "receiving_supply_received_id" => $this->receiving_supply_received_id,
                 "receiving_supply_product_id" => $this->receiving_supply_product_id,
                 "receiving_supply_supplier_id" => $this->receiving_supply_supplier_id,
                 "receiving_supply_unit_id" => $this->receiving_supply_unit_id,
                 "receiving_supply_quantity" => $this->receiving_supply_quantity,
                 "receiving_supply_price" => $this->receiving_supply_price,
+                "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
+                "receiving_supply_barcode" => $this->receiving_supply_barcode,
                 "receiving_supply_amount" => $this->receiving_supply_amount,
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
-                "receiving_supply_aid " => $this->receiving_supply_aid,
+                "receiving_supply_aid" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateReferenceNumber()
+    {
+        try {
+            $sql = "update {$this->tblReceiving} set ";
+            $sql .= "receiving_reference_no = :receiving_reference_no, ";
+            $sql .= "receiving_total_amount = :receiving_total_amount, ";
+            $sql .= "receiving_datetime = :receiving_datetime ";
+            $sql .= "where receiving_aid = :receiving_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_reference_no" => $this->receiving_reference_no,
+                "receiving_total_amount" => $this->receiving_total_amount,
+                "receiving_datetime" => $this->receiving_datetime,
+                "receiving_aid" => $this->receiving_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateReceiving()
+    {
+        try {
+            $sql = "update {$this->tblReceiving} set ";
+            $sql .= "receiving_date = :receiving_date, ";
+            $sql .= "receiving_total_amount = :receiving_total_amount, ";
+            $sql .= "receiving_datetime = :receiving_datetime ";
+            $sql .= "where receiving_aid = :receiving_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_date" => $this->receiving_date,
+                "receiving_total_amount" => $this->receiving_total_amount,
+                "receiving_datetime" => $this->receiving_datetime,
+                "receiving_aid" => $this->receiving_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -266,10 +354,46 @@ class ReceivingSupply
     {
         try {
             $sql = "delete from {$this->tblReceivingSupply} ";
-            $sql .= "where receiving_supply_aid  = :receiving_supply_aid   ";
+            $sql .= "where receiving_supply_aid = :receiving_supply_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_supply_aid" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkDate()
+    {
+        try {
+            $sql = "select receiving_date from {$this->tblReceiving} ";
+            $sql .= "where receiving_date = :receiving_date ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_date" => $this->receiving_date,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkBarcode()
+    {
+        try {
+            $sql = "select receiving_supply_product_id, ";
+            $sql .= "receiving_supply_barcode ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} ";
+            $sql .= "where receiving_supply_barcode = :receiving_supply_barcode ";
+            $sql .= "group by receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_barcode" => $this->receiving_supply_barcode,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -283,6 +407,43 @@ class ReceivingSupply
         try {
             $sql = "select * from {$this->tblReceiving} ";
             $sql .= "where receiving_is_new_data = '1' ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkGetTotalAmountById()
+    {
+        try {
+            $sql = "select sum(receiving_supply_amount) as amount ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} ";
+            $sql .= "where receiving_supply_received_id = :receiving_supply_received_id ";
+            $sql .= "group by receiving_supply_received_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_received_id" => $this->receiving_supply_received_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkGetTotalAmountByNewData()
+    {
+        try {
+            $sql = "select sum(rs.receiving_supply_amount) as amount ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblReceiving} as r ";
+            $sql .= "where r.receiving_is_new_data = '1' ";
+            $sql .= "and rs.receiving_supply_received_id = r.receiving_aid ";
+            $sql .= "group by r.receiving_is_new_data ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

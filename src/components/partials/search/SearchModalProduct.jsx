@@ -13,10 +13,13 @@ const SearchModalProduct = ({
   name,
   mutation,
   setIsRequiredYup,
+  itemEdit = null,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   // client
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState(
+    itemEdit ? props.searchProduct : ""
+  );
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
 

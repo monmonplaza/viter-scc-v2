@@ -50,8 +50,7 @@ const Receiving = () => {
           </div>
         </main>
       </div>
-
-      {store.isAdd && <ModalAddSupplierProduct />}
+      {store.isAdd && <ModalAddSupplierProduct itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}

@@ -2,8 +2,6 @@ import Breadcrumbs from "@/components/partials/Breadcrumbs.jsx";
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
-import { Plus } from "lucide-react";
-import React from "react";
 
 const Inventory = () => {
   return (

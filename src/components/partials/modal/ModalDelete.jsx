@@ -60,7 +60,7 @@ const ModalDelete = ({ mysqlApiDelete, queryKey, item }) => {
         <div className="p-3">
           <p className="mb-2 ">
             You are about to delete
-            <span className="font-semibold"> " {item}" </span> record. This
+            <span className="font-semibold mx-1">"{item}"</span>record. This
             action will permanently delete this record.
           </p>
           <p>Are you sure you want to confinue?</p>

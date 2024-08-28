@@ -24,3 +24,11 @@ function checkReadAllUnit($object)
     checkQuery($query, "Empty records. (read all unit)");
     return $query;
 }
+
+// Update receiving reference no.
+function checkUpdateAllNewData($object)
+{
+    $query = $object->updateAllNewData();
+    checkQuery($query, "There's a problem processing your request. (update new data in receiving)");
+    return $query;
+}

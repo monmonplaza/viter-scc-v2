@@ -47,16 +47,19 @@ RewriteRule ^receiving/read-all-unit$ controllers/developer/receiving/read-all-u
 
 ### RECEIVING SUPPLY ###
 RewriteRule ^receiving-supply$ controllers/developer/receiving-supply/receiving-supply.php [L]
-RewriteRule ^receiving-supply/([0-9]+)$ controllers/developer/receiving-supply/receiving-supply.php?receivingsupplyid=$1 [L]
+RewriteRule ^receiving-supply/([0-9]+)$ controllers/developer/receiving-supply/receiving-supply.php?receivingsupplyid=$1 [L] 
 RewriteRule ^receiving-supply/read-new-receive$ controllers/developer/receiving-supply/read-new-receive.php [L]
+RewriteRule ^receiving-supply/active/([0-9]+)$ controllers/developer/receiving-supply/active.php?receivingsupplyid=$1 [L]
+RewriteRule ^receiving-supply/update-received-supply/([0-9]+)$ controllers/developer/receiving-supply/update-received-supply.php?receivingsupplyid=$1 [L]
 
 ### RECEIVING SUPPLY ###
 RewriteRule ^settings-unit$ controllers/developer/settings/unit/unit.php [L]
 RewriteRule ^settings-unit/([0-9]+)$ controllers/developer/settings/unit/unit.php?unitid=$1 [L]
 RewriteRule ^settings-unit/active/([0-9]+)$ controllers/developer/settings/unit/active.php?unitid=$1 [L]
- 
-
+  
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 
 RewriteRule ^search-supplier$ controllers/developer/search/search-supplier.php [L] 
- 
+
+
+

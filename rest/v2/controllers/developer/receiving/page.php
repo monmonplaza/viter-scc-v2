@@ -1,6 +1,7 @@
 <?php
 require '../../../core/header.php';
 require '../../../core/functions.php';
+require 'functions.php';
 require '../../../models/developer/receiving/Receiving.php';
 $conn = null;
 $conn = checkDbConnection();
@@ -13,8 +14,12 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $receiving->receiving_start = $_GET['start'];
         $receiving->receiving_total = 50;
         checkLimitId($receiving->receiving_start, $receiving->receiving_total);
+
+        checkUpdateAllNewData($receiving);
+
         $query = checkReadLimit($receiving);
         $total_result = checkReadAll($receiving);
+
         http_response_code(200);
         checkReadQuery(
             $query,

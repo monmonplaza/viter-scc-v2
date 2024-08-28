@@ -20,6 +20,7 @@ class Receiving
     public $tblSupplier;
     public $tblProduct;
     public $tblUnit;
+    public $tblReceivingSupply;
 
 
     public function __construct($db)
@@ -29,6 +30,7 @@ class Receiving
         $this->tblSupplier = "sccv2_supplier";
         $this->tblProduct = "sccv2_product";
         $this->tblUnit = "sccv2_settings_unit";
+        $this->tblReceivingSupply = "sccv2_receiving_supply";
     }
 
     // create
@@ -147,6 +149,7 @@ class Receiving
         }
         return $query;
     }
+
 
     // active
     public function active()
@@ -268,6 +271,23 @@ class Receiving
         return $query;
     }
 
+    // read all
+    public function checkAssociation()
+    {
+        try {
+            $sql = "select receiving_supply_received_id ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} ";
+            $sql .= "where receiving_supply_received_id = :receiving_supply_received_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_received_id" => "{$this->receiving_aid}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 
     // read all
     public function readAllUnit()
@@ -278,6 +298,20 @@ class Receiving
             $sql .= "from ";
             $sql .= "{$this->tblUnit} ";
             $sql .= "order by settings_unit_is_active desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update new data
+    public function updateAllNewData()
+    {
+        try {
+            $sql = "update {$this->tblReceiving} set ";
+            $sql .= "receiving_is_new_data = '0' ";
+            $sql .= "where receiving_is_new_data = '1' ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

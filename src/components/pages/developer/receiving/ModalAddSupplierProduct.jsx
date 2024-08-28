@@ -1,9 +1,39 @@
-import { handleEscape, ver } from "@/components/helpers/functions-general";
+import useQueryData from "@/components/custom-hooks/useQueryData";
+import useTableActions from "@/components/custom-hooks/useTableActions";
+import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import {
+  formatDate,
+  getDateNow,
+  handleEscape,
+  numberWithCommasToFixed,
+  pesoSign,
+  ver,
+} from "@/components/helpers/functions-general";
+import { queryData } from "@/components/helpers/queryData";
+import NoData from "@/components/partials/icons/NoData";
+import ServerError from "@/components/partials/icons/ServerError";
+import LoaderTable from "@/components/partials/LoaderTable";
+import ModalConfirm from "@/components/partials/modal/ModalConfirm";
+import ModalDelete from "@/components/partials/modal/ModalDelete";
+import Pill from "@/components/partials/Pill";
+import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
+import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
+import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
+import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
+import {
+  setIsAdd,
+  setIsAnimating,
+  setMessage,
+  setSuccess,
+  setValidate,
+} from "@/components/store/StoreAction";
+import { StoreContext } from "@/components/store/StoreContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Form, Formik } from "formik";
 import {
   Archive,
   ArchiveRestore,
-  Pill,
   PillBottle,
   Plus,
   SquarePen,
@@ -12,43 +42,56 @@ import {
 } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-import { Form, Formik } from "formik";
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryData } from "@/components/helpers/queryData";
-import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
-import useQueryData from "@/components/custom-hooks/useQueryData";
-import { StoreContext } from "@/components/store/StoreContext";
-import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
-import ServerError from "@/components/partials/icons/ServerError";
-import NoData from "@/components/partials/icons/NoData";
-import LoaderTable from "@/components/partials/LoaderTable";
-import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
-import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
-import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
-import useTableActions from "@/components/custom-hooks/useTableActions";
-import ModalDelete from "@/components/partials/modal/ModalDelete";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm";
+import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
 
-const ModalAddSupplierProduct = () => {
+const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [supplierData, setSupplierData] = React.useState(null);
-  const [itemEdit, setItemEdit] = React.useState(null);
+  const [modalItemEdit, setItemEdit] = React.useState(null);
+  const [editSupplier, setEditSupplier] = React.useState(false);
+  const [itemEditSupplier, setItemEditSupplier] = React.useState(null);
   const [isRequiredSupplierYup, setIsRequiredSupplierYup] = React.useState("");
   const [productData, setProductData] = React.useState(null);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   let counter = 1;
 
+  const {
+    isLoading: loadingUnit,
+    error: errorUnit,
+    data: unitData,
+  } = useQueryData(
+    `/${ver}/receiving/read-all-unit`, // endpoint
+    "get", // method
+    "receiving-read-all-unit" // key
+  );
+
+  const {
+    isLoading: loadingReceiving,
+    isFetching: fetchingReceiving,
+    error: errorReceiving,
+    data: receivingData,
+  } = useQueryData(
+    `/${ver}/receiving-supply/read-new-receive`, // endpoint
+    "post", // method
+    "receiving-supply-read-new-receive", // key
+    { receiving_supply_received_id: itemEdit ? itemEdit.receiving_aid : "0" },
+    { receiving_supply_received_id: itemEdit ? itemEdit.receiving_aid : "0" }
+  );
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
-      queryData(`/${ver}/receiving-supply`, "post", values),
+      queryData(
+        itemEdit
+          ? `/${ver}/receiving-supply/update-received-supply/${itemEdit.receiving_aid}`
+          : `/${ver}/receiving-supply`,
+        itemEdit ? "put" : "post",
+        values
+      ),
     onSuccess: (data) => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["receiving"],
+        queryKey: ["receiving-supply-read-new-receive"],
       });
-
       // show error box
       if (!data.success) {
         dispatch(setValidate(true));
@@ -56,7 +99,6 @@ const ModalAddSupplierProduct = () => {
       } else {
         dispatch(setSuccess(true));
         dispatch(setMessage(`Record Successfully updated.`));
-        dispatch(setIsAdd(false));
       }
     },
   });
@@ -73,7 +115,16 @@ const ModalAddSupplierProduct = () => {
     setItemEdit,
   });
 
+  const handleEditSupplier = (item) => {
+    setEditSupplier(true);
+    setItemEditSupplier(item);
+  };
+
   const handleClose = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["receiving"],
+    });
+
     dispatch(setIsAnimating(false));
     setSupplierData(null);
     setTimeout(() => {
@@ -94,8 +145,14 @@ const ModalAddSupplierProduct = () => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = {
-    receiving_date: "",
-    receiving_supply_received_id: "",
+    receiving_date: itemEdit ? itemEdit.receiving_date : getDateNow(),
+    receiving_supply_received_id: itemEdit
+      ? itemEdit.receiving_supply_received_id
+      : "",
+    receiving_supply_expiration_date: itemEdit
+      ? itemEdit.receiving_supply_expiration_date
+      : "",
+    receiving_supply_barcode: itemEdit ? itemEdit.receiving_supply_barcode : "",
     receiving_supply_unit_id: "",
     receiving_supply_quantity: "",
     receiving_supply_price: "",
@@ -112,26 +169,6 @@ const ModalAddSupplierProduct = () => {
     searchProduct: isRequiredProductYup,
   });
 
-  const {
-    isLoading: loadingUnit,
-    error: errorUnit,
-    data: unitData,
-  } = useQueryData(
-    `/${ver}/receiving/read-all-unit`, // endpoint
-    "get", // method
-    "receiving-read-all-unit" // key
-  );
-
-  const {
-    isLoading: loadingReceiving,
-    isFetching: fetchingReceiving,
-    error: errorReceiving,
-    data: receivingData,
-  } = useQueryData(
-    `/${ver}/receiving-supply/read-new-receive`, // endpoint
-    "get", // method
-    "receiving-supply-read-new-receive" // key
-  );
   return (
     <>
       <WrapperModal>
@@ -162,6 +199,8 @@ const ModalAddSupplierProduct = () => {
 
                 mutation.mutate({
                   ...values,
+                  receiving_total_amount:
+                    receivingData?.count > 0 ? receivingData?.amount : 0,
                   receiving_supply_amount,
                   receiving_supply_supplier_id,
                   receiving_supply_product_id,
@@ -182,7 +221,7 @@ const ModalAddSupplierProduct = () => {
                       </div>
                     </div>
 
-                    <div className="md:grid md:grid-cols-[1fr_1fr_1fr_1fr_1fr_5rem] gap-4 mb-5 items-end">
+                    <div className="md:grid md:grid-cols-[1fr_1fr_8rem_8rem_1fr_1fr_1fr_5rem] gap-2 mb-5 items-end">
                       <div className="input-wrap">
                         <SearchModalSupplier
                           setData={setSupplierData}
@@ -233,7 +272,14 @@ const ModalAddSupplierProduct = () => {
                                 <>
                                   {unitData?.data.map((cItem, key) => {
                                     return (
-                                      cItem.settings_unit_is_active === 1 && (
+                                      (cItem.settings_unit_is_active === 1 ||
+                                        (itemEdit &&
+                                          Number(
+                                            itemEdit.receiving_supply_unit_id
+                                          ) ===
+                                            Number(
+                                              cItem.settings_unit_aid
+                                            ))) && (
                                         <option
                                           value={cItem.settings_unit_aid}
                                           key={key}
@@ -259,6 +305,24 @@ const ModalAddSupplierProduct = () => {
                           type="text"
                           number="number"
                           name="receiving_supply_price"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <div className="input-wrap">
+                        <InputText
+                          label="Expiration date"
+                          type="date"
+                          number="number"
+                          name="receiving_supply_expiration_date"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <div className="input-wrap">
+                        <InputText
+                          label="Barcode"
+                          type="text"
+                          number="number"
+                          name="receiving_supply_barcode"
                           disabled={mutation.isPending}
                         />
                       </div>
@@ -292,8 +356,10 @@ const ModalAddSupplierProduct = () => {
                       <th>Status</th>
                       <th>Supplier</th>
                       <th>Product</th>
+                      <th>Barcode</th>
+                      <th>Expiration Date</th>
                       <th>Quantity</th>
-                      <th>Price</th>
+                      <th className="text-right">Price</th>
                       <th>Unit</th>
                       <th className="text-right">Amount</th>
                     </tr>
@@ -325,41 +391,60 @@ const ModalAddSupplierProduct = () => {
                         <tr key={key}>
                           <td className="w-counter">{counter++}.</td>
                           <td>
-                            <Pill isActive={item.settings_unit_is_active} />
+                            <Pill isActive={item.receiving_supply_is_active} />
                           </td>
                           <td>{item.supplier_name}</td>
 
                           <td>{item.product_name}</td>
+                          <td>{item.receiving_supply_barcode}</td>
+                          <td>
+                            {formatDate(item.receiving_supply_expiration_date)}
+                          </td>
                           <td>{item.receiving_supply_quantity}</td>
-                          <td>{item.receiving_supply_price}</td>
+                          <td className="text-right">
+                            {pesoSign}
+                            {numberWithCommasToFixed(
+                              item.receiving_supply_price,
+                              2
+                            )}
+                          </td>
                           <td>{item.settings_unit_name}</td>
                           <td className="text-right">
-                            {item.receiving_supply_amount}
+                            {pesoSign}
+                            {numberWithCommasToFixed(
+                              item.receiving_supply_amount,
+                              2
+                            )}
                           </td>
 
                           <td className="table-action">
                             <ul>
-                              {item.settings_unit_is_active === 1 ? (
+                              {item.receiving_supply_is_active === 1 ? (
                                 <>
                                   <li>
                                     <button
                                       data-tooltip="Edit"
                                       className="tooltip"
                                       onClick={() =>
-                                        handleEdit(item.settings_unit_aid, item)
+                                        handleEditSupplier({
+                                          ...item,
+                                          amount:
+                                            receivingData?.count > 0
+                                              ? receivingData?.amount
+                                              : 0,
+                                        })
                                       }
                                     >
                                       <SquarePen size={14} />
                                     </button>
                                   </li>
-
                                   <li>
                                     <button
                                       data-tooltip="Archive"
                                       className="tooltip"
                                       onClick={() =>
                                         handleArchive(
-                                          item.settings_unit_aid,
+                                          item.receiving_supply_aid,
                                           item
                                         )
                                       }
@@ -376,7 +461,7 @@ const ModalAddSupplierProduct = () => {
                                       className="tooltip"
                                       onClick={() =>
                                         handleRestore(
-                                          item.settings_unit_aid,
+                                          item.receiving_supply_aid,
                                           item
                                         )
                                       }
@@ -390,7 +475,7 @@ const ModalAddSupplierProduct = () => {
                                       className="tooltip"
                                       onClick={() =>
                                         handleRemove(
-                                          item.settings_unit_aid,
+                                          item.receiving_supply_aid,
                                           item
                                         )
                                       }
@@ -407,7 +492,13 @@ const ModalAddSupplierProduct = () => {
                     })}
                   </tbody>
                 </table>
-                <h3 className="text-right mt-5">Total: 2000</h3>
+                <h3 className="text-right mt-5">
+                  Total:{pesoSign}
+                  {numberWithCommasToFixed(
+                    receivingData?.count > 0 ? receivingData?.amount : 0,
+                    2
+                  )}
+                </h3>
               </div>
             </div>
 
@@ -419,17 +510,25 @@ const ModalAddSupplierProduct = () => {
           </div>
         </div>
 
+        {editSupplier && (
+          <ModalEditSupplierProduct
+            itemEdit={itemEditSupplier}
+            setEditSupplier={setEditSupplier}
+          />
+        )}
+
         {store.isDelete && (
           <ModalDelete
-            mysqlApiDelete={`/${ver}/product/${aid}`}
-            queryKey="product"
+            mysqlApiDelete={`/${ver}/receiving-supply/${aid}`}
+            queryKey="receiving-supply-read-new-receive"
             item={data.product_name}
           />
         )}
+
         {store.isConfirm && (
           <ModalConfirm
-            mysqlApiArchive={`/${ver}/product/active/${aid}`}
-            queryKey="product"
+            mysqlApiArchive={`/${ver}/receiving-supply/active/${aid}`}
+            queryKey="receiving-supply-read-new-receive"
             item={data.product_name}
             active={isActive}
           />
