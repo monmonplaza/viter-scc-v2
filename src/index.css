@@ -87,6 +87,10 @@
     @apply text-[clamp(20px,4vw,30px)] leading-none mb-2;
   }
 
+  h2 {
+    @apply text-[clamp(18px,4vw,22px)] leading-none mb-2;
+  }
+
   h4 {
     @apply text-[clamp(12px,4vw,14px)] leading-none mb-2;
   }
@@ -103,6 +107,15 @@
   .table-wrapper {
     @apply bg-primary rounded-md px-4 pb-4 border border-line  overflow-y-hidden hover:overflow-y-scroll max-h-[60dvh] w-[calc(100vw-1rem)] md:w-[calc(100vw-314px)] custom-scroll gutter-scroll;
   }
+
+  table.has-sticky thead  {
+    @apply sticky top-0 bg-primary z-[20] shadow-custom
+  }
+
+  table.has-sticky tbody tr td ul li button.tooltip {
+    @apply after:-left-1/2 after:top-full after:h-[15px] 
+  }
+
   table {
     @apply w-full table-auto relative;
   }
@@ -222,7 +235,7 @@
   }
 
   .modal.open .backdrop {
-    @apply bg-opacity-60;
+    @apply bg-opacity-40;
   }
 
   .modal.open .modal-main {
@@ -265,6 +278,10 @@
     @apply flex gap-1  p-3 rounded-md text-xs leading-none items-center transition-colors;
   }
 
+  .btn-sm {
+    @apply py-1
+  }
+
   .btn-accent {
     @apply bg-accent text-white hover:brightness-110;
   }
@@ -292,6 +309,10 @@
     @apply bg-accent  text-white hover:bg-accent bg-opacity-100;
   }
 
+  .setting-nav ul li a.active{
+    @apply border-b-2 border-accent
+  }
+
   .toast.open {
     @apply right-[20px];
   }
@@ -303,6 +324,10 @@
   }
   .w-counter {
     @apply w-[30px] text-center;
+  }
+
+  .w-status {
+    @apply w-[80px] text-center;
   }
 }
 

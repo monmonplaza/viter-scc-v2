@@ -125,8 +125,10 @@ const ProductList = ({ setItemEdit }) => {
       <div className="relative">
         {status !== "loading" && isFetching && <SpinnerTable />}
 
-        <div className="table-wrapper  ">
-          <table>
+        <div className="table-wrapper">
+          <table
+            className={`${result?.pages[0].count > 22 ? "has-sticky" : ""}`}
+          >
             <thead>
               <tr>
                 <th className="w-counter">#</th>
@@ -134,7 +136,6 @@ const ProductList = ({ setItemEdit }) => {
                 <th className="w-[200px]">Name</th>
                 <th className="w-[200px]">Category</th>
                 <th>SKU</th>
-
                 <th>Barcode</th>
                 <th>Description</th>
               </tr>

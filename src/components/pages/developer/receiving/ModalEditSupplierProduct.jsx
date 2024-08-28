@@ -110,7 +110,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[300px] border border-line mx-2">
+        <div className="modal-center rounded-md !bg-primary !max-w-[300px] border border-line mx-2 ">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />

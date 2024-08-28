@@ -43,12 +43,17 @@ export const routesSystem = [
     path: `${devNavUrl}/system/category`,
     element: <Category />,
   },
-  {
-    path: `${devNavUrl}/system/settings`,
-    element: <Unit />,
-  },
+  // {
+  //   path: `${devNavUrl}/system/settings`,
+  //   element: <Unit />,
+  // },
   {
     path: `${devNavUrl}/system/unit`,
     element: <Unit />,
+  },
+
+  {
+    path: `${devNavUrl}/system/settings`,
+    element: <Settings />,
   },
 ];

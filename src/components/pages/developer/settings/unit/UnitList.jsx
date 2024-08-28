@@ -6,9 +6,10 @@ import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm";
 import ModalDelete from "@/components/partials/modal/ModalDelete";
+import Pill from "@/components/partials/Pill";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import { StoreContext } from "@/components/store/StoreContext";
-import { Archive, ArchiveRestore, Pill, SquarePen, Trash } from "lucide-react";
+import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
 import React from "react";
 
 const UnitList = ({ setItemEdit }) => {

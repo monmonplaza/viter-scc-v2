@@ -115,7 +115,7 @@ const Navigation = ({ menu, submenu }) => {
                 </Link>
               </li>
 
-              {link.slug === "settings" &&
+              {/* {link.slug === "settings" &&
                 subLinks.map((link, key) => {
                   return (
                     <li
@@ -133,7 +133,7 @@ const Navigation = ({ menu, submenu }) => {
                       </Link>
                     </li>
                   );
-                })}
+                })} */}
             </ul>
           );
         })}
