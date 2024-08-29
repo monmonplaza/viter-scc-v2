@@ -312,7 +312,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                         <InputText
                           label="Expiration date"
                           type="date"
-                          number="number"
+                          // number="number"
                           name="receiving_supply_expiration_date"
                           disabled={mutation.isPending}
                         />
