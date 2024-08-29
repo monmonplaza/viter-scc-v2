@@ -109,7 +109,7 @@
   }
 
   table.has-sticky thead {
-    @apply sticky top-0 bg-primary z-[20] shadow-custom;
+    @apply sticky top-[0px] bg-primary z-[20] shadow-custom;
   }
 
   table.has-sticky tbody tr td ul li button.tooltip {

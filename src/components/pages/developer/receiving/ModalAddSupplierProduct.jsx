@@ -346,10 +346,16 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
 
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
-              <div className="table-wrapper w-full">
-                <table>
+              <div className="table-wrapper w-full max-h-[30dvh] ">
+                <table
+                  className={`${
+                    !loadingReceiving && receivingData.count > 7
+                      ? "has-sticky"
+                      : ""
+                  }`}
+                >
                   <thead className="relative">
-                    <tr className="sticky top-0 bg-inherit">
+                    <tr className="">
                       <th>#</th>
                       <th>Supplier</th>
                       <th>Product</th>
