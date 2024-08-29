@@ -72,3 +72,19 @@ function isBarcodeExist($object, $barcode, $productId)
         }
     }
 }
+
+// Create defective
+function checkCreateDefective($object)
+{
+    $query = $object->createDefective();
+    checkQuery($query, "There's a problem processing your request. (create defective)");
+    return $query;
+}
+
+// Update receiving defective
+function checkUpdateDefective($object)
+{
+    $query = $object->updateDefective();
+    checkQuery($query, "There's a problem processing your request. (update defective)");
+    return $query;
+}

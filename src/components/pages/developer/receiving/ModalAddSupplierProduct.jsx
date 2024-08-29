@@ -43,6 +43,7 @@ import {
 import React from "react";
 import * as Yup from "yup";
 import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
+import PillStatus from "@/components/partials/PillStatus";
 
 const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -149,15 +150,13 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
     receiving_supply_received_id: itemEdit
       ? itemEdit.receiving_supply_received_id
       : "",
-    receiving_supply_expiration_date: itemEdit
-      ? itemEdit.receiving_supply_expiration_date
-      : "",
-    receiving_supply_barcode: itemEdit ? itemEdit.receiving_supply_barcode : "",
     receiving_supply_unit_id: "",
     receiving_supply_quantity: "",
     receiving_supply_price: "",
     searchSupplier: "",
     searchProduct: "",
+    receiving_supply_expiration_date: "",
+    receiving_supply_barcode: "",
   };
 
   const yupSchema = Yup.object({
@@ -312,7 +311,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                         <InputText
                           label="Expiration date"
                           type="date"
-                          number="number"
                           name="receiving_supply_expiration_date"
                           disabled={mutation.isPending}
                         />
@@ -353,7 +351,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                   <thead className="relative">
                     <tr className="sticky top-0 bg-inherit">
                       <th>#</th>
-                      {/* <th>Status</th> */}
                       <th>Supplier</th>
                       <th>Product</th>
                       <th>Barcode</th>
@@ -362,6 +359,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       <th className="text-right">Price</th>
                       <th>Unit</th>
                       <th className="text-right">Amount</th>
+                      <th className="text-center">Defective product</th>
                     </tr>
                   </thead>
 
@@ -388,11 +386,18 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
 
                     {receivingData?.data.map((item, key) => {
                       return (
-                        <tr key={key}>
+                        <tr
+                          key={key}
+                          className={
+                            Number(
+                              item.receiving_supply_defective_product_qty
+                            ) !== 0
+                              ? "status-alert"
+                              : ""
+                          }
+                        >
                           <td className="w-counter">{counter++}.</td>
-                          {/* <td>
-                            <Pill isActive={item.receiving_supply_is_active} />
-                          </td> */}
+
                           <td>{item.supplier_name}</td>
 
                           <td>{item.product_name}</td>
@@ -416,12 +421,15 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                               2
                             )}
                           </td>
+                          <td className="text-center">
+                            {item.receiving_supply_defective_product_qty}
+                          </td>
 
                           <td className="table-action ">
                             <ul>
                               {item.receiving_supply_is_active === 1 ? (
                                 <>
-                                  <li className="!overflow-visible">
+                                  <li className="">
                                     <button
                                       data-tooltip="Edit"
                                       className="tooltip "

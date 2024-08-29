@@ -56,6 +56,13 @@ RewriteRule ^receiving-supply/update-received-supply/([0-9]+)$ controllers/devel
 RewriteRule ^settings-unit$ controllers/developer/settings/unit/unit.php [L]
 RewriteRule ^settings-unit/([0-9]+)$ controllers/developer/settings/unit/unit.php?unitid=$1 [L]
 RewriteRule ^settings-unit/active/([0-9]+)$ controllers/developer/settings/unit/active.php?unitid=$1 [L]
+
+### DEFECTIVE SUPPLY ###
+RewriteRule ^defective-product$ controllers/developer/defective-product/defective-product.php [L]
+RewriteRule ^defective-product/([0-9]+)$ controllers/developer/defective-product/defective-product.php?defectiveproductid=$1 [L]
+RewriteRule ^defective-product/active/([0-9]+)$ controllers/developer/defective-product/active.php?defectiveproductid=$1 [L]
+RewriteRule ^defective-product/page/([0-9]+)$ controllers/developer/defective-product/page.php?start=$1 [L]
+RewriteRule ^defective-product/search$ controllers/developer/defective-product/search.php [L]
   
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 

@@ -28,12 +28,27 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
 
     $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;
 
+    $receiving_supply->receiving_supply_defective_product_qty = intval($data["receiving_supply_defective_product_qty"]);
+    $receiving_supply->defective_product_amount = $data["defective_product_amount"];
+
     if ($receiving_supply->receiving_supply_barcode != "") {
         isBarcodeExist($receiving_supply, $receiving_supply->receiving_supply_barcode, $receiving_supply->receiving_supply_product_id);
     }
 
-    checkUpdateReceiving($receiving_supply);
+    // CREATE UPDATE DEFECTIVE
+    if (intval($receiving_supply->receiving_supply_defective_product_qty) != 0) {
 
+        $isDefectiveExist = getResultData($receiving_supply->checkDefectiveById());
+        if (count($isDefectiveExist) == 0) {
+            checkCreateDefective($receiving_supply);
+        } else {
+            $receiving_supply->defective_product_aid = checkIndex($isDefectiveExist[0], "defective_product_aid");
+            checkUpdateDefective($receiving_supply);
+        }
+    }
+
+
+    checkUpdateReceiving($receiving_supply);
     $query = checkUpdate($receiving_supply);
     returnSuccess($receiving_supply, "receiving_supply", $query);
 }

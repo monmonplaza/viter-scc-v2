@@ -17,7 +17,7 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ArchiveRestore, SquarePen, Trash } from "lucide-react";
+import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -224,7 +224,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                                     <SquarePen size={14} />
                                   </button>
                                 </li>
-                                {/* <li>
+                                <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
@@ -256,7 +256,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                                   >
                                     <Trash size={14} />
                                   </button>
-                                </li> */}
+                                </li>
                               </>
                             )}
                           </ul>

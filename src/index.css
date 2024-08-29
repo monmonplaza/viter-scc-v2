@@ -108,12 +108,12 @@
     @apply bg-primary rounded-md px-4 pb-4 border border-line  overflow-y-hidden hover:overflow-y-scroll max-h-[60dvh] w-[calc(100vw-1rem)] md:w-[calc(100vw-314px)] custom-scroll gutter-scroll;
   }
 
-  table.has-sticky thead  {
-    @apply sticky top-0 bg-primary z-[20] shadow-custom
+  table.has-sticky thead {
+    @apply sticky top-0 bg-primary z-[20] shadow-custom;
   }
 
   table.has-sticky tbody tr td ul li button.tooltip {
-    @apply after:-left-1/2 after:top-full after:h-[15px] 
+    @apply after:-left-1/2 after:top-full after:h-[15px];
   }
 
   table {
@@ -183,6 +183,10 @@
   }
   select {
     @apply min-h-[34px];
+  }
+
+  .status-alert td {
+    @apply text-alert;
   }
 }
 
@@ -279,7 +283,7 @@
   }
 
   .btn-sm {
-    @apply py-1
+    @apply py-1;
   }
 
   .btn-accent {
@@ -309,8 +313,8 @@
     @apply bg-accent  text-white hover:bg-accent bg-opacity-100;
   }
 
-  .setting-nav ul li a.active{
-    @apply border-b-2 border-accent
+  .setting-nav ul li a.active {
+    @apply border-b-2 border-accent;
   }
 
   .toast.open {
