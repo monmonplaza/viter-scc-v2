@@ -16,6 +16,7 @@ import LoaderTable from "@/components/partials/LoaderTable";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm";
 import ModalDelete from "@/components/partials/modal/ModalDelete";
 import Pill from "@/components/partials/Pill";
+import PillStatus from "@/components/partials/PillStatus";
 import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
 import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
@@ -43,7 +44,6 @@ import {
 import React from "react";
 import * as Yup from "yup";
 import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
-import PillStatus from "@/components/partials/PillStatus";
 
 const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -346,10 +346,16 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
 
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
-              <div className="table-wrapper w-full">
-                <table className="">
+              <div className="table-wrapper w-full max-h-[30dvh] ">
+                <table
+                  className={`${
+                    !loadingReceiving && receivingData.count > 7
+                      ? "has-sticky"
+                      : ""
+                  }`}
+                >
                   <thead className="relative">
-                    <tr className="sticky top-0 ">
+                    <tr className="">
                       <th>#</th>
                       <th>Supplier</th>
                       <th>Product</th>
