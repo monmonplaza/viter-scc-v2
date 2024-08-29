@@ -28,6 +28,8 @@ $receiving_supply->receiving_is_new_data = 1;
 $receiving_supply->receiving_datetime = date("Y-m-d H:i:s");
 $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;
 
+$receiving_supply->receiving_supply_defective_product_qty = 0;
+
 if ($receiving_supply->receiving_supply_barcode != "") {
     isBarcodeExist($receiving_supply, $receiving_supply->receiving_supply_barcode, $receiving_supply->receiving_supply_product_id);
 }
@@ -37,7 +39,7 @@ if (count($isNewData) == 0) {
     isDateExist($receiving_supply, $receiving_supply->receiving_date);
     checkCreateReceiving($receiving_supply);
     $receiving_supply->receiving_aid = $receiving_supply->lastInsertedId;
-    $receiving_supply->receiving_reference_no =  rand(1000, 9999) . "-" .  rand(0, 9) . $receiving_supply->lastInsertedId . rand(0, 9) .  "-" .  rand(1, 999);
+    $receiving_supply->receiving_reference_no =  rand(1000, 9999)  .  rand(0, 9) . $receiving_supply->lastInsertedId . rand(0, 9) .  rand(0, 999);
     checkUpdateReferenceNumber($receiving_supply);
 } else {
     $receiving_supply->receiving_aid = checkIndex($isNewData[0], "receiving_aid");

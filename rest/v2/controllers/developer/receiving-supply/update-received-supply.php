@@ -20,7 +20,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
 
         $receiving_supply->receiving_aid = $_GET['receivingsupplyid'];
-
         $receiving_supply->receiving_date = checkIndex($data, "receiving_date");
         $receiving_supply->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
         $receiving_supply->receiving_supply_supplier_id = checkIndex($data, "receiving_supply_supplier_id");
@@ -38,6 +37,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $receiving_supply->receiving_datetime = date("Y-m-d H:i:s");
 
         $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;
+
+        $receiving_supply->receiving_supply_defective_product_qty = 0;
 
         if ($receiving_supply->receiving_supply_barcode != "") {
             isBarcodeExist($receiving_supply, $receiving_supply->receiving_supply_barcode, $receiving_supply->receiving_supply_product_id);

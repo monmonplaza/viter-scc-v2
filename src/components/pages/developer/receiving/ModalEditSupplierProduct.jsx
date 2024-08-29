@@ -1,6 +1,7 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import {
+  formatDate,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -88,7 +89,6 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     receiving_supply_unit_id: itemEdit.receiving_supply_unit_id,
     receiving_supply_quantity: itemEdit.receiving_supply_quantity,
     receiving_supply_price: itemEdit.receiving_supply_price,
-    receiving_supply_received_id: itemEdit.receiving_supply_received_id,
     receiving_supply_expiration_date: itemEdit
       ? itemEdit.receiving_supply_expiration_date
       : "",
@@ -96,7 +96,10 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     receiving_date: itemEdit.receiving_date,
     searchSupplier: itemEdit.supplier_name,
     searchProduct: itemEdit.product_name,
-    searchProduct: itemEdit.product_name,
+
+    // defective details
+    receiving_supply_defective_product_qty:
+      itemEdit.receiving_supply_defective_product_qty,
   };
 
   const yupSchema = Yup.object({
@@ -110,7 +113,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[300px] border border-line mx-2 ">
+        <div className="modal-center rounded-md !bg-primary !max-w-[350px] border border-line mx-2 ">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
@@ -121,7 +124,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
             </button>
           </div>
 
-          <div className="p-4 space-y-6">
+          <div className="space-y-6">
             <Formik
               initialValues={initVal}
               validationSchema={yupSchema}
@@ -139,6 +142,10 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                   Number(values.receiving_supply_price) *
                   Number(values.receiving_supply_quantity);
 
+                const defective_product_amount =
+                  Number(values.receiving_supply_price) *
+                  Number(values.receiving_supply_defective_product_qty);
+
                 mutation.mutate({
                   ...values,
                   receiving_total_amount:
@@ -147,13 +154,15 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                   receiving_supply_amount,
                   receiving_supply_supplier_id,
                   receiving_supply_product_id,
+                  defective_product_amount,
                 });
               }}
             >
               {(props) => {
                 return (
                   <Form>
-                    <div className="mb-5 items-end">
+                    <div className="modal-form !pb-0">
+                      {/* <div className="grid grid-cols-2 mb-5 gap-5"> */}
                       <div className="input-wrap">
                         <SearchModalSupplier
                           setData={setSupplierData}
@@ -259,7 +268,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                           disabled={mutation.isPending}
                         />
                       </div>
-                      <p className="">
+                      <p className="text-right mt-4">
                         Total:
                         <span className="font-semibold">
                           {pesoSign}
@@ -270,8 +279,31 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                           )}
                         </span>
                       </p>
+                      <div className="input-wrap">
+                        <InputText
+                          label="Defective Qty"
+                          type="text"
+                          number="number"
+                          name="receiving_supply_defective_product_qty"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <p className="text-right mt-4">
+                        Defective Amount:
+                        <span className="font-semibold">
+                          {pesoSign}
+                          {numberWithCommasToFixed(
+                            Number(props.values.receiving_supply_price) *
+                              Number(
+                                props.values
+                                  .receiving_supply_defective_product_qty
+                              ),
+                            2
+                          )}
+                        </span>
+                      </p>
                     </div>
-                    <div className="flex items-center gap-2 justify-end">
+                    <div className="flex items-center gap-2 justify-end bg-inherit p-4">
                       <button
                         className="btn btn-accent"
                         disabled={mutation.isPending}

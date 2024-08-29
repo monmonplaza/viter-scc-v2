@@ -9,6 +9,7 @@ class ReceivingSupply
     public $receiving_supply_price;
     public $receiving_supply_amount;
     public $receiving_supply_is_active;
+    public $receiving_supply_defective_product_qty;
     public $receiving_supply_datetime;
     public $receiving_supply_created;
 
@@ -23,6 +24,9 @@ class ReceivingSupply
     public $receiving_total_amount;
     public $receiving_datetime;
 
+    public $defective_product_aid;
+    public $defective_product_amount;
+
     public $connection;
     public $lastInsertedId;
 
@@ -35,6 +39,7 @@ class ReceivingSupply
     public $tblSupplier;
     public $tblReceiving;
     public $tblUnit;
+    public $tblDefectiveProduct;
 
 
     public function __construct($db)
@@ -45,6 +50,7 @@ class ReceivingSupply
         $this->tblSupplier = "sccv2_supplier";
         $this->tblReceiving = "sccv2_receiving";
         $this->tblUnit = "sccv2_settings_unit";
+        $this->tblDefectiveProduct = "sccv2_defective_product";
     }
 
     // create
@@ -92,6 +98,7 @@ class ReceivingSupply
             $sql .= "receiving_supply_expiration_date, ";
             $sql .= "receiving_supply_barcode, ";
             $sql .= "receiving_supply_is_active, ";
+            $sql .= "receiving_supply_defective_product_qty, ";
             $sql .= "receiving_supply_datetime, ";
             $sql .= "receiving_supply_created ) values ( ";
             $sql .= ":receiving_supply_received_id, ";
@@ -104,6 +111,7 @@ class ReceivingSupply
             $sql .= ":receiving_supply_expiration_date, ";
             $sql .= ":receiving_supply_barcode, ";
             $sql .= ":receiving_supply_is_active, ";
+            $sql .= ":receiving_supply_defective_product_qty, ";
             $sql .= ":receiving_supply_datetime, ";
             $sql .= ":receiving_supply_created ) ";
             $query = $this->connection->prepare($sql);
@@ -118,6 +126,7 @@ class ReceivingSupply
                 "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
                 "receiving_supply_barcode" => $this->receiving_supply_barcode,
                 "receiving_supply_is_active" => $this->receiving_supply_is_active,
+                "receiving_supply_defective_product_qty" => $this->receiving_supply_defective_product_qty,
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
                 "receiving_supply_created" => $this->receiving_supply_created,
             ]);
@@ -192,7 +201,10 @@ class ReceivingSupply
     {
         try {
             $sql = "select r.*, ";
-            $sql .= "rs.* ";
+            $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "p.product_name, ";
+            $sql .= "s.supplier_name ";
             $sql .= " from ";
             $sql .= " {$this->tblReceivingSupply} as rs, ";
             $sql .= " {$this->tblReceiving} as r, ";
@@ -203,7 +215,7 @@ class ReceivingSupply
             $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by receiving_supply_is_active desc ";
+            $sql .= "order by rs.receiving_supply_is_active desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -215,8 +227,22 @@ class ReceivingSupply
     public function readLimit()
     {
         try {
-            $sql = "select * from {$this->tblReceivingSupply} ";
-            $sql .= "order by receiving_supply_is_active desc, ";
+            $sql = "select r.*, ";
+            $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "p.product_name, ";
+            $sql .= "s.supplier_name ";
+            $sql .= " from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblReceiving} as r, ";
+            $sql .= "{$this->tblUnit} as u, ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSupplier} as s ";
+            $sql .= "where p.product_aid = rs.receiving_supply_product_id ";
+            $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
+            $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
+            $sql .= "order by rs.receiving_supply_is_active desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -264,6 +290,7 @@ class ReceivingSupply
             $sql .= "receiving_supply_expiration_date = :receiving_supply_expiration_date, ";
             $sql .= "receiving_supply_barcode = :receiving_supply_barcode, ";
             $sql .= "receiving_supply_amount = :receiving_supply_amount, ";
+            $sql .= "receiving_supply_defective_product_qty = :receiving_supply_defective_product_qty, ";
             $sql .= "receiving_supply_datetime = :receiving_supply_datetime ";
             $sql .= "where receiving_supply_aid = :receiving_supply_aid ";
             $query = $this->connection->prepare($sql);
@@ -276,6 +303,7 @@ class ReceivingSupply
                 "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
                 "receiving_supply_barcode" => $this->receiving_supply_barcode,
                 "receiving_supply_amount" => $this->receiving_supply_amount,
+                "receiving_supply_defective_product_qty" => $this->receiving_supply_defective_product_qty,
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
                 "receiving_supply_aid" => $this->receiving_supply_aid,
             ]);
@@ -443,8 +471,82 @@ class ReceivingSupply
             $sql .= "{$this->tblReceiving} as r ";
             $sql .= "where r.receiving_is_new_data = '1' ";
             $sql .= "and rs.receiving_supply_received_id = r.receiving_aid ";
-            $sql .= "group by r.receiving_is_new_data ";
+            $sql .= "group by r.receiving_is_new_data";
             $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkDefectiveById()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblDefectiveProduct} ";
+            $sql .= "where defective_product_is_resolve = '0' ";
+            $sql .= "and defective_product_receiving_supply_id = :receiving_supply_aid ";
+            $sql .= "group by defective_product_receiving_supply_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_aid" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createDefective()
+    {
+        try {
+            $sql = "insert into {$this->tblDefectiveProduct} ";
+            $sql .= "( defective_product_receiving_supply_id, ";
+            $sql .= "defective_product_is_resolve, ";
+            $sql .= "defective_product_qty, ";
+            $sql .= "defective_product_amount, ";
+            $sql .= "defective_product_updated, ";
+            $sql .= "defective_product_created ) values ( ";
+            $sql .= ":defective_product_receiving_supply_id, ";
+            $sql .= ":defective_product_is_resolve, ";
+            $sql .= ":defective_product_qty, ";
+            $sql .= ":defective_product_amount, ";
+            $sql .= ":defective_product_updated, ";
+            $sql .= ":defective_product_created ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
+                "defective_product_is_resolve" => $this->receiving_is_complete,
+                "defective_product_qty" => $this->receiving_supply_defective_product_qty,
+                "defective_product_amount" => $this->defective_product_amount,
+                "defective_product_updated" => $this->receiving_supply_datetime,
+                "defective_product_created" => $this->receiving_supply_created,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateDefective()
+    {
+        try {
+            $sql = "update {$this->tblDefectiveProduct} set ";
+            $sql .= "defective_product_qty = :defective_product_qty, ";
+            $sql .= "defective_product_amount = :defective_product_amount, ";
+            $sql .= "defective_product_updated = :defective_product_updated ";
+            $sql .= "where defective_product_aid = :defective_product_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "defective_product_qty" => $this->receiving_supply_defective_product_qty,
+                "defective_product_amount" => $this->defective_product_amount,
+                "defective_product_updated" => $this->receiving_supply_datetime,
+                "defective_product_aid" => $this->defective_product_aid,
+            ]);
         } catch (PDOException $ex) {
             $query = false;
         }

@@ -48,7 +48,7 @@ const Settings = () => {
               </div>
 
               <div className="setting-main py-10 max-w-[700px] w-full ">
-                <div class="flex justify-between items-end">
+                <div className="flex justify-between items-end">
                   <h2 className="mb-0">Unit</h2>
                   <button className="btn btn-accent btn-sm">
                     <Plus /> Add
