@@ -356,7 +356,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       <th>Barcode</th>
                       <th>Expiration Date</th>
                       <th>Quantity</th>
-                      <th className="text-right">Price</th>
+                      <th className="text-right ">Price</th>
                       <th>Unit</th>
                       <th className="text-right">Amount</th>
                       <th className="text-center">Defective product</th>
