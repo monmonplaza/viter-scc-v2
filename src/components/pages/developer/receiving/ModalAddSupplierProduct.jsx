@@ -347,9 +347,9 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
               <div className="table-wrapper w-full">
-                <table>
+                <table className="">
                   <thead className="relative">
-                    <tr className="sticky top-0 bg-inherit">
+                    <tr className="sticky top-0 ">
                       <th>#</th>
                       <th>Supplier</th>
                       <th>Product</th>
@@ -383,7 +383,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                         </td>
                       </tr>
                     )}
-
                     {receivingData?.data.map((item, key) => {
                       return (
                         <tr
@@ -432,7 +431,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                                   <li className="">
                                     <button
                                       data-tooltip="Edit"
-                                      className="tooltip "
+                                      className="tooltip after:!z-50"
                                       onClick={() =>
                                         handleEditSupplier({
                                           ...item,
@@ -516,6 +515,13 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                 </table>
               </div>
             </div>
+            <ul className="grid grid-cols-[1fr_5rem_5rem_5rem_5rem]">
+              <li>1</li>
+              <li>1</li>
+              <li>1</li>
+              <li>1</li>
+              <li>1</li>
+            </ul>
 
             <h3 className="text-right mt-5 mr-7">
               Total:{pesoSign}
