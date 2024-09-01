@@ -10,16 +10,14 @@ import NoData from "@/components/partials/icons/Nodata.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
-import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
-import Pill from "@/components/partials/Pill.jsx";
+import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
 import PillStatus from "@/components/partials/PillStatus";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
+import { ArchiveRestore, ClipboardCheck } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -197,6 +195,46 @@ const DefectiveProductList = ({ setItemEdit }) => {
                             2
                           )}
                         </td>
+
+                        <td className="table-action">
+                          <ul>
+                            {item.defective_product_is_resolve === 0 ? (
+                              <>
+                                <li>
+                                  <button
+                                    data-tooltip="Resolve"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleRestore(
+                                        item.defective_product_aid,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <ClipboardCheck size={14} />
+                                  </button>
+                                </li>
+                              </>
+                            ) : (
+                              <>
+                                <li>
+                                  <button
+                                    data-tooltip="Restore"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleArchive(
+                                        item.defective_product_aid,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <ArchiveRestore size={14} />
+                                  </button>
+                                </li>
+                              </>
+                            )}
+                          </ul>
+                        </td>
                       </tr>
                     );
                   })}
@@ -218,6 +256,16 @@ const DefectiveProductList = ({ setItemEdit }) => {
           </div>
         </div>
       </div>
+      {store.isConfirm && (
+        <ModalAdvanceConfirm
+          mysqlApiArchive={`/${ver}/defective-product/active/${aid}`}
+          queryKey="defectiveProduct"
+          item={`${data.product_name} (${formatDate(data.receiving_date)})`}
+          active={isActive}
+          text={isActive ? "resolve" : "restore"}
+          itemData={data}
+        />
+      )}
     </>
   );
 };

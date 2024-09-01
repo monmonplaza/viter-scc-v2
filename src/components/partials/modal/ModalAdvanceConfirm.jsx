@@ -19,6 +19,7 @@ const ModalAdvanceConfirm = ({
   item,
   active,
   text = "",
+  itemData = null,
 }) => {
   const { dispatch } = React.useContext(StoreContext);
   const queryClient = useQueryClient();
@@ -41,6 +42,7 @@ const ModalAdvanceConfirm = ({
   const handleYes = async () => {
     mutation.mutate({
       isActive: active ? 1 : 0,
+      ...itemData,
     });
   };
 

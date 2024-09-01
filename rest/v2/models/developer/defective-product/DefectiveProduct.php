@@ -9,6 +9,9 @@ class DefectiveProduct
     public $defective_product_created;
     public $defective_product_updated;
 
+    public $receiving_supply_product_id;
+    public $receiving_supply_defective_product_qty;
+
     public $connection;
     public $lastInsertedId;
 
@@ -336,6 +339,27 @@ class DefectiveProduct
                 "supplier_name" => "%{$this->defective_product_search}%",
                 "settings_unit_name" => "%{$this->defective_product_search}%",
                 "defective_product_is_resolve" => $this->defective_product_is_resolve,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // update
+    public function updateReceivingSupply()
+    {
+        try {
+            $sql = "update {$this->tblReceivingSupply} set ";
+            $sql .= "receiving_supply_defective_product_qty = :receiving_supply_defective_product_qty, ";
+            $sql .= "receiving_supply_datetime = :receiving_supply_datetime ";
+            $sql .= "where receiving_supply_product_id = :receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_defective_product_qty" => $this->receiving_supply_defective_product_qty,
+                "receiving_supply_datetime" => $this->defective_product_updated,
+                "receiving_supply_product_id" => $this->receiving_supply_product_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
