@@ -131,7 +131,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       dispatch(setIsAdd(false));
-    }, 300);
+    }, 0);
   };
 
   const handleSearch = () => {
@@ -171,7 +171,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 ">
+        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
