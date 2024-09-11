@@ -23,9 +23,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $defectiveProduct->defective_product_aid = $_GET['defectiveproductid'];
         $defectiveProduct->defective_product_is_resolve = trim($data["isActive"]);
-        $defectiveProduct->defective_product_datetime = date("Y-m-d H:i:s");
+        $defectiveProduct->defective_product_updated = date("Y-m-d H:i:s");
+        $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_aid");
 
         checkId($defectiveProduct->defective_product_aid);
+
+        if (intval($defectiveProduct->defective_product_is_resolve) == 1) {
+            $defectiveProduct->receiving_supply_defective_product_qty = 0;
+        } else {
+            $defectiveProduct->receiving_supply_defective_product_qty = $data["defective_product_qty"];
+        }
+        checkUpdateReceivingSupply($defectiveProduct);
+
         $query = checkActive($defectiveProduct);
         http_response_code(200);
         returnSuccess($defectiveProduct, "defectiveProduct", $query);

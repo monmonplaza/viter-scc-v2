@@ -10,6 +10,7 @@ import NoData from "@/components/partials/icons/NoData.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
+import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import PillStatus from "@/components/partials/PillStatus";
@@ -17,7 +18,14 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  ClipboardCheck,
+  ScrollText,
+  SquarePen,
+  Trash,
+} from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -209,54 +217,62 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                                       handleRestore(item.receiving_aid, item)
                                     }
                                   >
-                                    <ArchiveRestore size={14} />
+                                    <ClipboardCheck size={14} />
                                   </button>
                                 </li>
                               </>
                             ) : (
                               <>
-                                <li>
-                                  <button
-                                    data-tooltip="View"
-                                    className="tooltip"
-                                    onClick={() => handleView(item)}
-                                  >
-                                    <SquarePen size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Edit"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleEdit(item.receiving_aid, item)
-                                    }
-                                  >
-                                    <SquarePen size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Restore"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleArchive(item.receiving_aid, item)
-                                    }
-                                  >
-                                    <Archive size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Delete"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleRemove(item.receiving_aid, item)
-                                    }
-                                  >
-                                    <Trash size={14} />
-                                  </button>
-                                </li>
+                                {1 === 1 ? (
+                                  <li>
+                                    <button
+                                      data-tooltip="View"
+                                      className="tooltip"
+                                      onClick={() => handleView(item)}
+                                    >
+                                      <ScrollText size={14} />
+                                    </button>
+                                  </li>
+                                ) : (
+                                  <>
+                                    <li>
+                                      <button
+                                        data-tooltip="Edit"
+                                        className="tooltip"
+                                        onClick={() =>
+                                          handleEdit(item.receiving_aid, item)
+                                        }
+                                      >
+                                        <SquarePen size={14} />
+                                      </button>
+                                    </li>
+                                    <li>
+                                      <button
+                                        data-tooltip="Restore"
+                                        className="tooltip"
+                                        onClick={() =>
+                                          handleArchive(
+                                            item.receiving_aid,
+                                            item
+                                          )
+                                        }
+                                      >
+                                        <ArchiveRestore size={14} />
+                                      </button>
+                                    </li>
+                                    <li>
+                                      <button
+                                        data-tooltip="Delete"
+                                        className="tooltip"
+                                        onClick={() =>
+                                          handleRemove(item.receiving_aid, item)
+                                        }
+                                      >
+                                        <Trash size={14} />
+                                      </button>
+                                    </li>
+                                  </>
+                                )}
                               </>
                             )}
                           </ul>
@@ -291,11 +307,12 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
         />
       )}
       {!store.isAdd && store.isConfirm && (
-        <ModalConfirm
+        <ModalAdvanceConfirm
           mysqlApiArchive={`/${ver}/receiving/active/${aid}`}
           queryKey="receiving"
           item={formatDate(data.receiving_date)}
           active={isActive}
+          text={isActive ? "complete" : "restore"}
         />
       )}
     </>

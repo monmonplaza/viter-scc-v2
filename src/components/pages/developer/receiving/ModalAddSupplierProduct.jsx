@@ -55,6 +55,9 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
   const [productData, setProductData] = React.useState(null);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   let counter = 1;
+  let totalQty = 0;
+  let totalPrice = 0;
+  let totalDefects = 0;
 
   const {
     isLoading: loadingUnit,
@@ -354,22 +357,22 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       : ""
                   }`}
                 >
-                  <thead className="relative">
+                  <thead className="">
                     <tr className="">
                       <th>#</th>
                       <th>Supplier</th>
                       <th>Product</th>
                       <th>Barcode</th>
                       <th>Expiration Date</th>
-                      <th>Quantity</th>
-                      <th className="text-right">Price</th>
                       <th>Unit</th>
+                      <th className="text-right">Quantity</th>
+                      <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-center">Defective product</th>
+                      <th className="text-right">Defective product</th>
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody className=" ">
                     {((loadingReceiving && !fetchingReceiving) ||
                       receivingData?.data.length === 0) && (
                       <tr>
@@ -389,8 +392,12 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                         </td>
                       </tr>
                     )}
-
                     {receivingData?.data.map((item, key) => {
+                      totalQty += Number(item.receiving_supply_quantity);
+                      totalPrice += Number(item.receiving_supply_price);
+                      totalDefects += Number(
+                        item.receiving_supply_defective_product_qty
+                      );
                       return (
                         <tr
                           key={key}
@@ -398,7 +405,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             Number(
                               item.receiving_supply_defective_product_qty
                             ) !== 0
-                              ? "status-alert"
+                              ? "status-alert "
                               : ""
                           }
                         >
@@ -411,7 +418,10 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                           <td>
                             {formatDate(item.receiving_supply_expiration_date)}
                           </td>
-                          <td>{item.receiving_supply_quantity}</td>
+                          <td>{item.settings_unit_name}</td>
+                          <td className="text-right">
+                            {item.receiving_supply_quantity}
+                          </td>
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(
@@ -419,7 +429,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                               2
                             )}
                           </td>
-                          <td>{item.settings_unit_name}</td>
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(
@@ -427,7 +436,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                               2
                             )}
                           </td>
-                          <td className="text-center">
+                          <td className="text-right">
                             {item.receiving_supply_defective_product_qty}
                           </td>
 
@@ -438,7 +447,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                                   <li className="">
                                     <button
                                       data-tooltip="Edit"
-                                      className="tooltip "
+                                      className="tooltip after:!z-50"
                                       onClick={() =>
                                         handleEditSupplier({
                                           ...item,
@@ -519,17 +528,36 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
+                  <tr className="sticky -bottom-4 !bg-primary !text-sm text-dark ">
+                    <td colSpan={5} className=""></td>
+                    <td className="py-4 pl-2 ">Total:</td>
+                    <td className="text-right py-4 pr-2">{Number(totalQty)}</td>
+                    <td className="text-right py-4 pr-2">
+                      {pesoSign}
+                      {numberWithCommasToFixed(totalPrice, 2)}
+                    </td>
+                    <td className="text-right py-4 pr-2">
+                      {pesoSign}
+                      {numberWithCommasToFixed(
+                        receivingData?.count > 0 ? receivingData?.amount : 0,
+                        2
+                      )}
+                    </td>
+                    <td className="text-right py-4 pr-2">
+                      {Number(totalDefects)}
+                    </td>
+                  </tr>
                 </table>
               </div>
             </div>
-
+            {/* 
             <h3 className="text-right mt-5 mr-7">
               Total:{pesoSign}
               {numberWithCommasToFixed(
                 receivingData?.count > 0 ? receivingData?.amount : 0,
                 2
               )}
-            </h3>
+            </h3> */}
             <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
