@@ -74,7 +74,7 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       setEditSupplier(false);
-    }, 300);
+    }, 0);
   };
 
   const handleSearch = () => {

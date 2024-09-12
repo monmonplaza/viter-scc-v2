@@ -124,7 +124,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       dispatch(setIsAdd(false));
-    }, 300);
+    }, 0);
   };
 
   const handleSearch = () => {

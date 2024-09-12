@@ -41,7 +41,7 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       setIsView(false);
-    }, 300);
+    }, 0);
   };
 
   React.useEffect(() => handleEscape(handleClose), []);
