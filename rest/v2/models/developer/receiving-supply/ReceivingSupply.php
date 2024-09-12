@@ -28,6 +28,13 @@ class ReceivingSupply
     public $defective_product_aid;
     public $defective_product_amount;
 
+    public $inventory_log_product_id;
+    public $inventory_log_stock_in;
+    public $inventory_log_stock_out;
+    public $inventory_log_defective_product;
+    public $inventory_log_return_product;
+    public $inventory_log_updated;
+
     public $connection;
     public $lastInsertedId;
 
@@ -41,6 +48,7 @@ class ReceivingSupply
     public $tblReceiving;
     public $tblUnit;
     public $tblDefectiveProduct;
+    public $tblInventoryLog;
 
 
     public function __construct($db)
@@ -52,6 +60,7 @@ class ReceivingSupply
         $this->tblReceiving = "sccv2_receiving";
         $this->tblUnit = "sccv2_settings_unit";
         $this->tblDefectiveProduct = "sccv2_defective_product";
+        $this->tblInventoryLog = "sccv2_inventory_log";
     }
 
     // create
@@ -216,7 +225,7 @@ class ReceivingSupply
             $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by rs.receiving_supply_aid desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -243,7 +252,7 @@ class ReceivingSupply
             $sql .= "and s.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by rs.receiving_supply_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -396,6 +405,39 @@ class ReceivingSupply
         return $query;
     }
 
+    // delete
+    public function deleteDefective()
+    {
+        try {
+            $sql = "delete from {$this->tblDefectiveProduct} ";
+            $sql .= "where defective_product_receiving_supply_id = :defective_product_receiving_supply_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkAssociationDefective()
+    {
+        try {
+            $sql = "select defective_product_receiving_supply_id from {$this->tblDefectiveProduct} ";
+            $sql .= "where defective_product_receiving_supply_id = :defective_product_receiving_supply_id ";
+            $sql .= "and defective_product_is_resolve = '1' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // name
     public function checkDate()
     {
@@ -439,6 +481,49 @@ class ReceivingSupply
             $sql = "select * from {$this->tblReceiving} ";
             $sql .= "where receiving_is_new_data = '1' ";
             $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkProductTotalQty()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(receiving_supply_quantity) as total_product_stock_qty ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} ";
+            $sql .= "where receiving_supply_product_id = :receiving_supply_product_id ";
+            $sql .= "group by receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_product_id" => $this->receiving_supply_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkDefectiveProductTotalQty()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(dp.defective_product_qty) as total_defective_product_qty ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblDefectiveProduct} as dp ";
+            $sql .= "where dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and dp.defective_product_is_resolve = '0' ";
+            $sql .= "and rs.receiving_supply_product_id = :receiving_supply_product_id ";
+            $sql .= "group by rs.receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_product_id" => $this->receiving_supply_product_id,
+            ]);
         } catch (PDOException $ex) {
             $query = false;
         }
@@ -554,6 +639,47 @@ class ReceivingSupply
                 "defective_product_amount" => $this->defective_product_amount,
                 "defective_product_updated" => $this->receiving_supply_datetime,
                 "defective_product_aid" => $this->defective_product_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // update Inventory Log
+    public function updateInventoryStockIn()
+    {
+        try {
+            $sql = "update {$this->tblInventoryLog} set ";
+            $sql .= "inventory_log_stock_in = :inventory_log_stock_in, ";
+            $sql .= "inventory_log_updated = :inventory_log_updated ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_stock_in" => $this->inventory_log_stock_in,
+                "inventory_log_updated" => $this->inventory_log_updated,
+                "inventory_log_product_id" => $this->inventory_log_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Inventory Log
+    public function updateInventoryDefectiveProduct()
+    {
+        try {
+            $sql = "update {$this->tblInventoryLog} set ";
+            $sql .= "inventory_log_defective_product = :inventory_log_defective_product, ";
+            $sql .= "inventory_log_updated = :inventory_log_updated ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_defective_product" => $this->inventory_log_defective_product,
+                "inventory_log_updated" => $this->inventory_log_updated,
+                "inventory_log_product_id" => $this->inventory_log_product_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;

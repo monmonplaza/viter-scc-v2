@@ -2,6 +2,7 @@ import Breadcrumbs from "@/components/partials/Breadcrumbs.jsx";
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
+import InventoryList from "./InventoryList";
 
 const Inventory = () => {
   return (
@@ -17,11 +18,8 @@ const Inventory = () => {
               <Breadcrumbs />
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Inventory</h1>
-
-                {/* <button className="btn btn-accent h-[34px] ">
-                  <Plus size={20} className="!stroke-[2px]" /> Add
-                </button> */}
               </div>
+              <InventoryList />
             </div>
             <Footer />
           </div>

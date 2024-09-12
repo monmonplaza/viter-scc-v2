@@ -15,6 +15,7 @@ class Category
     public $lastInsertedId;
 
     public $tblCategory;
+    public $tblProduct;
 
     public $category_start;
     public $category_total;
@@ -24,6 +25,7 @@ class Category
     {
         $this->connection = $db;
         $this->tblCategory = "sccv2_category";
+        $this->tblProduct = "sccv2_product";
     }
 
     // create
@@ -192,6 +194,22 @@ class Category
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "category_name" => "{$this->category_name}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkAssociation()
+    {
+        try {
+            $sql = "select product_category_id from {$this->tblProduct} ";
+            $sql .= "where product_category_id = :product_category_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_category_id" => $this->category_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

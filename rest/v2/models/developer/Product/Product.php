@@ -20,6 +20,9 @@ class Product
 
     public $tblProduct;
     public $tblCategory;
+    public $tblInventoryLog;
+    public $tblReceivingSupply;
+    public $tblReturnProduct;
 
 
     public function __construct($db)
@@ -27,6 +30,9 @@ class Product
         $this->connection = $db;
         $this->tblProduct = "sccv2_product";
         $this->tblCategory = "sccv2_category";
+        $this->tblInventoryLog = "sccv2_inventory_log";
+        $this->tblReceivingSupply = "sccv2_receiving_supply";
+        $this->tblReturnProduct = "sccv2_return_product";
     }
 
     // create
@@ -280,6 +286,42 @@ class Product
         return $query;
     }
 
+    public function checkAssociation()
+    {
+        try {
+            $sql = "select receiving_supply_product_id ";
+            $sql .= "from {$this->tblReceivingSupply} ";
+            $sql .= "where ";
+            $sql .= "receiving_supply_product_id = :receiving_supply_product_id ";
+            $sql .= "order by receiving_supply_product_id asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_product_id" => $this->product_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationReturnProduct()
+    {
+        try {
+            $sql = "select return_product_id ";
+            $sql .= "from {$this->tblReturnProduct} ";
+            $sql .= "where ";
+            $sql .= "return_product_id = :return_product_id ";
+            $sql .= "order by return_product_id asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_id" => $this->product_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // read all
     public function readAllCategory()
     {
@@ -294,7 +336,6 @@ class Product
         return $query;
     }
 
-
     // update
     public function updateProductSKUByLastInsertedId()
     {
@@ -308,6 +349,45 @@ class Product
                 "product_sku" => $this->product_sku . $this->lastInsertedId,
                 "product_datetime" => $this->product_datetime,
                 "product_aid" => $this->lastInsertedId,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createInventoryLog()
+    {
+        try {
+            $sql = "insert into {$this->tblInventoryLog} ";
+            $sql .= "( inventory_log_product_id, ";
+            $sql .= "inventory_log_updated, ";
+            $sql .= "inventory_log_created ) values ( ";
+            $sql .= ":inventory_log_product_id, ";
+            $sql .= ":inventory_log_updated, ";
+            $sql .= ":inventory_log_created ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_product_id" => $this->lastInsertedId,
+                "inventory_log_updated" => $this->product_datetime,
+                "inventory_log_created" => $this->product_created,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteInventoryLog()
+    {
+        try {
+            $sql = "delete from {$this->tblInventoryLog} ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id  ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_product_id" => $this->product_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

@@ -13,7 +13,12 @@ import React from "react";
 import SpinnerButton from "../spinners/SpinnerButton.jsx";
 import WrapperModal from "../wrapper/WrapperModal.jsx";
 
-const ModalDelete = ({ mysqlApiDelete, queryKey, item }) => {
+const ModalAdvanceDelete = ({
+  mysqlApiDelete,
+  queryKey,
+  dataItem = "",
+  item,
+}) => {
   const { dispatch } = React.useContext(StoreContext);
 
   const queryClient = useQueryClient();
@@ -35,7 +40,7 @@ const ModalDelete = ({ mysqlApiDelete, queryKey, item }) => {
 
   const handleYes = async () => {
     mutation.mutate({
-      item: item,
+      ...item,
     });
   };
 
@@ -63,7 +68,7 @@ const ModalDelete = ({ mysqlApiDelete, queryKey, item }) => {
         <div className="p-3">
           <p className="mb-2 ">
             You are about to delete
-            <span className="font-semibold mx-1">"{item}"</span>record. This
+            <span className="font-semibold mx-1">"{dataItem}"</span>record. This
             action will permanently delete this record.
           </p>
           <p>Are you sure you want to confinue?</p>
@@ -91,4 +96,4 @@ const ModalDelete = ({ mysqlApiDelete, queryKey, item }) => {
   );
 };
 
-export default ModalDelete;
+export default ModalAdvanceDelete;

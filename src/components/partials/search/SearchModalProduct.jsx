@@ -18,7 +18,7 @@ const SearchModalProduct = ({
   const { store, dispatch } = React.useContext(StoreContext);
   // client
   const [search, setSearch] = React.useState(
-    itemEdit ? props.values.searchProduct : ""
+    itemEdit ? props.searchProduct : ""
   );
 
   const [onFocus, setOnFocus] = React.useState(false);

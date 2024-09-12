@@ -138,7 +138,7 @@ const ModalReturnProduct = ({ itemEdit }) => {
                     <div className="input-wrap">
                       <SearchModalProduct
                         setData={setProductData}
-                        props={props}
+                        props={props.values}
                         label="Search Product"
                         name="searchProduct"
                         mutation={mutation}

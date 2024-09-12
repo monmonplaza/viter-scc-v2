@@ -6,6 +6,7 @@ import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
+import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import Pill from "@/components/partials/Pill.jsx";
@@ -277,10 +278,11 @@ const ReturnProductList = ({ setItemEdit }) => {
       </div>
 
       {store.isDelete && (
-        <ModalDelete
+        <ModalAdvanceDelete
           mysqlApiDelete={`/${ver}/return-product/${aid}`}
           queryKey="return-product"
-          item={data.product_name}
+          dataItem={data.product_name}
+          item={data}
         />
       )}
       {store.isConfirm && (

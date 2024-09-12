@@ -2,8 +2,13 @@ import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import DefectiveProductList from "./DefectiveProductList";
+import ToastSuccess from "@/components/partials/ToastSuccess";
+import ModalValidate from "@/components/partials/modal/ModalValidate";
+import { StoreContext } from "@/components/store/StoreContext";
+import React from "react";
 
 const DefectiveProduct = () => {
+  const { store, dispatch } = React.useContext(StoreContext);
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
@@ -23,6 +28,8 @@ const DefectiveProduct = () => {
           </div>
         </main>
       </div>
+      {store.success && <ToastSuccess />}
+      {store.validate && <ModalValidate />}
     </>
   );
 };

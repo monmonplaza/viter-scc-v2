@@ -13,6 +13,10 @@ class ReturnProduct
 
     public $product_name;
 
+    public $inventory_log_return_product;
+    public $inventory_log_product_id;
+    public $inventory_log_updated;
+
     public $connection;
     public $lastInsertedId;
 
@@ -22,12 +26,14 @@ class ReturnProduct
 
     public $tblReturnProduct;
     public $tblProduct;
+    public $tblInventoryLog;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblReturnProduct = "sccv2_return_product";
         $this->tblProduct = "sccv2_product";
+        $this->tblInventoryLog = "sccv2_inventory_log";
     }
 
     // create
@@ -78,6 +84,7 @@ class ReturnProduct
             $sql .= "{$this->tblProduct} as p ";
             $sql .= "where rp.return_product_id = p.product_aid ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
+            $sql .= "rp.return_product_date desc, ";
             $sql .= "p.product_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -98,6 +105,7 @@ class ReturnProduct
             $sql .= "{$this->tblProduct} as p ";
             $sql .= "where rp.return_product_id = p.product_aid ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
+            $sql .= "rp.return_product_date desc, ";
             $sql .= "p.product_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -130,6 +138,7 @@ class ReturnProduct
             $sql .= "or rp.return_product_resolved_date like :return_product_resolved_date ";
             $sql .= ") ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
+            $sql .= "rp.return_product_date desc, ";
             $sql .= "p.product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -293,6 +302,48 @@ class ReturnProduct
                 "return_product_date" => "%{$this->return_product_search}%",
                 "return_product_resolved_date" => "%{$this->return_product_search}%",
                 "return_product_is_resolved" => $this->return_product_is_resolved,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // INVENTORY LOG ONLY
+    // name
+    public function checkReturnProductTotalQty()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(return_product_qty) as total_return_product_qty ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReturnProduct} ";
+            $sql .= "where return_product_id = :return_product_id ";
+            $sql .= "and return_product_is_resolved = '1' ";
+            $sql .= "group by return_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_id" => $this->return_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Inventory Log
+    public function updateInventoryReturnProduct()
+    {
+        try {
+            $sql = "update {$this->tblInventoryLog} set ";
+            $sql .= "inventory_log_return_product = :inventory_log_return_product, ";
+            $sql .= "inventory_log_updated = :inventory_log_updated ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_return_product" => $this->inventory_log_return_product,
+                "inventory_log_updated" => $this->inventory_log_updated,
+                "inventory_log_product_id" => $this->inventory_log_product_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;

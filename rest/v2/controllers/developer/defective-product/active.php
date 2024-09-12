@@ -23,10 +23,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $defectiveProduct->defective_product_aid = $_GET['defectiveproductid'];
         $defectiveProduct->defective_product_is_resolve = trim($data["isActive"]);
-        $defectiveProduct->defective_product_updated = date("Y-m-d H:i:s");
-        $defectiveProduct->defective_product_resolved_date = date("Y-m-d");
+        $defectiveProduct->defective_product_receiving_supply_id = checkIndex($data, "receiving_supply_aid");
 
-        $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_aid");
+
 
         checkId($defectiveProduct->defective_product_aid);
 
@@ -40,6 +39,19 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkUpdateReceivingSupply($defectiveProduct);
 
         $query = checkActive($defectiveProduct);
+
+        // FOR INVETORY ONLY
+        // DEFECTIVE   
+        $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
+        $defectiveProduct->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
+        $defectiveProduct->inventory_log_updated = date("Y-m-d H:i:s");
+        $updateInventoryDefective = getResultData($defectiveProduct->checkDefectiveProductTotalQty());
+        if (count($updateInventoryDefective) > 0) {
+            $defectiveProduct->inventory_log_defective_product = checkIndex($updateInventoryDefective[0], "total_defective_product_qty");
+        } else {
+            $defectiveProduct->inventory_log_defective_product = 0;
+        }
+        checkUpdateInventoryDefectiveProduct($defectiveProduct);
         http_response_code(200);
         returnSuccess($defectiveProduct, "defectiveProduct", $query);
     }

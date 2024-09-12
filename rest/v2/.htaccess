@@ -67,6 +67,12 @@ RewriteRule ^return-product/([0-9]+)$ controllers/developer/return-product/retur
 RewriteRule ^return-product/active/([0-9]+)$ controllers/developer/return-product/active.php?returnproductid=$1 [L]
 RewriteRule ^return-product/page/([0-9]+)$ controllers/developer/return-product/page.php?start=$1 [L]
 RewriteRule ^return-product/search$ controllers/developer/return-product/search.php [L]
+   
+### RETURN PRODUCT ###
+RewriteRule ^inventory$ controllers/developer/inventory/inventory.php [L]
+RewriteRule ^inventory/([0-9]+)$ controllers/developer/inventory/inventory.php?inventoryid=$1 [L] 
+RewriteRule ^inventory/page/([0-9]+)$ controllers/developer/inventory/page.php?start=$1 [L]
+RewriteRule ^inventory/search$ controllers/developer/inventory/search.php [L]
 
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 
