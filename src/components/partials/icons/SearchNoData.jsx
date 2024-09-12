@@ -3,7 +3,7 @@ import React from "react";
 const SearchNoData = () => {
   return (
     <>
-      <div className="flex flex-col items-center gap-2 pt-11 ">
+      <div className="flex flex-col items-center gap-2 ">
         <svg
           width="101"
           height="94"

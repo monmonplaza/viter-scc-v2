@@ -17,16 +17,14 @@ RewriteRule ^product/active/([0-9]+)$ controllers/developer/product/active.php?p
 RewriteRule ^product/page/([0-9]+)$ controllers/developer/product/page.php?start=$1 [L]
 RewriteRule ^product/search$ controllers/developer/product/search.php [L]
 RewriteRule ^product/read-all-category$ controllers/developer/product/read-all-category.php [L]
-
-
+ 
 ### CATEGORY ###
 RewriteRule ^category$ controllers/developer/category/category.php [L]
 RewriteRule ^category/([0-9]+)$ controllers/developer/category/category.php?categoryid=$1 [L]
 RewriteRule ^category/active/([0-9]+)$ controllers/developer/category/active.php?categoryid=$1 [L]
 RewriteRule ^category/page/([0-9]+)$ controllers/developer/category/page.php?start=$1 [L]
 RewriteRule ^category/search$ controllers/developer/category/search.php [L]
-
-
+ 
 ### SUPPLIER ###
 RewriteRule ^supplier$ controllers/developer/supplier/supplier.php [L]
 RewriteRule ^supplier/([0-9]+)$ controllers/developer/supplier/supplier.php?supplierid=$1 [L]
@@ -43,8 +41,7 @@ RewriteRule ^receiving/search$ controllers/developer/receiving/search.php [L]
 RewriteRule ^receiving/read-all-supplier$ controllers/developer/receiving/read-all-supplier.php [L]
 RewriteRule ^receiving/read-all-product$ controllers/developer/receiving/read-all-product.php [L]
 RewriteRule ^receiving/read-all-unit$ controllers/developer/receiving/read-all-unit.php [L]
-
-
+ 
 ### RECEIVING SUPPLY ###
 RewriteRule ^receiving-supply$ controllers/developer/receiving-supply/receiving-supply.php [L]
 RewriteRule ^receiving-supply/([0-9]+)$ controllers/developer/receiving-supply/receiving-supply.php?receivingsupplyid=$1 [L] 
@@ -63,10 +60,18 @@ RewriteRule ^defective-product/([0-9]+)$ controllers/developer/defective-product
 RewriteRule ^defective-product/active/([0-9]+)$ controllers/developer/defective-product/active.php?defectiveproductid=$1 [L]
 RewriteRule ^defective-product/page/([0-9]+)$ controllers/developer/defective-product/page.php?start=$1 [L]
 RewriteRule ^defective-product/search$ controllers/developer/defective-product/search.php [L]
-  
+   
+### RETURN PRODUCT ###
+RewriteRule ^return-product$ controllers/developer/return-product/return-product.php [L]
+RewriteRule ^return-product/([0-9]+)$ controllers/developer/return-product/return-product.php?returnproductid=$1 [L]
+RewriteRule ^return-product/active/([0-9]+)$ controllers/developer/return-product/active.php?returnproductid=$1 [L]
+RewriteRule ^return-product/page/([0-9]+)$ controllers/developer/return-product/page.php?start=$1 [L]
+RewriteRule ^return-product/search$ controllers/developer/return-product/search.php [L]
+
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 
 RewriteRule ^search-supplier$ controllers/developer/search/search-supplier.php [L] 
+
 
 
 

@@ -44,6 +44,7 @@ import {
 import React from "react";
 import * as Yup from "yup";
 import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
+import SearchNoData from "@/components/partials/icons/SearchNoData";
 
 const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -363,12 +364,12 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       <th>Supplier</th>
                       <th>Product</th>
                       <th>Barcode</th>
-                      <th>Expiration Date</th>
+                      <th>Expiration</th>
                       <th>Unit</th>
-                      <th className="text-right">Quantity</th>
+                      <th className="text-center">Qty</th>
                       <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-right">Defective product</th>
+                      <th className="text-right">Defective</th>
                     </tr>
                   </thead>
 
@@ -380,7 +381,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                           {loadingReceiving ? (
                             <LoaderTable count={30} cols={6} />
                           ) : (
-                            <NoData />
+                            <SearchNoData />
                           )}
                         </td>
                       </tr>
@@ -419,7 +420,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             {formatDate(item.receiving_supply_expiration_date)}
                           </td>
                           <td>{item.settings_unit_name}</td>
-                          <td className="text-right">
+                          <td className="text-center">
                             {item.receiving_supply_quantity}
                           </td>
                           <td className="text-right">
@@ -437,9 +438,10 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             )}
                           </td>
                           <td className="text-right">
-                            {item.receiving_supply_defective_product_qty}
+                            {Number(
+                              item.receiving_supply_defective_product_qty
+                            )}
                           </td>
-
                           <td className="table-action ">
                             <ul>
                               {item.receiving_supply_is_active === 1 ? (
@@ -528,36 +530,32 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
-                  <tr className="sticky -bottom-4 !bg-primary !text-sm text-dark ">
-                    <td colSpan={5} className=""></td>
-                    <td className="py-4 pl-2 ">Total:</td>
-                    <td className="text-right py-4 pr-2">{Number(totalQty)}</td>
-                    <td className="text-right py-4 pr-2">
-                      {pesoSign}
-                      {numberWithCommasToFixed(totalPrice, 2)}
-                    </td>
-                    <td className="text-right py-4 pr-2">
-                      {pesoSign}
-                      {numberWithCommasToFixed(
-                        receivingData?.count > 0 ? receivingData?.amount : 0,
-                        2
-                      )}
-                    </td>
-                    <td className="text-right py-4 pr-2">
-                      {Number(totalDefects)}
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
+                      <td colSpan={5} className=""></td>
+                      <td className="py-4 pl-2 ">Total:</td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalQty)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(totalPrice, 2)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(
+                          receivingData?.count > 0 ? receivingData?.amount : 0,
+                          2
+                        )}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalDefects)}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
-            {/* 
-            <h3 className="text-right mt-5 mr-7">
-              Total:{pesoSign}
-              {numberWithCommasToFixed(
-                receivingData?.count > 0 ? receivingData?.amount : 0,
-                2
-              )}
-            </h3> */}
             <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close

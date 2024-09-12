@@ -6,6 +6,7 @@ import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import Product from "@/components/pages/developer/product/Product.jsx";
 import Receiving from "@/components/pages/developer/receiving/Receiving.jsx";
+import ReturnProduct from "@/components/pages/developer/return-product/ReturnProduct";
 import Settings from "@/components/pages/developer/settings/Settings";
 import Unit from "@/components/pages/developer/settings/unit/Unit";
 import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
@@ -42,6 +43,10 @@ export const routesSystem = [
   {
     path: `${devNavUrl}/system/category`,
     element: <Category />,
+  },
+  {
+    path: `${devNavUrl}/system/return-product`,
+    element: <ReturnProduct />,
   },
   // {
   //   path: `${devNavUrl}/system/settings`,

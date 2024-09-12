@@ -28,6 +28,7 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
 
     $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;
 
+    $receiving_supply->receiving_supply_defective_remarks = $data["receiving_supply_defective_remarks"];
     $receiving_supply->receiving_supply_defective_product_qty = intval($data["receiving_supply_defective_product_qty"]);
     $receiving_supply->defective_product_amount = $data["defective_product_amount"];
 

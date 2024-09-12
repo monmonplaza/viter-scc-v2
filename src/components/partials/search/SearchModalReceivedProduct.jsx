@@ -6,7 +6,7 @@ import React from "react";
 import SearchNoData from "../icons/SearchNoData";
 import SpinnerTable from "../spinners/SpinnerTable";
 
-const SearchModalProduct = ({
+const SearchModalReceivedProduct = ({
   setData,
   props,
   label,
@@ -18,9 +18,8 @@ const SearchModalProduct = ({
   const { store, dispatch } = React.useContext(StoreContext);
   // client
   const [search, setSearch] = React.useState(
-    itemEdit ? props.values.searchProduct : ""
+    itemEdit ? props.searchProduct : ""
   );
-
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
 
@@ -120,4 +119,4 @@ const SearchModalProduct = ({
   );
 };
 
-export default SearchModalProduct;
+export default SearchModalReceivedProduct;

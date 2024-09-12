@@ -1,27 +1,25 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
-import {
-  formatDate,
-  numberWithCommasToFixed,
-  pesoSign,
-  ver,
-} from "@/components/helpers/functions-general.jsx";
+import { formatDate, ver } from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
 import NoData from "@/components/partials/icons/Nodata.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
+import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
+import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
+import Pill from "@/components/partials/Pill.jsx";
 import PillStatus from "@/components/partials/PillStatus";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ArchiveRestore, ClipboardCheck } from "lucide-react";
+import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
-const DefectiveProductList = ({ setItemEdit }) => {
+const ReturnProductList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
@@ -53,20 +51,20 @@ const DefectiveProductList = ({ setItemEdit }) => {
     status,
   } = useInfiniteQuery({
     queryKey: [
-      "defectiveProduct",
+      "return-product",
       search.current.value,
       store.isSearch,
       filterData,
     ],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/defective-product/search`, // search endpoint
-        `/${ver}/defective-product/page/${pageParam}`, // list endpoint
+        `/${ver}/return-product/search`, // search endpoint
+        `/${ver}/return-product/page/${pageParam}`, // list endpoint
         store.isSearch, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
-          defective_product_is_resolve: filterData,
+          return_product_is_resolved: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -78,13 +76,6 @@ const DefectiveProductList = ({ setItemEdit }) => {
     },
     refetchOnWindowFocus: false,
   });
-
-  React.useEffect(() => {
-    if (inView) {
-      setPage((prev) => prev + 1);
-      fetchNextPage();
-    }
-  }, [inView]);
 
   const handleChangefilterData = (e) => {
     setFilterData(e.target.value);
@@ -98,6 +89,13 @@ const DefectiveProductList = ({ setItemEdit }) => {
     setPage(1);
   };
 
+  React.useEffect(() => {
+    if (inView) {
+      setPage((prev) => prev + 1);
+      fetchNextPage();
+    }
+  }, [inView]);
+
   return (
     <>
       <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-1">
@@ -109,7 +107,7 @@ const DefectiveProductList = ({ setItemEdit }) => {
             onChange={(e) => handleChangefilterData(e)}
           >
             <option value="all">All</option>
-            <option value="1">Resolve</option>
+            <option value="1">Resolved</option>
             <option value="0">Ongoing</option>
           </select>
         </div>
@@ -136,14 +134,10 @@ const DefectiveProductList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
-                <th className="w-[200px]">Date Received</th>
-                <th className="w-[200px]">Date Resolved</th>
-                <th className="w-[200px]">Supplier</th>
-                <th className="w-[200px]">Product</th>
-                <th className="w-[200px]">Unit</th>
-                <th className="text-right">Qty</th>
-                <th className="text-right">Amount</th>
-                <th>Remarks</th>
+                <th className="w-[200px]">Name</th>
+                <th className="w-[200px]">Date</th>
+                <th className="text-center">Qyt</th>
+                <th className="w-[200px]">Resolved Date</th>
               </tr>
             </thead>
 
@@ -177,50 +171,52 @@ const DefectiveProductList = ({ setItemEdit }) => {
                         <td>
                           {
                             <PillStatus
-                              isActive={item.defective_product_is_resolve}
+                              isActive={item.return_product_is_resolved}
                               text="Resolve"
                             />
                           }
                         </td>
 
-                        <td>{formatDate(item.receiving_date)}</td>
-                        <td>
-                          {formatDate(
-                            item.defective_product_resolved_date,
-                            "--"
-                          )}
-                        </td>
-                        <td>{item.supplier_name}</td>
                         <td>{item.product_name}</td>
-                        <td>{item.settings_unit_name}</td>
-                        <td className="text-right">
-                          {item.defective_product_qty}
+                        <td>{formatDate(item.return_product_date)}</td>
+                        <td className="text-center">
+                          {item.return_product_qty}
                         </td>
-                        <td className="text-right">
-                          {pesoSign}
-                          {numberWithCommasToFixed(
-                            item.defective_product_amount,
-                            2
-                          )}
+                        <td>
+                          {formatDate(item.return_product_resolved_date, "--")}
                         </td>
-                        <td>{item.defective_product_remarks}</td>
 
                         <td className="table-action">
                           <ul>
-                            {item.defective_product_is_resolve === 0 ? (
+                            {item.return_product_is_resolved === 1 ? (
                               <>
                                 <li>
                                   <button
-                                    data-tooltip="Resolve"
+                                    data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(
-                                        item.defective_product_aid,
+                                      handleEdit(
+                                        item.return_return_product_aid,
                                         item
                                       )
                                     }
                                   >
-                                    <ClipboardCheck size={14} />
+                                    <SquarePen size={14} />
+                                  </button>
+                                </li>
+
+                                <li>
+                                  <button
+                                    data-tooltip="Archive"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleArchive(
+                                        item.return_product_aid,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <Archive size={14} />
                                   </button>
                                 </li>
                               </>
@@ -231,13 +227,27 @@ const DefectiveProductList = ({ setItemEdit }) => {
                                     data-tooltip="Restore"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleArchive(
-                                        item.defective_product_aid,
+                                      handleRestore(
+                                        item.return_product_aid,
                                         item
                                       )
                                     }
                                   >
                                     <ArchiveRestore size={14} />
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    data-tooltip="Delete"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleRemove(
+                                        item.return_product_aid,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <Trash size={14} />
                                   </button>
                                 </li>
                               </>
@@ -265,11 +275,21 @@ const DefectiveProductList = ({ setItemEdit }) => {
           </div>
         </div>
       </div>
+
+      {store.isDelete && (
+        <ModalDelete
+          mysqlApiDelete={`/${ver}/return-product/${aid}`}
+          queryKey="return-product"
+          item={data.product_name}
+        />
+      )}
       {store.isConfirm && (
         <ModalAdvanceConfirm
-          mysqlApiArchive={`/${ver}/defective-product/active/${aid}`}
-          queryKey="defectiveProduct"
-          item={`${data.product_name} (${formatDate(data.receiving_date)})`}
+          mysqlApiArchive={`/${ver}/return-product/active/${aid}`}
+          queryKey="return-product"
+          item={`${data.product_name} (${formatDate(
+            data.return_product_date
+          )})`}
           active={isActive}
           text={isActive ? "resolved" : "restore"}
           itemData={data}
@@ -279,4 +299,4 @@ const DefectiveProductList = ({ setItemEdit }) => {
   );
 };
 
-export default DefectiveProductList;
+export default ReturnProductList;
