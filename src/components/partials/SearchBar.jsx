@@ -41,7 +41,7 @@ const SearchBar = ({
       onSubmit={(e) => {
         handleSubmit(e);
       }}
-      className="search-box"
+      className="search-box w-full md:w-auto"
     >
       <div className="input-wrap search relative w-full md:w-auto">
         <div

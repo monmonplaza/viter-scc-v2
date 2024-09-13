@@ -35,6 +35,7 @@ export default {
         warning: "rgba(var(--warning), <alpha-value>)",
         info: "rgba(var(--info), <alpha-value>)",
         body: "rgba(var(--body), <alpha-value>)",
+        subnav: "rgba(var(--subnav), <alpha-value>)",
       },
       borderColor: {
         accent: "rgba(var(--accent), <alpha-value>)",

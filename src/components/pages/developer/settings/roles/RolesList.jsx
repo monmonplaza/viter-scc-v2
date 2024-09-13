@@ -1,21 +1,18 @@
-import useQueryData from "@/components/custom-hooks/useQueryData";
-import useTableActions from "@/components/custom-hooks/useTableActions";
-import { ver } from "@/components/helpers/functions-general";
-import NoData from "@/components/partials/icons/NoData";
-import ServerError from "@/components/partials/icons/ServerError";
-import LoaderTable from "@/components/partials/LoaderTable";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm";
-import ModalDelete from "@/components/partials/modal/ModalDelete";
-import Pill from "@/components/partials/Pill";
-import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
-import { StoreContext } from "@/components/store/StoreContext";
+import useQueryData from "@/components/custom-hooks/useQueryData.jsx";
+import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
+import { ver } from "@/components/helpers/functions-general.jsx";
+import NoData from "@/components/partials/icons/NoData.jsx";
+import ServerError from "@/components/partials/icons/ServerError.jsx";
+import LoaderTable from "@/components/partials/LoaderTable.jsx";
+import Pill from "@/components/partials/Pill.jsx";
+import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
+import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
 import React from "react";
 
-const UnitList = ({ setItemEdit }) => {
+const RolesList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   let counter = 1;
-
   const [
     handleRemove,
     handleEdit,
@@ -38,6 +35,7 @@ const UnitList = ({ setItemEdit }) => {
     "get", // method
     "settings-unit" // key
   );
+
   return (
     <>
       <div className="relative ">
@@ -164,4 +162,4 @@ const UnitList = ({ setItemEdit }) => {
   );
 };
 
-export default UnitList;
+export default RolesList;
