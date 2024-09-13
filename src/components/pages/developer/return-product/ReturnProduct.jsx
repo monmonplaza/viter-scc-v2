@@ -8,15 +8,11 @@ import { setIsAdd } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
 import React from "react";
-import ModalAddSupplierProduct from "./ModalAddSupplierProduct.jsx";
-import ModalViewSupplierProduct from "./ModalViewSupplierProduct.jsx";
-import ReceivingList from "./ReceivingList.jsx";
-import ModalError from "@/components/partials/modal/ModalError.jsx";
-
-const Receiving = () => {
+import ModalReturnProduct from "./ModalReturnProduct.jsx";
+import ReturnProductList from "./ReturnProductList.jsx";
+const ReturnProduct = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
-  const [isView, setIsView] = React.useState(false);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -27,36 +23,28 @@ const Receiving = () => {
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
         <aside>
-          <Navigation menu="receiving" />
+          <Navigation menu="return-product" />
         </aside>
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
-
             <div className="main-wrapper p-2 md:p-8 bg-secondary">
-              {/* <Breadcrumbs /> */}
-
               <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">Receiving</h1>
-                <div>
-                  <button
-                    className="btn btn-accent h-[34px]"
-                    onClick={handleAdd}
-                  >
-                    <Plus size={14} className="!stroke-[2px]" /> Add
-                  </button>
-                </div>
+                <h1 className="mb-0">Return Product</h1>
+                <button className="btn btn-accent h-[34px]" onClick={handleAdd}>
+                  <Plus size={14} className="!stroke-[2px]" /> Add
+                </button>
               </div>
-              <ReceivingList setItemEdit={setItemEdit} setIsView={setIsView} />
+
+              <ReturnProductList setItemEdit={setItemEdit} />
             </div>
+
             <Footer />
           </div>
         </main>
       </div>
-      {store.isAdd && <ModalAddSupplierProduct itemEdit={itemEdit} />}
-      {isView && (
-        <ModalViewSupplierProduct itemEdit={itemEdit} setIsView={setIsView} />
-      )}
+
+      {store.isAdd && <ModalReturnProduct itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}
@@ -64,4 +52,4 @@ const Receiving = () => {
   );
 };
 
-export default Receiving;
+export default ReturnProduct;

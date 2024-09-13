@@ -13,12 +13,15 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
-import { PillBottle, X } from "lucide-react";
+import { ListCollapse, PillBottle, SquarePen, X } from "lucide-react";
 import React from "react";
 
 const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   let counter = 1;
+  let totalQty = 0;
+  let totalPrice = 0;
+  let totalDefects = 0;
 
   const {
     isLoading: loadingReceiving,
@@ -38,7 +41,7 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
     setTimeout(() => {
       dispatch(setIsAnimating(true));
       setIsView(false);
-    }, 300);
+    }, 0);
   };
 
   React.useEffect(() => handleEscape(handleClose), []);
@@ -69,10 +72,11 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                       <th>Product</th>
                       <th>Barcode</th>
                       <th>Expiration Date</th>
-                      <th>Quantity</th>
-                      <th className="text-right">Price</th>
                       <th>Unit</th>
+                      <th className="text-center">Qty</th>
+                      <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
+                      <th className="text-right">Defective</th>
                     </tr>
                   </thead>
 
@@ -99,7 +103,16 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
 
                     {receivingData?.data.map((item, key) => {
                       return (
-                        <tr key={key}>
+                        <tr
+                          key={key}
+                          className={
+                            Number(
+                              item.receiving_supply_defective_product_qty
+                            ) !== 0
+                              ? "status-alert "
+                              : ""
+                          }
+                        >
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.supplier_name}</td>
@@ -109,7 +122,10 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                           <td>
                             {formatDate(item.receiving_supply_expiration_date)}
                           </td>
-                          <td>{item.receiving_supply_quantity}</td>
+                          <td>{item.settings_unit_name}</td>
+                          <td className="text-center">
+                            {item.receiving_supply_quantity}
+                          </td>
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(
@@ -117,7 +133,6 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                               2
                             )}
                           </td>
-                          <td>{item.settings_unit_name}</td>
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(
@@ -125,9 +140,50 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                               2
                             )}
                           </td>
+                          <td className="text-right">
+                            {item.receiving_supply_defective_product_qty}
+                          </td>
+                          {/* <td className="table-action">
+                            <ul>
+                              <li>
+                                <button
+                                  data-tooltip="Edit"
+                                  className="tooltip !overflow-visible"
+                                  // onClick={() =>
+                                  //   handleEdit(item.receiving_aid, item)
+                                  // }
+                                >
+                                  <SquarePen size={14} />
+                                </button>
+                              </li>
+                            </ul>
+                          </td> */}
                         </tr>
                       );
                     })}
+                  </tbody>
+                  <tbody>
+                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
+                      <td colSpan={5} className=""></td>
+                      <td className="py-4 pl-2 ">Total:</td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalQty)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(totalPrice, 2)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(
+                          receivingData?.count > 0 ? receivingData?.amount : 0,
+                          2
+                        )}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalDefects)}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

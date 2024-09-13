@@ -10,13 +10,10 @@ import {
   ver,
 } from "@/components/helpers/functions-general";
 import { queryData } from "@/components/helpers/queryData";
-import NoData from "@/components/partials/icons/NoData";
+import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm";
 import ModalDelete from "@/components/partials/modal/ModalDelete";
-import Pill from "@/components/partials/Pill";
-import PillStatus from "@/components/partials/PillStatus";
 import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
 import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
@@ -32,18 +29,11 @@ import {
 import { StoreContext } from "@/components/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import {
-  Archive,
-  ArchiveRestore,
-  PillBottle,
-  Plus,
-  SquarePen,
-  Trash,
-  X,
-} from "lucide-react";
+import { PillBottle, Plus, SquarePen, Trash, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
+import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 
 const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -237,7 +227,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       <div className="input-wrap">
                         <SearchModalProduct
                           setData={setProductData}
-                          props={props}
+                          props={props.values}
                           label="Search Product"
                           name="searchProduct"
                           mutation={mutation}
@@ -363,12 +353,12 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       <th>Supplier</th>
                       <th>Product</th>
                       <th>Barcode</th>
-                      <th>Expiration Date</th>
+                      <th>Expiration</th>
                       <th>Unit</th>
-                      <th className="text-right">Quantity</th>
+                      <th className="text-center">Qty</th>
                       <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-right">Defective product</th>
+                      <th className="text-right">Defective</th>
                     </tr>
                   </thead>
 
@@ -380,7 +370,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                           {loadingReceiving ? (
                             <LoaderTable count={30} cols={6} />
                           ) : (
-                            <NoData />
+                            <SearchNoData />
                           )}
                         </td>
                       </tr>
@@ -419,7 +409,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             {formatDate(item.receiving_supply_expiration_date)}
                           </td>
                           <td>{item.settings_unit_name}</td>
-                          <td className="text-right">
+                          <td className="text-center">
                             {item.receiving_supply_quantity}
                           </td>
                           <td className="text-right">
@@ -437,127 +427,75 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             )}
                           </td>
                           <td className="text-right">
-                            {item.receiving_supply_defective_product_qty}
+                            {Number(
+                              item.receiving_supply_defective_product_qty
+                            )}
                           </td>
-
                           <td className="table-action ">
                             <ul>
-                              {item.receiving_supply_is_active === 1 ? (
-                                <>
-                                  <li className="">
-                                    <button
-                                      data-tooltip="Edit"
-                                      className="tooltip after:!z-50"
-                                      onClick={() =>
-                                        handleEditSupplier({
-                                          ...item,
-                                          amount:
-                                            receivingData?.count > 0
-                                              ? receivingData?.amount
-                                              : 0,
-                                        })
-                                      }
-                                    >
-                                      <SquarePen size={14} />
-                                    </button>
-                                  </li>
-                                  <li>
-                                    <button
-                                      data-tooltip="Delete"
-                                      className="tooltip"
-                                      onClick={() =>
-                                        handleRemove(
-                                          item.receiving_supply_aid,
-                                          item
-                                        )
-                                      }
-                                    >
-                                      <Trash size={14} />
-                                    </button>
-                                  </li>
-                                  {/* <li>
-                                    <button
-                                      data-tooltip="Archive"
-                                      className="tooltip "
-                                      onClick={() =>
-                                        handleArchive(
-                                          item.receiving_supply_aid,
-                                          item
-                                        )
-                                      }
-                                    >
-                                      <Archive size={14} />
-                                    </button>
-                                  </li> */}
-                                </>
-                              ) : (
-                                <>
-                                  <li>
-                                    <button
-                                      data-tooltip="Restore"
-                                      className="tooltip"
-                                      onClick={() =>
-                                        handleRestore(
-                                          item.receiving_supply_aid,
-                                          item
-                                        )
-                                      }
-                                    >
-                                      <ArchiveRestore size={14} />
-                                    </button>
-                                  </li>
-                                  <li>
-                                    <button
-                                      data-tooltip="Delete"
-                                      className="tooltip"
-                                      onClick={() =>
-                                        handleRemove(
-                                          item.receiving_supply_aid,
-                                          item
-                                        )
-                                      }
-                                    >
-                                      <Trash size={14} />
-                                    </button>
-                                  </li>
-                                </>
-                              )}
+                              <li className="">
+                                <button
+                                  data-tooltip="Edit"
+                                  className="tooltip after:!z-50"
+                                  onClick={() =>
+                                    handleEditSupplier({
+                                      ...item,
+                                      amount:
+                                        receivingData?.count > 0
+                                          ? receivingData?.amount
+                                          : 0,
+                                    })
+                                  }
+                                >
+                                  <SquarePen size={14} />
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  data-tooltip="Delete"
+                                  className="tooltip"
+                                  onClick={() =>
+                                    handleRemove(
+                                      item.receiving_supply_aid,
+                                      item
+                                    )
+                                  }
+                                >
+                                  <Trash size={14} />
+                                </button>
+                              </li>
                             </ul>
                           </td>
                         </tr>
                       );
                     })}
                   </tbody>
-                  <tr className="sticky -bottom-4 !bg-primary !text-sm text-dark ">
-                    <td colSpan={5} className=""></td>
-                    <td className="py-4 pl-2 ">Total:</td>
-                    <td className="text-right py-4 pr-2">{Number(totalQty)}</td>
-                    <td className="text-right py-4 pr-2">
-                      {pesoSign}
-                      {numberWithCommasToFixed(totalPrice, 2)}
-                    </td>
-                    <td className="text-right py-4 pr-2">
-                      {pesoSign}
-                      {numberWithCommasToFixed(
-                        receivingData?.count > 0 ? receivingData?.amount : 0,
-                        2
-                      )}
-                    </td>
-                    <td className="text-right py-4 pr-2">
-                      {Number(totalDefects)}
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
+                      <td colSpan={5} className=""></td>
+                      <td className="py-4 pl-2 ">Total:</td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalQty)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(totalPrice, 2)}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {pesoSign}
+                        {numberWithCommasToFixed(
+                          receivingData?.count > 0 ? receivingData?.amount : 0,
+                          2
+                        )}
+                      </td>
+                      <td className="text-right py-4 pr-2">
+                        {Number(totalDefects)}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
-            {/* 
-            <h3 className="text-right mt-5 mr-7">
-              Total:{pesoSign}
-              {numberWithCommasToFixed(
-                receivingData?.count > 0 ? receivingData?.amount : 0,
-                2
-              )}
-            </h3> */}
             <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
@@ -574,19 +512,11 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
         )}
 
         {store.isDelete && (
-          <ModalDelete
+          <ModalAdvanceDelete
             mysqlApiDelete={`/${ver}/receiving-supply/${aid}`}
             queryKey="receiving-supply-read-new-receive"
-            item={data.product_name}
-          />
-        )}
-
-        {store.isConfirm && (
-          <ModalConfirm
-            mysqlApiArchive={`/${ver}/receiving-supply/active/${aid}`}
-            queryKey="receiving-supply-read-new-receive"
-            item={data.product_name}
-            active={isActive}
+            dataItem={data.product_name}
+            item={data}
           />
         )}
       </WrapperModal>

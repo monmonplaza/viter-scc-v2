@@ -42,6 +42,12 @@ const Navigation = ({ menu, submenu }) => {
       text: "Defective Product",
       slug: "defective-product",
     },
+
+    {
+      icon: <TicketX size={18} />,
+      text: "Return Product",
+      slug: "return-product",
+    },
     {
       icon: <Barcode size={18} />,
       text: "Products",

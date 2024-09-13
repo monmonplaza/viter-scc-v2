@@ -16,3 +16,12 @@ function checkUpdateReceivingSupply($object)
     checkQuery($query, "There's a problem processing your request. (update receiving supply)");
     return $query;
 }
+
+
+// Update Inventory Log
+function checkUpdateInventoryDefectiveProduct($object)
+{
+    $query = $object->updateInventoryDefectiveProduct();
+    checkQuery($query, "There's a problem processing your request. (update Inventory Defective product)");
+    return $query;
+}

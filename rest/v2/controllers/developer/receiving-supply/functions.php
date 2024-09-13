@@ -88,3 +88,35 @@ function checkUpdateDefective($object)
     checkQuery($query, "There's a problem processing your request. (update defective)");
     return $query;
 }
+
+// Delete Inventory Log 
+function checkDeleteDefective($object)
+{
+    $query = $object->deleteDefective();
+    checkQuery($query, "There's a problem processing your request. (delete defective)");
+    return $query;
+}
+
+// check association
+function isAssociateDefective($object)
+{
+    $query = $object->checkAssociationDefective();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+
+// Update Inventory Log
+function checkUpdateInventoryStockIn($object)
+{
+    $query = $object->updateInventoryStockIn();
+    checkQuery($query, "There's a problem processing your request. (update Inventory stock in)");
+    return $query;
+}
+
+// Update Inventory Log
+function checkUpdateInventoryDefectiveProduct($object)
+{
+    $query = $object->updateInventoryDefectiveProduct();
+    checkQuery($query, "There's a problem processing your request. (update Inventory Defective product)");
+    return $query;
+}

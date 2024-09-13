@@ -1,5 +1,9 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import {
+  InputSelect,
+  InputText,
+  InputTextArea,
+} from "@/components/helpers/FormInputs";
 import {
   formatDate,
   handleEscape,
@@ -89,10 +93,10 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     receiving_supply_unit_id: itemEdit.receiving_supply_unit_id,
     receiving_supply_quantity: itemEdit.receiving_supply_quantity,
     receiving_supply_price: itemEdit.receiving_supply_price,
-    receiving_supply_expiration_date: itemEdit
-      ? itemEdit.receiving_supply_expiration_date
-      : "",
-    receiving_supply_barcode: itemEdit ? itemEdit.receiving_supply_barcode : "",
+    receiving_supply_expiration_date: itemEdit.receiving_supply_expiration_date,
+    receiving_supply_barcode: itemEdit.receiving_supply_barcode,
+    receiving_supply_defective_remarks:
+      itemEdit.receiving_supply_defective_remarks,
     receiving_date: itemEdit.receiving_date,
     searchSupplier: itemEdit.supplier_name,
     searchProduct: itemEdit.product_name,
@@ -146,6 +150,15 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                   Number(values.receiving_supply_price) *
                   Number(values.receiving_supply_defective_product_qty);
 
+                if (
+                  Number(values.receiving_supply_defective_product_qty) >
+                  Number(values.receiving_supply_quantity)
+                ) {
+                  dispatch(setValidate(true));
+                  dispatch(setMessage("Invalid defective quantity"));
+                  return;
+                }
+
                 mutation.mutate({
                   ...values,
                   receiving_total_amount:
@@ -162,7 +175,6 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                 return (
                   <Form>
                     <div className="modal-form !pb-0">
-                      {/* <div className="grid grid-cols-2 mb-5 gap-5"> */}
                       <div className="input-wrap">
                         <SearchModalSupplier
                           setData={setSupplierData}
@@ -285,6 +297,14 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                           type="text"
                           number="number"
                           name="receiving_supply_defective_product_qty"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <div className="input-wrap">
+                        <InputTextArea
+                          label="Defective Remarks"
+                          type="text"
+                          name="receiving_supply_defective_remarks"
                           disabled={mutation.isPending}
                         />
                       </div>

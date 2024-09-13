@@ -23,5 +23,6 @@ $product->product_sku = rand(1000000, 9999999);
 isNameExist($product, $product->product_name);
 
 $query = checkCreate($product);
+checkCreateInventoryLog($product);
 checkUpdateProductSKUByLastInsertedId($product);
 returnSuccess($product, "product", $query);

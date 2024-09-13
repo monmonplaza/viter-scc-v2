@@ -140,7 +140,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
             <thead>
               <tr>
                 <th className="w-counter">#</th>
-                {/* <th className="w-[90px]">Status</th> */}
+                <th className="w-[90px]">Status</th>
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
                 <th className="">Total Amount</th>
