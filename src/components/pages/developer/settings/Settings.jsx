@@ -3,18 +3,36 @@ import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import Pill from "@/components/partials/Pill";
-import { Archive, ArchiveRestore, Plus, SquarePen, Trash } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  Plus,
+  Ruler,
+  SquarePen,
+  SquareUserRound,
+  Trash,
+  UserRoundCog,
+  UserRoundPen,
+} from "lucide-react";
+import React from "react";
 import { Link } from "react-router-dom";
+import Roles from "./roles/Roles.jsx";
+import Unit from "./unit/Unit.jsx";
 
 const Settings = () => {
+  const [tabindex, setTabindex] = React.useState(0);
   const links = [
-    { label: "Unit" },
-    { label: "Setting 1" },
-    { label: "Settings" },
-    { label: "Unit 4" },
-    { label: "Unit 5" },
+    { label: "Unit", icon: <Ruler size={14} /> },
+    { label: "Roles", icon: <UserRoundCog size={14} /> },
+    { label: "Users", icon: <UserRoundPen size={14} /> },
+    { label: "Developer", icon: <SquareUserRound size={14} /> },
   ];
 
+  const settingPages = [<Unit />, <Roles />];
+
+  const handleChangeSettingMenu = (index) => {
+    setTabindex(index);
+  };
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
@@ -24,100 +42,36 @@ const Settings = () => {
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
-
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
-              <Breadcrumbs />
-
-              <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">Settings</h1>
-              </div>
-              {/* <UnitList /> */}
-
-              <div className="setting-nav">
-                <ul className="flex gap-7 border-b border-line pb-1">
-                  {links.map((link, key) => {
-                    return (
-                      <li key={key} className="">
-                        <Link to="/" className="text-xs pb-2 px-1 active">
-                          {link.label}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              <div className="setting-main py-10 max-w-[700px] w-full ">
-                <div className="flex justify-between items-end">
-                  <h2 className="mb-0">Unit</h2>
-                  <button className="btn btn-accent btn-sm">
-                    <Plus /> Add
-                  </button>
+            <div className="main-wrapper bg-secondary">
+              <div className="grid grid-cols-[250px_1fr] gap-5">
+                <div className="setting-nav bg-subnav min-h-[calc(100vh-90px)] border-r border-line  px-4 ">
+                  <h2 className="my-7">Settings</h2>
+                  <ul className="space-y-2">
+                    {links.map((link, key) => {
+                      return (
+                        <li
+                          key={key}
+                          className={`p-2 hover:opacity-100 ${
+                            key === tabindex
+                              ? "bg-accent bg-opacity-75 rounded-md text-white opacity-100"
+                              : "opacity-80"
+                          }`}
+                        >
+                          <button
+                            className="text-xs flex items-center w-full text-left gap-4"
+                            onClick={() => handleChangeSettingMenu(key)}
+                          >
+                            {link.icon}
+                            {link.label}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
 
-                <div className="table-wrapper max-w-[700px] w-full my-5">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th className="w-counter">#</th>
-                        <th className="w-[200px]">Status</th>
-                        <th>Title</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="w-counter">1</td>
-                        <td className="w-[200px]">
-                          <Pill />
-                        </td>
-                        <td>Per Box</td>
-                        <td className="table-action">
-                          <ul>
-                            {1 ? (
-                              <>
-                                <li>
-                                  <button
-                                    data-tooltip="Edit"
-                                    className="tooltip"
-                                  >
-                                    <SquarePen size={14} />
-                                  </button>
-                                </li>
-
-                                <li>
-                                  <button
-                                    data-tooltip="Archive"
-                                    className="tooltip"
-                                  >
-                                    <Archive size={14} />
-                                  </button>
-                                </li>
-                              </>
-                            ) : (
-                              <>
-                                <li>
-                                  <button
-                                    data-tooltip="Restore"
-                                    className="tooltip"
-                                  >
-                                    <ArchiveRestore size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Delete"
-                                    className="tooltip"
-                                  >
-                                    <Trash size={14} />
-                                  </button>
-                                </li>
-                              </>
-                            )}
-                          </ul>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div className="setting-main my-7 max-w-[700px] w-full ">
+                  {settingPages[tabindex]}
                 </div>
               </div>
             </div>

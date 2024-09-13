@@ -13,9 +13,9 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "../helpers/functions-general.jsx";
-import Logo from "./icons/Logo.jsx";
-import { StoreContext } from "../store/StoreContext.jsx";
 import { setIsSearch } from "../store/StoreAction.jsx";
+import { StoreContext } from "../store/StoreContext.jsx";
+import Logo from "./icons/Logo.jsx";
 
 const Navigation = ({ menu, submenu }) => {
   const { dispatch } = React.useContext(StoreContext);
@@ -101,7 +101,7 @@ const Navigation = ({ menu, submenu }) => {
         </div>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-5">
         {links.map((link, key) => {
           return (
             <ul key={key}>
@@ -110,36 +110,12 @@ const Navigation = ({ menu, submenu }) => {
                   onClick={handleResetSearch}
                   to={`${devNavUrl}/system/${link.slug}`}
                   className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
-                    link.slug !== "settings"
-                      ? menu === link.slug
-                        ? "active"
-                        : ""
-                      : menu === "settings" && "bg-secondary text-dark"
+                    menu === link.slug ? "active" : ""
                   }`}
                 >
                   {link.icon} {link.text}
                 </Link>
               </li>
-
-              {/* {link.slug === "settings" &&
-                subLinks.map((link, key) => {
-                  return (
-                    <li
-                      className="nav-link mb-2 opacity-60 hover:opacity-100 ml-5"
-                      key={key}
-                    >
-                      <Link
-                        onClick={handleResetSearch}
-                        to={`${devNavUrl}/system/${link.slug}`}
-                        className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
-                          submenu === link.slug ? "active" : ""
-                        }`}
-                      >
-                        {link.icon} {link.text}
-                      </Link>
-                    </li>
-                  );
-                })} */}
             </ul>
           );
         })}
