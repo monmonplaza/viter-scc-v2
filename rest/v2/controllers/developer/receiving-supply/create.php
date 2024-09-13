@@ -52,16 +52,16 @@ if (count($isNewData) == 0) {
 $query = checkCreate($receiving_supply);
 
 
-// FOR INVETORY ONLY
-// STOCK IN
-$receiving_supply->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
-$receiving_supply->inventory_log_updated = date("Y-m-d H:i:s");
+// // FOR INVETORY ONLY
+// // STOCK IN
+// $receiving_supply->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
+// $receiving_supply->inventory_log_updated = date("Y-m-d H:i:s");
 
-$updateInventoryLog = getResultData($receiving_supply->checkProductTotalQty());
-if (count($updateInventoryLog) > 0) {
+// $updateInventoryLog = getResultData($receiving_supply->checkProductTotalQty());
+// if (count($updateInventoryLog) > 0) {
 
-    $receiving_supply->inventory_log_stock_in = checkIndex($updateInventoryLog[0], "total_product_stock_qty");
-    checkUpdateInventoryStockIn($receiving_supply);
-}
+//     $receiving_supply->inventory_log_stock_in = checkIndex($updateInventoryLog[0], "total_product_stock_qty");
+//     checkUpdateInventoryStockIn($receiving_supply);
+// }
 
 returnSuccess($receiving_supply, "receiving_supply", $query);

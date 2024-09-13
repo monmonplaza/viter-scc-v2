@@ -84,7 +84,7 @@ class ReturnProduct
             $sql .= "{$this->tblProduct} as p ";
             $sql .= "where rp.return_product_id = p.product_aid ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
-            $sql .= "rp.return_product_date desc, ";
+            $sql .= "DATE(rp.return_product_date) desc, ";
             $sql .= "p.product_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -105,7 +105,7 @@ class ReturnProduct
             $sql .= "{$this->tblProduct} as p ";
             $sql .= "where rp.return_product_id = p.product_aid ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
-            $sql .= "rp.return_product_date desc, ";
+            $sql .= "DATE(rp.return_product_date) desc, ";
             $sql .= "p.product_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -138,7 +138,7 @@ class ReturnProduct
             $sql .= "or rp.return_product_resolved_date like :return_product_resolved_date ";
             $sql .= ") ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
-            $sql .= "rp.return_product_date desc, ";
+            $sql .= "DATE(rp.return_product_date) desc, ";
             $sql .= "p.product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([

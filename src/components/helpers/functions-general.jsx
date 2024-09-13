@@ -1,6 +1,6 @@
-import React from "react";
-import { setIsAnimating } from "../store/StoreAction";
-import { StoreContext } from "../store/StoreContext";
+//
+//
+//
 
 export const urlPathSinglePageWebsite =
   "http://localhost/react-vite/viter-scc-v2";

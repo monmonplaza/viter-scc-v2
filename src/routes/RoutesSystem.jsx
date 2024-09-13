@@ -7,6 +7,7 @@ import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import Product from "@/components/pages/developer/product/Product.jsx";
 import Receiving from "@/components/pages/developer/receiving/Receiving.jsx";
 import ReturnProduct from "@/components/pages/developer/return-product/ReturnProduct";
+import Sales from "@/components/pages/developer/sales/Sales";
 import Settings from "@/components/pages/developer/settings/Settings";
 import Unit from "@/components/pages/developer/settings/unit/Unit";
 import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
@@ -27,6 +28,10 @@ export const routesSystem = [
   {
     path: `${devNavUrl}/system/defective-product`,
     element: <DefectiveProduct />,
+  },
+  {
+    path: `${devNavUrl}/system/sales`,
+    element: <Sales />,
   },
   {
     path: `${devNavUrl}/system/products`,

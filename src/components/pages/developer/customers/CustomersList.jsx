@@ -1,31 +1,29 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
-import {
-  formatDate,
-  numberWithCommasToFixed,
-  pesoSign,
-  ver,
-} from "@/components/helpers/functions-general.jsx";
+import { ver } from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
 import NoData from "@/components/partials/icons/Nodata.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
-import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
-import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import Pill from "@/components/partials/Pill.jsx";
-import PillStatus from "@/components/partials/PillStatus";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Archive, ArchiveRestore, SquarePen, Trash } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  Search,
+  SquarePen,
+  Trash,
+} from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
-const ReturnProductList = ({ setItemEdit }) => {
+const CustomersList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
@@ -56,21 +54,16 @@ const ReturnProductList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: [
-      "return-product",
-      search.current.value,
-      store.isSearch,
-      filterData,
-    ],
+    queryKey: ["customer", search.current.value, store.isSearch, filterData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/return-product/search`, // search endpoint
-        `/${ver}/return-product/page/${pageParam}`, // list endpoint
+        `/${ver}/customer/search`, // search endpoint
+        `/${ver}/customer/page/${pageParam}`, // list endpoint
         store.isSearch, // search boolean, // search boolean
         {
           aid: "",
           isFilter,
-          return_product_is_resolved: filterData,
+          customer_is_active: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -113,8 +106,8 @@ const ReturnProductList = ({ setItemEdit }) => {
             onChange={(e) => handleChangefilterData(e)}
           >
             <option value="all">All</option>
-            <option value="1">Resolved</option>
-            <option value="0">Ongoing</option>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
           </select>
         </div>
 
@@ -141,9 +134,8 @@ const ReturnProductList = ({ setItemEdit }) => {
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
                 <th className="w-[200px]">Name</th>
-                <th className="w-[200px]">Date</th>
-                <th className="text-center">Qyt</th>
-                <th className="w-[200px]">Resolved Date</th>
+                <th className="w-[200px]">Number</th>
+                <th>Address</th>
               </tr>
             </thead>
 
@@ -174,37 +166,22 @@ const ReturnProductList = ({ setItemEdit }) => {
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}</td>
-                        <td>
-                          {
-                            <PillStatus
-                              isActive={item.return_product_is_resolved}
-                              text="Resolve"
-                            />
-                          }
-                        </td>
+                        <td>{<Pill isActive={item.customer_is_active} />}</td>
 
-                        <td>{item.product_name}</td>
-                        <td>{formatDate(item.return_product_date)}</td>
-                        <td className="text-center">
-                          {item.return_product_qty}
-                        </td>
-                        <td>
-                          {formatDate(item.return_product_resolved_date, "--")}
-                        </td>
+                        <td>{item.customer_name}</td>
+                        <td>{item.customer_mobile_number}</td>
+                        <td>{item.customer_address}</td>
 
                         <td className="table-action">
                           <ul>
-                            {item.return_product_is_resolved === 1 ? (
+                            {item.customer_is_active === 1 ? (
                               <>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleEdit(
-                                        item.return_return_product_aid,
-                                        item
-                                      )
+                                      handleEdit(item.customer_aid, item)
                                     }
                                   >
                                     <SquarePen size={14} />
@@ -216,10 +193,7 @@ const ReturnProductList = ({ setItemEdit }) => {
                                     data-tooltip="Archive"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleArchive(
-                                        item.return_product_aid,
-                                        item
-                                      )
+                                      handleArchive(item.customer_aid, item)
                                     }
                                   >
                                     <Archive size={14} />
@@ -233,10 +207,7 @@ const ReturnProductList = ({ setItemEdit }) => {
                                     data-tooltip="Restore"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(
-                                        item.return_product_aid,
-                                        item
-                                      )
+                                      handleRestore(item.customer_aid, item)
                                     }
                                   >
                                     <ArchiveRestore size={14} />
@@ -247,10 +218,7 @@ const ReturnProductList = ({ setItemEdit }) => {
                                     data-tooltip="Delete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRemove(
-                                        item.return_product_aid,
-                                        item
-                                      )
+                                      handleRemove(item.customer_aid, item)
                                     }
                                   >
                                     <Trash size={14} />
@@ -283,27 +251,22 @@ const ReturnProductList = ({ setItemEdit }) => {
       </div>
 
       {store.isDelete && (
-        <ModalAdvanceDelete
-          mysqlApiDelete={`/${ver}/return-product/${aid}`}
-          queryKey="return-product"
-          dataItem={data.product_name}
-          item={data}
+        <ModalDelete
+          mysqlApiDelete={`/${ver}/customer/${aid}`}
+          queryKey="customer"
+          item={data.customer_name}
         />
       )}
       {store.isConfirm && (
-        <ModalAdvanceConfirm
-          mysqlApiArchive={`/${ver}/return-product/active/${aid}`}
-          queryKey="return-product"
-          item={`${data.product_name} (${formatDate(
-            data.return_product_date
-          )})`}
+        <ModalConfirm
+          mysqlApiArchive={`/${ver}/customer/active/${aid}`}
+          queryKey="customer"
+          item={data.customer_name}
           active={isActive}
-          text={isActive ? "resolved" : "restore"}
-          itemData={data}
         />
       )}
     </>
   );
 };
 
-export default ReturnProductList;
+export default CustomersList;

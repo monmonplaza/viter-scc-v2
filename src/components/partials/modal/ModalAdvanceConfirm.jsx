@@ -45,7 +45,7 @@ const ModalAdvanceConfirm = ({
       ...itemData,
     });
   };
-
+  console.log("itemData", itemData);
   const handleClose = () => {
     dispatch(setIsAnimating(false));
     setTimeout(() => {

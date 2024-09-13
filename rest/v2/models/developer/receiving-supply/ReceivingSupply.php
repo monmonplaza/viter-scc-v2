@@ -50,7 +50,6 @@ class ReceivingSupply
     public $tblDefectiveProduct;
     public $tblInventoryLog;
 
-
     public function __construct($db)
     {
         $this->connection = $db;

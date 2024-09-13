@@ -11,7 +11,6 @@ import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
 import ModalAdvanceConfirm from "@/components/partials/modal/ModalAdvanceConfirm";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import PillStatus from "@/components/partials/PillStatus";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
@@ -19,7 +18,6 @@ import { setIsSearch } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
-  Archive,
   ArchiveRestore,
   ClipboardCheck,
   ScrollText,
@@ -29,7 +27,7 @@ import {
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
-const ReceivingList = ({ setItemEdit, setIsView }) => {
+const SalesList = ({ setItemEdit, setIsView }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [filterDate, setFilterDate] = React.useState("");
   const [isFilter, setIsFilter] = React.useState(false);
@@ -329,11 +327,10 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
           item={formatDate(data.receiving_date)}
           active={isActive}
           text={isActive ? "complete" : "restore"}
-          itemData={data}
         />
       )}
     </>
   );
 };
 
-export default ReceivingList;
+export default SalesList;

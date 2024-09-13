@@ -9,6 +9,7 @@ import {
   Settings,
   TicketX,
   Users,
+  Weight,
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -47,6 +48,12 @@ const Navigation = ({ menu, submenu }) => {
       icon: <TicketX size={18} />,
       text: "Return Product",
       slug: "return-product",
+    },
+
+    {
+      icon: <Weight size={18} />,
+      text: "Sales",
+      slug: "sales",
     },
     {
       icon: <Barcode size={18} />,

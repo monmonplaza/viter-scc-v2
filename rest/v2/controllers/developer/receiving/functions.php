@@ -40,3 +40,19 @@ function checkUpdateAllNewData($object)
     checkQuery($query, "There's a problem processing your request. (update new data in receiving)");
     return $query;
 }
+
+// Update Inventory Log
+function checkUpdateInventoryStockIn($object)
+{
+    $query = $object->updateInventoryStockIn();
+    checkQuery($query, "There's a problem processing your request. (update Inventory stock in)");
+    return $query;
+}
+
+// Update Inventory Log
+function checkUpdateInventoryDefectiveProduct($object)
+{
+    $query = $object->updateInventoryDefectiveProduct();
+    checkQuery($query, "There's a problem processing your request. (update Inventory Defective product)");
+    return $query;
+}
