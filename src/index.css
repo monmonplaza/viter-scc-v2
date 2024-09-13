@@ -151,12 +151,12 @@
 
   table tbody tr:hover .table-action,
   ul li:hover .table-action {
-    @apply block;
+    @apply md:block;
   }
 
   table tbody tr .table-action,
   ul li .table-action {
-    @apply absolute right-0 top-0 h-[26px] pl-6  after:absolute after:top-0.5 after:left-0.5  after:content-['...'] after:text-xl bg-primary z-30 hidden;
+    @apply sticky md:absolute -right-5 md:right-0 top-0 h-[26px] pl-6  after:absolute after:top-0.5 after:left-0.5  after:content-['...'] after:text-xl bg-primary z-30 md:hidden;
   }
 
   button.tooltip {
