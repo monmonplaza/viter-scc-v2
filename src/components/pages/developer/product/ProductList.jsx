@@ -136,7 +136,6 @@ const ProductList = ({ setItemEdit }) => {
                 <th className="w-[200px]">Name</th>
                 <th className="w-[200px]">Category</th>
                 <th>SKU</th>
-                <th>Barcode</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -174,7 +173,6 @@ const ProductList = ({ setItemEdit }) => {
                         <td>{item.category_name}</td>
                         <td>{item.product_sku}</td>
 
-                        <td>{item.product_barcode}</td>
                         <td>
                           <p className="max-w-[500px] truncate mb-0">
                             {item.product_description}

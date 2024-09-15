@@ -80,10 +80,17 @@ RewriteRule ^customer/([0-9]+)$ controllers/developer/customer/customer.php?cust
 RewriteRule ^customer/active/([0-9]+)$ controllers/developer/customer/active.php?customerid=$1 [L]
 RewriteRule ^customer/page/([0-9]+)$ controllers/developer/customer/page.php?start=$1 [L]
 RewriteRule ^customer/search$ controllers/developer/customer/search.php [L]
+
+### PRODUCT PRICE ###
+RewriteRule ^product-price$ controllers/developer/product-price/product-price.php [L]
+RewriteRule ^product-price/([0-9]+)$ controllers/developer/product-price/product-price.php?productpriceid=$1 [L] 
+RewriteRule ^product-price/page/([0-9]+)$ controllers/developer/product-price/page.php?start=$1 [L]
+RewriteRule ^product-price/search$ controllers/developer/product-price/search.php [L]
  
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 
 RewriteRule ^search-supplier$ controllers/developer/search/search-supplier.php [L] 
+RewriteRule ^search-product-dont-have-price$ controllers/developer/search/search-product-dont-have-price.php [L] 
 
 
 

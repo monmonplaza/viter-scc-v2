@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   List,
   PillBottle,
+  ScanBarcode,
   Settings,
   TicketX,
   Users,
@@ -59,6 +60,11 @@ const Navigation = ({ menu, submenu }) => {
       icon: <Barcode size={18} />,
       text: "Products",
       slug: "products",
+    },
+    {
+      icon: <ScanBarcode size={18} />,
+      text: "Products Price",
+      slug: "product-price",
     },
     {
       icon: <PillBottle size={18} />,

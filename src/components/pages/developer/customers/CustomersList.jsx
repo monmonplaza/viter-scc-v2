@@ -59,7 +59,7 @@ const CustomersList = ({ setItemEdit }) => {
       await queryDataInfinite(
         `/${ver}/customer/search`, // search endpoint
         `/${ver}/customer/page/${pageParam}`, // list endpoint
-        store.isSearch, // search boolean, // search boolean
+        store.isSearch || isFilter, // search boolean, // search boolean
         {
           aid: "",
           isFilter,

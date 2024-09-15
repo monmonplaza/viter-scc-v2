@@ -25,6 +25,7 @@ $receiving_supply->receiving_supply_datetime = date("Y-m-d H:i:s");
 
 $receiving_supply->receiving_is_complete = 0;
 $receiving_supply->receiving_is_new_data = 1;
+$receiving_supply->receiving_supply_have_price = 0;
 $receiving_supply->receiving_datetime = date("Y-m-d H:i:s");
 $receiving_supply->receiving_total_amount = (float)$data["receiving_total_amount"]  + (float)$receiving_supply->receiving_supply_amount;
 

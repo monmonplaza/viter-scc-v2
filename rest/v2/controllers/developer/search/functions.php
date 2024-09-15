@@ -15,3 +15,11 @@ function checkSearchProduct($object)
     checkQuery($query, "Empty records. (search product)");
     return $query;
 }
+
+// Read search Product Receive Supply
+function checkSearchProductReceiveSupply($object)
+{
+    $query = $object->SeachProductReceiveSupply();
+    checkQuery($query, "Empty records. (search by product receive supply)");
+    return $query;
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2024 at 06:26 AM
+-- Generation Time: Sep 15, 2024 at 03:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,8 +41,32 @@ CREATE TABLE `sccv2_category` (
 --
 
 INSERT INTO `sccv2_category` (`category_aid`, `category_name`, `category_description`, `category_is_active`, `category_datetime`, `category_created`) VALUES
-(1, 'vvvv', 'zxczxczxc', 1, '', '2024-08-23 09:59:31'),
-(3, 'Dairy', 'Dairy Products', 1, '2024-08-23 14:23:02', '2024-08-23 10:02:10');
+(1, 'School Supply', 'School Supply', 1, '2024-09-12 19:13:23', '2024-08-27 18:53:16'),
+(2, 'dairy product', 'dairy product', 1, '2024-09-12 19:05:54', '2024-09-12 19:05:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_customer`
+--
+
+CREATE TABLE `sccv2_customer` (
+  `customer_aid` int(11) NOT NULL,
+  `customer_is_active` tinyint(1) NOT NULL,
+  `customer_name` varchar(200) NOT NULL,
+  `customer_address` text NOT NULL,
+  `customer_mobile_number` varchar(20) NOT NULL,
+  `customer_created` datetime NOT NULL,
+  `customer_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_customer`
+--
+
+INSERT INTO `sccv2_customer` (`customer_aid`, `customer_is_active`, `customer_name`, `customer_address`, `customer_mobile_number`, `customer_created`, `customer_updated`) VALUES
+(1, 1, 'Cyrene lumabas', 'San cristobal san pablo city laguna 4000', '09865326545', '2024-09-13 12:11:44', '2024-09-13 12:12:56'),
+(2, 1, 'Zaicy Lumabas', 'San Cristobal San Pablo City Laguna', '09095632587', '2024-09-15 15:28:10', '2024-09-15 15:28:10');
 
 -- --------------------------------------------------------
 
@@ -56,6 +80,8 @@ CREATE TABLE `sccv2_defective_product` (
   `defective_product_is_resolve` tinyint(1) NOT NULL,
   `defective_product_qty` varchar(20) NOT NULL,
   `defective_product_amount` varchar(20) NOT NULL,
+  `defective_product_resolved_date` varchar(20) NOT NULL,
+  `defective_product_remarks` text NOT NULL,
   `defective_product_created` datetime NOT NULL,
   `defective_product_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -64,11 +90,34 @@ CREATE TABLE `sccv2_defective_product` (
 -- Dumping data for table `sccv2_defective_product`
 --
 
-INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_amount`, `defective_product_created`, `defective_product_updated`) VALUES
-(1, 93, 0, '5', '5', '2024-08-29 10:44:23', '2024-08-29 10:44:23'),
-(2, 101, 1, '20', '200', '2024-08-29 10:46:12', '2024-08-29 10:49:06'),
-(3, 101, 0, '60', '600', '2024-08-29 10:49:54', '2024-08-29 10:49:54'),
-(4, 80, 0, '2', '100', '2024-08-29 12:21:21', '2024-08-29 12:21:21');
+INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_amount`, `defective_product_resolved_date`, `defective_product_remarks`, `defective_product_created`, `defective_product_updated`) VALUES
+(7, 14, 0, '10', '100', '', '', '2024-09-12 20:32:52', '0000-00-00 00:00:00'),
+(8, 14, 0, '10', '100', '', '', '2024-09-12 21:02:20', '2024-09-12 21:02:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_inventory_log`
+--
+
+CREATE TABLE `sccv2_inventory_log` (
+  `inventory_log_aid` int(11) NOT NULL,
+  `inventory_log_product_id` varchar(20) NOT NULL,
+  `inventory_log_available_stock` varchar(20) NOT NULL,
+  `inventory_log_stock_in` varchar(20) NOT NULL,
+  `inventory_log_stock_out` varchar(20) NOT NULL,
+  `inventory_log_defective_product` varchar(20) NOT NULL,
+  `inventory_log_return_product` varchar(20) NOT NULL,
+  `inventory_log_created` datetime NOT NULL,
+  `inventory_log_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_inventory_log`
+--
+
+INSERT INTO `sccv2_inventory_log` (`inventory_log_aid`, `inventory_log_product_id`, `inventory_log_available_stock`, `inventory_log_stock_in`, `inventory_log_stock_out`, `inventory_log_defective_product`, `inventory_log_return_product`, `inventory_log_created`, `inventory_log_updated`) VALUES
+(1, '4', '', '110', '', '20', '0', '2024-09-12 19:06:21', '2024-09-15 21:28:33');
 
 -- --------------------------------------------------------
 
@@ -83,7 +132,6 @@ CREATE TABLE `sccv2_product` (
   `product_sku` varchar(20) NOT NULL,
   `product_name` varchar(50) NOT NULL,
   `product_description` text NOT NULL,
-  `product_barcode` varchar(20) NOT NULL,
   `product_datetime` varchar(20) NOT NULL,
   `product_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -92,10 +140,41 @@ CREATE TABLE `sccv2_product` (
 -- Dumping data for table `sccv2_product`
 --
 
-INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_barcode`, `product_datetime`, `product_created`) VALUES
-(1, 1, '3', '67559621', 'Egg', 'Chicken egg', '', '2024-08-27 12:55:06', '2024-08-27 12:55:06'),
-(2, 1, '1', '53103642', 'Lucky me canton', 'Lucky me canton', '', '2024-08-27 12:55:30', '2024-08-27 12:55:30'),
-(3, 1, '3', '78347313', 'Ballpen', 'This is Ballpen', '', '2024-08-28 14:28:57', '2024-08-28 14:28:57');
+INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_datetime`, `product_created`) VALUES
+(4, 1, '1', '97032254', 'Ballpen', 'This is a test data for product', '2024-09-12 19:06:21', '2024-09-12 19:06:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_product_price`
+--
+
+CREATE TABLE `sccv2_product_price` (
+  `product_price_aid` int(11) NOT NULL,
+  `product_price_product_id` varchar(20) NOT NULL,
+  `product_price_supply_id` varchar(20) NOT NULL,
+  `product_price_css_price` varchar(20) NOT NULL,
+  `product_price_scc_percent` varchar(20) NOT NULL,
+  `product_price_whole_sale_amount` varchar(20) NOT NULL,
+  `product_price_whole_sale_percent` varchar(20) NOT NULL,
+  `product_price_scc_whole_sale_percent` varchar(20) NOT NULL,
+  `product_price_scc_whole_sale_amount` varchar(20) NOT NULL,
+  `product_price_amount` varchar(20) NOT NULL,
+  `product_price_percent` varchar(20) NOT NULL,
+  `product_price_stock_in` varchar(20) NOT NULL,
+  `product_price_stock_out` varchar(20) NOT NULL,
+  `product_price_remarks` text NOT NULL,
+  `product_price_created` datetime NOT NULL,
+  `product_price_update` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_product_price`
+--
+
+INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_css_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
+(4, '4', '14', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '0', 'first test data', '2024-09-15 21:17:44', '2024-09-15 21:17:44'),
+(5, '4', '15', '11.11', '1', '11.11', '1', '1', '11.11', '11.11', '1', '10', '0', 'test', '2024-09-15 21:28:08', '2024-09-15 21:28:08');
 
 -- --------------------------------------------------------
 
@@ -119,15 +198,7 @@ CREATE TABLE `sccv2_receiving` (
 --
 
 INSERT INTO `sccv2_receiving` (`receiving_aid`, `receiving_date`, `receiving_reference_no`, `receiving_total_amount`, `receiving_is_complete`, `receiving_is_new_data`, `receiving_datetime`, `receiving_created`) VALUES
-(1, '2024-08-26', '2861-416-716', '4240', 1, 0, '2024-08-28 16:15:00', '2024-08-28 08:49:07'),
-(2, '2024-08-02', '7830-623-942', '', 1, 0, '2024-08-28 09:54:53', '2024-08-28 09:54:53'),
-(3, '2024-08-03', '2419-935-988', '600', 1, 0, '2024-08-28 10:00:40', '2024-08-28 09:57:57'),
-(4, '2024-08-09', '2696-745-94', '9000', 1, 0, '2024-08-28 10:33:00', '2024-08-28 10:31:01'),
-(5, '2024-08-29', '4979-658-384', '', 1, 0, '2024-08-28 10:33:32', '2024-08-28 10:33:32'),
-(6, '2024-08-19', '6805-166-792', '12000', 1, 0, '2024-08-28 10:36:13', '2024-08-28 10:34:56'),
-(7, '2024-08-01', '6653-270-543', '10920', 1, 0, '2024-08-28 14:29:41', '2024-08-28 10:57:38'),
-(8, '2024-08-20', '4417-881-544', '2000', 1, 0, '2024-08-28 12:15:15', '2024-08-28 12:15:11'),
-(9, '2024-08-05', '6186-094-302', '391157', 0, 0, '2024-08-29 12:21:21', '2024-08-29 08:32:01');
+(2, '2024-09-12', '3126520730', '1110', 1, 0, '2024-09-15 20:37:36', '2024-09-12 19:47:40');
 
 -- --------------------------------------------------------
 
@@ -138,121 +209,47 @@ INSERT INTO `sccv2_receiving` (`receiving_aid`, `receiving_date`, `receiving_ref
 CREATE TABLE `sccv2_receiving_supply` (
   `receiving_supply_aid` int(11) NOT NULL,
   `receiving_supply_is_active` tinyint(1) NOT NULL,
-  `receiving_supply_received_id` int(11) NOT NULL,
-  `receiving_supply_product_id` int(11) NOT NULL,
+  `receiving_supply_have_price` tinyint(1) NOT NULL,
+  `receiving_supply_received_id` varchar(20) NOT NULL,
+  `receiving_supply_product_id` varchar(20) NOT NULL,
   `receiving_supply_barcode` varchar(100) NOT NULL,
-  `receiving_supply_supplier_id` int(11) NOT NULL,
+  `receiving_supply_supplier_id` varchar(20) NOT NULL,
   `receiving_supply_unit_id` varchar(20) NOT NULL,
-  `receiving_supply_quantity` int(20) NOT NULL,
+  `receiving_supply_quantity` varchar(20) NOT NULL,
   `receiving_supply_price` varchar(20) NOT NULL,
-  `receiving_supply_amount` varchar(30) NOT NULL,
+  `receiving_supply_amount` varchar(20) NOT NULL,
   `receiving_supply_expiration_date` varchar(20) NOT NULL,
   `receiving_supply_defective_product_qty` varchar(20) NOT NULL,
-  `receiving_supply_datetime` varchar(20) NOT NULL,
-  `receiving_supply_created` varchar(20) NOT NULL
+  `receiving_supply_defective_remarks` text NOT NULL,
+  `receiving_supply_datetime` datetime NOT NULL,
+  `receiving_supply_created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sccv2_receiving_supply`
 --
 
-INSERT INTO `sccv2_receiving_supply` (`receiving_supply_aid`, `receiving_supply_is_active`, `receiving_supply_received_id`, `receiving_supply_product_id`, `receiving_supply_barcode`, `receiving_supply_supplier_id`, `receiving_supply_unit_id`, `receiving_supply_quantity`, `receiving_supply_price`, `receiving_supply_amount`, `receiving_supply_expiration_date`, `receiving_supply_defective_product_qty`, `receiving_supply_datetime`, `receiving_supply_created`) VALUES
-(1, 1, 1, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 09:40:09', '2024-08-28 08:49:07'),
-(4, 1, 1, 2, '', 1, '2', 200, '1', '200', '', '', '2024-08-28 09:47:05', '2024-08-28 09:47:05'),
-(5, 1, 1, 2, '', 1, '2', 200, '1', '200', '', '', '2024-08-28 09:47:37', '2024-08-28 09:47:37'),
-(6, 1, 1, 2, '', 1, '2', 200, '1', '200', '', '', '2024-08-28 09:47:45', '2024-08-28 09:47:45'),
-(7, 1, 1, 2, '', 1, '2', 200, '1', '200', '', '', '2024-08-28 09:48:08', '2024-08-28 09:48:08'),
-(8, 1, 1, 2, '', 1, '1', 2000, '1', '2000', '', '', '2024-08-28 09:48:23', '2024-08-28 09:48:23'),
-(9, 1, 1, 2, '', 1, '1', 200, '2', '400', '', '', '2024-08-28 09:52:50', '2024-08-28 09:52:50'),
-(10, 1, 2, 2, '', 2, '1', 500, '20', '10000', '', '', '2024-08-28 09:54:53', '2024-08-28 09:54:53'),
-(11, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:57:57', '2024-08-28 09:57:57'),
-(12, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:15', '2024-08-28 09:58:15'),
-(13, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:15', '2024-08-28 09:58:15'),
-(14, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:16', '2024-08-28 09:58:16'),
-(15, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:16', '2024-08-28 09:58:16'),
-(16, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:16', '2024-08-28 09:58:16'),
-(17, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 09:58:16', '2024-08-28 09:58:16'),
-(18, 1, 3, 2, '', 2, '1', 60, '10', '600', '', '', '2024-08-28 09:58:37', '2024-08-28 09:58:37'),
-(19, 1, 3, 2, '', 2, '1', 60, '10', '600', '', '', '2024-08-28 09:59:51', '2024-08-28 09:59:51'),
-(20, 1, 3, 2, '', 2, '1', 60, '10', '600', '', '', '2024-08-28 10:00:34', '2024-08-28 10:00:34'),
-(21, 1, 3, 2, '', 2, '1', 60, '10', '600', '', '', '2024-08-28 10:00:36', '2024-08-28 10:00:36'),
-(22, 1, 3, 2, '', 2, '1', 60, '10', '600', '', '', '2024-08-28 10:00:38', '2024-08-28 10:00:38'),
-(23, 1, 3, 2, '', 2, '2', 60, '10', '600', '', '', '2024-08-28 10:00:40', '2024-08-28 10:00:40'),
-(25, 1, 1, 1, '', 1, '1', 10, '20', '200', '', '', '2024-08-28 10:02:48', '2024-08-28 10:02:48'),
-(29, 1, 4, 1, '', 1, '2', 3000, '3', '9000', '', '', '2024-08-28 10:33:00', '2024-08-28 10:33:00'),
-(30, 1, 5, 1, '', 2, '2', 900, '1', '900', '', '', '2024-08-28 10:33:32', '2024-08-28 10:33:32'),
-(31, 1, 6, 1, '', 1, '2', 500, '18', '9000', '', '', '2024-08-28 10:34:56', '2024-08-28 10:34:56'),
-(32, 1, 6, 1, '', 1, '2', 100, '10', '1000', '', '', '2024-08-28 10:35:29', '2024-08-28 10:35:29'),
-(34, 1, 6, 2, '', 1, '2', 100, '10', '1000', '', '', '2024-08-28 10:36:13', '2024-08-28 10:36:13'),
-(35, 1, 7, 2, '', 2, '1', 100, '10', '1000', '', '', '2024-08-28 13:05:55', '2024-08-28 10:57:38'),
-(36, 1, 8, 1, '', 2, '2', 100, '10', '1000', '', '', '2024-08-28 12:15:11', '2024-08-28 12:15:11'),
-(37, 1, 8, 1, '', 2, '2', 100, '10', '1000', '', '', '2024-08-28 12:15:15', '2024-08-28 12:15:15'),
-(38, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:16', '2024-08-28 13:06:16'),
-(39, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:17', '2024-08-28 13:06:17'),
-(40, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:17', '2024-08-28 13:06:17'),
-(41, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:18', '2024-08-28 13:06:18'),
-(42, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:19', '2024-08-28 13:06:19'),
-(43, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:19', '2024-08-28 13:06:19'),
-(44, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:20', '2024-08-28 13:06:20'),
-(45, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:20', '2024-08-28 13:06:20'),
-(46, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:21', '2024-08-28 13:06:21'),
-(47, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:21', '2024-08-28 13:06:21'),
-(48, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:22', '2024-08-28 13:06:22'),
-(49, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:23', '2024-08-28 13:06:23'),
-(50, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:23', '2024-08-28 13:06:23'),
-(51, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:24', '2024-08-28 13:06:24'),
-(52, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:26', '2024-08-28 13:06:26'),
-(53, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:26', '2024-08-28 13:06:26'),
-(54, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:27', '2024-08-28 13:06:27'),
-(55, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:27', '2024-08-28 13:06:27'),
-(56, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:27', '2024-08-28 13:06:27'),
-(57, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(58, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(59, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(60, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(61, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(62, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:28', '2024-08-28 13:06:28'),
-(63, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(64, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(65, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(66, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(67, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(68, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(69, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:29', '2024-08-28 13:06:29'),
-(70, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:30', '2024-08-28 13:06:30'),
-(71, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:30', '2024-08-28 13:06:30'),
-(72, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:30', '2024-08-28 13:06:30'),
-(73, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:30', '2024-08-28 13:06:30'),
-(74, 1, 7, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-28 13:06:36', '2024-08-28 13:06:36'),
-(75, 1, 7, 1, '123456789', 2, '1', 10, '20', '200', '2024-08-28', '', '2024-08-28 14:06:19', '2024-08-28 13:06:38'),
-(76, 1, 7, 2, '1236547890', 2, '1', 100, '20', '2000', '2024-08-28', '', '2024-08-28 14:26:50', '2024-08-28 13:06:39'),
-(77, 1, 7, 2, '12345678900', 1, '1', 20, '10', '200', '', '', '2024-08-28 14:29:41', '2024-08-28 14:13:58'),
-(78, 1, 7, 3, '1234567890', 2, '2', 10, '12', '120', '', '', '2024-08-28 14:29:29', '2024-08-28 14:29:16'),
-(79, 1, 9, 3, '12', 2, '2', 10, '20', '200', '2024-08-22', '', '2024-08-29 08:42:16', '2024-08-29 08:32:01'),
-(80, 1, 9, 1, '12345654123', 1, '1', 10, '50', '500', '2024-08-20', '2', '2024-08-29 12:21:21', '2024-08-29 08:37:48'),
-(81, 1, 9, 1, '1', 2, '2', 1000, '130', '130000', '', '', '2024-08-29 08:38:31', '2024-08-29 08:38:31'),
-(82, 1, 9, 1, '', 2, '2', 1000, '130', '130000', '', '', '2024-08-29 08:38:38', '2024-08-29 08:38:38'),
-(83, 1, 9, 1, '', 2, '2', 1000, '130', '130000', '', '', '2024-08-29 08:38:41', '2024-08-29 08:38:41'),
-(84, 1, 9, 3, '', 2, '1', 10, '23', '230', '', '', '2024-08-29 08:41:17', '2024-08-29 08:41:17'),
-(85, 1, 9, 1, '', 2, '1', 10, '20', '200', '', '', '2024-08-29 08:41:31', '2024-08-29 08:41:31'),
-(86, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:31', '2024-08-29 10:16:31'),
-(87, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:32', '2024-08-29 10:16:32'),
-(88, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:33', '2024-08-29 10:16:33'),
-(89, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:34', '2024-08-29 10:16:34'),
-(90, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:35', '2024-08-29 10:16:35'),
-(91, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:35', '2024-08-29 10:16:35'),
-(92, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:36', '2024-08-29 10:16:36'),
-(93, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:44:23', '2024-08-29 10:16:37'),
-(94, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:46', '2024-08-29 10:16:46'),
-(95, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:47', '2024-08-29 10:16:47'),
-(96, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:48', '2024-08-29 10:16:48'),
-(97, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:48', '2024-08-29 10:16:48'),
-(98, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:48', '2024-08-29 10:16:48'),
-(99, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:48', '2024-08-29 10:16:48'),
-(100, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:49', '2024-08-29 10:16:49'),
-(101, 1, 9, 3, '', 2, '1', 1, '10', '10', '', '60', '2024-08-29 10:49:54', '2024-08-29 10:16:49'),
-(102, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:49', '2024-08-29 10:16:49'),
-(103, 1, 9, 3, '', 2, '1', 1, '1', '1', '', '', '2024-08-29 10:16:49', '2024-08-29 10:16:49');
+INSERT INTO `sccv2_receiving_supply` (`receiving_supply_aid`, `receiving_supply_is_active`, `receiving_supply_have_price`, `receiving_supply_received_id`, `receiving_supply_product_id`, `receiving_supply_barcode`, `receiving_supply_supplier_id`, `receiving_supply_unit_id`, `receiving_supply_quantity`, `receiving_supply_price`, `receiving_supply_amount`, `receiving_supply_expiration_date`, `receiving_supply_defective_product_qty`, `receiving_supply_defective_remarks`, `receiving_supply_datetime`, `receiving_supply_created`) VALUES
+(14, 1, 1, '2', '4', '', '1', '1', '100', '10', '1000', '2024-09-15', '10', '', '0000-00-00 00:00:00', '2024-09-12 20:32:47'),
+(15, 1, 1, '2', '4', '1111', '2', '1', '10', '11', '110', '', '0', '', '2024-09-15 21:28:08', '2024-09-15 20:37:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_return_product`
+--
+
+CREATE TABLE `sccv2_return_product` (
+  `return_product_aid` int(11) NOT NULL,
+  `return_product_is_resolved` tinyint(1) NOT NULL,
+  `return_product_id` varchar(20) NOT NULL,
+  `return_product_date` varchar(20) NOT NULL,
+  `return_product_qty` varchar(20) NOT NULL,
+  `return_product_resolved_date` varchar(20) NOT NULL,
+  `return_product_remarks` text NOT NULL,
+  `return_product_updated` datetime NOT NULL,
+  `return_product_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -273,8 +270,8 @@ CREATE TABLE `sccv2_settings_unit` (
 --
 
 INSERT INTO `sccv2_settings_unit` (`settings_unit_aid`, `settings_unit_is_active`, `settings_unit_name`, `settings_unit_created`, `settings_unit_updated`) VALUES
-(1, 1, 'test', '2024-08-27 14:52:04', '2024-08-27 15:01:01'),
-(2, 1, 'data test', '2024-08-27 15:01:31', '2024-08-27 15:01:45');
+(1, 1, 'Per piece', '2024-08-27 20:03:08', '2024-08-27 20:03:08'),
+(2, 1, 'per box', '2024-08-27 20:03:14', '2024-08-27 20:03:14');
 
 -- --------------------------------------------------------
 
@@ -300,8 +297,8 @@ CREATE TABLE `sccv2_supplier` (
 --
 
 INSERT INTO `sccv2_supplier` (`supplier_aid`, `supplier_name`, `supplier_representative`, `supplier_representative_phone`, `supplier_phone`, `supplier_address`, `supplier_email`, `supplier_is_active`, `supplier_datetime`, `supplier_created`) VALUES
-(1, 'xx', 'xxx', 'xxx', 'xxx', 'xx', 'xxx@sasdas.com', 0, '', '2024-08-23 12:46:25'),
-(2, 'Amazing Chuchu', 'Ramon Plaza', '092122232321', '09221222212', '214 Purok 5 Barangay Sta Ana San Pablo City', 'ramon.plaza@frontlibusiness.com.ph', 1, '2024-08-23 12:53:54', '2024-08-23 12:53:54');
+(1, 'Cyrene Lumabas', 'sd', '09563254123', '09094568723', 'san cristobal san pablo city', 'cyrenemlumabas@gmail.com', 1, '2024-08-27 18:55:25', '2024-08-27 18:55:25'),
+(2, 'Zaicy Lumabas', 'as', '09546214554521', '09653214587', 'as', 'zaicy@gmail.com', 1, '2024-08-27 18:56:00', '2024-08-27 18:56:00');
 
 --
 -- Indexes for dumped tables
@@ -314,16 +311,34 @@ ALTER TABLE `sccv2_category`
   ADD PRIMARY KEY (`category_aid`);
 
 --
+-- Indexes for table `sccv2_customer`
+--
+ALTER TABLE `sccv2_customer`
+  ADD PRIMARY KEY (`customer_aid`);
+
+--
 -- Indexes for table `sccv2_defective_product`
 --
 ALTER TABLE `sccv2_defective_product`
   ADD PRIMARY KEY (`defective_product_aid`);
 
 --
+-- Indexes for table `sccv2_inventory_log`
+--
+ALTER TABLE `sccv2_inventory_log`
+  ADD PRIMARY KEY (`inventory_log_aid`);
+
+--
 -- Indexes for table `sccv2_product`
 --
 ALTER TABLE `sccv2_product`
   ADD PRIMARY KEY (`product_aid`);
+
+--
+-- Indexes for table `sccv2_product_price`
+--
+ALTER TABLE `sccv2_product_price`
+  ADD PRIMARY KEY (`product_price_aid`);
 
 --
 -- Indexes for table `sccv2_receiving`
@@ -336,6 +351,12 @@ ALTER TABLE `sccv2_receiving`
 --
 ALTER TABLE `sccv2_receiving_supply`
   ADD PRIMARY KEY (`receiving_supply_aid`);
+
+--
+-- Indexes for table `sccv2_return_product`
+--
+ALTER TABLE `sccv2_return_product`
+  ADD PRIMARY KEY (`return_product_aid`);
 
 --
 -- Indexes for table `sccv2_settings_unit`
@@ -357,31 +378,55 @@ ALTER TABLE `sccv2_supplier`
 -- AUTO_INCREMENT for table `sccv2_category`
 --
 ALTER TABLE `sccv2_category`
-  MODIFY `category_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `category_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `sccv2_customer`
+--
+ALTER TABLE `sccv2_customer`
+  MODIFY `customer_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sccv2_defective_product`
 --
 ALTER TABLE `sccv2_defective_product`
-  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `sccv2_inventory_log`
+--
+ALTER TABLE `sccv2_inventory_log`
+  MODIFY `inventory_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sccv2_product`
 --
 ALTER TABLE `sccv2_product`
-  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `sccv2_product_price`
+--
+ALTER TABLE `sccv2_product_price`
+  MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sccv2_receiving`
 --
 ALTER TABLE `sccv2_receiving`
-  MODIFY `receiving_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `receiving_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sccv2_receiving_supply`
 --
 ALTER TABLE `sccv2_receiving_supply`
-  MODIFY `receiving_supply_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `receiving_supply_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `sccv2_return_product`
+--
+ALTER TABLE `sccv2_return_product`
+  MODIFY `return_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sccv2_settings_unit`
