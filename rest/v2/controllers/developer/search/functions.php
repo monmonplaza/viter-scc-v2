@@ -8,10 +8,26 @@ function checkSearchSupplier($object)
     return $query;
 }
 
+// Read search customer
+function checkSearchCustomer($object)
+{
+    $query = $object->searchCustomer();
+    checkQuery($query, "Empty records. (search customer)");
+    return $query;
+}
+
 // Read search product
 function checkSearchProduct($object)
 {
     $query = $object->searchProduct();
+    checkQuery($query, "Empty records. (search product)");
+    return $query;
+}
+
+// Read search product
+function checkSearchProductPrice($object)
+{
+    $query = $object->searchProductPrice();
     checkQuery($query, "Empty records. (search product)");
     return $query;
 }

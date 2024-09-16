@@ -58,11 +58,11 @@ const SalesList = ({ setItemEdit, setIsView }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["receiving", search.current.value, store.isSearch, filterDate],
+    queryKey: ["sales", search.current.value, store.isSearch, filterDate],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/receiving/search`, // search endpoint
-        `/${ver}/receiving/page/${pageParam}`, // list endpoint
+        `/${ver}/sales/search`, // search endpoint
+        `/${ver}/sales/page/${pageParam}`, // list endpoint
         store.isSearch, // search boolean, // search boolean
         {
           aid: "",
@@ -170,32 +170,27 @@ const SalesList = ({ setItemEdit, setIsView }) => {
               {result?.pages.map((page, key) => (
                 <React.Fragment key={key}>
                   {page.data.map((item, key) => {
-                    totalAmount += Number(item.receiving_total_amount);
+                    totalAmount += Number(item.sales_total_amount);
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
-                        <td>
-                          {<PillStatus isActive={item.receiving_is_complete} />}
-                        </td>
-                        <td>{formatDate(item.receiving_date)}</td>
-                        <td>{item.receiving_reference_no}</td>
+                        <td>{<PillStatus isActive={item.sales_is_paid} />}</td>
+                        <td>{formatDate(item.sales_date)}</td>
+                        <td>{item.sales_reference_no}</td>
                         <td className="text-right">
                           {pesoSign}
-                          {numberWithCommasToFixed(
-                            item.receiving_total_amount,
-                            2
-                          )}
+                          {numberWithCommasToFixed(item.sales_total_amount, 2)}
                         </td>
                         <td className="table-action">
                           <ul>
-                            {item.receiving_is_complete === 0 ? (
+                            {item.sales_is_paid === 0 ? (
                               <>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleEdit(item.receiving_aid, item)
+                                      handleEdit(item.sales_aid, item)
                                     }
                                   >
                                     <SquarePen size={14} />
@@ -206,7 +201,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                     data-tooltip="Delete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRemove(item.receiving_aid, item)
+                                      handleRemove(item.sales_aid, item)
                                     }
                                   >
                                     <Trash size={14} />
@@ -217,7 +212,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                     data-tooltip="Complete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(item.receiving_aid, item)
+                                      handleRestore(item.sales_aid, item)
                                     }
                                   >
                                     <ClipboardCheck size={14} />
@@ -243,7 +238,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                         data-tooltip="Edit"
                                         className="tooltip"
                                         onClick={() =>
-                                          handleEdit(item.receiving_aid, item)
+                                          handleEdit(item.sales_aid, item)
                                         }
                                       >
                                         <SquarePen size={14} />
@@ -254,10 +249,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                         data-tooltip="Restore"
                                         className="tooltip"
                                         onClick={() =>
-                                          handleArchive(
-                                            item.receiving_aid,
-                                            item
-                                          )
+                                          handleArchive(item.sales_aid, item)
                                         }
                                       >
                                         <ArchiveRestore size={14} />
@@ -268,7 +260,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                         data-tooltip="Delete"
                                         className="tooltip"
                                         onClick={() =>
-                                          handleRemove(item.receiving_aid, item)
+                                          handleRemove(item.sales_aid, item)
                                         }
                                       >
                                         <Trash size={14} />
@@ -315,16 +307,16 @@ const SalesList = ({ setItemEdit, setIsView }) => {
 
       {!store.isAdd && store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/receiving/${aid}`}
-          queryKey="receiving"
-          item={formatDate(data.receiving_date)}
+          mysqlApiDelete={`/${ver}/sales/${aid}`}
+          queryKey="sales"
+          item={formatDate(data.sales_date)}
         />
       )}
       {!store.isAdd && store.isConfirm && (
         <ModalAdvanceConfirm
-          mysqlApiArchive={`/${ver}/receiving/active/${aid}`}
-          queryKey="receiving"
-          item={formatDate(data.receiving_date)}
+          mysqlApiArchive={`/${ver}/sales/active/${aid}`}
+          queryKey="sales"
+          item={formatDate(data.sales_date)}
           active={isActive}
           text={isActive ? "complete" : "restore"}
         />

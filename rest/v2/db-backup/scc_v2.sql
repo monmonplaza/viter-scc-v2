@@ -153,7 +153,7 @@ CREATE TABLE `sccv2_product_price` (
   `product_price_aid` int(11) NOT NULL,
   `product_price_product_id` varchar(20) NOT NULL,
   `product_price_supply_id` varchar(20) NOT NULL,
-  `product_price_css_price` varchar(20) NOT NULL,
+  `product_price_scc_price` varchar(20) NOT NULL,
   `product_price_scc_percent` varchar(20) NOT NULL,
   `product_price_whole_sale_amount` varchar(20) NOT NULL,
   `product_price_whole_sale_percent` varchar(20) NOT NULL,
@@ -172,7 +172,7 @@ CREATE TABLE `sccv2_product_price` (
 -- Dumping data for table `sccv2_product_price`
 --
 
-INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_css_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
+INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
 (4, '4', '14', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '0', 'first test data', '2024-09-15 21:17:44', '2024-09-15 21:17:44'),
 (5, '4', '15', '11.11', '1', '11.11', '1', '1', '11.11', '11.11', '1', '10', '0', 'test', '2024-09-15 21:28:08', '2024-09-15 21:28:08');
 

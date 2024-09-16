@@ -11,6 +11,8 @@ class Search
     public $tblCategory;
     public $tblReceiving;
     public $tblReceivingSupply;
+    public $tblProductPrice;
+    public $tblCustomer;
 
 
     public function __construct($db)
@@ -21,6 +23,8 @@ class Search
         $this->tblSupplier = "sccv2_supplier";
         $this->tblReceiving = "sccv2_receiving";
         $this->tblReceivingSupply = "sccv2_receiving_supply";
+        $this->tblProductPrice = "sccv2_product_price";
+        $this->tblCustomer = "sccv2_customer";
     }
 
     public function searchSupplier()
@@ -32,6 +36,22 @@ class Search
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "supplier_name" => "%{$this->search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchCustomer()
+    {
+        try {
+            $sql = "select * from {$this->tblCustomer} ";
+            $sql .= "where customer_name like :customer_name ";
+            $sql .= "order by customer_is_active desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "customer_name" => "%{$this->search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -67,6 +87,46 @@ class Search
         }
         return $query;
     }
+
+    public function searchProductPrice()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "product.*, ";
+            $sql .= "pr.*, ";
+            $sql .= "rs.receiving_supply_barcode, ";
+            $sql .= "category.category_aid, ";
+            $sql .= "category.category_name, ";
+            $sql .= "category.category_description ";
+            $sql .= "from ";
+            $sql .= "{$this->tblProduct} as product, ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblProductPrice} as pr, ";
+            $sql .= "{$this->tblCategory} as category ";
+            $sql .= "where product.product_category_id = category.category_aid ";
+            $sql .= "and rs.receiving_supply_product_id = product.product_aid ";
+            $sql .= "and pr.product_price_product_id = product.product_aid ";
+            $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
+            $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and ( ";
+            $sql .= "product.product_name like :product_name ";
+            $sql .= "or category.category_name like :category_name ";
+            $sql .= "or rs.receiving_supply_barcode = :receiving_supply_barcode ";
+            $sql .= ") ";
+            $sql .= "order by product.product_is_active desc, ";
+            $sql .= "product.product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "category_name" => "%{$this->search}%",
+                "product_name" => "%{$this->search}%",
+                "receiving_supply_barcode" => $this->search,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // read all
     public function SeachProductReceiveSupply()
     {

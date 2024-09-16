@@ -158,7 +158,7 @@ const ProductPriceList = ({ setItemEdit }) => {
                         <td className="text-right">
                           {pesoSign}
                           {numberWithCommasToFixed(
-                            item.product_price_css_price,
+                            item.product_price_scc_price,
                             2
                           )}
                         </td>

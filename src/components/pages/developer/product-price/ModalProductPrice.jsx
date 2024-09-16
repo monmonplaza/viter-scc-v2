@@ -120,7 +120,7 @@ const ModalProductPrice = ({ itemEdit }) => {
               dispatch(setMessage("Invalid product data"));
               return;
             } else {
-              const product_price_css_price =
+              const product_price_scc_price =
                 (Number(values?.product_price_scc_percent) / 100) *
                   Number(productData?.receiving_supply_price) +
                 Number(productData?.receiving_supply_price);
@@ -144,7 +144,7 @@ const ModalProductPrice = ({ itemEdit }) => {
                 ...values,
                 product_price_product_id: productData?.product_aid,
                 product_price_supply_id: productData?.receiving_supply_aid,
-                product_price_css_price,
+                product_price_scc_price,
                 product_price_scc_whole_sale_amount,
                 product_price_amount,
                 product_price_whole_sale_amount,

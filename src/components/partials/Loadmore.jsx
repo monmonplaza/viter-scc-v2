@@ -27,7 +27,7 @@ const Loadmore = ({
       </>
     );
   }
-  if (!hasNextPage && !isSearchOrFilter) {
+  if (!hasNextPage && !isSearchOrFilter && result?.data.length > 0) {
     return (
       <div className="my-3 mb-1 p-1.5 text-xs opacity-60">End of list.</div>
     );

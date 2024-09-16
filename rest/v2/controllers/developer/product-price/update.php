@@ -8,7 +8,7 @@ if (array_key_exists("productpriceid", $_GET)) {
     checkPayload($data);
 
     $productPrice->product_price_aid = $_GET['productpriceid'];
-    $productPrice->product_price_css_price = checkIndex($data, "product_price_css_price");
+    $productPrice->product_price_scc_price = checkIndex($data, "product_price_scc_price");
     $productPrice->product_price_scc_percent = checkIndex($data, "product_price_scc_percent");
     $productPrice->product_price_amount = checkIndex($data, "product_price_amount");
     $productPrice->product_price_percent = checkIndex($data, "product_price_percent");

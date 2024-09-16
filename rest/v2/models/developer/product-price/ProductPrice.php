@@ -4,7 +4,7 @@ class ProductPrice
     public $product_price_aid;
     public $product_price_product_id;
     public $product_price_supply_id;
-    public $product_price_css_price;
+    public $product_price_scc_price;
     public $product_price_scc_percent;
     public $product_price_amount;
     public $product_price_percent;
@@ -47,7 +47,7 @@ class ProductPrice
             $sql = "insert into {$this->tblProductPrice} ";
             $sql .= "( product_price_product_id, ";
             $sql .= "product_price_supply_id, ";
-            $sql .= "product_price_css_price, ";
+            $sql .= "product_price_scc_price, ";
             $sql .= "product_price_scc_percent, ";
             $sql .= "product_price_amount, ";
             $sql .= "product_price_percent, ";
@@ -62,7 +62,7 @@ class ProductPrice
             $sql .= "product_price_created ) values ( ";
             $sql .= ":product_price_product_id, ";
             $sql .= ":product_price_supply_id, ";
-            $sql .= ":product_price_css_price, ";
+            $sql .= ":product_price_scc_price, ";
             $sql .= ":product_price_scc_percent, ";
             $sql .= ":product_price_amount, ";
             $sql .= ":product_price_percent, ";
@@ -79,7 +79,7 @@ class ProductPrice
             $query->execute([
                 "product_price_product_id" => $this->product_price_product_id,
                 "product_price_supply_id" => $this->product_price_supply_id,
-                "product_price_css_price" => $this->product_price_css_price,
+                "product_price_scc_price" => $this->product_price_scc_price,
                 "product_price_scc_percent" => $this->product_price_scc_percent,
                 "product_price_amount" => $this->product_price_amount,
                 "product_price_percent" => $this->product_price_percent,
@@ -242,7 +242,7 @@ class ProductPrice
     {
         try {
             $sql = "update {$this->tblProductPrice} set ";
-            $sql .= "product_price_css_price = :product_price_css_price, ";
+            $sql .= "product_price_scc_price = :product_price_scc_price, ";
             $sql .= "product_price_scc_percent = :product_price_scc_percent, ";
             $sql .= "product_price_amount = :product_price_amount, ";
             $sql .= "product_price_percent = :product_price_percent, ";
@@ -256,7 +256,7 @@ class ProductPrice
             $sql .= "where product_price_aid = :product_price_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "product_price_css_price" => $this->product_price_css_price,
+                "product_price_scc_price" => $this->product_price_scc_price,
                 "product_price_scc_percent" => $this->product_price_scc_percent,
                 "product_price_amount" => $this->product_price_amount,
                 "product_price_percent" => $this->product_price_percent,
