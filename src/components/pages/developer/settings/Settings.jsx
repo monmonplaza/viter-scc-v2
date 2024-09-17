@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import Developer from "./developer/Developer.jsx";
 import Roles from "./roles/Roles.jsx";
 import Unit from "./unit/Unit.jsx";
 
@@ -28,7 +29,7 @@ const Settings = () => {
     { label: "Developer", icon: <SquareUserRound size={14} /> },
   ];
 
-  const settingPages = [<Unit />, <Roles />];
+  const settingPages = [<Unit />, <Roles />, <Roles />, <Developer />];
 
   const handleChangeSettingMenu = (index) => {
     setTabindex(index);

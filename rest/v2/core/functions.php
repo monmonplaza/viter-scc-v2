@@ -244,7 +244,7 @@ function token(
     if (!empty($token)) {
         try {
             $decoded = JWT::decode($token, $key, array('HS256'));
-            ($object->user_system_email = $decoded->data->email
+            ($object->developer_email = $decoded->data->email
                 | $object->user_other_email = $decoded->data->email);
             $result = checkLogin($object);
             $row = $result->fetch(PDO::FETCH_ASSOC);
@@ -634,4 +634,57 @@ function checkFilterByStatusAndSearch($object)
     $query = $object->filterByStatusAndSearch();
     checkQuery($query, "Empty records. (filter by status and search)");
     return $query;
+}
+
+
+// Token for system user
+function tokenDeveloper(
+    $object,
+    $token,
+    $key
+) {
+    $response = new Response();
+    $error = [];
+    $returnData = [];
+
+    if (!empty($token)) {
+        try {
+            $decoded = JWT::decode($token, $key, array('HS256'));
+            $object->developer_email = $decoded->data->email;
+            $result = checkLogin($object);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+
+            http_response_code(200);
+            $returnData["data"] = array_merge(
+                (array)$row,
+                array('user_key' => $decoded->data->data->user_system_password), // data from login
+                array('role' => $decoded->data->data->role_name),
+            );
+            $returnData["count"] = $result->rowCount();
+            $returnData["success"] = true;
+            $returnData["message"] = "Access granted.";
+            $response->setData($returnData);
+            $response->send();
+            return $returnData;
+        } catch (Exception $ex) {
+            $response->setSuccess(false);
+            $error["count"] = 0;
+            $error["success"] = false;
+            $error['error'] = "Catch no token found.";
+            $response->setData($error);
+            $response->send();
+            exit;
+        }
+    } else {
+        $response->setSuccess(false);
+        $error["count"] = 0;
+        $error["success"] = false;
+        $error['error'] = "No token found.";
+        $response->setData($error);
+        $response->send();
+        exit;
+    }
+    checkEndpoint();
+    http_response_code(200);
+    checkAccess();
 }

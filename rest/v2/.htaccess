@@ -61,6 +61,24 @@ RewriteRule ^settings-role/([0-9]+)$ controllers/developer/settings/role/role.ph
 RewriteRule ^settings-role/active/([0-9]+)$ controllers/developer/settings/role/active.php?roleid=$1 [L]
 
 
+
+### SETTINGS USERS SYSTEM ###
+RewriteRule ^settings-developer$ controllers/developer/settings/developer/developer.php [L]
+RewriteRule ^settings-developer/([0-9]+)$ controllers/developer/settings/developer/developer.php?developerid=$1 [L]
+RewriteRule ^settings-developer/page/([0-9]+)$ controllers/developer/settings/developer/page.php?start=$1 [L]
+RewriteRule ^settings-developer/search$ controllers/developer/settings/developer/search.php [L]
+RewriteRule ^settings-developer/active/([0-9]+)$ controllers/developer/settings/developer/active.php?developerid=$1 [L]
+RewriteRule ^settings-developer/verify-email/(.*)$ controllers/developer/settings/developer/update-email.php?developerkey=$1 [L]
+RewriteRule ^settings-developer/key/(.*)$ controllers/developer/settings/developer/key.php?developerkey=$1 [L]
+RewriteRule ^settings-developer/password$ controllers/developer/settings/developer/set-password.php [L]
+RewriteRule ^settings-developer/login$ controllers/developer/settings/developer/login.php [L]
+RewriteRule ^settings-developer/token$ controllers/developer/settings/developer/token.php [L]
+RewriteRule ^settings-developer/reset$ controllers/developer/settings/developer/reset-password.php [L]
+RewriteRule ^settings-developer/role$ controllers/developer/settings/developer/role.php [L] 
+
+
+
+
 ### DEFECTIVE SUPPLY ###
 RewriteRule ^defective-product$ controllers/developer/defective-product/defective-product.php [L]
 RewriteRule ^defective-product/([0-9]+)$ controllers/developer/defective-product/defective-product.php?defectiveproductid=$1 [L]
