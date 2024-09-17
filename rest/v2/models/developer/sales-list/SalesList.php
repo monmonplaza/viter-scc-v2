@@ -8,6 +8,7 @@ class SalesList
     public $sales_list_quantity;
     public $sales_list_price;
     public $sales_list_date;
+    public $sales_list_product_price_id;
     public $sales_list_updated;
     public $sales_list_created;
 
@@ -17,6 +18,7 @@ class SalesList
     public $sales_reference_no;
     public $sales_total_amount;
     public $sales_is_paid;
+    public $sales_new_data;
     public $sales_payment_method;
     public $sales_created;
     public $sales_updated;
@@ -59,20 +61,18 @@ class SalesList
     {
         try {
             $sql = "insert into {$this->tblSalesList} ";
-            $sql .= "( sales_list_aid, ";
-            $sql .= "sales_list_sales_id, ";
+            $sql .= "( sales_list_sales_id, ";
             $sql .= "sales_list_product_id, ";
+            $sql .= "sales_list_product_price_id, ";
             $sql .= "sales_list_customer_id, ";
             $sql .= "sales_list_quantity, ";
             $sql .= "sales_list_price, ";
             $sql .= "sales_list_date, ";
             $sql .= "sales_list_updated, ";
-            $sql .= "sales_list_created, ";
-            $sql .= "sales_list_updated, ";
             $sql .= "sales_list_created ) values ( ";
-            $sql .= ":sales_list_aid, ";
             $sql .= ":sales_list_sales_id, ";
             $sql .= ":sales_list_product_id, ";
+            $sql .= ":sales_list_product_price_id, ";
             $sql .= ":sales_list_customer_id, ";
             $sql .= ":sales_list_quantity, ";
             $sql .= ":sales_list_price, ";
@@ -81,9 +81,9 @@ class SalesList
             $sql .= ":sales_list_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "sales_list_aid" => $this->sales_list_aid,
                 "sales_list_sales_id" => $this->sales_list_sales_id,
                 "sales_list_product_id" => $this->sales_list_product_id,
+                "sales_list_product_price_id" => $this->sales_list_product_price_id,
                 "sales_list_customer_id" => $this->sales_list_customer_id,
                 "sales_list_quantity" => $this->sales_list_quantity,
                 "sales_list_price" => $this->sales_list_price,
@@ -105,16 +105,16 @@ class SalesList
             $sql .= "( sales_customer_id, ";
             $sql .= "sales_date, ";
             $sql .= "sales_reference_no, ";
-            $sql .= "sales_total_amount, ";
             $sql .= "sales_is_paid, ";
+            $sql .= "sales_new_data, ";
             $sql .= "sales_payment_method, ";
             $sql .= "sales_created, ";
             $sql .= "sales_updated ) values ( ";
             $sql .= ":sales_customer_id, ";
             $sql .= ":sales_date, ";
             $sql .= ":sales_reference_no, ";
-            $sql .= ":sales_total_amount, ";
             $sql .= ":sales_is_paid, ";
+            $sql .= ":sales_new_data, ";
             $sql .= ":sales_payment_method, ";
             $sql .= ":sales_created, ";
             $sql .= ":sales_updated ) ";
@@ -123,13 +123,91 @@ class SalesList
                 "sales_customer_id" => $this->sales_customer_id,
                 "sales_date" => $this->sales_date,
                 "sales_reference_no" => $this->sales_reference_no,
-                "sales_total_amount" => $this->sales_total_amount,
                 "sales_is_paid" => $this->sales_is_paid,
+                "sales_new_data" => $this->sales_new_data,
                 "sales_payment_method" => $this->sales_payment_method,
                 "sales_updated" => $this->sales_updated,
                 "sales_created" => $this->sales_created,
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateSalesTotal()
+    {
+        try {
+            $sql = "update {$this->tblSales} set ";
+            $sql .= "sales_total_amount = :sales_total_amount, ";
+            $sql .= "sales_updated = :sales_updated ";
+            $sql .= "where sales_aid = :sales_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_total_amount" => $this->sales_total_amount,
+                "sales_updated" => $this->sales_updated,
+                "sales_aid" => $this->sales_list_sales_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateSales()
+    {
+        try {
+            $sql = "update {$this->tblSales} set ";
+            $sql .= "sales_payment_method = :sales_payment_method, ";
+            $sql .= "sales_is_paid = :sales_is_paid, ";
+            $sql .= "sales_customer_id = :sales_customer_id, ";
+            $sql .= "sales_date = :sales_date, ";
+            $sql .= "sales_updated = :sales_updated ";
+            $sql .= "where sales_aid = :sales_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_customer_id" => $this->sales_customer_id,
+                "sales_payment_method" => $this->sales_payment_method,
+                "sales_is_paid" => $this->sales_is_paid,
+                "sales_date" => $this->sales_date,
+                "sales_updated" => $this->sales_updated,
+                "sales_aid" => $this->sales_list_sales_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllNewData()
+    {
+        try {
+            $sql = "select rs.*, ";
+            $sql .= "pr.*, ";
+            $sql .= "sl.*, ";
+            $sql .= "sale.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "p.product_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblProductPrice} as pr, ";
+            $sql .= "{$this->tblSalesList} as sl, ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblUnit} as u, ";
+            $sql .= "{$this->tblSales} as sale ";
+            $sql .= "where sale.sales_new_data = '1' ";
+            $sql .= "and sale.sales_aid = sl.sales_list_sales_id ";
+            $sql .= "and p.product_aid = sl.sales_list_product_id ";
+            $sql .= "and rs.receiving_supply_product_id = p.product_aid ";
+            $sql .= "and rs.receiving_supply_aid = pr.product_price_supply_id ";
+            $sql .= "and sl.sales_list_product_price_id = pr.product_price_aid ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
+            $sql .= "order by sl.sales_list_aid desc ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }
@@ -164,7 +242,7 @@ class SalesList
             $sql .= "and sale.sales_aid = sl.sales_list_sales_id ";
             $sql .= "and sup.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by rs.sales_list_aid desc ";
+            $sql .= "order by sl.sales_list_aid desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -200,7 +278,7 @@ class SalesList
             $sql .= "and sale.sales_aid = sl.sales_list_sales_id ";
             $sql .= "and sup.supplier_aid = rs.receiving_supply_supplier_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by rs.sales_list_aid desc ";
+            $sql .= "order by sl.sales_list_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -223,30 +301,45 @@ class SalesList
             $sql .= "sl.*, ";
             $sql .= "sale.*, ";
             $sql .= "u.settings_unit_name, ";
-            $sql .= "p.product_name, ";
-            $sql .= "sup.supplier_name ";
+            $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
-            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
-            $sql .= "{$this->tblProduct} as p, ";
-            $sql .= "{$this->tblSupplier} as sup, ";
             $sql .= "{$this->tblSalesList} as sl, ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblSales} as sale ";
-            $sql .= "where sale.sales_aid  = :sales_aid ";
-            $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
-            $sql .= "and p.product_aid = pr.product_price_product_id ";
-            $sql .= "and rs.receiving_supply_aid = pr.product_price_supply_id ";
-            $sql .= "and rs.receiving_supply_product_id = pr.product_price_supply_id ";
-            $sql .= "and p.product_aid = pr.product_price_supply_id ";
-            $sql .= "and sl.sales_list_product_id = p.product_aid ";
+            $sql .= "where sale.sales_aid = :sales_aid ";
             $sql .= "and sale.sales_aid = sl.sales_list_sales_id ";
-            $sql .= "and sup.supplier_aid = rs.receiving_supply_supplier_id ";
+            $sql .= "and p.product_aid = sl.sales_list_product_id ";
+            $sql .= "and rs.receiving_supply_product_id = p.product_aid ";
+            $sql .= "and rs.receiving_supply_aid = pr.product_price_supply_id ";
+            $sql .= "and sl.sales_list_product_price_id = pr.product_price_aid ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
-            $sql .= "order by rs.sales_list_aid desc ";
+            $sql .= "order by sl.sales_list_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_aid" => $this->sales_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Sales List Customer
+    public function updateSalesListCustomer()
+    {
+        try {
+            $sql = "update {$this->tblSalesList} set ";
+            $sql .= "sales_list_customer_id = :sales_list_customer_id, ";
+            $sql .= "sales_list_updated = :sales_list_updated ";
+            $sql .= "where sales_list_sales_id = :sales_list_sales_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_list_customer_id" => $this->sales_list_customer_id,
+                "sales_list_updated" => $this->sales_list_updated,
+                "sales_list_sales_id" => $this->sales_list_sales_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -258,7 +351,7 @@ class SalesList
     public function update()
     {
         try {
-            $sql = "update {$this->tblReceivingSupply} set ";
+            $sql = "update {$this->tblSalesList} set ";
             $sql .= "sales_list_quantity = :sales_list_quantity, ";
             $sql .= "sales_list_updated = :sales_list_updated ";
             $sql .= "where sales_list_aid = :sales_list_aid ";
@@ -278,14 +371,47 @@ class SalesList
     public function active()
     {
         try {
-            $sql = "update {$this->tblReceivingSupply} set ";
-            $sql .= "receiving_supply_is_active = :receiving_supply_is_active, ";
+            $sql = "update {$this->tblSalesList} set ";
+            $sql .= "sales_is_paid = :sales_is_paid, ";
             $sql .= "sales_list_updated = :sales_list_updated ";
-            $sql .= "where sales_list_aid  = :sales_list_aid  ";
+            $sql .= "where sales_list_aid = :sales_list_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "receiving_supply_is_active" => $this->receiving_supply_is_active,
+                "sales_is_paid" => $this->sales_is_paid,
                 "sales_list_updated" => $this->sales_list_updated,
+                "sales_list_aid" => $this->sales_list_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkGetSalesLastAid()
+    {
+        try {
+            $sql = "select sales_aid ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} ";
+            $sql .= "where sales_new_data = '1' ";
+            $sql .= "order by sales_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function delete()
+    {
+        try {
+            $sql = "delete from {$this->tblSalesList} ";
+            $sql .= "where sales_list_aid = :sales_list_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
                 "sales_list_aid" => $this->sales_list_aid,
             ]);
         } catch (PDOException $ex) {

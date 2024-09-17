@@ -1,19 +1,19 @@
 <?php
 $conn = null;
 $conn = checkDbConnection();
-$receiving_supply = new ReceivingSupply($conn);
+$salesList = new SalesList($conn);
 $error = [];
 $returnData = [];
-if (array_key_exists("receivingsupplyid", $_GET)) {
-    $receiving_supply->receiving_supply_received_id = $_GET['receivingsupplyid'];
-    checkId($receiving_supply->receiving_supply_received_id);
-    $query = checkReadById($receiving_supply);
+if (array_key_exists("saleslistid", $_GET)) {
+    $salesList->sales_list_aid = $_GET['saleslistid'];
+    checkId($salesList->sales_list_aid);
+    $query = checkReadById($salesList);
     http_response_code(200);
     getQueriedData($query);
 }
 
 if (empty($_GET)) {
-    $query = checkReadAll($receiving_supply);
+    $query = checkReadAll($salesList);
     http_response_code(200);
     getQueriedData($query);
 }

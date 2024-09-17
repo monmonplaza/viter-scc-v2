@@ -2,7 +2,7 @@
 require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
-require '../../../models/developer/receiving-supply/ReceivingSupply.php';
+require '../../../models/developer/sales-list/SalesList.php';
 
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);

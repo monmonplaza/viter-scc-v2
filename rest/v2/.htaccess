@@ -112,11 +112,21 @@ RewriteRule ^product-price/([0-9]+)$ controllers/developer/product-price/product
 RewriteRule ^product-price/page/([0-9]+)$ controllers/developer/product-price/page.php?start=$1 [L]
 RewriteRule ^product-price/search$ controllers/developer/product-price/search.php [L]
  
-### MODAL SEARCH ### 
+### MODAL SALES ### 
 RewriteRule ^sales$ controllers/developer/sales/sales.php [L]  
 RewriteRule ^sales/([0-9]+)$ controllers/developer/sales/sales.php?salesid=$1 [L]  
 RewriteRule ^sales/page/([0-9]+)$ controllers/developer/sales/page.php?start=$1 [L]  
 RewriteRule ^sales/search$ controllers/developer/sales/search.php [L]  
+ 
+### MODAL SALES LIST ### 
+RewriteRule ^sales-list$ controllers/developer/sale-list/sales-list.php [L]  
+RewriteRule ^sales-list/([0-9]+)$ controllers/developer/sale-list/sales-list.php?saleslistid=$1 [L]  
+RewriteRule ^sales-list/search$ controllers/developer/sale-list/active.php?saleslistid=$1 [L]  
+RewriteRule ^sales-list/read-new-receive$ controllers/developer/sale-list/read-new-receive.php?saleslistid=$1 [L]  
+
+
+
+
 
 
 
