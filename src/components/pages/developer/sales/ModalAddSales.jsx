@@ -1,8 +1,7 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
-import { InputText } from "@/components/helpers/FormInputs";
+import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import {
-  formatDate,
   getDateNow,
   handleEscape,
   numberWithCommasToFixed,
@@ -129,8 +128,8 @@ const ModalAddSales = ({ itemEdit }) => {
   const initVal = {
     sales_list_date: getDateNow(),
     sales_customer_id: "",
-    sales_list_product_id: "",
     sales_list_quantity: "",
+    sales_payment_method: "cash",
     searchCustomer: "",
     searchProduct: "",
   };
@@ -160,8 +159,27 @@ const ModalAddSales = ({ itemEdit }) => {
               initialValues={initVal}
               validationSchema={yupSchema}
               onSubmit={async (values, { setSubmitting, resetForm }) => {
+                let price = 0;
+                let productId = 0;
+                let customerId = 0;
+                if (customerData !== null) {
+                  customerId = customerData?.customer_aid;
+                  if (productData !== null) {
+                    productId = productData?.product_price_amount;
+                    if (customerData?.customer_is_member === 1) {
+                      price = productData?.product_price_scc_price;
+                    } else {
+                      price = productData?.product_price_amount;
+                    }
+                  }
+                }
+
                 mutation.mutate({
                   ...values,
+                  sales_list_price: price,
+                  sales_list_product_id: productId,
+                  sales_list_customer_id: customerId,
+                  sales_customer_id: customerId,
                 });
               }}
             >
@@ -187,42 +205,61 @@ const ModalAddSales = ({ itemEdit }) => {
                           setIsRequiredYup={setIsRequiredCustomerYup}
                         />
                       </div>
+
+                      <div className="input-wrap">
+                        <InputSelect
+                          label="Payment method"
+                          name="sales_payment_method"
+                        >
+                          <optgroup label="Payment method">
+                            <option value="cash">Cash</option>
+                            <option value="gcash">Gcash</option>
+                            <option value="credit">Credit</option>
+                            <option value="card">
+                              Card (ex. credit, debit )
+                            </option>
+                          </optgroup>
+                        </InputSelect>
+                      </div>
                     </div>
 
-                    <div className="md:grid md:grid-cols-[1fr_1fr_5rem] gap-2 mb-5 items-end">
-                      <div className="input-wrap">
-                        <SearchModalProductPrice
-                          setData={setProductData}
-                          props={props.values}
-                          label="Search Product"
-                          name="searchProduct"
-                          mutation={mutation}
-                          setIsRequiredYup={setIsRequiredProductYup}
-                        />
-                      </div>
-                      <div className="input-wrap">
-                        <InputText
-                          label="Qty"
-                          type="text"
-                          number="number"
-                          name="receiving_supply_quantity"
+                    <div className="md:grid md:grid-cols-[1fr_1fr]  gap-2 mb-5 items-end">
+                      <div></div>
+                      <div className="md:grid md:grid-cols-[1fr_1fr_5rem] gap-2 mb-5 items-end">
+                        <div className="input-wrap">
+                          <SearchModalProductPrice
+                            setData={setProductData}
+                            props={props.values}
+                            label="Search Product"
+                            name="searchProduct"
+                            mutation={mutation}
+                            setIsRequiredYup={setIsRequiredProductYup}
+                          />
+                        </div>
+                        <div className="input-wrap">
+                          <InputText
+                            label="Qty"
+                            type="text"
+                            number="number"
+                            name="receiving_supply_quantity"
+                            disabled={mutation.isPending}
+                          />
+                        </div>
+                        <button
+                          className="btn btn-accent ml-auto md:mt-0 mt-5 !py-1 md:text-left md:mb-2"
+                          type="submit"
                           disabled={mutation.isPending}
-                        />
+                          onClick={handleSearch}
+                        >
+                          {mutation.isPending ? (
+                            <SpinnerButton />
+                          ) : (
+                            <>
+                              <Plus /> Add
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <button
-                        className="btn btn-accent ml-auto md:mt-0 mt-5 !py-1 md:text-left md:mb-2"
-                        type="submit"
-                        disabled={mutation.isPending}
-                        onClick={handleSearch}
-                      >
-                        {mutation.isPending ? (
-                          <SpinnerButton />
-                        ) : (
-                          <>
-                            <Plus /> Add
-                          </>
-                        )}
-                      </button>
                     </div>
                   </Form>
                 );
@@ -244,7 +281,6 @@ const ModalAddSales = ({ itemEdit }) => {
                       <th>#</th>
                       <th>Product</th>
                       <th>Barcode</th>
-                      <th>Expiration</th>
                       <th>Unit</th>
                       <th className="text-center">Qty</th>
                       <th className="text-right ">Price</th>
@@ -296,9 +332,6 @@ const ModalAddSales = ({ itemEdit }) => {
 
                           <td>{item.product_name}</td>
                           <td>{item.receiving_supply_barcode}</td>
-                          <td>
-                            {formatDate(item.receiving_supply_expiration_date)}
-                          </td>
                           <td>{item.settings_unit_name}</td>
                           <td className="text-center">
                             {item.receiving_supply_quantity}
@@ -363,14 +396,8 @@ const ModalAddSales = ({ itemEdit }) => {
                   </tbody>
                   <tbody>
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={4} className=""></td>
-                      <td className="py-4 pl-2 ">Total:</td>
-                      <td className="text-center py-4 pr-2">
-                        {Number(totalQty)}
-                      </td>
-                      <td className="text-right py-4 pr-2">
-                        {pesoSign}
-                        {numberWithCommasToFixed(totalPrice, 2)}
+                      <td colSpan={6} className="py-4 pl-2 text-right ">
+                        Total:
                       </td>
                       <td className="text-right py-4 pr-2">
                         {pesoSign}

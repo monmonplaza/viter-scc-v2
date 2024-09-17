@@ -26,7 +26,7 @@ const SearchModalReceivedProduct = ({
   const {
     isLoading,
     isFetching,
-    data: productData,
+    data: result,
   } = useQueryData(
     `/${ver}/search-product`,
     "post",
@@ -92,11 +92,15 @@ const SearchModalReceivedProduct = ({
         />
 
         {onFocus && (
-          <ul className="absolute z-50 h-48 overflow-y-auto w-full bg-primary border rounded-md ">
+          <ul
+            className={`absolute z-50 overflow-y-auto w-full bg-primary border rounded-md ${
+              result?.count > 0 && "h-48"
+            }`}
+          >
             {isLoading || isFetching ? (
               <SpinnerTable />
-            ) : productData?.count > 0 ? (
-              productData?.data.map((item, key) => (
+            ) : result?.count > 0 ? (
+              result?.data.map((item, key) => (
                 <button
                   type="button"
                   className={`leading-loose h-fit pl-3 text-xs pr-3 w-full text-left break-all bg-primary hover:bg-dark/5 focus:bg-dark/5  duration-200 cursor-pointer 

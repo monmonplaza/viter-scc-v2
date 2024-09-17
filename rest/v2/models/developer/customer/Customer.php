@@ -5,6 +5,7 @@ class Customer
     public $customer_name;
     public $customer_address;
     public $customer_mobile_number;
+    public $customer_is_member;
     public $customer_is_active;
     public $customer_updated;
     public $customer_created;
@@ -33,12 +34,14 @@ class Customer
             $sql .= "customer_address, ";
             $sql .= "customer_is_active, ";
             $sql .= "customer_mobile_number, ";
+            $sql .= "customer_is_member, ";
             $sql .= "customer_updated, ";
             $sql .= "customer_created ) values ( ";
             $sql .= ":customer_name, ";
             $sql .= ":customer_address, ";
             $sql .= ":customer_is_active, ";
             $sql .= ":customer_mobile_number, ";
+            $sql .= ":customer_is_member, ";
             $sql .= ":customer_updated, ";
             $sql .= ":customer_created ) ";
             $query = $this->connection->prepare($sql);
@@ -47,6 +50,7 @@ class Customer
                 "customer_address" => $this->customer_address,
                 "customer_is_active" => $this->customer_is_active,
                 "customer_mobile_number" => $this->customer_mobile_number,
+                "customer_is_member" => $this->customer_is_member,
                 "customer_updated" => $this->customer_updated,
                 "customer_created" => $this->customer_created,
             ]);
@@ -137,6 +141,7 @@ class Customer
             $sql .= "customer_name = :customer_name, ";
             $sql .= "customer_address = :customer_address, ";
             $sql .= "customer_mobile_number = :customer_mobile_number, ";
+            $sql .= "customer_is_member = :customer_is_member, ";
             $sql .= "customer_updated = :customer_updated ";
             $sql .= "where customer_aid = :customer_aid ";
             $query = $this->connection->prepare($sql);
@@ -144,6 +149,7 @@ class Customer
                 "customer_name" => $this->customer_name,
                 "customer_address" => $this->customer_address,
                 "customer_mobile_number" => $this->customer_mobile_number,
+                "customer_is_member" => $this->customer_is_member,
                 "customer_updated" => $this->customer_updated,
                 "customer_aid" => $this->customer_aid,
             ]);

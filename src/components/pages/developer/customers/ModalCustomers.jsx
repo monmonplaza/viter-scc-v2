@@ -1,5 +1,6 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import {
+  InputCheckbox,
   InputSelect,
   InputText,
   InputTextArea,
@@ -63,12 +64,17 @@ const ModalCustomers = ({ itemEdit }) => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = itemEdit
-    ? { ...itemEdit, customer_name_old: itemEdit.customer_name }
+    ? {
+        ...itemEdit,
+        customer_name_old: itemEdit.customer_name,
+        customer_is_member: itemEdit?.customer_is_member === 1 ? true : false,
+      }
     : {
         customer_aid: "",
         customer_name: "",
         customer_address: "",
         customer_mobile_number: "",
+        customer_is_member: false,
       };
 
   const yupSchema = Yup.object({
@@ -110,6 +116,16 @@ const ModalCustomers = ({ itemEdit }) => {
                         type="text"
                         name="customer_name"
                         disabled={mutation.isPending}
+                      />
+                    </div>
+
+                    <div className="flex my-5">
+                      <InputCheckbox
+                        label="Is member?"
+                        type="checkbox"
+                        disabled={mutation.isLoading}
+                        name="customer_is_member"
+                        id="select_all"
                       />
                     </div>
 
