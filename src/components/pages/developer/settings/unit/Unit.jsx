@@ -20,8 +20,8 @@ const Unit = () => {
   return (
     <>
       <div className="main-wrapper px-2 bg-secondary">
-        <h3 className="mb-0 text-[18px]">Unit</h3>
-        <div className="flex justify-end items-center mb-5">
+        <div className="flex justify-between items-center mb-5">
+          <h3 className="mb-0 ">Unit</h3>
           <button className="btn btn-accent h-[34px]" onClick={handleAdd}>
             <Plus size={14} className="!stroke-[2px]" /> Add
           </button>

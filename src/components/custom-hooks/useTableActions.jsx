@@ -14,6 +14,7 @@ const useTableActions = ({ setItemEdit }) => {
     setData(item);
   };
   const handleEdit = (item_aid, item) => {
+    setAid(item_aid);
     dispatch(setIsAdd(true));
     setItemEdit(item);
   };

@@ -4,6 +4,8 @@ import { ver } from "@/components/helpers/functions-general.jsx";
 import NoData from "@/components/partials/icons/NoData.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
+import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
+import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import Pill from "@/components/partials/Pill.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
@@ -31,9 +33,9 @@ const RolesList = ({ setItemEdit }) => {
     error,
     data: result,
   } = useQueryData(
-    `/${ver}/settings-unit`, // endpoint
+    `/${ver}/settings-role`, // endpoint
     "get", // method
-    "settings-unit" // key
+    "settings-role" // key
   );
 
   return (
@@ -75,21 +77,19 @@ const RolesList = ({ setItemEdit }) => {
                 return (
                   <tr key={key}>
                     <td className="w-counter">{counter++}.</td>
-                    <td>{<Pill isActive={item.settings_unit_is_active} />}</td>
+                    <td>{<Pill isActive={item.role_is_active} />}</td>
 
-                    <td>{item.settings_unit_name}</td>
+                    <td>{item.role_name}</td>
 
                     <td className="table-action">
                       <ul>
-                        {item.settings_unit_is_active === 1 ? (
+                        {item.role_is_active === 1 ? (
                           <>
                             <li>
                               <button
                                 data-tooltip="Edit"
                                 className="tooltip"
-                                onClick={() =>
-                                  handleEdit(item.settings_unit_aid, item)
-                                }
+                                onClick={() => handleEdit(item.role_aid, item)}
                               >
                                 <SquarePen size={14} />
                               </button>
@@ -100,7 +100,7 @@ const RolesList = ({ setItemEdit }) => {
                                 data-tooltip="Archive"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleArchive(item.settings_unit_aid, item)
+                                  handleArchive(item.role_aid, item)
                                 }
                               >
                                 <Archive size={14} />
@@ -114,7 +114,7 @@ const RolesList = ({ setItemEdit }) => {
                                 data-tooltip="Restore"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleRestore(item.settings_unit_aid, item)
+                                  handleRestore(item.role_aid, item)
                                 }
                               >
                                 <ArchiveRestore size={14} />
@@ -125,7 +125,7 @@ const RolesList = ({ setItemEdit }) => {
                                 data-tooltip="Delete"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleRemove(item.settings_unit_aid, item)
+                                  handleRemove(item.role_aid, item)
                                 }
                               >
                                 <Trash size={14} />
@@ -145,16 +145,16 @@ const RolesList = ({ setItemEdit }) => {
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/settings-unit/${aid}`}
-          queryKey="settings-unit"
-          item={data.settings_unit_name}
+          mysqlApiDelete={`/${ver}/settings-role/${aid}`}
+          queryKey="settings-role"
+          item={data.role_name}
         />
       )}
       {store.isConfirm && (
         <ModalConfirm
-          mysqlApiArchive={`/${ver}/settings-unit/active/${aid}`}
-          queryKey="settings-unit"
-          item={data.settings_unit_name}
+          mysqlApiArchive={`/${ver}/settings-role/active/${aid}`}
+          queryKey="settings-role"
+          item={data.role_name}
           active={isActive}
         />
       )}

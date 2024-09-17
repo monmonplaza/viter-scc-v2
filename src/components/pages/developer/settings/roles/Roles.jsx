@@ -17,7 +17,7 @@ const Roles = () => {
     <>
       <div className="main-wrapper px-2 bg-secondary">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="mb-0">Roles</h2>
+          <h3 className="mb-0">Roles</h3>
           <button className="btn btn-accent h-[34px]" onClick={handleAdd}>
             <Plus size={14} className="!stroke-[2px]" /> Add
           </button>
