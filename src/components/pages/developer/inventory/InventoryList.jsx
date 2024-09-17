@@ -49,7 +49,7 @@ const InventoryList = () => {
       }
       return;
     },
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   React.useEffect(() => {
@@ -62,6 +62,7 @@ const InventoryList = () => {
   return (
     <>
       <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-1">
+        <div></div>
         <SearchBar
           search={search}
           dispatch={dispatch}
@@ -82,13 +83,12 @@ const InventoryList = () => {
             <thead>
               <tr>
                 <th className="w-counter">#</th>
-                <th className="w-[200px]">Product</th>
                 <th className="w-[200px]">SKU</th>
-                <th className="w-[200px] text-right">Availble Stock</th>
+                <th className="w-[200px]">Product</th>
                 <th className="w-[200px] text-right">Stock In</th>
                 <th className="w-[200px] text-right">Stock Out</th>
                 <th className="w-[200px] text-right">Defective</th>
-                <th className="w-[200px] text-right">Return Product</th>
+                <th className="w-[200px] text-right">Stock Available</th>
               </tr>
             </thead>
 
@@ -120,13 +120,8 @@ const InventoryList = () => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
 
-                        <td>{item.product_name}</td>
                         <td>{item.product_sku}</td>
-                        <td className="text-right">
-                          {Number(item.inventory_log_stock_in) +
-                            Number(item.inventory_log_return_product) -
-                            Number(item.inventory_log_defective_product)}
-                        </td>
+                        <td>{item.product_name}</td>
                         <td className="text-right">
                           {Number(item.inventory_log_stock_in)}
                         </td>
@@ -137,7 +132,9 @@ const InventoryList = () => {
                           {Number(item.inventory_log_defective_product)}
                         </td>
                         <td className="text-right">
-                          {Number(item.inventory_log_return_product)}
+                          {Number(item.inventory_log_stock_in) +
+                            Number(item.inventory_log_return_product) -
+                            Number(item.inventory_log_defective_product)}
                         </td>
                       </tr>
                     );

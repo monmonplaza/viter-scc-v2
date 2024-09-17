@@ -24,6 +24,7 @@ class ReceivingSupply
     public $receiving_reference_no;
     public $receiving_total_amount;
     public $receiving_datetime;
+    public $receiving_supply_have_price;
 
     public $defective_product_aid;
     public $defective_product_amount;
@@ -49,7 +50,6 @@ class ReceivingSupply
     public $tblUnit;
     public $tblDefectiveProduct;
     public $tblInventoryLog;
-
 
     public function __construct($db)
     {
@@ -108,6 +108,7 @@ class ReceivingSupply
             $sql .= "receiving_supply_expiration_date, ";
             $sql .= "receiving_supply_barcode, ";
             $sql .= "receiving_supply_is_active, ";
+            $sql .= "receiving_supply_have_price, ";
             $sql .= "receiving_supply_defective_product_qty, ";
             $sql .= "receiving_supply_datetime, ";
             $sql .= "receiving_supply_created ) values ( ";
@@ -121,6 +122,7 @@ class ReceivingSupply
             $sql .= ":receiving_supply_expiration_date, ";
             $sql .= ":receiving_supply_barcode, ";
             $sql .= ":receiving_supply_is_active, ";
+            $sql .= ":receiving_supply_have_price, ";
             $sql .= ":receiving_supply_defective_product_qty, ";
             $sql .= ":receiving_supply_datetime, ";
             $sql .= ":receiving_supply_created ) ";
@@ -136,6 +138,7 @@ class ReceivingSupply
                 "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
                 "receiving_supply_barcode" => $this->receiving_supply_barcode,
                 "receiving_supply_is_active" => $this->receiving_supply_is_active,
+                "receiving_supply_have_price" => $this->receiving_supply_have_price,
                 "receiving_supply_defective_product_qty" => $this->receiving_supply_defective_product_qty,
                 "receiving_supply_datetime" => $this->receiving_supply_datetime,
                 "receiving_supply_created" => $this->receiving_supply_created,

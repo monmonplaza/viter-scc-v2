@@ -11,7 +11,6 @@ if (array_key_exists("productid", $_GET)) {
     $product->product_name = checkIndex($data, "product_name");
     $product->product_description = checkIndex($data, "product_description");
     $product->product_category_id = checkIndex($data, "product_category_id");
-    $product->product_barcode = $data["product_barcode"];
 
     $product->product_datetime = date("Y-m-d H:i:s");
     $product_name_old = strtolower($data["product_name_old"]);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2024 at 08:23 AM
+-- Generation Time: Sep 15, 2024 at 02:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,10 +34,16 @@ CREATE TABLE `sccv2_product` (
   `product_sku` varchar(20) NOT NULL,
   `product_name` varchar(50) NOT NULL,
   `product_description` text NOT NULL,
-  `product_barcode` varchar(20) NOT NULL,
   `product_datetime` varchar(20) NOT NULL,
   `product_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_product`
+--
+
+INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_datetime`, `product_created`) VALUES
+(4, 1, '1', '97032254', 'Ballpen', 'This is a test data for product', '2024-09-12 19:06:21', '2024-09-12 19:06:21');
 
 --
 -- Indexes for dumped tables
@@ -57,7 +63,7 @@ ALTER TABLE `sccv2_product`
 -- AUTO_INCREMENT for table `sccv2_product`
 --
 ALTER TABLE `sccv2_product`
-  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

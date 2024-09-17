@@ -6,9 +6,11 @@ import {
   LayoutDashboard,
   List,
   PillBottle,
+  ScanBarcode,
   Settings,
   TicketX,
   Users,
+  Weight,
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -48,10 +50,21 @@ const Navigation = ({ menu, submenu }) => {
       text: "Return Product",
       slug: "return-product",
     },
+
+    {
+      icon: <Weight size={18} />,
+      text: "Sales",
+      slug: "sales",
+    },
     {
       icon: <Barcode size={18} />,
       text: "Products",
       slug: "products",
+    },
+    {
+      icon: <ScanBarcode size={18} />,
+      text: "Products Price",
+      slug: "product-price",
     },
     {
       icon: <PillBottle size={18} />,

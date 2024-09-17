@@ -15,7 +15,7 @@ const Inventory = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
             <div className="main-wrapper p-2 md:p-8 bg-secondary">
-              <Breadcrumbs />
+              {/* <Breadcrumbs /> */}
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Inventory</h1>
               </div>

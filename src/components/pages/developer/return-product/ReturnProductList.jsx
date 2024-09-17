@@ -1,5 +1,10 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
-import { formatDate, ver } from "@/components/helpers/functions-general.jsx";
+import {
+  formatDate,
+  numberWithCommasToFixed,
+  pesoSign,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
 import NoData from "@/components/partials/icons/Nodata.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";

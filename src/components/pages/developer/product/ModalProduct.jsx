@@ -69,7 +69,6 @@ const ModalProduct = ({ itemEdit }) => {
         product_name: "",
         product_description: "",
         product_category_id: "",
-        product_barcode: "",
         product_name_old: "",
       };
 
@@ -135,14 +134,6 @@ const ModalProduct = ({ itemEdit }) => {
                       <InputTextArea
                         label="Description"
                         name="product_description"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="input-wrap">
-                      <InputText
-                        label="Barcode"
-                        type="text"
-                        name="product_barcode"
                         disabled={mutation.isPending}
                       />
                     </div>

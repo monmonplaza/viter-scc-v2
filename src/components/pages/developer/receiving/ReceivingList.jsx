@@ -37,6 +37,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
   const { ref, inView } = useInView();
   const search = React.useRef({ value: "" });
   let counter = 1;
+  let totalAmount = 0;
 
   const [
     handleRemove,
@@ -143,7 +144,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                 <th className="w-[90px]">Status</th>
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
-                <th className="">Total Amount</th>
+                <th className="text-right">Total Amount</th>
               </tr>
             </thead>
 
@@ -171,17 +172,21 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
               {result?.pages.map((page, key) => (
                 <React.Fragment key={key}>
                   {page.data.map((item, key) => {
+                    totalAmount += Number(item.receiving_total_amount);
                     return (
                       <tr key={key}>
-                        <td className="w-counter">{counter++}</td>
+                        <td className="w-counter">{counter++}.</td>
                         <td>
                           {<PillStatus isActive={item.receiving_is_complete} />}
                         </td>
                         <td>{formatDate(item.receiving_date)}</td>
                         <td>{item.receiving_reference_no}</td>
-                        <td>
+                        <td className="text-right">
                           {pesoSign}
-                          {numberWithCommasToFixed(item.receiving_total_amount)}
+                          {numberWithCommasToFixed(
+                            item.receiving_total_amount,
+                            2
+                          )}
                         </td>
                         <td className="table-action">
                           <ul>
@@ -283,6 +288,17 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                 </React.Fragment>
               ))}
             </tbody>
+            <tbody>
+              <tr className="!shadow-none font-bold">
+                <td className="text-right" colSpan={4}>
+                  Total :
+                </td>
+                <td className="text-right">
+                  {pesoSign}
+                  {numberWithCommasToFixed(totalAmount, 2)}
+                </td>
+              </tr>
+            </tbody>
           </table>
           <div className="loadmore flex justify-center flex-col items-center ">
             <Loadmore
@@ -313,6 +329,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
           item={formatDate(data.receiving_date)}
           active={isActive}
           text={isActive ? "complete" : "restore"}
+          itemData={data}
         />
       )}
     </>

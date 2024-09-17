@@ -30,6 +30,7 @@ const DefectiveProductList = ({ setItemEdit }) => {
   const [filterData, setFilterData] = React.useState("all");
   const search = React.useRef({ value: "" });
   let counter = 1;
+  let totalAmount = 0;
 
   const [
     handleRemove,
@@ -136,17 +137,16 @@ const DefectiveProductList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
-                <th className="w-[200px]">Date Received</th>
-                <th className="w-[200px]">Date Resolved</th>
+                <th className="min-w-[200px]">Date Received</th>
+                <th className="min-w-[200px]">Date Resolved</th>
                 <th className="w-[200px]">Supplier</th>
                 <th className="w-[200px]">Product</th>
                 <th className="w-[200px]">Unit</th>
-                <th className="text-right">Qty</th>
+                <th className="text-center">Qty</th>
                 <th className="text-right">Amount</th>
                 <th>Remarks</th>
               </tr>
             </thead>
-
             <tbody>
               {(status === "loading" || result?.pages[0].data.length === 0) && (
                 <tr>
@@ -171,9 +171,10 @@ const DefectiveProductList = ({ setItemEdit }) => {
               {result?.pages.map((page, key) => (
                 <React.Fragment key={key}>
                   {page.data.map((item, key) => {
+                    totalAmount += Number(item.defective_product_amount);
                     return (
                       <tr key={key}>
-                        <td className="w-counter">{counter++}</td>
+                        <td className="w-counter">{counter++}.</td>
                         <td>
                           {
                             <PillStatus
@@ -193,7 +194,7 @@ const DefectiveProductList = ({ setItemEdit }) => {
                         <td>{item.supplier_name}</td>
                         <td>{item.product_name}</td>
                         <td>{item.settings_unit_name}</td>
-                        <td className="text-right">
+                        <td className="text-center">
                           {item.defective_product_qty}
                         </td>
                         <td className="text-right">
@@ -249,6 +250,18 @@ const DefectiveProductList = ({ setItemEdit }) => {
                   })}
                 </React.Fragment>
               ))}
+            </tbody>
+            <tbody>
+              <tr className="!shadow-none font-bold">
+                <td className="text-right" colSpan={8}>
+                  Total :
+                </td>
+                <td className="text-right">
+                  {pesoSign}
+                  {numberWithCommasToFixed(totalAmount, 2)}
+                </td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
           <div className="loadmore flex justify-center flex-col items-center ">

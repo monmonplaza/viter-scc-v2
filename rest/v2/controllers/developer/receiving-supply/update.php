@@ -49,29 +49,28 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
             $receiving_supply->defective_product_aid = checkIndex($isDefectiveExist[0], "defective_product_aid");
             checkUpdateDefective($receiving_supply);
         }
-        // FOR INVETORY ONLY
-        // DEFECTIVE 
-        $updateInventoryLog = getResultData($receiving_supply->checkDefectiveProductTotalQty());
-        if (count($updateInventoryLog) > 0) {
+        // // FOR INVETORY ONLY
+        // // DEFECTIVE 
+        // $updateInventoryLog = getResultData($receiving_supply->checkDefectiveProductTotalQty());
+        // if (count($updateInventoryLog) > 0) {
 
-            $receiving_supply->inventory_log_defective_product = checkIndex($updateInventoryLog[0], "total_defective_product_qty");
-            checkUpdateInventoryDefectiveProduct($receiving_supply);
-        }
+        //     $receiving_supply->inventory_log_defective_product = checkIndex($updateInventoryLog[0], "total_defective_product_qty");
+        //     checkUpdateInventoryDefectiveProduct($receiving_supply);
+        // }
     }
 
 
     checkUpdateReceiving($receiving_supply);
     $query = checkUpdate($receiving_supply);
 
-    // FOR INVETORY ONLY
-    // STOCK IN
+    // // FOR INVETORY ONLY
+    // // STOCK IN 
+    // $updateInventoryLog = getResultData($receiving_supply->checkProductTotalQty());
+    // if (count($updateInventoryLog) > 0) {
 
-    $updateInventoryLog = getResultData($receiving_supply->checkProductTotalQty());
-    if (count($updateInventoryLog) > 0) {
-
-        $receiving_supply->inventory_log_stock_in = checkIndex($updateInventoryLog[0], "total_product_stock_qty");
-        checkUpdateInventoryStockIn($receiving_supply);
-    }
+    //     $receiving_supply->inventory_log_stock_in = checkIndex($updateInventoryLog[0], "total_product_stock_qty");
+    //     checkUpdateInventoryStockIn($receiving_supply);
+    // }
 
     returnSuccess($receiving_supply, "receiving_supply", $query);
 }

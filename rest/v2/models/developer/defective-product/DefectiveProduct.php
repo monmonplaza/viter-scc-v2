@@ -131,7 +131,8 @@ class DefectiveProduct
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "and dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by dp.defective_product_is_resolve asc, ";
+            $sql .= "r.receiving_date desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -172,7 +173,8 @@ class DefectiveProduct
             $sql .= "or s.supplier_name like :supplier_name ";
             $sql .= "or u.settings_unit_name like :settings_unit_name ";
             $sql .= ") ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by dp.defective_product_is_resolve asc, ";
+            $sql .= "r.receiving_date desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_supply_barcode" => "%{$this->defective_product_search}%",
@@ -302,7 +304,8 @@ class DefectiveProduct
             $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "and dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
             $sql .= "and dp.defective_product_is_resolve = :defective_product_is_resolve  ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by dp.defective_product_is_resolve asc, ";
+            $sql .= "r.receiving_date desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "defective_product_is_resolve" => $this->defective_product_is_resolve,
@@ -341,7 +344,8 @@ class DefectiveProduct
             $sql .= "or s.supplier_name like :supplier_name ";
             $sql .= "or u.settings_unit_name like :settings_unit_name ";
             $sql .= ") ";
-            $sql .= "order by rs.receiving_supply_is_active desc ";
+            $sql .= "order by dp.defective_product_is_resolve asc, ";
+            $sql .= "r.receiving_date desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_supply_barcode" => "%{$this->defective_product_search}%",
