@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2024 at 03:08 PM
+-- Generation Time: Sep 17, 2024 at 03:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,10 +34,18 @@ CREATE TABLE `sccv2_sales` (
   `sales_reference_no` varchar(50) NOT NULL,
   `sales_total_amount` varchar(20) NOT NULL,
   `sales_is_paid` tinyint(1) NOT NULL,
+  `sales_new_data` tinyint(1) NOT NULL,
   `sales_payment_method` varchar(50) NOT NULL,
   `sales_created` datetime NOT NULL,
   `sales_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_sales`
+--
+
+INSERT INTO `sccv2_sales` (`sales_aid`, `sales_customer_id`, `sales_date`, `sales_reference_no`, `sales_total_amount`, `sales_is_paid`, `sales_new_data`, `sales_payment_method`, `sales_created`, `sales_updated`) VALUES
+(4, '2', '2024-09-17', '43117', '', 1, 1, 'cash', '2024-09-17 20:24:29', '2024-09-17 20:26:03');
 
 --
 -- Indexes for dumped tables
@@ -57,7 +65,7 @@ ALTER TABLE `sccv2_sales`
 -- AUTO_INCREMENT for table `sccv2_sales`
 --
 ALTER TABLE `sccv2_sales`
-  MODIFY `sales_aid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sales_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -49,7 +49,7 @@ const SearchModalCustomer = ({
   };
 
   const handleClick = (item) => {
-    props.searchSupplier = `${item.customer_name}`;
+    props.searchCustomer = `${item.customer_name}`;
     setOnFocus(false);
     setData(item);
     setSearch(item.customer_name);

@@ -54,10 +54,10 @@ const SearchModalProductPrice = ({
   };
 
   const handleClick = (item) => {
-    props.searchProduct = `${item.product_name} (${item.product_price_scc_price})`;
+    props.searchProduct = `${item.product_name} (${item.receiving_supply_barcode})`;
     setOnFocus(false);
     setData(item);
-    setSearch(item.product_name);
+    setSearch(`${item.product_name} (${item.receiving_supply_barcode})`);
   };
 
   const handleClickOutsideSearch = (e) => {
@@ -113,8 +113,7 @@ const SearchModalProductPrice = ({
                   key={key}
                   onClick={() => handleClick(item)}
                 >
-                  {item.product_name} (
-                  {numberWithCommasToFixed(item.product_price_scc_price, 2)})
+                  {item.product_name} ({item.receiving_supply_barcode})
                 </button>
               ))
             ) : (
