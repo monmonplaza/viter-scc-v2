@@ -62,7 +62,7 @@ RewriteRule ^settings-role/active/([0-9]+)$ controllers/developer/settings/role/
 
 
 
-### SETTINGS USERS SYSTEM ###
+### SETTINGS USERS DEVELOPER ###
 RewriteRule ^settings-developer$ controllers/developer/settings/developer/developer.php [L]
 RewriteRule ^settings-developer/([0-9]+)$ controllers/developer/settings/developer/developer.php?developerid=$1 [L]
 RewriteRule ^settings-developer/page/([0-9]+)$ controllers/developer/settings/developer/page.php?start=$1 [L]
@@ -75,6 +75,20 @@ RewriteRule ^settings-developer/login$ controllers/developer/settings/developer/
 RewriteRule ^settings-developer/token$ controllers/developer/settings/developer/token.php [L]
 RewriteRule ^settings-developer/reset$ controllers/developer/settings/developer/reset-password.php [L]
 RewriteRule ^settings-developer/role$ controllers/developer/settings/developer/role.php [L] 
+
+### SETTINGS USERS SYSTEM ###
+RewriteRule ^settings-user$ controllers/developer/settings/user/user.php [L]
+RewriteRule ^settings-user/([0-9]+)$ controllers/developer/settings/user/user.php?userid=$1 [L]
+RewriteRule ^settings-user/page/([0-9]+)$ controllers/developer/settings/user/page.php?start=$1 [L]
+RewriteRule ^settings-user/search$ controllers/developer/settings/user/search.php [L]
+RewriteRule ^settings-user/active/([0-9]+)$ controllers/developer/settings/user/active.php?userid=$1 [L]
+RewriteRule ^settings-user/verify-email/(.*)$ controllers/developer/settings/user/update-email.php?userkey=$1 [L]
+RewriteRule ^settings-user/key/(.*)$ controllers/developer/settings/user/key.php?userkey=$1 [L]
+RewriteRule ^settings-user/password$ controllers/developer/settings/user/set-password.php [L]
+RewriteRule ^settings-user/login$ controllers/developer/settings/user/login.php [L]
+RewriteRule ^settings-user/token$ controllers/developer/settings/user/token.php [L]
+RewriteRule ^settings-user/reset$ controllers/developer/settings/user/reset-password.php [L]
+RewriteRule ^settings-user/role$ controllers/developer/settings/user/role.php [L] 
 
 
 

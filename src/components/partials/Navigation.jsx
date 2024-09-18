@@ -121,7 +121,7 @@ const Navigation = ({ menu, submenu }) => {
               <li className="nav-link mb-2 opacity-60 hover:opacity-100">
                 <Link
                   onClick={handleResetSearch}
-                  to={`${devNavUrl}/system/${link.slug}`}
+                  to={`${devNavUrl}/developer/${link.slug}`}
                   className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
                     menu === link.slug ? "active" : ""
                   }`}

@@ -1,5 +1,11 @@
 import React from "react";
-import { setIsAdd, setIsConfirm, setIsDelete } from "../store/StoreAction";
+import {
+  setIsAdd,
+  setIsConfirm,
+  setIsDelete,
+  setIsReset,
+  setIsSuspend,
+} from "../store/StoreAction";
 import { StoreContext } from "../store/StoreContext";
 
 const useTableActions = ({ setItemEdit }) => {
@@ -31,11 +37,25 @@ const useTableActions = ({ setItemEdit }) => {
     setData(item);
   };
 
+  const handleReset = (item_aid, item) => {
+    setAid(item_aid);
+    setData(item);
+    dispatch(setIsReset(true));
+  };
+
+  const handleSuspend = (item_aid, item) => {
+    setAid(item_aid);
+    setData(item);
+    dispatch(setIsSuspend(true));
+  };
+
   return [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

@@ -1,11 +1,17 @@
 <?php
 
+// set http header
 require '../../../../core/header.php';
+require '../../../../core/Encryption.php';
+// use needed functions
 require '../../../../core/functions.php';
-require '../../../../models/developer/settings/Users.php';
-
+require 'functions.php';
+// use needed classes
+require '../../../../models/developer/settings/User.php';
+// get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
+// validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
@@ -36,4 +42,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 }
 
 http_response_code(200);
+// when authentication is cancelled
+// header('HTTP/1.0 401 Unauthorized');
 checkAccess();

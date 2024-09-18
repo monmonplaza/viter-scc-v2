@@ -1,23 +1,23 @@
 import React from "react";
 import { checkLocalStorage } from "../helpers/CheckLocalStorage.jsx";
-import { checkRoleToRedirect } from "../helpers/login-functions.jsx";
-import { queryData } from "../helpers/queryData.jsx";
+import { checkRoleToRedirect } from "../helpers/login-functions";
+import { queryData } from "../helpers/queryData";
 import { setIsLogin } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 
-const useSystemLogin = (navigate) => {
+const useSystemIsLogin = (navigate) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [loginLoading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     setLoading(true);
     const fetchLogin = async () => {
-      const login = await queryData(`/v1/user-system/token`, "post", {
+      const login = await queryData(`/v1/settings-developer/token`, "post", {
         token: checkLocalStorage().token,
       });
 
       if (typeof login === "undefined" || !login.success) {
-        localStorage.removeItem("restotoken");
+        localStorage.removeItem("localhristoken");
         setLoading(false);
       } else {
         setLoading(false);
@@ -39,4 +39,4 @@ const useSystemLogin = (navigate) => {
   return { loginLoading };
 };
 
-export default useSystemLogin;
+export default useSystemIsLogin;

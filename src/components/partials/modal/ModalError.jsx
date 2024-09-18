@@ -1,4 +1,5 @@
 import { setError } from "@/components/store/StoreAction.jsx";
+import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
 
@@ -29,10 +30,8 @@ const ModalError = () => {
             size={70}
             className="mx-auto mb-2 text-alert !stroke-[4px]	"
           />
-          <p className="text-base text-center text-balance ">
-            Something went wrong. Please try again later.
-          </p>
-          <p>{store.message}</p>
+
+          <p className="text-center">{store.message}</p>
         </div>
 
         <div className="flex p-3 pb-5 gap-2 justify-end w-full ml-auto">

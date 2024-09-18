@@ -22,7 +22,7 @@ import { Form, Formik } from "formik";
 import { File, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-const ModalDeveloper = ({ itemEdit }) => {
+const ModalUser = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [emailMessage, setEmailMessage] = React.useState("");
 
@@ -39,7 +39,7 @@ const ModalDeveloper = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/settings-developer/${itemEdit.developer_aid}`
+          ? `/${ver}/settings-developer/${itemEdit.user_aid}`
           : `/${ver}/settings-developer`,
         itemEdit ? "put" : "post",
         values
@@ -59,8 +59,7 @@ const ModalDeveloper = ({ itemEdit }) => {
             `Successfully ${
               itemEdit
                 ? `updated. ${emailMessage} ${
-                    store.credentials.data.developer_email ===
-                    itemEdit.developer_email
+                    store.credentials.data.user_email === itemEdit.user_email
                       ? "You will be automatically logged out."
                       : ""
                   }`
@@ -70,7 +69,7 @@ const ModalDeveloper = ({ itemEdit }) => {
         );
         if (
           itemEdit &&
-          store.credentials.data.developer_email === itemEdit.developer_email
+          store.credentials.data.user_email === itemEdit.user_email
         ) {
           dispatch(setIsAccountUpdated(true));
         }
@@ -90,18 +89,18 @@ const ModalDeveloper = ({ itemEdit }) => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = {
-    developer_aid: itemEdit ? itemEdit.developer_aid : "",
-    developer_fname: itemEdit ? itemEdit.developer_fname : "",
-    developer_lname: itemEdit ? itemEdit.developer_lname : "",
-    developer_email: itemEdit ? itemEdit.developer_email : "",
-    developer_role_id: role?.count > 0 ? role?.data[0].role_aid : "",
-    developer_email_old: itemEdit ? itemEdit.developer_email : "",
+    user_aid: itemEdit ? itemEdit.user_aid : "",
+    user_fname: itemEdit ? itemEdit.user_fname : "",
+    user_lname: itemEdit ? itemEdit.user_lname : "",
+    user_email: itemEdit ? itemEdit.user_email : "",
+    user_role_id: role?.count > 0 ? role?.data[0].role_aid : "",
+    user_email_old: itemEdit ? itemEdit.user_email : "",
   };
 
   const yupSchema = Yup.object({
-    developer_fname: Yup.string().required("Required"),
-    developer_lname: Yup.string().required("Required"),
-    developer_email: Yup.string().required("Required").email("Invalid email"),
+    user_fname: Yup.string().required("Required"),
+    user_lname: Yup.string().required("Required"),
+    user_email: Yup.string().required("Required").email("Invalid email"),
   });
 
   React.useEffect(() => handleEscape(handleClose), []);
@@ -135,7 +134,7 @@ const ModalDeveloper = ({ itemEdit }) => {
                       <InputText
                         label="First Name"
                         type="text"
-                        name="developer_fname"
+                        name="user_fname"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -144,7 +143,7 @@ const ModalDeveloper = ({ itemEdit }) => {
                       <InputText
                         label="Last Name"
                         type="text"
-                        name="developer_lname"
+                        name="user_lname"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -153,7 +152,7 @@ const ModalDeveloper = ({ itemEdit }) => {
                       <InputText
                         label="Email"
                         type="text"
-                        name="developer_email"
+                        name="user_email"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -162,7 +161,7 @@ const ModalDeveloper = ({ itemEdit }) => {
                       <InputText
                         label="Role"
                         type="text"
-                        name="developer_role_id"
+                        name="user_role_id"
                         value={role?.data[0].role_name}
                         disabled
                       />
@@ -201,4 +200,4 @@ const ModalDeveloper = ({ itemEdit }) => {
   );
 };
 
-export default ModalDeveloper;
+export default ModalUser;
