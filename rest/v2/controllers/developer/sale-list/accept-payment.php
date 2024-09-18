@@ -22,7 +22,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $salesList->sales_updated = date("Y-m-d H:i:s");
 
     $salesList->sales_new_data = 0;
-    if ($salesList->sales_payment_method === "creadit") {
+    if ($salesList->sales_payment_method == "credit") {
         $salesList->sales_is_paid = 0;
     } else {
         $salesList->sales_is_paid = 1;

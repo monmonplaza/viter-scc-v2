@@ -34,10 +34,12 @@ const SupplierList = ({ setItemEdit }) => {
   let counter = 1;
   console.log(store.isSearch);
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

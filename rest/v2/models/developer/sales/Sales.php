@@ -29,6 +29,7 @@ class Sales
     public $tblInventoryLog;
     public $tblProduct;
     public $tblSalesList;
+    public $tblCustomer;
 
 
     public function __construct($db)
@@ -38,6 +39,7 @@ class Sales
         $this->tblSalesList = "sccv2_sales_list";
         $this->tblInventoryLog = "sccv2_inventory_log";
         $this->tblProduct = "sccv2_product";
+        $this->tblCustomer = "sccv2_customer";
     }
 
     // create
@@ -77,9 +79,15 @@ class Sales
     public function readAll()
     {
         try {
-            $sql = "select * from {$this->tblSales} ";
-            $sql .= "order by sales_is_paid asc, ";
-            $sql .= "DATE(sales_date) desc ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -91,9 +99,15 @@ class Sales
     public function readLimit()
     {
         try {
-            $sql = "select * from {$this->tblSales} ";
-            $sql .= "order by sales_is_paid asc, ";
-            $sql .= "DATE(sales_date) desc ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -110,19 +124,26 @@ class Sales
     public function search()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblSales} ";
-            $sql .= "where (sales_date like :sales_date ";
-            $sql .= "or MONTHNAME(sales_date) like :monthName ";
-            $sql .= "or sales_reference_no like :sales_reference_no ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "and (sales.sales_date like :sales_date ";
+            $sql .= "or MONTHNAME(sales.sales_date) like :monthName ";
+            $sql .= "or sales.sales_reference_no like :sales_reference_no ";
+            $sql .= "or c.customer_name like :customer_name ";
             $sql .= ") ";
-            $sql .= "order by sales_is_paid asc, ";
-            $sql .= "DATE(sales_date) desc ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_date" => "%{$this->sales_search}%",
                 "monthName" => "%{$this->sales_search}%",
                 "sales_reference_no" => "%{$this->sales_search}%",
+                "customer_name" => "%{$this->sales_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -220,11 +241,16 @@ class Sales
     public function filterByDate()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblSales} ";
-            $sql .= "where DATE(sales_date) = DATE(:sales_date) ";
-            $sql .= "order by sales_is_paid asc, ";
-            $sql .= "DATE(sales_date) desc ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "and DATE(sales.sales_date) = DATE(:sales_date) ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_date" => $this->sales_date,
@@ -238,10 +264,16 @@ class Sales
     public function filterByStatus()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblSales} ";
-            $sql .= "where sales_is_paid = :sales_is_paid  ";
-            $sql .= "order by sales_is_paid desc ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "and sales.sales_is_paid = :sales_is_paid ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_is_paid" => $this->sales_is_paid,
@@ -255,21 +287,27 @@ class Sales
     public function filterByStatusAndSearch()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblSales} ";
-            $sql .= "where ";
-            $sql .= "sales_is_paid = :sales_is_paid ";
-            $sql .= "and (sales_date like :sales_date ";
-            $sql .= "or MONTHNAME(sales_date) like :monthName ";
-            $sql .= "or sales_reference_no like :sales_reference_no ";
+            $sql = "select sales.*, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSales} as sales, ";
+            $sql .= "{$this->tblCustomer} as c ";
+            $sql .= "where c.customer_aid = sales.sales_customer_id ";
+            $sql .= "and sales.sales_is_paid = :sales_is_paid ";
+            $sql .= "and (sales.sales_date like :sales_date ";
+            $sql .= "or MONTHNAME(sales.sales_date) like :monthName ";
+            $sql .= "or sales.sales_reference_no like :sales_reference_no ";
+            $sql .= "or c.customer_name like :customer_name ";
             $sql .= ") ";
-            $sql .= "order by sales_is_paid asc, ";
-            $sql .= "DATE(sales_date) desc ";
+            $sql .= "order by sales.sales_is_paid asc, ";
+            $sql .= "DATE(sales.sales_date) desc, ";
+            $sql .= "sales_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_date" => "%{$this->sales_search}%",
                 "monthName" => "%{$this->sales_search}%",
                 "sales_reference_no" => "%{$this->sales_search}%",
+                "customer_name" => "%{$this->sales_search}%",
                 "sales_is_paid" => $this->sales_is_paid,
             ]);
         } catch (PDOException $ex) {
@@ -336,6 +374,24 @@ class Sales
                 "inventory_log_stock_out" => $this->inventory_log_stock_out,
                 "inventory_log_updated" => $this->inventory_log_updated,
                 "inventory_log_product_id" => $this->inventory_log_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkAssociation()
+    {
+        try {
+            $sql = "select sales_list_sales_id ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSalesList} ";
+            $sql .= "where sales_list_sales_id = :sales_list_sales_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_list_sales_id" => "{$this->sales_aid}",
             ]);
         } catch (PDOException $ex) {
             $query = false;

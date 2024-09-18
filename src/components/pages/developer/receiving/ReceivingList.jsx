@@ -40,10 +40,12 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
   let totalAmount = 0;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

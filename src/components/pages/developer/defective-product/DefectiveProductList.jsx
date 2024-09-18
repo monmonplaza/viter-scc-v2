@@ -33,10 +33,12 @@ const DefectiveProductList = ({ setItemEdit }) => {
   let totalAmount = 0;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

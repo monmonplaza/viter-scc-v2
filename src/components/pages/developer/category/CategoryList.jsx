@@ -35,10 +35,12 @@ const CategoryList = ({ setItemEdit }) => {
   console.log(store.isSearch);
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

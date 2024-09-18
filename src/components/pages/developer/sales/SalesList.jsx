@@ -17,13 +17,7 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import {
-  ArchiveRestore,
-  ClipboardCheck,
-  ScrollText,
-  SquarePen,
-  Trash,
-} from "lucide-react";
+import { ScrollText, SquarePen, Trash } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -38,10 +32,12 @@ const SalesList = ({ setItemEdit, setIsView }) => {
   let totalAmount = 0;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
@@ -183,72 +179,35 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                         </td>
                         <td className="table-action">
                           <ul>
-                            {item.sales_is_paid === 0 ? (
-                              <>
-                                <li>
-                                  <button
-                                    data-tooltip="Edit"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleEdit(item.sales_aid, item)
-                                    }
-                                  >
-                                    <SquarePen size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Delete"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleRemove(item.sales_aid, item)
-                                    }
-                                  >
-                                    <Trash size={14} />
-                                  </button>
-                                </li>
-                              </>
-                            ) : (
-                              <>
-                                {1 === 0 ? (
-                                  <li>
-                                    <button
-                                      data-tooltip="View"
-                                      className="tooltip"
-                                      onClick={() => handleView(item)}
-                                    >
-                                      <ScrollText size={14} />
-                                    </button>
-                                  </li>
-                                ) : (
-                                  <>
-                                    <li>
-                                      <button
-                                        data-tooltip="Edit"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleEdit(item.sales_aid, item)
-                                        }
-                                      >
-                                        <SquarePen size={14} />
-                                      </button>
-                                    </li>
-
-                                    <li>
-                                      <button
-                                        data-tooltip="Delete"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleRemove(item.sales_aid, item)
-                                        }
-                                      >
-                                        <Trash size={14} />
-                                      </button>
-                                    </li>
-                                  </>
-                                )}
-                              </>
-                            )}
+                            <li>
+                              <button
+                                data-tooltip="Edit"
+                                className="tooltip"
+                                onClick={() => handleEdit(item.sales_aid, item)}
+                              >
+                                <SquarePen size={14} />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                data-tooltip="View"
+                                className="tooltip"
+                                onClick={() => handleView(item)}
+                              >
+                                <ScrollText size={14} />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                data-tooltip="Delete"
+                                className="tooltip"
+                                onClick={() =>
+                                  handleRemove(item.sales_aid, item)
+                                }
+                              >
+                                <Trash size={14} />
+                              </button>
+                            </li>
                           </ul>
                         </td>
                       </tr>

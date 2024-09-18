@@ -2,6 +2,7 @@ import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
 import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import {
+  formatDate,
   getDateNow,
   handleEscape,
   numberWithCommasToFixed,
@@ -38,8 +39,14 @@ const ModalAddSales = ({ itemEdit }) => {
   const [productData, setProductData] = React.useState(null);
   const [customerData, setCustomerData] = React.useState(null);
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
+  const [paymentMethod, setPaymentMethod] = React.useState(
+    itemEdit ? itemEdit.sales_payment_method : ""
+  );
+  const [quantity, setQuantity] = React.useState("");
+  const [isUpdatequantity, setIsUpdateQuantity] = React.useState(false);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   const [isRequiredCustomerYup, setIsRequiredCustomerYup] = React.useState("");
+  const [isRequiredAmountYup, setIsRequiredAmountYup] = React.useState("");
   let counter = 1;
   let totalAmount = 0;
 
@@ -60,17 +67,24 @@ const ModalAddSales = ({ itemEdit }) => {
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        itemEdit
-          ? `/${ver}/sales-list/${itemEdit.sales_list_sales_id}`
-          : !isAcceptPayment
-          ? `/${ver}/sales-list`
-          : `/${ver}/sales-list/accept-payment`,
-        itemEdit ? "put" : "post",
+        isAcceptPayment === true
+          ? `/${ver}/sales-list/accept-payment`
+          : `/${ver}/sales-list`,
+        isAcceptPayment ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
+        queryKey: ["search-product-price"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["search-customer"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["sales-list-read-new-receive"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["sales"],
       });
       // show error box
 
@@ -96,10 +110,12 @@ const ModalAddSales = ({ itemEdit }) => {
   });
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
@@ -107,10 +123,21 @@ const ModalAddSales = ({ itemEdit }) => {
     setItemEdit,
   });
 
-  const handleClose = () => {
+  const handleClose = async () => {
     queryClient.invalidateQueries({
-      queryKey: ["receiving"],
+      queryKey: ["sales"],
     });
+
+    const result = await queryData(
+      `/${ver}/sales-list/update-new-data`,
+      "put",
+      {}
+    );
+
+    if (result.data) {
+      // increment state to re-render page
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+    }
 
     dispatch(setIsAnimating(false));
     setTimeout(() => {
@@ -119,11 +146,35 @@ const ModalAddSales = ({ itemEdit }) => {
     }, 0);
   };
 
+  const handleUpdateQuantity = async (e, val) => {
+    setQuantity(e.target.value);
+    queryClient.invalidateQueries({ queryKey: ["sales"] });
+    const result = await queryData(
+      `/${ver}/sales-list/update-quantity`,
+      "put",
+      {
+        sales_list_quantity: e.target.value,
+        sales_list_aid: val.sales_list_aid,
+      }
+    );
+
+    if (result.data) {
+      // increment state to re-render page
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+    }
+  };
+
+  const handleChangeMethod = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
   const handleSubmitte = () => {
+    setIsRequiredAmountYup(Yup.string().required("Required"));
     setIsAcceptPayment(true);
   };
 
   const handleSearch = () => {
+    setIsRequiredAmountYup("");
     setIsAcceptPayment(false);
     if (customerData === null || typeof customerData === "undefined") {
       setIsRequiredCustomerYup(Yup.string().required("Required"));
@@ -136,22 +187,27 @@ const ModalAddSales = ({ itemEdit }) => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = {
-    sales_list_date: getDateNow(),
-    sales_customer_id: "",
+    ...itemEdit,
+    sales_aid: itemEdit ? itemEdit.sales_aid : 0,
+    sales_list_date: itemEdit ? itemEdit.sales_date : getDateNow(),
+    sales_new_data: itemEdit ? itemEdit.sales_new_data : "",
     sales_list_quantity: "1",
-    sales_payment_method: "cash",
-    searchCustomer: "",
+    sales_payment_method: itemEdit ? itemEdit.sales_payment_method : "credit",
+    searchCustomer: itemEdit ? itemEdit.customer_name : "",
     searchProduct: "",
-    sales_payment_amount: "0",
+    sales_payment_amount: itemEdit ? itemEdit.sales_payment_amount : "0",
+    isUpdate: itemEdit ? true : false,
   };
 
   const yupSchema = Yup.object({
     sales_list_date: Yup.string().required("Required"),
+    sales_payment_amount: isRequiredAmountYup,
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
   });
 
-  console.log("SalesData", SalesData);
+  console.log("productData", productData);
+
   return (
     <>
       <WrapperModal>
@@ -167,6 +223,40 @@ const ModalAddSales = ({ itemEdit }) => {
           </div>
 
           <div className="p-4 space-y-6">
+            {itemEdit && SalesData?.count > 0 && (
+              <>
+                <div className="grid grid-cols-[1fr_5rem] gap-5 items-center">
+                  <ul className="grid grid-cols-2 text-sm">
+                    <li className="!mb-0 mt-2 font-bold">
+                      Date :
+                      <span className="font-normal ml-2">
+                        {formatDate(itemEdit.sales_date)}
+                      </span>
+                    </li>
+                    <li className="!mb-0 mt-2 font-bold">
+                      Reference No. :
+                      <span className="font-normal ml-2">
+                        {itemEdit.sales_reference_no}
+                      </span>
+                    </li>
+                    <li className="!mb-0 mt-2 font-bold">
+                      Customer :
+                      <span className="font-normal ml-2">
+                        {itemEdit.customer_name}
+                      </span>
+                    </li>
+                  </ul>
+                  <div className="">
+                    <button
+                      className="btn btn-accent md:text-left "
+                      type="submit"
+                    >
+                      <Printer size={16} /> Print
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
             <Formik
               initialValues={initVal}
               validationSchema={yupSchema}
@@ -177,23 +267,28 @@ const ModalAddSales = ({ itemEdit }) => {
                 let productPriceId = 0;
                 if (customerData !== null) {
                   customerId = customerData?.customer_aid;
-                  if (productData !== null) {
-                    productId = productData?.product_price_product_id;
-                    productPriceId = productData?.product_price_aid;
-                    if (customerData?.customer_is_member === 1) {
-                      price = productData?.product_price_scc_price;
-                    } else {
-                      price = productData?.product_price_amount;
-                    }
+                }
+                if (productData !== null) {
+                  productId = productData?.product_price_product_id;
+                  productPriceId = productData?.product_price_aid;
+                  if (customerData?.customer_is_member === 1) {
+                    price = productData?.product_price_scc_price;
+                  } else {
+                    price = productData?.product_price_amount;
                   }
                 }
+
                 //
                 mutation.mutate({
                   ...values,
                   sales_list_price: price,
                   sales_list_product_id: productId,
-                  sales_list_customer_id: customerId,
-                  sales_customer_id: customerId,
+                  sales_list_customer_id: itemEdit
+                    ? itemEdit.sales_customer_id
+                    : customerId,
+                  sales_customer_id: itemEdit
+                    ? itemEdit.sales_customer_id
+                    : customerId,
                   sales_list_product_price_id: productPriceId,
                 });
               }}
@@ -201,61 +296,85 @@ const ModalAddSales = ({ itemEdit }) => {
               {(props) => {
                 return (
                   <Form>
-                    {SalesData?.count > 0 && (
-                      <div className="flex justify-between">
-                        <p className="!mb-0 mt-2 font-bold">
-                          Reference No :
-                          <span className="font-normal ml-2">
-                            {SalesData?.data[0].sales_reference_no}
-                          </span>
-                        </p>
-                        <button
-                          className="btn btn-accent ml-auto md:!m-0 !py-2 md:text-left md:mb-2"
-                          type="submit"
-                        >
-                          <Printer size={16} /> Print
-                        </button>
-                      </div>
+                    {!itemEdit && (
+                      <>
+                        {SalesData?.count > 0 && (
+                          <div className="flex justify-between">
+                            <p className="!mb-0 mt-2 font-bold">
+                              Reference No :
+                              <span className="font-normal ml-2">
+                                {SalesData?.data[0].sales_reference_no}
+                              </span>
+                            </p>
+                            <button
+                              className="btn btn-accent ml-auto md:!m-0 !py-2 md:text-left md:mb-2"
+                              type="submit"
+                            >
+                              <Printer size={16} /> Print
+                            </button>
+                          </div>
+                        )}
+                        <div className="flex mb-2 gap-2">
+                          <div className="input-wrap">
+                            <InputText
+                              label="Receiving Date"
+                              type="date"
+                              name="sales_list_date"
+                              disabled={mutation.isPending}
+                            />
+                          </div>
+                          <div className="input-wrap">
+                            <SearchModalCustomer
+                              setData={setCustomerData}
+                              props={props.values}
+                              label="Search Customer"
+                              name="searchCustomer"
+                              mutation={mutation}
+                              setIsRequiredYup={setIsRequiredCustomerYup}
+                            />
+                          </div>
+
+                          <div className="input-wrap">
+                            <InputSelect
+                              label="Payment method"
+                              name="sales_payment_method"
+                            >
+                              <optgroup label="Payment method">
+                                <option value="credit">Credit</option>
+                                <option value="cash">Cash</option>
+                                <option value="gcash">Gcash</option>
+                                <option value="card">
+                                  Card (ex. credit, debit )
+                                </option>
+                              </optgroup>
+                            </InputSelect>
+                          </div>
+                        </div>
+                      </>
                     )}
-                    <div className="flex mb-2 gap-2">
-                      <div className="input-wrap">
-                        <InputText
-                          label="Receiving Date"
-                          type="date"
-                          name="sales_list_date"
-                          disabled={mutation.isPending}
-                        />
-                      </div>
-                      <div className="input-wrap">
-                        <SearchModalCustomer
-                          setData={setCustomerData}
-                          props={props.values}
-                          label="Search Customer"
-                          name="searchCustomer"
-                          mutation={mutation}
-                          setIsRequiredYup={setIsRequiredCustomerYup}
-                        />
-                      </div>
-
-                      <div className="input-wrap">
-                        <InputSelect
-                          label="Payment method"
-                          name="sales_payment_method"
-                        >
-                          <optgroup label="Payment method">
-                            <option value="cash">Cash</option>
-                            <option value="gcash">Gcash</option>
-                            <option value="credit">Credit</option>
-                            <option value="card">
-                              Card (ex. credit, debit )
-                            </option>
-                          </optgroup>
-                        </InputSelect>
-                      </div>
-                    </div>
-
                     <div className="md:grid md:grid-cols-[1fr_1fr]  gap-2 items-end">
-                      <div></div>
+                      {itemEdit ? (
+                        <>
+                          <div className="input-wrap w-[15rem]">
+                            <InputSelect
+                              label="Payment method"
+                              name="sales_payment_method"
+                              onChange={(e) => handleChangeMethod(e)}
+                            >
+                              <optgroup label="Payment method">
+                                <option value="credit">Credit</option>
+                                <option value="cash">Cash</option>
+                                <option value="gcash">Gcash</option>
+                                <option value="card">
+                                  Card (ex. credit, debit )
+                                </option>
+                              </optgroup>
+                            </InputSelect>
+                          </div>
+                        </>
+                      ) : (
+                        <div></div>
+                      )}
                       <div className="md:grid md:grid-cols-[1fr_1fr_5rem] gap-2 items-end">
                         <div className="input-wrap">
                           <SearchModalProductPrice
@@ -310,7 +429,7 @@ const ModalAddSales = ({ itemEdit }) => {
                       <th>Product</th>
                       <th>Barcode</th>
                       <th>Unit</th>
-                      <th className="text-center">Qty</th>
+                      <th className="text-center w-[10rem]">Qty</th>
                       <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
                     </tr>
@@ -341,14 +460,21 @@ const ModalAddSales = ({ itemEdit }) => {
                         Number(item.sales_list_price) *
                         Number(item.sales_list_quantity);
                       return (
-                        <tr key={key} className="">
+                        <tr key={key} className="h-[3rem]">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.product_name}</td>
                           <td>{item.receiving_supply_barcode}</td>
                           <td>{item.settings_unit_name}</td>
-                          <td className="text-center">
-                            {item.sales_list_quantity}
+                          <td
+                            className="text-center cursor-pointer p-0 "
+                            onClick={() => setIsUpdateQuantity(true)}
+                          >
+                            {/* quantity, setQuantity */}
+                            <input
+                              onChange={(e) => handleUpdateQuantity(e, item)}
+                              className="text-center"
+                            />
                           </td>
                           <td className="text-right">
                             {pesoSign}
@@ -362,7 +488,7 @@ const ModalAddSales = ({ itemEdit }) => {
                               2
                             )}
                           </td>
-                          <td className="table-action ">
+                          <td className="table-action !top-2">
                             <ul>
                               <li>
                                 <button
@@ -406,6 +532,7 @@ const ModalAddSales = ({ itemEdit }) => {
                       ...values,
                       sales_aid: SalesData?.data[0].sales_aid,
                       sales_total_amount: totalAmount,
+                      sales_payment_method: paymentMethod,
                     });
                   }}
                 >
@@ -420,7 +547,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                 type="text"
                                 number="number"
                                 name="sales_payment_amount"
-                                className="text-right text-lg"
+                                className="text-right text-lg !m-0"
                                 disabled={mutation.isPending}
                               />
                             </div>

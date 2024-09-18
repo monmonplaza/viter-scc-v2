@@ -16,10 +16,12 @@ const RolesList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   let counter = 1;
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

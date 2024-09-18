@@ -98,10 +98,12 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
   });
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

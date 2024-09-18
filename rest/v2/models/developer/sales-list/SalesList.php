@@ -24,6 +24,11 @@ class SalesList
     public $sales_created;
     public $sales_updated;
 
+    public $inventory_log_product_id;
+    public $inventory_log_stock_out;
+    public $product_price_aid;
+    public $product_price_stock_out;
+
     public $connection;
     public $lastInsertedId;
 
@@ -150,6 +155,25 @@ class SalesList
                 "sales_total_amount" => $this->sales_total_amount,
                 "sales_updated" => $this->sales_updated,
                 "sales_aid" => $this->sales_list_sales_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateSalesNewData()
+    {
+        try {
+            $sql = "update {$this->tblSales} set ";
+            $sql .= "sales_new_data = '0', ";
+            $sql .= "sales_updated = :sales_updated ";
+            $sql .= "where sales_aid = :sales_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_updated" => $this->sales_updated,
+                "sales_aid" => $this->sales_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -377,6 +401,26 @@ class SalesList
     }
 
     // update
+    public function updateQuantity()
+    {
+        try {
+            $sql = "update {$this->tblSalesList} set ";
+            $sql .= "sales_list_quantity = :sales_list_quantity, ";
+            $sql .= "sales_list_updated = :sales_list_updated ";
+            $sql .= "where sales_list_aid = :sales_list_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_list_quantity" => $this->sales_list_quantity,
+                "sales_list_updated" => $this->sales_list_updated,
+                "sales_list_aid" => $this->sales_list_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
     public function update()
     {
         try {
@@ -395,6 +439,47 @@ class SalesList
         }
         return $query;
     }
+
+    // update
+    public function updateInventoryStockOut()
+    {
+        try {
+            $sql = "update {$this->tblInventoryLog} set ";
+            $sql .= "inventory_log_stock_out = :inventory_log_stock_out, ";
+            $sql .= "inventory_log_updated = :inventory_log_updated ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_stock_out" => $this->inventory_log_stock_out,
+                "inventory_log_updated" => $this->sales_updated,
+                "inventory_log_product_id" => $this->inventory_log_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateProductPriceSoldOut()
+    {
+        try {
+            $sql = "update {$this->tblProductPrice} set ";
+            $sql .= "product_price_stock_out = :product_price_stock_out, ";
+            $sql .= "product_price_update = :product_price_update ";
+            $sql .= "where product_price_aid = :product_price_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_price_stock_out" => $this->product_price_stock_out,
+                "product_price_update" => $this->sales_updated,
+                "product_price_aid" => $this->product_price_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
 
     // active
     public function active()
@@ -426,6 +511,40 @@ class SalesList
             $sql .= "where sales_new_data = '1' ";
             $sql .= "order by sales_aid desc ";
             $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkProductSold()
+    {
+        try {
+            $sql = "select sales_list_product_id, ";
+            $sql .= "count(sales_list_quantity) as total_sold ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSalesList} ";
+            $sql .= "group by sales_list_product_id ";
+            $sql .= "order by sales_list_product_id desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkProductPriceSold()
+    {
+        try {
+            $sql = "select sales_list_product_price_id, ";
+            $sql .= "count(sales_list_quantity) as total_sold ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSalesList} ";
+            $sql .= "group by sales_list_product_price_id ";
+            $sql .= "order by sales_list_product_price_id desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

@@ -24,11 +24,43 @@ function checkUpdateSalesListCustomer($object)
     return $query;
 }
 
+// Update receiving supply
+function checkUpdateSalesNewData($object)
+{
+    $query = $object->updateSalesNewData();
+    checkQuery($query, "There's a problem processing your request. (update sales new data)");
+    return $query;
+}
+
+// Update receiving supply
+function checkUpdateQuantity($object)
+{
+    $query = $object->updateQuantity();
+    checkQuery($query, "There's a problem processing your request. (sales list update quantity)");
+    return $query;
+}
+
 // Update Accept Payment
 function checkUpdateAcceptPayment($object)
 {
     $query = $object->updateAcceptPayment();
     checkQuery($query, "There's a problem processing your request. (update Accept Payment)");
+    return $query;
+}
+
+// check Update Inventory StockOut
+function checkUpdateInventoryStockOut($object)
+{
+    $query = $object->updateInventoryStockOut();
+    checkQuery($query, "There's a problem processing your request. (Update Inventory StockOut)");
+    return $query;
+}
+
+// Update Product Price Sold Out
+function checkUpdateProductPriceSoldOut($object)
+{
+    $query = $object->updateProductPriceSoldOut();
+    checkQuery($query, "There's a problem processing your request. (update Product Price Sold Out)");
     return $query;
 }
 

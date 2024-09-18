@@ -95,6 +95,7 @@ class Search
             $sql .= "product.*, ";
             $sql .= "pr.*, ";
             $sql .= "rs.receiving_supply_barcode, ";
+            $sql .= "rs.receiving_supply_defective_product_qty, ";
             $sql .= "category.category_aid, ";
             $sql .= "category.category_name, ";
             $sql .= "category.category_description ";

@@ -36,10 +36,12 @@ const ReturnProductList = ({ setItemEdit }) => {
   let counter = 1;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
