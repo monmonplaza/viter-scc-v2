@@ -37,10 +37,11 @@ const ModalAddSales = ({ itemEdit }) => {
   const [modalItemEdit, setItemEdit] = React.useState(null);
   const [productData, setProductData] = React.useState(null);
   const [customerData, setCustomerData] = React.useState(null);
+  const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   const [isRequiredCustomerYup, setIsRequiredCustomerYup] = React.useState("");
   let counter = 1;
-  let totalQty = 0;
+  let totalAmount = 0;
 
   const {
     isLoading: loadingSales,
@@ -61,7 +62,9 @@ const ModalAddSales = ({ itemEdit }) => {
       queryData(
         itemEdit
           ? `/${ver}/sales-list/${itemEdit.sales_list_sales_id}`
-          : `/${ver}/sales-list`,
+          : !isAcceptPayment
+          ? `/${ver}/sales-list`
+          : `/${ver}/sales-list/accept`,
         itemEdit ? "put" : "post",
         values
       ),
@@ -104,7 +107,12 @@ const ModalAddSales = ({ itemEdit }) => {
     }, 0);
   };
 
+  const handleSubmitte = () => {
+    setIsAcceptPayment(true);
+  };
+
   const handleSearch = () => {
+    setIsAcceptPayment(false);
     if (customerData === null || typeof customerData === "undefined") {
       setIsRequiredCustomerYup(Yup.string().required("Required"));
     }
@@ -122,6 +130,7 @@ const ModalAddSales = ({ itemEdit }) => {
     sales_payment_method: "cash",
     searchCustomer: "",
     searchProduct: "",
+    sales_payment_amount: "0",
   };
 
   const yupSchema = Yup.object({
@@ -130,7 +139,7 @@ const ModalAddSales = ({ itemEdit }) => {
     searchProduct: isRequiredProductYup,
   });
 
-  console.log("productData", productData);
+  console.log("isAcceptPayment", isAcceptPayment);
 
   return (
     <>
@@ -317,20 +326,11 @@ const ModalAddSales = ({ itemEdit }) => {
                       </tr>
                     )}
                     {SalesData?.data.map((item, key) => {
-                      totalQty +=
+                      totalAmount +=
                         Number(item.sales_list_price) *
                         Number(item.sales_list_quantity);
                       return (
-                        <tr
-                          key={key}
-                          className={
-                            Number(
-                              item.receiving_supply_defective_product_qty
-                            ) !== 0
-                              ? "status-alert "
-                              : ""
-                          }
-                        >
+                        <tr key={key} className="">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.product_name}</td>
@@ -370,24 +370,75 @@ const ModalAddSales = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
-                  <tbody>
-                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={6} className="py-4 pl-2 text-right ">
+                  <tbody className="relative ">
+                    <tr className="sticky -bottom-4 opacity-[100] !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
+                      <td colSpan={5} className="py-4 pl-2 text-right text-2xl">
                         Total:
                       </td>
-                      <td className="text-right py-4 pr-2">
+                      <td colSpan={2} className="text-right py-4 pr-2 text-2xl">
                         {pesoSign}
-                        {numberWithCommasToFixed(totalQty, 2)}
+                        {numberWithCommasToFixed(totalAmount, 2)}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div className="flex gap-3 mt-5 justify-end">
-              <button className="btn btn-accent" onClick={handleClose}>
-                Close
-              </button>
+
+            <div className="">
+              <Formik
+                initialValues={initVal}
+                validationSchema={yupSchema}
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
+                  //
+                  mutation.mutate({
+                    ...values,
+                    sales_total_amount: totalAmount,
+                  });
+                }}
+              >
+                {(props) => {
+                  return (
+                    <Form>
+                      <div className=" ">
+                        <div className="flex justify-end">
+                          <div className="input-wrap">
+                            <InputText
+                              label="Amount"
+                              type="text"
+                              number="number"
+                              name="sales_payment_amount"
+                              className="text-right text-lg"
+                              disabled={mutation.isPending}
+                            />
+                          </div>
+                        </div>
+                        <ul className="flex justify-end my-5">
+                          <li>Change :</li>
+                          {pesoSign}
+                          {numberWithCommasToFixed(
+                            Number(props.values.sales_payment_amount) === 0
+                              ? 0
+                              : Number(props.values.sales_payment_amount) -
+                                  Number(totalAmount),
+                            2
+                          )}
+                        </ul>
+                      </div>
+                      <div className="flex gap-3 mt-5 justify-end">
+                        <button
+                          className="btn btn-accent "
+                          type="submit"
+                          disabled={mutation.isPending}
+                          onClick={handleSubmitte}
+                        >
+                          {mutation.isPending ? <SpinnerButton /> : <>Accept</>}
+                        </button>
+                      </div>
+                    </Form>
+                  );
+                }}
+              </Formik>
             </div>
           </div>
         </div>

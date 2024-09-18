@@ -474,7 +474,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
                       <td colSpan={5} className=""></td>
                       <td className="py-4 pl-2 ">Total:</td>
-                      <td className="text-right py-4 pr-2">
+                      <td className="text-center py-4 pr-2">
                         {Number(totalQty)}
                       </td>
                       <td className="text-right py-4 pr-2">
