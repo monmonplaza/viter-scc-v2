@@ -19,6 +19,7 @@ class SalesList
     public $sales_total_amount;
     public $sales_is_paid;
     public $sales_new_data;
+    public $sales_payment_amount;
     public $sales_payment_method;
     public $sales_created;
     public $sales_updated;
@@ -149,6 +150,34 @@ class SalesList
                 "sales_total_amount" => $this->sales_total_amount,
                 "sales_updated" => $this->sales_updated,
                 "sales_aid" => $this->sales_list_sales_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateAcceptPayment()
+    {
+        try {
+            $sql = "update {$this->tblSales} set ";
+            $sql .= "sales_total_amount = :sales_total_amount, ";
+            $sql .= "sales_payment_amount = :sales_payment_amount, ";
+            $sql .= "sales_payment_method = :sales_payment_method, ";
+            $sql .= "sales_is_paid = :sales_is_paid, ";
+            $sql .= "sales_new_data = :sales_new_data, ";
+            $sql .= "sales_updated = :sales_updated ";
+            $sql .= "where sales_aid = :sales_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_total_amount" => $this->sales_total_amount,
+                "sales_payment_amount" => $this->sales_payment_amount,
+                "sales_payment_method" => $this->sales_payment_method,
+                "sales_is_paid" => $this->sales_is_paid,
+                "sales_new_data" => $this->sales_new_data,
+                "sales_updated" => $this->sales_updated,
+                "sales_aid" => $this->sales_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

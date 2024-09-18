@@ -207,21 +207,10 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                     <Trash size={14} />
                                   </button>
                                 </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Complete"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleRestore(item.sales_aid, item)
-                                    }
-                                  >
-                                    <ClipboardCheck size={14} />
-                                  </button>
-                                </li>
                               </>
                             ) : (
                               <>
-                                {1 === 1 ? (
+                                {1 === 0 ? (
                                   <li>
                                     <button
                                       data-tooltip="View"
@@ -244,17 +233,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                                         <SquarePen size={14} />
                                       </button>
                                     </li>
-                                    <li>
-                                      <button
-                                        data-tooltip="Restore"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleArchive(item.sales_aid, item)
-                                        }
-                                      >
-                                        <ArchiveRestore size={14} />
-                                      </button>
-                                    </li>
+
                                     <li>
                                       <button
                                         data-tooltip="Delete"

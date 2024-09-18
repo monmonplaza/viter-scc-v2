@@ -4,6 +4,7 @@ import { StoreContext } from "../../store/StoreContext";
 import { checkLocalStorage } from "../helpers/CheckLocalStorage";
 import { checkRoleToRedirect } from "../helpers/login-functions";
 import { queryData } from "../helpers/queryData";
+import { ver } from "../helpers/functions-general";
 
 const useOtherLogin = (navigate) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -12,7 +13,7 @@ const useOtherLogin = (navigate) => {
   React.useEffect(() => {
     setLoading(true);
     const fetchLogin = async () => {
-      const login = await queryData(`/v1/user-other/token`, "post", {
+      const login = await queryData(`/${ver}/user-other/token`, "post", {
         token: checkLocalStorage().token,
       });
 

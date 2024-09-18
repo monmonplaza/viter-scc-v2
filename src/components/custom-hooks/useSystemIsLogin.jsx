@@ -4,6 +4,7 @@ import { checkRoleToRedirect } from "../helpers/login-functions";
 import { queryData } from "../helpers/queryData";
 import { setIsLogin } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
+import { ver } from "../helpers/functions-general.jsx";
 
 const useSystemIsLogin = (navigate) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -12,9 +13,13 @@ const useSystemIsLogin = (navigate) => {
   React.useEffect(() => {
     setLoading(true);
     const fetchLogin = async () => {
-      const login = await queryData(`/v1/settings-developer/token`, "post", {
-        token: checkLocalStorage().token,
-      });
+      const login = await queryData(
+        `/${ver}/settings-developer/token`,
+        "post",
+        {
+          token: checkLocalStorage().token,
+        }
+      );
 
       if (typeof login === "undefined" || !login.success) {
         localStorage.removeItem("localhristoken");

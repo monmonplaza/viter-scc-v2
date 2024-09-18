@@ -64,7 +64,7 @@ const ModalAddSales = ({ itemEdit }) => {
           ? `/${ver}/sales-list/${itemEdit.sales_list_sales_id}`
           : !isAcceptPayment
           ? `/${ver}/sales-list`
-          : `/${ver}/sales-list/accept`,
+          : `/${ver}/sales-list/accept-payment`,
         itemEdit ? "put" : "post",
         values
       ),
@@ -73,12 +73,24 @@ const ModalAddSales = ({ itemEdit }) => {
         queryKey: ["sales-list-read-new-receive"],
       });
       // show error box
-      if (!data.success) {
-        dispatch(setValidate(true));
-        dispatch(setMessage(data.error));
+
+      if (!isAcceptPayment) {
+        if (!data.success) {
+          dispatch(setValidate(true));
+          dispatch(setMessage(data.error));
+        } else {
+          dispatch(setSuccess(true));
+          dispatch(setMessage(`Record Successfully updated.`));
+        }
       } else {
-        dispatch(setSuccess(true));
-        dispatch(setMessage(`Record Successfully updated.`));
+        if (!data.success) {
+          dispatch(setValidate(true));
+          dispatch(setMessage(data.error));
+        } else {
+          dispatch(setIsAdd(false));
+          dispatch(setSuccess(true));
+          dispatch(setMessage(`Record Successfully updated.`));
+        }
       }
     },
   });
@@ -139,8 +151,7 @@ const ModalAddSales = ({ itemEdit }) => {
     searchProduct: isRequiredProductYup,
   });
 
-  console.log("isAcceptPayment", isAcceptPayment);
-
+  console.log("SalesData", SalesData);
   return (
     <>
       <WrapperModal>
@@ -384,62 +395,68 @@ const ModalAddSales = ({ itemEdit }) => {
                 </table>
               </div>
             </div>
-
-            <div className="">
-              <Formik
-                initialValues={initVal}
-                validationSchema={yupSchema}
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                  //
-                  mutation.mutate({
-                    ...values,
-                    sales_total_amount: totalAmount,
-                  });
-                }}
-              >
-                {(props) => {
-                  return (
-                    <Form>
-                      <div className=" ">
-                        <div className="flex justify-end">
-                          <div className="input-wrap">
-                            <InputText
-                              label="Amount"
-                              type="text"
-                              number="number"
-                              name="sales_payment_amount"
-                              className="text-right text-lg"
-                              disabled={mutation.isPending}
-                            />
+            {SalesData?.count > 0 && (
+              <div className="">
+                <Formik
+                  initialValues={initVal}
+                  validationSchema={yupSchema}
+                  onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    //
+                    mutation.mutate({
+                      ...values,
+                      sales_aid: SalesData?.data[0].sales_aid,
+                      sales_total_amount: totalAmount,
+                    });
+                  }}
+                >
+                  {(props) => {
+                    return (
+                      <Form>
+                        <div className=" ">
+                          <div className="flex justify-end">
+                            <div className="input-wrap">
+                              <InputText
+                                label="Amount"
+                                type="text"
+                                number="number"
+                                name="sales_payment_amount"
+                                className="text-right text-lg"
+                                disabled={mutation.isPending}
+                              />
+                            </div>
                           </div>
+                          <ul className="flex justify-end my-5">
+                            <li>Change :</li>
+                            {pesoSign}
+                            {numberWithCommasToFixed(
+                              Number(props.values.sales_payment_amount) === 0
+                                ? 0
+                                : Number(props.values.sales_payment_amount) -
+                                    Number(totalAmount),
+                              2
+                            )}
+                          </ul>
                         </div>
-                        <ul className="flex justify-end my-5">
-                          <li>Change :</li>
-                          {pesoSign}
-                          {numberWithCommasToFixed(
-                            Number(props.values.sales_payment_amount) === 0
-                              ? 0
-                              : Number(props.values.sales_payment_amount) -
-                                  Number(totalAmount),
-                            2
-                          )}
-                        </ul>
-                      </div>
-                      <div className="flex gap-3 mt-5 justify-end">
-                        <button
-                          className="btn btn-accent "
-                          type="submit"
-                          disabled={mutation.isPending}
-                          onClick={handleSubmitte}
-                        >
-                          {mutation.isPending ? <SpinnerButton /> : <>Accept</>}
-                        </button>
-                      </div>
-                    </Form>
-                  );
-                }}
-              </Formik>
-            </div>
+                        <div className="flex gap-3 mt-5 justify-end">
+                          <button
+                            className="btn btn-accent "
+                            type="submit"
+                            disabled={mutation.isPending}
+                            onClick={handleSubmitte}
+                          >
+                            {mutation.isPending ? (
+                              <SpinnerButton />
+                            ) : (
+                              <>Accept</>
+                            )}
+                          </button>
+                        </div>
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              </div>
+            )}
           </div>
         </div>
 

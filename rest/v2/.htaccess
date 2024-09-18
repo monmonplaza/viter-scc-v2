@@ -137,6 +137,7 @@ RewriteRule ^sales-list$ controllers/developer/sale-list/sales-list.php [L]
 RewriteRule ^sales-list/([0-9]+)$ controllers/developer/sale-list/sales-list.php?saleslistid=$1 [L]  
 RewriteRule ^sales-list/search$ controllers/developer/sale-list/active.php?saleslistid=$1 [L]  
 RewriteRule ^sales-list/read-new-receive$ controllers/developer/sale-list/read-new-receive.php?saleslistid=$1 [L]  
+RewriteRule ^sales-list/accept-payment$ controllers/developer/sale-list/accept-payment.php [L]  
 
 
 

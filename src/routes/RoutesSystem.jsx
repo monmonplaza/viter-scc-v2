@@ -41,11 +41,19 @@ export const routesSystem = [
   },
   {
     path: `${devNavUrl}/${urlSystem}/defective-product`,
-    element: <DefectiveProduct />,
+    element: (
+      <DeveloperProtectedRoute>
+        <DefectiveProduct />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/sales`,
-    element: <Sales />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Sales />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/products`,
@@ -57,15 +65,30 @@ export const routesSystem = [
   },
   {
     path: `${devNavUrl}/${urlSystem}/product-price`,
-    element: <ProductPrice />,
+    element: (
+      <DeveloperProtectedRoute>
+        {" "}
+        <ProductPrice />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/suppliers`,
-    element: <Supplier />,
+    element: (
+      <DeveloperProtectedRoute>
+        {" "}
+        <Supplier />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/customers`,
-    element: <Customers />,
+    element: (
+      <DeveloperProtectedRoute>
+        {" "}
+        <Customers />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/category`,
@@ -77,7 +100,12 @@ export const routesSystem = [
   },
   {
     path: `${devNavUrl}/${urlSystem}/return-product`,
-    element: <ReturnProduct />,
+    element: (
+      <DeveloperProtectedRoute>
+        {" "}
+        <ReturnProduct />
+      </DeveloperProtectedRoute>
+    ),
   },
   // {
   //   path: `${devNavUrl}/${urlSystem}/settings`,
@@ -85,7 +113,12 @@ export const routesSystem = [
   // },
   {
     path: `${devNavUrl}/${urlSystem}/unit`,
-    element: <Unit />,
+    element: (
+      <DeveloperProtectedRoute>
+        {" "}
+        <Unit />
+      </DeveloperProtectedRoute>
+    ),
   },
 
   {

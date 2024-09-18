@@ -24,6 +24,14 @@ function checkUpdateSalesListCustomer($object)
     return $query;
 }
 
+// Update Accept Payment
+function checkUpdateAcceptPayment($object)
+{
+    $query = $object->updateAcceptPayment();
+    checkQuery($query, "There's a problem processing your request. (update Accept Payment)");
+    return $query;
+}
+
 // Read all
 function checkReadAllNewData($object)
 {
