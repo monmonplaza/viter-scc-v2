@@ -102,6 +102,19 @@ export const setIsSearch = (val) => {
   };
 };
 
+export const setIsReset = (val) => {
+  return {
+    type: "IS_RESET",
+    payload: val,
+  };
+};
+export const setIsSuspend = (val) => {
+  return {
+    type: "IS_SUSPEND",
+    payload: val,
+  };
+};
+
 export const setIsAnimating = (val) => {
   return {
     type: "IS_ANIMATING",
@@ -140,6 +153,13 @@ export const setIsLogin = (val) => {
 export const setIsLogout = (val) => {
   return {
     type: "IS_LOGOUT",
+    payload: val,
+  };
+};
+
+export const setIsAccountUpdated = (val) => {
+  return {
+    type: "IS_ACCOUNT_UPDATED",
     payload: val,
   };
 };

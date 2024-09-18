@@ -1,4 +1,5 @@
 import { devNavUrl, urlSystem } from "@/components/helpers/functions-general";
+import DeveloperProtectedRoute from "@/components/pages/developer/access/DeveloperProtectedRoute.jsx";
 import Category from "@/components/pages/developer/category/Category.jsx";
 import Customers from "@/components/pages/developer/customers/Customers";
 import DefectiveProduct from "@/components/pages/developer/defective-product/DefectiveProduct";
@@ -16,15 +17,27 @@ import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
 export const routesSystem = [
   {
     path: `${devNavUrl}/${urlSystem}/overview`,
-    element: <Overview />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Overview />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/inventory`,
-    element: <Inventory />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Inventory />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/receiving`,
-    element: <Receiving />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Receiving />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/defective-product`,
@@ -36,7 +49,11 @@ export const routesSystem = [
   },
   {
     path: `${devNavUrl}/${urlSystem}/products`,
-    element: <Product />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Product />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/product-price`,
@@ -52,7 +69,11 @@ export const routesSystem = [
   },
   {
     path: `${devNavUrl}/${urlSystem}/category`,
-    element: <Category />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Category />
+      </DeveloperProtectedRoute>
+    ),
   },
   {
     path: `${devNavUrl}/${urlSystem}/return-product`,
@@ -69,6 +90,10 @@ export const routesSystem = [
 
   {
     path: `${devNavUrl}/${urlSystem}/settings`,
-    element: <Settings />,
+    element: (
+      <DeveloperProtectedRoute>
+        <Settings />
+      </DeveloperProtectedRoute>
+    ),
   },
 ];

@@ -657,7 +657,7 @@ function tokenDeveloper(
             http_response_code(200);
             $returnData["data"] = array_merge(
                 (array)$row,
-                array('user_key' => $decoded->data->data->user_system_password), // data from login
+                array('user_key' => $decoded->data->data->developer_password), // data from login
                 array('role' => $decoded->data->data->role_name),
             );
             $returnData["count"] = $result->rowCount();

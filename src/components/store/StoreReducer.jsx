@@ -91,6 +91,17 @@ export const StoreReducer = (state, action) => {
         isSearch: action.payload,
       };
 
+    case "IS_RESET":
+      return {
+        ...state,
+        isReset: action.payload,
+      };
+    case "IS_SUSPEND":
+      return {
+        ...state,
+        isSuspend: action.payload,
+      };
+
     case "IS_ANIMATING":
       return {
         ...state,
@@ -125,6 +136,12 @@ export const StoreReducer = (state, action) => {
       return {
         ...state,
         isLogout: action.payload,
+      };
+
+    case "IS_ACCOUNT_UPDATED":
+      return {
+        ...state,
+        isAccountUpdated: action.payload,
       };
 
     case "CREDENTIALS":

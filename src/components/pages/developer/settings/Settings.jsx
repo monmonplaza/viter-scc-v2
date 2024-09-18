@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import Developer from "./developer/Developer.jsx";
 import Roles from "./roles/Roles.jsx";
 import Unit from "./unit/Unit.jsx";
+import User from "./user/User.jsx";
 
 const Settings = () => {
   const [tabindex, setTabindex] = React.useState(0);
@@ -29,7 +30,7 @@ const Settings = () => {
     { label: "Developer", icon: <SquareUserRound size={14} /> },
   ];
 
-  const settingPages = [<Unit />, <Roles />, <Roles />, <Developer />];
+  const settingPages = [<Unit />, <Roles />, <User />, <Developer />];
 
   const handleChangeSettingMenu = (index) => {
     setTabindex(index);

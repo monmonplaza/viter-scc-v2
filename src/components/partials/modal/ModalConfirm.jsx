@@ -45,6 +45,7 @@ const ModalConfirm = ({ mysqlApiArchive, queryKey, item, active }) => {
       dispatch(setIsConfirm(false));
     }, 500);
   };
+
   return (
     <WrapperModal>
       <div className="modal-center rounded-md !bg-primary ">

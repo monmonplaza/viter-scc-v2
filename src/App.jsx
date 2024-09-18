@@ -20,17 +20,17 @@ function App() {
           <Router>
             <Routes>
               <Route
-                path={`${devNavUrl}/system/login`}
+                path={`${devNavUrl}/developer/login`}
                 element={<DeveloperLogin />}
               />
 
               <Route
-                path={`${devNavUrl}/system/forgot-password`}
+                path={`${devNavUrl}/developer/forgot-password`}
                 element={<DeveloperForgotPassword />}
               />
 
               <Route
-                path={`${devNavUrl}/system/create-password`}
+                path={`${devNavUrl}/developer/create-password`}
                 element={<DeveloperCreatePassword />}
               />
               {/* <Route path={`*`} element={<PageNotFound />} /> */}

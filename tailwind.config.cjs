@@ -54,6 +54,7 @@ export default {
       },
       stroke: {
         accent: "rgba(var(--accent), <alpha-value>)",
+        success: "rgba(var(--success), <alpha-value>)",
       },
 
       fill: {

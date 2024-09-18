@@ -1,7 +1,3 @@
-//
-//
-//
-
 export const urlPathSinglePageWebsite =
   "http://localhost/react-vite/viter-scc-v2";
 export const imgUrlPathSinglePageWebsite =
@@ -13,7 +9,7 @@ export const devBaseImgUrl = `${imgUrlPathSinglePageWebsite}`;
 export const devNavUrl = "";
 
 export const ver = "v2";
-export const urlSystem = "system";
+export const urlSystem = "developer";
 
 export const devKey =
   "$2a$12$47wDvbLInZif/PVS8B6P3.7WxyJvUpBzZAWCsnWJUKq3nrn4qgmeO";
@@ -87,3 +83,16 @@ export const getDateNow = () => {
     .toISOString()
     .split("T")[0];
 };
+
+// get the url id parameter
+export const getUrlParam = (id) => {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  // const param = urlParams.get(id);
+  // return param;
+  return urlParams;
+};
+
+export function setStorageRoute(jwt, isDev) {
+  localStorage.setItem("localhristoken", JSON.stringify({ token: jwt, isDev }));
+}

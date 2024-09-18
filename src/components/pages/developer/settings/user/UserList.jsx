@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const DeveloperList = ({ setItemEdit }) => {
+const UserList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   let counter = 1;
@@ -29,7 +29,6 @@ const DeveloperList = ({ setItemEdit }) => {
     handleReset,
     handleRemove,
     handleEdit,
-    handleArchive,
     handleRestore,
     handleSuspend,
     aid,
@@ -45,9 +44,9 @@ const DeveloperList = ({ setItemEdit }) => {
     error,
     data: result,
   } = useQueryData(
-    `/${ver}/settings-developer`, // endpoint
+    `/${ver}/settings-user`, // endpoint
     "get", // method
-    "settings-developer" // key
+    "settings-user" // key
   );
 
   return (
@@ -92,27 +91,25 @@ const DeveloperList = ({ setItemEdit }) => {
                 return (
                   <tr key={key}>
                     <td className="w-counter">{counter++}.</td>
-                    <td>{<Pill isActive={item.developer_is_active} />}</td>
+                    <td>{<Pill isActive={item.user_is_active} />}</td>
 
-                    <td>{item.developer_fname}</td>
-                    <td>{item.developer_lname}</td>
+                    <td>{item.user_fname}</td>
+                    <td>{item.user_lname}</td>
                     <td>
                       <span className=" block truncate w-[240px]">
-                        {item.developer_email}
+                        {item.user_email}
                       </span>
                     </td>
 
                     <td className="table-action">
                       <ul>
-                        {item.developer_is_active === 1 ? (
+                        {item.user_is_active === 1 ? (
                           <>
                             <li>
                               <button
                                 data-tooltip="Edit"
                                 className="tooltip"
-                                onClick={() =>
-                                  handleEdit(item.developer_aid, item)
-                                }
+                                onClick={() => handleEdit(item.user_aid, item)}
                               >
                                 <SquarePen size={14} />
                               </button>
@@ -122,9 +119,7 @@ const DeveloperList = ({ setItemEdit }) => {
                                 type="button"
                                 className="tooltip"
                                 data-tooltip="Reset"
-                                onClick={() =>
-                                  handleReset(item.developer_aid, item)
-                                }
+                                onClick={() => handleReset(item.user_aid, item)}
                               >
                                 <KeySquare size={14} />
                               </button>
@@ -134,7 +129,7 @@ const DeveloperList = ({ setItemEdit }) => {
                                 data-tooltip="Suspend"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleSuspend(item.developer_aid, item)
+                                  handleSuspend(item.user_aid, item)
                                 }
                               >
                                 <UserRoundX size={14} />
@@ -148,7 +143,7 @@ const DeveloperList = ({ setItemEdit }) => {
                                 data-tooltip="Restore"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleRestore(item.developer_aid, item)
+                                  handleRestore(item.user_aid, item)
                                 }
                               >
                                 <ArchiveRestore size={14} />
@@ -159,7 +154,7 @@ const DeveloperList = ({ setItemEdit }) => {
                                 data-tooltip="Delete"
                                 className="tooltip"
                                 onClick={() =>
-                                  handleRemove(item.developer_aid, item)
+                                  handleRemove(item.user_aid, item)
                                 }
                               >
                                 <Trash size={14} />
@@ -179,41 +174,41 @@ const DeveloperList = ({ setItemEdit }) => {
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/settings-developer/${aid}`}
-          queryKey="settings-developer"
-          item={data.developer_fname}
+          mysqlApiDelete={`/${ver}/settings-user/${aid}`}
+          queryKey="settings-user"
+          item={data.user_fname}
         />
       )}
       {store.isConfirm && (
         <ModalConfirm
-          mysqlApiArchive={`/${ver}/settings-developer/active/${aid}`}
-          queryKey="settings-developer"
-          item={data.developer_fname}
+          mysqlApiArchive={`/${ver}/settings-user/active/${aid}`}
+          queryKey="settings-user"
+          item={data.user_fname}
           active={isActive}
         />
       )}
 
       {store.isReset && (
         <ModalReset
-          mysqlApiReset={`/${ver}/settings-developer/reset`}
+          mysqlApiReset={`/${ver}/settings-user/reset`}
           msg={"Are you sure you want to reset the password of this user?"}
           successMsg={"Reset succesfully. Check your Email."}
-          queryKey={"settings-developer"}
-          email={data.developer_email}
+          queryKey={"settings-user"}
+          email={data.user_email}
         />
       )}
 
       {store.isSuspend && (
         <ModalSuspend
-          mysqlApiSuspend={`/${ver}/settings-developer/active/${aid}`}
+          mysqlApiSuspend={`/${ver}/settings-user/active/${aid}`}
           msg={"Are you sure you want to suspend this user?"}
           successMsg={"Suspended succesfully."}
-          queryKey={"settings-developer"}
-          email={data.developer_email}
+          queryKey={"settings-user"}
+          email={data.user_email}
         />
       )}
     </>
   );
 };
 
-export default DeveloperList;
+export default UserList;

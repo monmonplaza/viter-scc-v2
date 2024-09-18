@@ -16,12 +16,16 @@ const initVal = {
   isEdit: false,
   isView: false,
   isSearch: false,
+  isReset: false,
+  isSuspend: false,
   isAnimating: true,
   startIndex: 0,
   isCreatePassSuccess: false,
   isForgotPassSuccess: false,
   isLogin: false,
   isLogout: false,
+  isAccountUpdated: false,
+
   isUploadFile: false,
   credentials: {},
 };

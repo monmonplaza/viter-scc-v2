@@ -1,6 +1,11 @@
 import { CircleCheckBig, X } from "lucide-react";
 import React from "react";
-import { setIsAnimating, setSuccess } from "../store/StoreAction.jsx";
+import { devNavUrl } from "../helpers/functions-general.jsx";
+import {
+  setIsAccountUpdated,
+  setIsAnimating,
+  setSuccess,
+} from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 
 const ToastSuccess = () => {
@@ -12,7 +17,15 @@ const ToastSuccess = () => {
   React.useEffect(() => {
     setTimeout(() => {
       handleClose();
-    }, 2000);
+      if (store.isAccountUpdated) {
+        localStorage.removeItem("localhristoken");
+        store.credentials.data.role_is_developer === 1
+          ? window.location.replace(`${devNavUrl}/developer/login`)
+          : window.location.replace(`${devNavUrl}/login`);
+        dispatch(setIsAccountUpdated(false));
+        return;
+      }
+    }, 4000);
   }, []);
 
   return (
@@ -26,7 +39,7 @@ const ToastSuccess = () => {
           <CircleCheckBig color="#fff" size={22} />
         </div>
         <div className="bg-light p-2 px-4 text-sm ">
-          <p className="mb-0 text-base text-dark">{store.message}</p>
+          <p className="mb-0  text-dark">{store.message}</p>
         </div>
         <button className="p-2 bg-light rounded-r-md">
           <X size={14} onClick={handleClose} />
