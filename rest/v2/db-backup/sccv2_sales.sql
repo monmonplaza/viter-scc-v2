@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2024 at 03:05 PM
+-- Generation Time: Sep 18, 2024 at 08:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,7 @@ CREATE TABLE `sccv2_sales` (
   `sales_date` varchar(20) NOT NULL,
   `sales_reference_no` varchar(50) NOT NULL,
   `sales_total_amount` varchar(20) NOT NULL,
+  `sales_payment_amount` varchar(20) NOT NULL,
   `sales_is_paid` tinyint(1) NOT NULL,
   `sales_new_data` tinyint(1) NOT NULL,
   `sales_payment_method` varchar(50) NOT NULL,
@@ -44,8 +45,8 @@ CREATE TABLE `sccv2_sales` (
 -- Dumping data for table `sccv2_sales`
 --
 
-INSERT INTO `sccv2_sales` (`sales_aid`, `sales_customer_id`, `sales_date`, `sales_reference_no`, `sales_total_amount`, `sales_is_paid`, `sales_new_data`, `sales_payment_method`, `sales_created`, `sales_updated`) VALUES
-(4, '2', '2024-09-17', '43117', '', 1, 1, 'cash', '2024-09-17 20:24:29', '2024-09-17 20:26:03');
+INSERT INTO `sccv2_sales` (`sales_aid`, `sales_customer_id`, `sales_date`, `sales_reference_no`, `sales_total_amount`, `sales_payment_amount`, `sales_is_paid`, `sales_new_data`, `sales_payment_method`, `sales_created`, `sales_updated`) VALUES
+(4, '1', '2024-09-18', '43117', '', '', 1, 1, 'cash', '2024-09-17 20:24:29', '2024-09-18 14:25:24');
 
 --
 -- Indexes for dumped tables
