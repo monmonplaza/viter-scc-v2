@@ -14,6 +14,7 @@ import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
 import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
+import ModalValidate from "@/components/partials/modal/ModalValidate";
 import SearchModalCustomer from "@/components/partials/search/SearchModalCustomer";
 import SearchModalProductPrice from "@/components/partials/search/SearchModalProductPrice";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
@@ -43,7 +44,7 @@ const ModalAddSales = ({ itemEdit }) => {
     itemEdit ? itemEdit.sales_payment_method : ""
   );
   const [quantity, setQuantity] = React.useState("");
-  const [isUpdatequantity, setIsUpdateQuantity] = React.useState(false);
+  const [isUpdatequantity, setIsUpdateQuantity] = React.useState(0);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   const [isRequiredCustomerYup, setIsRequiredCustomerYup] = React.useState("");
   const [isRequiredAmountYup, setIsRequiredAmountYup] = React.useState("");
@@ -133,6 +134,9 @@ const ModalAddSales = ({ itemEdit }) => {
       "put",
       {}
     );
+    queryClient.invalidateQueries({
+      queryKey: ["sales-list-read-new-receive"],
+    });
 
     if (result.data) {
       // increment state to re-render page
@@ -148,6 +152,7 @@ const ModalAddSales = ({ itemEdit }) => {
 
   const handleUpdateQuantity = async (e, val) => {
     setQuantity(e.target.value);
+
     queryClient.invalidateQueries({ queryKey: ["sales"] });
     const result = await queryData(
       `/${ver}/sales-list/update-quantity`,
@@ -155,12 +160,22 @@ const ModalAddSales = ({ itemEdit }) => {
       {
         sales_list_quantity: e.target.value,
         sales_list_aid: val.sales_list_aid,
+        product_price_available_stock: val.product_price_available_stock,
+        sales_list_quantity_old: val.sales_list_quantity,
       }
     );
 
-    if (result.data) {
+    if (result?.data) {
       // increment state to re-render page
       queryClient.invalidateQueries({ queryKey: ["sales"] });
+      queryClient.invalidateQueries({
+        queryKey: ["sales-list-read-new-receive"],
+      });
+    }
+    if (!result?.success) {
+      setQuantity(val.sales_list_quantity);
+      dispatch(setValidate(true));
+      dispatch(setMessage(result.error));
     }
   };
 
@@ -205,8 +220,6 @@ const ModalAddSales = ({ itemEdit }) => {
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
   });
-
-  console.log("productData", productData);
 
   return (
     <>
@@ -290,6 +303,8 @@ const ModalAddSales = ({ itemEdit }) => {
                     ? itemEdit.sales_customer_id
                     : customerId,
                   sales_list_product_price_id: productPriceId,
+                  product_price_available_stock:
+                    productData?.product_price_available_stock,
                 });
               }}
             >
@@ -467,14 +482,25 @@ const ModalAddSales = ({ itemEdit }) => {
                           <td>{item.receiving_supply_barcode}</td>
                           <td>{item.settings_unit_name}</td>
                           <td
-                            className="text-center cursor-pointer p-0 "
-                            onClick={() => setIsUpdateQuantity(true)}
+                            className="text-center cursor-pointer p-0 relative"
+                            onClick={() => {
+                              setIsUpdateQuantity(key + 1);
+                              setQuantity(item.sales_list_quantity);
+                            }}
                           >
-                            {/* quantity, setQuantity */}
-                            <input
-                              onChange={(e) => handleUpdateQuantity(e, item)}
-                              className="text-center"
-                            />
+                            {Number(key) + 1 === Number(isUpdatequantity) ? (
+                              <input
+                                onChange={(e) => handleUpdateQuantity(e, item)}
+                                className="text-center"
+                                value={quantity}
+                              />
+                            ) : (
+                              <input
+                                className="text-center"
+                                value={item.sales_list_quantity}
+                                readOnly
+                              />
+                            )}
                           </td>
                           <td className="text-right">
                             {pesoSign}

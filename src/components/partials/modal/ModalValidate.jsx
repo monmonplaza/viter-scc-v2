@@ -1,8 +1,8 @@
 import { setValidate } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
+import { useQueryClient } from "@tanstack/react-query";
 import { Files } from "lucide-react";
 import React from "react";
-import WrapperModal from "../wrapper/WrapperModal.jsx";
 
 const ModalValidate = () => {
   const { dispatch, store } = React.useContext(StoreContext);

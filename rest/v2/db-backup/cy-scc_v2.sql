@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2024 at 03:02 PM
+-- Generation Time: Sep 19, 2024 at 10:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -91,7 +91,7 @@ CREATE TABLE `sccv2_defective_product` (
 --
 
 INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_resolved_date`, `defective_product_amount`, `defective_product_remarks`, `defective_product_created`, `defective_product_updated`) VALUES
-(2, 2, 0, '2', '', '20', '', '2024-09-13 09:43:05', '2024-09-13 09:43:05'),
+(2, 2, 1, '2', '', '20', '', '2024-09-13 09:43:05', '0000-00-00 00:00:00'),
 (3, 4, 0, '6', '', '72', '', '2024-09-13 10:06:30', '2024-09-13 10:06:30');
 
 -- --------------------------------------------------------
@@ -117,8 +117,8 @@ CREATE TABLE `sccv2_inventory_log` (
 --
 
 INSERT INTO `sccv2_inventory_log` (`inventory_log_aid`, `inventory_log_product_id`, `inventory_log_available_stock`, `inventory_log_stock_in`, `inventory_log_stock_out`, `inventory_log_defective_product`, `inventory_log_return_product`, `inventory_log_created`, `inventory_log_updated`) VALUES
-(1, '1', '', '100', '3', '2', '', '2024-09-13 08:16:51', '2024-09-18 20:55:06'),
-(2, '2', '', '100', '4', '6', '', '2024-09-13 10:05:54', '2024-09-18 20:55:06');
+(1, '1', '', '100', '40', '0', '', '2024-09-13 08:16:51', '0000-00-00 00:00:00'),
+(2, '2', '', '100', '73', '6', '', '2024-09-13 10:05:54', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ CREATE TABLE `sccv2_product` (
 
 INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_barcode`, `product_datetime`, `product_created`) VALUES
 (1, 1, '3', '76662451', 'Ballpen', 'This is test.', '', '2024-09-13 08:16:51', '2024-09-13 08:16:51'),
-(2, 1, '3', '22634202', 'egg', '', '', '2024-09-13 10:05:54', '2024-09-13 10:05:54');
+(2, 1, '3', '22634202', 'egg', '', '', '2024-09-19 09:47:39', '2024-09-13 10:05:54');
 
 -- --------------------------------------------------------
 
@@ -166,7 +166,7 @@ CREATE TABLE `sccv2_product_price` (
   `product_price_percent` varchar(20) NOT NULL,
   `product_price_stock_in` varchar(20) NOT NULL,
   `product_price_stock_out` varchar(20) NOT NULL,
-  `product_price_available_stock` varchar(0) NOT NULL,
+  `product_price_available_stock` varchar(20) NOT NULL,
   `product_price_remarks` text NOT NULL,
   `product_price_created` datetime NOT NULL,
   `product_price_update` datetime NOT NULL
@@ -177,9 +177,40 @@ CREATE TABLE `sccv2_product_price` (
 --
 
 INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_available_stock`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
-(6, '1', '2', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '3', '', 'test', '2024-09-17 12:56:40', '2024-09-18 20:55:06'),
-(7, '2', '3', '13.2', '10', '13.2', '10', '9', '13.08', '13.32', '11', '50', '2', '', 'test', '2024-09-17 12:57:04', '2024-09-18 20:55:06'),
-(8, '2', '4', '13.2', '10', '13.2', '10', '9', '13.08', '13.26', '10.5', '50', '2', '', '', '2024-09-17 12:57:59', '2024-09-18 20:55:06');
+(6, '1', '2', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '40', '60', 'test', '2024-09-17 12:56:40', '0000-00-00 00:00:00'),
+(7, '2', '3', '13.2', '10', '13.2', '10', '9', '13.08', '13.32', '11', '50', '50', '0', 'test', '2024-09-17 12:57:04', '0000-00-00 00:00:00'),
+(8, '2', '4', '13.2', '10', '13.2', '10', '9', '13.08', '13.26', '10.5', '50', '23', '21', '', '2024-09-17 12:57:59', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_purchase`
+--
+
+CREATE TABLE `sccv2_purchase` (
+  `purchase_aid` int(11) NOT NULL,
+  `purchase_is_ongoing` tinyint(1) NOT NULL,
+  `purchase_is_new_data` tinyint(1) NOT NULL,
+  `purchase_delivery_date` varchar(20) NOT NULL,
+  `purchase_date` varchar(20) NOT NULL,
+  `purchase_product_id` varchar(20) NOT NULL,
+  `purchase_quantity` varchar(20) NOT NULL,
+  `purchase_supplier_id` varchar(20) NOT NULL,
+  `purchase_unit_id` varchar(20) NOT NULL,
+  `purchase_price` varchar(20) NOT NULL,
+  `purchase_remarks` text NOT NULL,
+  `purchase_reference_no` varchar(50) NOT NULL,
+  `purchase_created` datetime NOT NULL,
+  `purchase_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_purchase`
+--
+
+INSERT INTO `sccv2_purchase` (`purchase_aid`, `purchase_is_ongoing`, `purchase_is_new_data`, `purchase_delivery_date`, `purchase_date`, `purchase_product_id`, `purchase_quantity`, `purchase_supplier_id`, `purchase_unit_id`, `purchase_price`, `purchase_remarks`, `purchase_reference_no`, `purchase_created`, `purchase_updated`) VALUES
+(5, 0, 1, '2024-09-19', '2024-09-19', '1', '10', '2', '1', '5', '', '397282861', '2024-09-19 15:52:31', '2024-09-19 15:52:31'),
+(6, 0, 1, '2024-09-19', '2024-09-19', '1', '10', '2', '1', '5', '', '397282861', '2024-09-19 15:52:38', '2024-09-19 15:52:38');
 
 -- --------------------------------------------------------
 
@@ -236,7 +267,7 @@ CREATE TABLE `sccv2_receiving_supply` (
 --
 
 INSERT INTO `sccv2_receiving_supply` (`receiving_supply_aid`, `receiving_supply_is_active`, `receiving_supply_have_price`, `receiving_supply_received_id`, `receiving_supply_product_id`, `receiving_supply_barcode`, `receiving_supply_supplier_id`, `receiving_supply_unit_id`, `receiving_supply_quantity`, `receiving_supply_price`, `receiving_supply_amount`, `receiving_supply_expiration_date`, `receiving_supply_defective_product_qty`, `receiving_supply_defective_remarks`, `receiving_supply_datetime`, `receiving_supply_created`) VALUES
-(2, 1, 1, 1, 1, '', 2, '1', 100, '10', '1000', '', '2', '', '2024-09-17 12:56:40', '2024-09-13 09:42:47'),
+(2, 1, 1, 1, 1, '', 2, '1', 100, '10', '1000', '', '0', '', '', '2024-09-13 09:42:47'),
 (3, 1, 1, 1, 2, '', 2, '1', 50, '12', '600', '', '0', '', '2024-09-17 12:57:04', '2024-09-13 10:06:15'),
 (4, 1, 1, 1, 2, '', 2, '1', 50, '12', '600', '', '6', '', '2024-09-17 12:57:59', '2024-09-13 10:06:18'),
 (5, 1, 0, 2, 1, '', 2, '1', 1, '20', '20', '', '0', '', '2024-09-18 15:21:18', '2024-09-18 15:21:18');
@@ -292,7 +323,8 @@ CREATE TABLE `sccv2_sales` (
 
 INSERT INTO `sccv2_sales` (`sales_aid`, `sales_customer_id`, `sales_date`, `sales_reference_no`, `sales_total_amount`, `sales_payment_amount`, `sales_is_paid`, `sales_new_data`, `sales_payment_method`, `sales_created`, `sales_updated`) VALUES
 (7, '1', '2024-09-18', '13890', '22', '0', 0, 0, 'credit', '2024-09-18 19:05:43', '2024-09-18 19:13:13'),
-(9, '1', '2024-09-18', '12794', '', '', 0, 0, 'credit', '2024-09-18 19:37:03', '2024-09-18 19:55:35');
+(9, '1', '2024-09-18', '12794', '1268.33', '1500', 1, 0, 'gcash', '2024-09-18 19:37:03', '2024-09-19 13:20:58'),
+(10, '1', '2024-09-19', '1412244', '', '', 0, 0, 'credit', '2024-09-19 07:30:10', '2024-09-19 07:30:53');
 
 -- --------------------------------------------------------
 
@@ -318,13 +350,16 @@ CREATE TABLE `sccv2_sales_list` (
 --
 
 INSERT INTO `sccv2_sales_list` (`sales_list_aid`, `sales_list_sales_id`, `sales_list_product_id`, `sales_list_product_price_id`, `sales_list_customer_id`, `sales_list_quantity`, `sales_list_price`, `sales_list_date`, `sales_list_created`, `sales_list_updated`) VALUES
-(62, '7', '1', '6', '1', '102', '11', '2024-09-18', '2024-09-18 19:05:43', '2024-09-18 20:26:22'),
+(62, '7', '1', '6', '1', '12', '11', '2024-09-18', '2024-09-18 19:05:43', '2024-09-19 07:47:24'),
 (63, '7', '1', '6', '1', '1', '11', '2024-09-18', '2024-09-18 19:05:44', '2024-09-18 19:05:44'),
-(66, '9', '1', '6', '1', '2', '11', '2024-09-18', '2024-09-18 19:37:03', '2024-09-18 20:25:46'),
+(66, '9', '1', '6', '1', '20', '11', '2024-09-18', '2024-09-18 19:37:03', '2024-09-19 07:46:16'),
 (67, '9', '2', '7', '1', '30', '13.32', '2024-09-18', '2024-09-18 20:25:43', '2024-09-18 20:34:49'),
-(68, '9', '2', '8', '1', '1', '13.26', '2024-09-18', '2024-09-18 20:40:37', '2024-09-18 20:40:37'),
-(69, '9', '2', '8', '1', '1', '13.26', '2024-09-18', '2024-09-18 20:54:20', '2024-09-18 20:54:20'),
-(70, '9', '2', '7', '1', '1', '13.32', '2024-09-18', '2024-09-18 20:55:06', '2024-09-18 20:55:06');
+(68, '9', '2', '8', '1', '10', '13.26', '2024-09-18', '2024-09-18 20:40:37', '2024-09-19 09:49:09'),
+(69, '9', '2', '8', '1', '13', '13.26', '2024-09-18', '2024-09-18 20:54:20', '2024-09-19 12:54:00'),
+(70, '9', '2', '7', '1', '20', '13.32', '2024-09-18', '2024-09-18 20:55:06', '2024-09-19 09:20:52'),
+(71, '10', '1', '6', '1', '', '11', '2024-09-19', '2024-09-19 07:30:10', '2024-09-19 12:51:21'),
+(72, '9', '1', '6', '1', '1', '11.05', '2024-09-18', '2024-09-19 12:59:28', '2024-09-19 13:02:03'),
+(73, '9', '1', '6', '1', '6', '11.05', '2024-09-18', '2024-09-19 13:00:09', '2024-09-19 13:20:49');
 
 -- --------------------------------------------------------
 
@@ -467,6 +502,12 @@ ALTER TABLE `sccv2_product_price`
   ADD PRIMARY KEY (`product_price_aid`);
 
 --
+-- Indexes for table `sccv2_purchase`
+--
+ALTER TABLE `sccv2_purchase`
+  ADD PRIMARY KEY (`purchase_aid`);
+
+--
 -- Indexes for table `sccv2_receiving`
 --
 ALTER TABLE `sccv2_receiving`
@@ -561,6 +602,12 @@ ALTER TABLE `sccv2_product_price`
   MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `sccv2_purchase`
+--
+ALTER TABLE `sccv2_purchase`
+  MODIFY `purchase_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `sccv2_receiving`
 --
 ALTER TABLE `sccv2_receiving`
@@ -582,13 +629,13 @@ ALTER TABLE `sccv2_return_product`
 -- AUTO_INCREMENT for table `sccv2_sales`
 --
 ALTER TABLE `sccv2_sales`
-  MODIFY `sales_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `sales_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sccv2_sales_list`
 --
 ALTER TABLE `sccv2_sales_list`
-  MODIFY `sales_list_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `sales_list_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `sccv2_settings_developer`

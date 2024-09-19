@@ -126,13 +126,13 @@ RewriteRule ^product-price/([0-9]+)$ controllers/developer/product-price/product
 RewriteRule ^product-price/page/([0-9]+)$ controllers/developer/product-price/page.php?start=$1 [L]
 RewriteRule ^product-price/search$ controllers/developer/product-price/search.php [L]
  
-### MODAL SALES ### 
+### SALES ### 
 RewriteRule ^sales$ controllers/developer/sales/sales.php [L]  
 RewriteRule ^sales/([0-9]+)$ controllers/developer/sales/sales.php?salesid=$1 [L]  
 RewriteRule ^sales/page/([0-9]+)$ controllers/developer/sales/page.php?start=$1 [L]  
 RewriteRule ^sales/search$ controllers/developer/sales/search.php [L]  
  
-### MODAL SALES LIST ### 
+### SALES LIST ### 
 RewriteRule ^sales-list$ controllers/developer/sale-list/sales-list.php [L]  
 RewriteRule ^sales-list/([0-9]+)$ controllers/developer/sale-list/sales-list.php?saleslistid=$1 [L]  
 RewriteRule ^sales-list/search$ controllers/developer/sale-list/active.php?saleslistid=$1 [L]  
@@ -141,6 +141,14 @@ RewriteRule ^sales-list/accept-payment$ controllers/developer/sale-list/accept-p
 RewriteRule ^sales-list/update-new-data$ controllers/developer/sale-list/update-new-data.php [L]  
 RewriteRule ^sales-list/update-quantity$ controllers/developer/sale-list/update-quantity.php [L]  
 
+### PURCHASE ### 
+RewriteRule ^purchase$ controllers/developer/purchase/purchase.php [L]  
+RewriteRule ^purchase/([0-9]+)$ controllers/developer/purchase/purchase.php?purchaseid=$1 [L]  
+RewriteRule ^purchase/page/([0-9]+)$ controllers/developer/purchase/page.php?start=$1 [L]  
+RewriteRule ^purchase/search$ controllers/developer/purchase/search.php [L]  
+RewriteRule ^purchase/read-new-data$ controllers/developer/purchase/read-new-data.php [L]   
+RewriteRule ^purchase/page-group-reference-no/([0-9]+)$ controllers/developer/purchase/page-group-reference-no.php?start=$1 [L]  
+ 
 
 
 

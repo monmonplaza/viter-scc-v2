@@ -8,7 +8,9 @@ import {
   PillBottle,
   ScanBarcode,
   Settings,
+  ShoppingBasket,
   TicketX,
+  Undo2,
   Users,
   Weight,
 } from "lucide-react";
@@ -38,6 +40,11 @@ const Navigation = ({ menu, submenu }) => {
       text: "Receiving",
       slug: "receiving",
     },
+    {
+      icon: <ShoppingBasket size={18} />,
+      text: "Purchase",
+      slug: "purchase",
+    },
 
     {
       icon: <TicketX size={18} />,
@@ -46,7 +53,7 @@ const Navigation = ({ menu, submenu }) => {
     },
 
     {
-      icon: <TicketX size={18} />,
+      icon: <Undo2 size={18} />,
       text: "Return Product",
       slug: "return-product",
     },

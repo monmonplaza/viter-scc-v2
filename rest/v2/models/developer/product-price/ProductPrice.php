@@ -14,6 +14,7 @@ class ProductPrice
     public $product_price_scc_whole_sale_percent;
     public $product_price_stock_in;
     public $product_price_stock_out;
+    public $product_price_available_stock;
     public $product_price_remarks;
     public $product_price_update;
     public $product_price_created;
@@ -57,6 +58,7 @@ class ProductPrice
             $sql .= "product_price_scc_whole_sale_percent, ";
             $sql .= "product_price_stock_in, ";
             $sql .= "product_price_stock_out, ";
+            $sql .= "product_price_available_stock, ";
             $sql .= "product_price_remarks, ";
             $sql .= "product_price_update, ";
             $sql .= "product_price_created ) values ( ";
@@ -72,6 +74,7 @@ class ProductPrice
             $sql .= ":product_price_scc_whole_sale_percent, ";
             $sql .= ":product_price_stock_in, ";
             $sql .= ":product_price_stock_out, ";
+            $sql .= ":product_price_available_stock, ";
             $sql .= ":product_price_remarks, ";
             $sql .= ":product_price_update, ";
             $sql .= ":product_price_created ) ";
@@ -89,6 +92,7 @@ class ProductPrice
                 "product_price_scc_whole_sale_percent" => $this->product_price_scc_whole_sale_percent,
                 "product_price_stock_in" => $this->product_price_stock_in,
                 "product_price_stock_out" => $this->product_price_stock_out,
+                "product_price_available_stock" => $this->product_price_available_stock,
                 "product_price_remarks" => $this->product_price_remarks,
                 "product_price_update" => $this->product_price_update,
                 "product_price_created" => $this->product_price_created,

@@ -19,12 +19,19 @@ $salesList->sales_list_product_price_id = checkIndex($data, "sales_list_product_
 $salesList->sales_list_created = date("Y-m-d H:i:s");
 $salesList->sales_list_updated = date("Y-m-d H:i:s");
 
-
 $salesList->sales_date = checkIndex($data, "sales_list_date");
 $salesList->sales_customer_id = checkIndex($data, "sales_customer_id");
 $salesList->sales_payment_method = checkIndex($data, "sales_payment_method");
 $salesList->sales_created = date("Y-m-d H:i:s");
 $salesList->sales_updated = date("Y-m-d H:i:s");
+
+$product_price_available_stock = checkIndex($data, "product_price_available_stock");
+
+$isValidQtyProduct = (float)$product_price_available_stock - (float)$salesList->sales_list_quantity;
+
+if ($isValidQtyProduct < 0) {
+    returnError("Invalid Quantity");
+}
 
 if ($salesList->sales_payment_method == "credit") {
     $salesList->sales_is_paid = 0;
@@ -32,7 +39,7 @@ if ($salesList->sales_payment_method == "credit") {
     $salesList->sales_is_paid = 1;
 }
 
-$salesList->sales_reference_no = substr($salesList->sales_list_customer_id . rand(0, 9) . $salesList->sales_list_product_id . rand(0, 9999), 0, 9);
+$salesList->sales_reference_no = substr($salesList->sales_list_customer_id . rand(0, 9) . $salesList->sales_list_product_id . rand(1000, 9999), 0, 9);
 
 $salesList->sales_list_sales_id = intval($data["sales_aid"]);
 $isUpdate = $data["isUpdate"];
@@ -72,6 +79,24 @@ if (count($soldProductPrice) > 0) {
         $salesList->product_price_stock_out = $soldProductPrice[$e]['total_sold'];
 
         checkUpdateProductPriceSoldOut($salesList);
+    }
+}
+
+$receivedProduct = getResultData($salesList->checkReadReceivingSupply());
+if (count($receivedProduct) > 0) {
+    for ($a = 0; $a < count($receivedProduct); $a++) {
+
+        $product_price_stock_in = $receivedProduct[$a]['total_stockin'];
+        $product_price_stock_out = $receivedProduct[$a]['total_stockout'];
+        $receiving_supply_defective_product_qty = $receivedProduct[$a]['total_defective'];
+
+        $totalStockIn = (float)$product_price_stock_in - (float)$receiving_supply_defective_product_qty;
+        $totalAvailbaleStock = (float)$totalStockIn - (float)$product_price_stock_out;
+
+        $salesList->product_price_aid = $receivedProduct[$a]['product_price_aid'];
+        $salesList->product_price_available_stock = (float)$totalAvailbaleStock;
+
+        checkUpdateProductPriceAvailableStock($salesList);
     }
 }
 

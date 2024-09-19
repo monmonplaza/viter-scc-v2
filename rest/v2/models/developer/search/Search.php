@@ -109,6 +109,7 @@ class Search
             $sql .= "and pr.product_price_product_id = product.product_aid ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and cast(pr.product_price_available_stock as decimal(20,4)) > 0 ";
             $sql .= "and ( ";
             $sql .= "product.product_name like :product_name ";
             $sql .= "or category.category_name like :category_name ";

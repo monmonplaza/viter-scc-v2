@@ -52,6 +52,26 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $defectiveProduct->inventory_log_defective_product = 0;
         }
         checkUpdateInventoryDefectiveProduct($defectiveProduct);
+
+
+        $receivedProduct = getResultData($defectiveProduct->checkReadReceivingSupply());
+        if (count($receivedProduct) > 0) {
+            for ($a = 0; $a < count($receivedProduct); $a++) {
+
+                $product_price_stock_in = $receivedProduct[$a]['total_stockin'];
+                $product_price_stock_out = $receivedProduct[$a]['total_stockout'];
+                $receiving_supply_defective_product_qty = $receivedProduct[$a]['total_defective'];
+
+                $totalStockIn = (float)$product_price_stock_in - (float)$receiving_supply_defective_product_qty;
+                $totalAvailbaleStock = (float)$totalStockIn - (float)$product_price_stock_out;
+
+                $defectiveProduct->product_price_aid = $receivedProduct[$a]['product_price_aid'];
+                $defectiveProduct->product_price_available_stock = (float)$totalAvailbaleStock;
+
+                checkUpdateProductPriceAvailableStock($defectiveProduct);
+            }
+        }
+
         http_response_code(200);
         returnSuccess($defectiveProduct, "defectiveProduct", $query);
     }

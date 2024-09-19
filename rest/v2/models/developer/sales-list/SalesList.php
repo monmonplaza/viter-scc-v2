@@ -28,6 +28,7 @@ class SalesList
     public $inventory_log_stock_out;
     public $product_price_aid;
     public $product_price_stock_out;
+    public $product_price_available_stock;
 
     public $connection;
     public $lastInsertedId;
@@ -480,6 +481,26 @@ class SalesList
         return $query;
     }
 
+    // update
+    public function updateProductPriceAvailableStock()
+    {
+        try {
+            $sql = "update {$this->tblProductPrice} set ";
+            $sql .= "product_price_available_stock = :product_price_available_stock, ";
+            $sql .= "product_price_update = :product_price_update ";
+            $sql .= "where product_price_aid = :product_price_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_price_available_stock" => $this->product_price_available_stock,
+                "product_price_update" => $this->sales_updated,
+                "product_price_aid" => $this->product_price_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
 
     // active
     public function active()
@@ -523,7 +544,7 @@ class SalesList
     {
         try {
             $sql = "select sales_list_product_id, ";
-            $sql .= "count(sales_list_quantity) as total_sold ";
+            $sql .= "SUM(sales_list_quantity) as total_sold ";
             $sql .= "from ";
             $sql .= "{$this->tblSalesList} ";
             $sql .= "group by sales_list_product_id ";
@@ -540,11 +561,33 @@ class SalesList
     {
         try {
             $sql = "select sales_list_product_price_id, ";
-            $sql .= "count(sales_list_quantity) as total_sold ";
+            $sql .= "SUM(sales_list_quantity) as total_sold ";
             $sql .= "from ";
             $sql .= "{$this->tblSalesList} ";
             $sql .= "group by sales_list_product_price_id ";
             $sql .= "order by sales_list_product_price_id desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkReadReceivingSupply()
+    {
+        try {
+            $sql = "select rs.receiving_supply_aid, ";
+            $sql .= "SUM(rs.receiving_supply_defective_product_qty) as total_defective, ";
+            $sql .= "SUM(rs.receiving_supply_quantity) as total_stockin, ";
+            $sql .= "SUM(pr.product_price_stock_out) as total_stockout, ";
+            $sql .= "pr.product_price_aid ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblProductPrice} as pr ";
+            $sql .= "where rs.receiving_supply_aid = pr.product_price_supply_id ";
+            $sql .= "group by rs.receiving_supply_aid ";
+            $sql .= "order by rs.receiving_supply_aid desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

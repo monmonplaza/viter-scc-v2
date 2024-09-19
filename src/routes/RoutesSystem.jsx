@@ -7,6 +7,7 @@ import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
 import ProductPrice from "@/components/pages/developer/product-price/ProductPrice";
 import Product from "@/components/pages/developer/product/Product.jsx";
+import Purchase from "@/components/pages/developer/purchase/Purchase";
 import Receiving from "@/components/pages/developer/receiving/Receiving.jsx";
 import ReturnProduct from "@/components/pages/developer/return-product/ReturnProduct";
 import Sales from "@/components/pages/developer/sales/Sales";
@@ -126,6 +127,15 @@ export const routesSystem = [
     element: (
       <DeveloperProtectedRoute>
         <Settings />
+      </DeveloperProtectedRoute>
+    ),
+  },
+
+  {
+    path: `${devNavUrl}/${urlSystem}/purchase`,
+    element: (
+      <DeveloperProtectedRoute>
+        <Purchase />
       </DeveloperProtectedRoute>
     ),
   },
