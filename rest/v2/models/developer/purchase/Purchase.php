@@ -13,6 +13,7 @@ class Purchase
     public $purchase_unit_id;
     public $purchase_reference_no;
     public $purchase_is_new_data;
+    public $purchase_total_amount;
     public $purchase_updated;
     public $purchase_created;
 
@@ -32,6 +33,7 @@ class Purchase
     public $tblPurchase;
     public $tblProduct;
     public $tblSupplier;
+    public $tblUnit;
 
     public function __construct($db)
     {
@@ -39,6 +41,7 @@ class Purchase
         $this->tblPurchase = "sccv2_purchase";
         $this->tblProduct = "sccv2_product";
         $this->tblSupplier = "sccv2_supplier";
+        $this->tblUnit = "sccv2_settings_unit";
     }
 
     // create
@@ -56,6 +59,7 @@ class Purchase
             $sql .= "purchase_unit_id, ";
             $sql .= "purchase_reference_no, ";
             $sql .= "purchase_is_new_data, ";
+            $sql .= "purchase_total_amount, ";
             $sql .= "purchase_updated, ";
             $sql .= "purchase_created ) values ( ";
             $sql .= ":purchase_product_id, ";
@@ -68,6 +72,7 @@ class Purchase
             $sql .= ":purchase_unit_id, ";
             $sql .= ":purchase_reference_no, ";
             $sql .= ":purchase_is_new_data, ";
+            $sql .= ":purchase_total_amount, ";
             $sql .= ":purchase_updated, ";
             $sql .= ":purchase_created ) ";
             $query = $this->connection->prepare($sql);
@@ -82,6 +87,7 @@ class Purchase
                 "purchase_unit_id" => $this->purchase_unit_id,
                 "purchase_reference_no" => $this->purchase_reference_no,
                 "purchase_is_new_data" => $this->purchase_is_new_data,
+                "purchase_total_amount" => $this->purchase_total_amount,
                 "purchase_updated" => $this->purchase_updated,
                 "purchase_created" => $this->purchase_created,
             ]);
@@ -97,6 +103,7 @@ class Purchase
     {
         try {
             $sql = "select purc.*, ";
+            $sql .= "SUM(purc.purchase_total_amount) as total_amount, ";
             $sql .= "s.supplier_aid, ";
             $sql .= "s.supplier_name, ";
             $sql .= "p.product_aid, ";
@@ -122,6 +129,7 @@ class Purchase
     {
         try {
             $sql = "select purc.*, ";
+            $sql .= "SUM(purc.purchase_total_amount) as total_amount, ";
             $sql .= "s.supplier_aid, ";
             $sql .= "s.supplier_name, ";
             $sql .= "p.product_aid, ";
@@ -155,14 +163,17 @@ class Purchase
             $sql = "select purc.*, ";
             $sql .= "s.supplier_aid, ";
             $sql .= "s.supplier_name, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblPurchase} as purc, ";
             $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblSupplier} as s ";
             $sql .= "where purc.purchase_product_id = p.product_aid ";
             $sql .= "and purc.purchase_supplier_id = s.supplier_aid ";
+            $sql .= "and purc.purchase_unit_id = u.settings_unit_aid ";
             $sql .= "and purc.purchase_is_new_data = '1' ";
             $sql .= "order by purc.purchase_is_ongoing asc, ";
             $sql .= "DATE(purc.purchase_date) desc ";
@@ -180,14 +191,17 @@ class Purchase
             $sql = "select purc.*, ";
             $sql .= "s.supplier_aid, ";
             $sql .= "s.supplier_name, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblPurchase} as purc, ";
             $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblSupplier} as s ";
             $sql .= "where purc.purchase_product_id = p.product_aid ";
             $sql .= "and purc.purchase_supplier_id = s.supplier_aid ";
+            $sql .= "and purc.purchase_unit_id = u.settings_unit_aid ";
             $sql .= "and purc.purchase_reference_no = :purchase_reference_no ";
             $sql .= "order by purc.purchase_is_ongoing asc, ";
             $sql .= "DATE(purc.purchase_date) desc ";
@@ -200,7 +214,6 @@ class Purchase
         }
         return $query;
     }
-
 
     // read all
     public function readAll()
@@ -256,7 +269,6 @@ class Purchase
         return $query;
     }
 
-
     public function search()
     {
         try {
@@ -294,7 +306,6 @@ class Purchase
         }
         return $query;
     }
-
 
     // read by id
     public function readById()
@@ -340,6 +351,24 @@ class Purchase
     }
 
     // update
+    public function updateNewData()
+    {
+        try {
+            $sql = "update {$this->tblPurchase} set ";
+            $sql .= "purchase_is_new_data = '0', ";
+            $sql .= "purchase_updated = :purchase_updated ";
+            $sql .= "where purchase_is_new_data = '1' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_updated" => $this->purchase_updated,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
     public function updatePurchaseDate()
     {
         try {
@@ -368,12 +397,12 @@ class Purchase
             $sql = "update {$this->tblPurchase} set ";
             $sql .= "purchase_is_ongoing = :purchase_is_ongoing, ";
             $sql .= "purchase_updated = :purchase_updated ";
-            $sql .= "where purchase_aid = :purchase_aid ";
+            $sql .= "where purchase_reference_no = :purchase_reference_no ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_is_ongoing" => $this->purchase_is_ongoing,
                 "purchase_updated" => $this->purchase_updated,
-                "purchase_aid" => $this->purchase_aid,
+                "purchase_reference_no" => $this->purchase_reference_no,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -386,17 +415,16 @@ class Purchase
     {
         try {
             $sql = "delete from {$this->tblPurchase} ";
-            $sql .= "where purchase_aid = :purchase_aid ";
+            $sql .= "where purchase_reference_no = :purchase_reference_no ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "purchase_aid" => $this->purchase_aid,
+                "purchase_reference_no" => $this->purchase_reference_no,
             ]);
         } catch (PDOException $ex) {
             $query = false;
         }
         return $query;
     }
-
 
     public function filterByDate()
     {

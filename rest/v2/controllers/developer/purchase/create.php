@@ -18,6 +18,7 @@ $purchase->purchase_supplier_id = checkIndex($data, "purchase_supplier_id");
 $purchase->purchase_unit_id = checkIndex($data, "purchase_unit_id");
 $purchase->purchase_price = checkIndex($data, "purchase_price");
 $purchase->purchase_reference_no = $data["purchase_reference_no"];
+$purchase->purchase_total_amount = $data["purchase_total_amount"];
 $purchase->purchase_is_ongoing = 0;
 $purchase->purchase_is_new_data = 1;
 $purchase->purchase_created = date("Y-m-d H:i:s");

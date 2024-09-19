@@ -9,6 +9,7 @@ if (array_key_exists("returnproductid", $_GET)) {
 
     $productReturn->return_product_aid = $_GET['returnproductid'];
     $productReturn->return_product_id = checkIndex($data, "return_product_id");
+    $productReturn->return_product_sales_list_id = checkIndex($data, "return_product_sales_list_id");
     $productReturn->return_product_date = checkIndex($data, "return_product_date");
     $productReturn->return_product_qty = checkIndex($data, "return_product_qty");
     $productReturn->return_product_remarks = checkIndex($data, "return_product_remarks");

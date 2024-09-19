@@ -1,27 +1,28 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
+import useTableActions from "@/components/custom-hooks/useTableActions";
 import {
-  formatDate,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
   ver,
 } from "@/components/helpers/functions-general";
-import NoData from "@/components/partials/icons/NoData";
+import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
+import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
-import { ListCollapse, PillBottle, SquarePen, X } from "lucide-react";
+import { PillBottle, Trash, X } from "lucide-react";
 import React from "react";
 
 const ModalViewPurchase = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
+  const [modalItemEdit, setItemEdit] = React.useState(null);
   let counter = 1;
-  let totalQty = 0;
+  let totalAmount = 0;
   let totalPrice = 0;
-  let totalDefects = 0;
 
   const {
     isLoading: loadingReceiving,
@@ -29,14 +30,28 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
     error: errorReceiving,
     data: receivingData,
   } = useQueryData(
-    `/${ver}/receiving-supply/read-new-receive`, // endpoint
+    `/${ver}/purchase/read-new-data`, // endpoint
     "post", // method
-    "receiving-supply-read-new-receive", // key
-    { receiving_supply_received_id: itemEdit ? itemEdit.receiving_aid : "0" },
-    { receiving_supply_received_id: itemEdit ? itemEdit.receiving_aid : "0" }
+    "purchase-read-new-data", // key
+    { purchase_reference_no: itemEdit ? itemEdit.purchase_reference_no : "0" },
+    { purchase_reference_no: itemEdit ? itemEdit.purchase_reference_no : "0" }
   );
 
-  const handleClose = () => {
+  const [
+    handleReset,
+    handleRemove,
+    handleEdit,
+    handleArchive,
+    handleRestore,
+    handleSuspend,
+    aid,
+    data,
+    isActive,
+  ] = useTableActions({
+    setItemEdit,
+  });
+
+  const handleClose = async () => {
     dispatch(setIsAnimating(false));
     setTimeout(() => {
       dispatch(setIsAnimating(true));
@@ -49,11 +64,11 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 animation-none">
+        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
-              Manage Supplier Product
+              Purchase List
             </h4>
             <button type="button" onClick={handleClose}>
               <X />
@@ -61,26 +76,32 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
           </div>
 
           <div className="p-4 space-y-6">
+            <div className="flex gap-3 justify-end">
+              <button className="btn btn-accent">Print</button>
+            </div>
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
-              <div className="table-wrapper w-full">
-                <table>
-                  <thead className="relative">
-                    <tr className="sticky top-0 bg-inherit">
+              <div className="table-wrapper w-full max-h-[30dvh] ">
+                <table
+                  className={`${
+                    !loadingReceiving && receivingData.count > 7
+                      ? "has-sticky"
+                      : ""
+                  }`}
+                >
+                  <thead className="">
+                    <tr className="">
                       <th>#</th>
                       <th>Supplier</th>
                       <th>Product</th>
-                      <th>Barcode</th>
-                      <th>Expiration Date</th>
                       <th>Unit</th>
                       <th className="text-center">Qty</th>
                       <th className="text-right ">Price</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-right">Defective</th>
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody className=" ">
                     {((loadingReceiving && !fetchingReceiving) ||
                       receivingData?.data.length === 0) && (
                       <tr>
@@ -88,7 +109,7 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
                           {loadingReceiving ? (
                             <LoaderTable count={30} cols={6} />
                           ) : (
-                            <NoData />
+                            <SearchNoData />
                           )}
                         </td>
                       </tr>
@@ -100,74 +121,57 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
                         </td>
                       </tr>
                     )}
-
                     {receivingData?.data.map((item, key) => {
+                      totalAmount +=
+                        Number(item.purchase_price) *
+                        Number(item.purchase_quantity);
+                      totalPrice += Number(item.purchase_price);
                       return (
-                        <tr
-                          key={key}
-                          className={
-                            Number(
-                              item.receiving_supply_defective_product_qty
-                            ) !== 0
-                              ? "status-alert "
-                              : ""
-                          }
-                        >
+                        <tr key={key} className="">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.supplier_name}</td>
 
                           <td>{item.product_name}</td>
-                          <td>{item.receiving_supply_barcode}</td>
-                          <td>
-                            {formatDate(item.receiving_supply_expiration_date)}
-                          </td>
                           <td>{item.settings_unit_name}</td>
                           <td className="text-center">
-                            {item.receiving_supply_quantity}
+                            {item.purchase_quantity}
+                          </td>
+                          <td className="text-right">
+                            {pesoSign}
+                            {numberWithCommasToFixed(item.purchase_price, 2)}
                           </td>
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(
-                              item.receiving_supply_price,
+                              Number(item.purchase_price) *
+                                Number(item.purchase_quantity),
                               2
                             )}
                           </td>
-                          <td className="text-right">
-                            {pesoSign}
-                            {numberWithCommasToFixed(
-                              item.receiving_supply_amount,
-                              2
-                            )}
-                          </td>
-                          <td className="text-right">
-                            {item.receiving_supply_defective_product_qty}
-                          </td>
-                          {/* <td className="table-action">
+                          <td className="table-action ">
                             <ul>
                               <li>
                                 <button
-                                  data-tooltip="Edit"
-                                  className="tooltip !overflow-visible"
-                                  // onClick={() =>
-                                  //   handleEdit(item.receiving_aid, item)
-                                  // }
+                                  data-tooltip="Delete"
+                                  className="tooltip"
+                                  onClick={() =>
+                                    handleRemove(item.purchase_aid, item)
+                                  }
                                 >
-                                  <SquarePen size={14} />
+                                  <Trash size={14} />
                                 </button>
                               </li>
                             </ul>
-                          </td> */}
+                          </td>
                         </tr>
                       );
                     })}
                   </tbody>
                   <tbody>
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={5} className=""></td>
-                      <td className="py-4 pl-2 ">Total:</td>
-                      <td className="text-right py-4 pr-2">
-                        {Number(totalQty)}
+                      <td colSpan={5} className="py-4 pl-2 text-right">
+                        Total:
                       </td>
                       <td className="text-right py-4 pr-2">
                         {pesoSign}
@@ -175,27 +179,13 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
                       </td>
                       <td className="text-right py-4 pr-2">
                         {pesoSign}
-                        {numberWithCommasToFixed(
-                          receivingData?.count > 0 ? receivingData?.amount : 0,
-                          2
-                        )}
-                      </td>
-                      <td className="text-right py-4 pr-2">
-                        {Number(totalDefects)}
+                        {numberWithCommasToFixed(totalAmount, 2)}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-
-            <h3 className="text-right mt-5 mr-7">
-              Total:{pesoSign}
-              {numberWithCommasToFixed(
-                receivingData?.count > 0 ? receivingData?.amount : 0,
-                2
-              )}
-            </h3>
             <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
@@ -203,6 +193,15 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
             </div>
           </div>
         </div>
+
+        {store.isDelete && (
+          <ModalAdvanceDelete
+            mysqlApiDelete={`/${ver}/purchase/${aid}`}
+            queryKey="purchase-read-new-data"
+            dataItem={data.product_name}
+            item={data}
+          />
+        )}
       </WrapperModal>
     </>
   );

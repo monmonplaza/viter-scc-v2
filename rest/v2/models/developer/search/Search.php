@@ -5,6 +5,7 @@ class Search
     public $lastInsertedId;
 
     public $search;
+    public $sales_list_sales_id;
 
     public $tblProduct;
     public $tblSupplier;
@@ -13,6 +14,8 @@ class Search
     public $tblReceivingSupply;
     public $tblProductPrice;
     public $tblCustomer;
+    public $tblSalesList;
+    public $tblSales;
 
 
     public function __construct($db)
@@ -25,6 +28,8 @@ class Search
         $this->tblReceivingSupply = "sccv2_receiving_supply";
         $this->tblProductPrice = "sccv2_product_price";
         $this->tblCustomer = "sccv2_customer";
+        $this->tblSalesList = "sccv2_sales_list";
+        $this->tblSales = "sccv2_sales";
     }
 
     public function searchSupplier()
@@ -130,7 +135,7 @@ class Search
     }
 
     // read all
-    public function SeachProductReceiveSupply()
+    public function seachProductReceiveSupply()
     {
         try {
             $sql = "select ";
@@ -159,6 +164,66 @@ class Search
             $query->execute([
                 "product_name" => "%{$this->search}%",
                 "receiving_supply_barcode" => "%{$this->search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function searchSalesListProduct()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "sl.sales_list_quantity, ";
+            $sql .= "p.product_aid, ";
+            $sql .= "p.product_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
+            $sql .= "where p.product_aid = sl.sales_list_product_id ";
+            $sql .= "and sl.sales_list_sales_id = :sales_list_sales_id ";
+            $sql .= "and p.product_name like :product_name ";
+            $sql .= "order by p.product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_name" => "%{$this->search}%",
+                "sales_list_sales_id" => $this->sales_list_sales_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function searchReferenceNo()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "p.product_aid, ";
+            $sql .= "p.product_name, ";
+            $sql .= "s.sales_aid, ";
+            $sql .= "s.sales_reference_no, ";
+            $sql .= "c.customer_name ";
+            $sql .= "from ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl, ";
+            $sql .= "{$this->tblCustomer} as c, ";
+            $sql .= "{$this->tblSales} as s ";
+            $sql .= "where p.product_aid = sl.sales_list_product_id ";
+            $sql .= "and sl.sales_list_sales_id = s.sales_aid ";
+            $sql .= "and c.customer_aid = s.sales_customer_id ";
+            $sql .= "and (s.sales_reference_no like :sales_reference_no ";
+            $sql .= "or c.customer_name like :customer_name ";
+            $sql .= ") ";
+            $sql .= "group by sl.sales_list_sales_id ";
+            $sql .= "order by p.product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_reference_no" => "%{$this->search}%",
+                "customer_name" => "%{$this->search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

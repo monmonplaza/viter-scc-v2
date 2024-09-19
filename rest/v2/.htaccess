@@ -145,8 +145,10 @@ RewriteRule ^sales-list/update-quantity$ controllers/developer/sale-list/update-
 RewriteRule ^purchase$ controllers/developer/purchase/purchase.php [L]  
 RewriteRule ^purchase/([0-9]+)$ controllers/developer/purchase/purchase.php?purchaseid=$1 [L]  
 RewriteRule ^purchase/page/([0-9]+)$ controllers/developer/purchase/page.php?start=$1 [L]  
+RewriteRule ^purchase/active$ controllers/developer/purchase/active.php [L]  
 RewriteRule ^purchase/search$ controllers/developer/purchase/search.php [L]  
 RewriteRule ^purchase/read-new-data$ controllers/developer/purchase/read-new-data.php [L]   
+RewriteRule ^purchase/update-new-data$ controllers/developer/purchase/update-new-data.php [L]   
 RewriteRule ^purchase/page-group-reference-no/([0-9]+)$ controllers/developer/purchase/page-group-reference-no.php?start=$1 [L]  
  
 
@@ -162,4 +164,6 @@ RewriteRule ^search-product-price$ controllers/developer/search/search-product-p
 RewriteRule ^search-customer$ controllers/developer/search/search-customer.php [L] 
 RewriteRule ^search-supplier$ controllers/developer/search/search-supplier.php [L] 
 RewriteRule ^search-product-dont-have-price$ controllers/developer/search/search-product-dont-have-price.php [L] 
+RewriteRule ^search-sales-reference-no$ controllers/developer/search/search-sales-reference-no.php [L] 
+RewriteRule ^search-sales-product$ controllers/developer/search/search-sales-product.php [L] 
  

@@ -11,6 +11,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
     if (array_key_exists("start", $_GET)) {
+        $purchase->purchase_updated = date("Y-m-d H:i:s");
+        checkUpdateNewData($purchase);
+
         $purchase->purchase_start = $_GET['start'];
         $purchase->purchase_total = 50;
         checkLimitId($purchase->purchase_start, $purchase->purchase_total);

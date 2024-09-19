@@ -142,7 +142,8 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
-                <th className="">Date</th>
+                <th className="">Purchase Date</th>
+                <th className="">Delivery Date</th>
                 <th className="">Reference No.</th>
                 <th className="text-right">Total Amount</th>
               </tr>
@@ -172,32 +173,42 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
               {result?.pages.map((page, key) => (
                 <React.Fragment key={key}>
                   {page.data.map((item, key) => {
-                    totalAmount += Number(item.receiving_total_amount);
+                    totalAmount += Number(item.total_amount);
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
                         <td>
-                          {<PillStatus isActive={item.receiving_is_complete} />}
+                          {<PillStatus isActive={item.purchase_is_ongoing} />}
                         </td>
-                        <td>{formatDate(item.receiving_date)}</td>
-                        <td>{item.receiving_reference_no}</td>
+                        <td>{formatDate(item.purchase_date)}</td>
+                        <td>{formatDate(item.purchase_delivery_date)}</td>
+                        <td>{item.purchase_reference_no}</td>
                         <td className="text-right">
                           {pesoSign}
                           {numberWithCommasToFixed(
-                            item.receiving_total_amount,
+                            item.purchase_total_amount,
                             2
                           )}
                         </td>
                         <td className="table-action">
                           <ul>
-                            {item.receiving_is_complete === 0 ? (
+                            <li>
+                              <button
+                                data-tooltip="View"
+                                className="tooltip"
+                                onClick={() => handleView(item)}
+                              >
+                                <ScrollText size={14} />
+                              </button>
+                            </li>
+                            {item.purchase_is_ongoing === 0 ? (
                               <>
                                 <li>
                                   <button
                                     data-tooltip="Edit"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleEdit(item.receiving_aid, item)
+                                      handleEdit(item.purchase_aid, item)
                                     }
                                   >
                                     <SquarePen size={14} />
@@ -208,7 +219,10 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                                     data-tooltip="Delete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRemove(item.receiving_aid, item)
+                                      handleRemove(
+                                        item.purchase_reference_no,
+                                        item
+                                      )
                                     }
                                   >
                                     <Trash size={14} />
@@ -219,7 +233,10 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                                     data-tooltip="Complete"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(item.receiving_aid, item)
+                                      handleRestore(
+                                        item.purchase_reference_no,
+                                        item
+                                      )
                                     }
                                   >
                                     <ClipboardCheck size={14} />
@@ -228,56 +245,20 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                               </>
                             ) : (
                               <>
-                                {1 === 1 ? (
-                                  <li>
-                                    <button
-                                      data-tooltip="View"
-                                      className="tooltip"
-                                      onClick={() => handleView(item)}
-                                    >
-                                      <ScrollText size={14} />
-                                    </button>
-                                  </li>
-                                ) : (
-                                  <>
-                                    <li>
-                                      <button
-                                        data-tooltip="Edit"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleEdit(item.receiving_aid, item)
-                                        }
-                                      >
-                                        <SquarePen size={14} />
-                                      </button>
-                                    </li>
-                                    <li>
-                                      <button
-                                        data-tooltip="Restore"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleArchive(
-                                            item.receiving_aid,
-                                            item
-                                          )
-                                        }
-                                      >
-                                        <ArchiveRestore size={14} />
-                                      </button>
-                                    </li>
-                                    <li>
-                                      <button
-                                        data-tooltip="Delete"
-                                        className="tooltip"
-                                        onClick={() =>
-                                          handleRemove(item.receiving_aid, item)
-                                        }
-                                      >
-                                        <Trash size={14} />
-                                      </button>
-                                    </li>
-                                  </>
-                                )}
+                                <li>
+                                  <button
+                                    data-tooltip="Restore"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleArchive(
+                                        item.purchase_reference_no,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    <ArchiveRestore size={14} />
+                                  </button>
+                                </li>
                               </>
                             )}
                           </ul>
@@ -290,7 +271,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
             </tbody>
             <tbody>
               <tr className="!shadow-none font-bold">
-                <td className="text-right" colSpan={4}>
+                <td colSpan={5} className="text-right">
                   Total :
                 </td>
                 <td className="text-right">
@@ -324,7 +305,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
       )}
       {!store.isAdd && store.isConfirm && (
         <ModalAdvanceConfirm
-          mysqlApiArchive={`/${ver}/purchase/active/${aid}`}
+          mysqlApiArchive={`/${ver}/purchase/active`}
           queryKey="purchase"
           item={formatDate(data.purchase_date)}
           active={isActive}

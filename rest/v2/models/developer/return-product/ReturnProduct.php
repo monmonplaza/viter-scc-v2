@@ -4,6 +4,7 @@ class ReturnProduct
     public $return_product_aid;
     public $return_product_is_resolved;
     public $return_product_id;
+    public $return_product_sales_list_id;
     public $return_product_date;
     public $return_product_qty;
     public $return_product_resolved_date;
@@ -43,6 +44,7 @@ class ReturnProduct
             $sql = "insert into {$this->tblReturnProduct} ";
             $sql .= "( return_product_id, ";
             $sql .= "return_product_date, ";
+            $sql .= "return_product_sales_list_id, ";
             $sql .= "return_product_is_resolved, ";
             $sql .= "return_product_qty, ";
             $sql .= "return_product_remarks, ";
@@ -50,6 +52,7 @@ class ReturnProduct
             $sql .= "return_product_created ) values ( ";
             $sql .= ":return_product_id, ";
             $sql .= ":return_product_date, ";
+            $sql .= ":return_product_sales_list_id, ";
             $sql .= ":return_product_is_resolved, ";
             $sql .= ":return_product_qty, ";
             $sql .= ":return_product_remarks, ";
@@ -59,6 +62,7 @@ class ReturnProduct
             $query->execute([
                 "return_product_id" => $this->return_product_id,
                 "return_product_date" => $this->return_product_date,
+                "return_product_sales_list_id" => $this->return_product_sales_list_id,
                 "return_product_is_resolved" => $this->return_product_is_resolved,
                 "return_product_qty" => $this->return_product_qty,
                 "return_product_remarks" => $this->return_product_remarks,
@@ -178,6 +182,7 @@ class ReturnProduct
         try {
             $sql = "update {$this->tblReturnProduct} set ";
             $sql .= "return_product_id = :return_product_id, ";
+            $sql .= "return_product_sales_list_id = :return_product_sales_list_id, ";
             $sql .= "return_product_date = :return_product_date, ";
             $sql .= "return_product_qty = :return_product_qty, ";
             $sql .= "return_product_remarks = :return_product_remarks, ";
@@ -186,6 +191,7 @@ class ReturnProduct
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "return_product_id" => $this->return_product_id,
+                "return_product_sales_list_id" => $this->return_product_sales_list_id,
                 "return_product_date" => $this->return_product_date,
                 "return_product_qty" => $this->return_product_qty,
                 "return_product_remarks" => $this->return_product_remarks,

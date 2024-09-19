@@ -16,6 +16,14 @@ function checkUpdatePurchaseDate($object)
     return $query;
 }
 
+// Update Inventory Log
+function checkUpdateNewData($object)
+{
+    $query = $object->updateNewData();
+    checkQuery($query, "There's a problem processing your request. (update new data purchase date)");
+    return $query;
+}
+
 // Read all unit
 function checkFilterByDate($object)
 {

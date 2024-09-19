@@ -11,6 +11,8 @@ import {
 } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
+import SearchModalSalesProduct from "@/components/partials/search/SearchModalSalesProduct";
+import SearchModalSalesReferenceNo from "@/components/partials/search/SearchModalSalesReferenceNo";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
@@ -29,6 +31,7 @@ import * as Yup from "yup";
 const ModalReturnProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [productData, setProductData] = React.useState(itemEdit);
+  const [salesProductData, setSalesProductData] = React.useState(itemEdit);
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
 
   const queryClient = useQueryClient();
@@ -96,6 +99,8 @@ const ModalReturnProduct = ({ itemEdit }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
+  console.log("productData", productData);
+
   return (
     <WrapperModal>
       <div className=" modal-main ">
@@ -113,11 +118,28 @@ const ModalReturnProduct = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
+            // let totalQty = 0;
+            // if (productData !== null) {
+            //   totalQty =
+            //     Number(productData?.sales_list_quantity) -
+            //     Number(values.return_product_qty);
+            // }
+
+            // if (Number(totalQty) > 0) {
+            //   dispatch(setValidate(true));
+            //   dispatch(setMessage("Invalid Quantity"));
+            //   return;
+            // }
+
             mutation.mutate({
               ...values,
               return_product_id:
                 typeof productData?.product_aid !== "undefined"
                   ? productData?.product_aid
+                  : "",
+              return_product_sales_list_id:
+                typeof salesProductData?.sales_aid !== "undefined"
+                  ? salesProductData?.sales_aid
                   : "",
             });
           }}
@@ -136,16 +158,29 @@ const ModalReturnProduct = ({ itemEdit }) => {
                       />
                     </div>
                     <div className="input-wrap">
-                      <SearchModalProduct
-                        setData={setProductData}
+                      <SearchModalSalesReferenceNo
+                        setData={setSalesProductData}
                         props={props.values}
-                        label="Search Product"
-                        name="searchProduct"
+                        label="Search Sales Reference / customer"
+                        name="searchSalesReference"
                         mutation={mutation}
                         setIsRequiredYup={setIsRequiredProductYup}
                         itemEdit={itemEdit}
                       />
                     </div>
+                    <div className="input-wrap">
+                      <SearchModalSalesProduct
+                        setData={setProductData}
+                        props={props.values}
+                        label="Search product"
+                        name="searchSalesProduct"
+                        mutation={mutation}
+                        setIsRequiredYup={setIsRequiredProductYup}
+                        itemEdit={itemEdit}
+                        salesData={salesProductData}
+                      />
+                    </div>
+
                     <div className="input-wrap">
                       <InputText
                         label="Quatity"

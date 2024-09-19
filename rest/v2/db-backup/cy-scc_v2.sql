@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2024 at 10:05 AM
+-- Generation Time: Sep 19, 2024 at 04:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -198,6 +198,7 @@ CREATE TABLE `sccv2_purchase` (
   `purchase_supplier_id` varchar(20) NOT NULL,
   `purchase_unit_id` varchar(20) NOT NULL,
   `purchase_price` varchar(20) NOT NULL,
+  `purchase_total_amount` varchar(20) NOT NULL,
   `purchase_remarks` text NOT NULL,
   `purchase_reference_no` varchar(50) NOT NULL,
   `purchase_created` datetime NOT NULL,
@@ -208,9 +209,8 @@ CREATE TABLE `sccv2_purchase` (
 -- Dumping data for table `sccv2_purchase`
 --
 
-INSERT INTO `sccv2_purchase` (`purchase_aid`, `purchase_is_ongoing`, `purchase_is_new_data`, `purchase_delivery_date`, `purchase_date`, `purchase_product_id`, `purchase_quantity`, `purchase_supplier_id`, `purchase_unit_id`, `purchase_price`, `purchase_remarks`, `purchase_reference_no`, `purchase_created`, `purchase_updated`) VALUES
-(5, 0, 1, '2024-09-19', '2024-09-19', '1', '10', '2', '1', '5', '', '397282861', '2024-09-19 15:52:31', '2024-09-19 15:52:31'),
-(6, 0, 1, '2024-09-19', '2024-09-19', '1', '10', '2', '1', '5', '', '397282861', '2024-09-19 15:52:38', '2024-09-19 15:52:38');
+INSERT INTO `sccv2_purchase` (`purchase_aid`, `purchase_is_ongoing`, `purchase_is_new_data`, `purchase_delivery_date`, `purchase_date`, `purchase_product_id`, `purchase_quantity`, `purchase_supplier_id`, `purchase_unit_id`, `purchase_price`, `purchase_total_amount`, `purchase_remarks`, `purchase_reference_no`, `purchase_created`, `purchase_updated`) VALUES
+(19, 0, 0, '2024-09-19', '2024-09-19', '1', '10', '2', '2', '100', '1000', '', '651738183', '2024-09-19 20:51:53', '2024-09-19 20:57:55');
 
 -- --------------------------------------------------------
 
@@ -282,6 +282,7 @@ CREATE TABLE `sccv2_return_product` (
   `return_product_aid` int(11) NOT NULL,
   `return_product_is_resolved` tinyint(1) NOT NULL,
   `return_product_id` varchar(20) NOT NULL,
+  `return_product_sales_list_id` varchar(20) NOT NULL,
   `return_product_date` varchar(20) NOT NULL,
   `return_product_qty` varchar(20) NOT NULL,
   `return_product_resolved_date` varchar(20) NOT NULL,
@@ -294,8 +295,10 @@ CREATE TABLE `sccv2_return_product` (
 -- Dumping data for table `sccv2_return_product`
 --
 
-INSERT INTO `sccv2_return_product` (`return_product_aid`, `return_product_is_resolved`, `return_product_id`, `return_product_date`, `return_product_qty`, `return_product_resolved_date`, `return_product_remarks`, `return_product_created`, `return_product_updated`) VALUES
-(1, 0, '1', '2024-09-13', '1', '', 'test', '2024-09-13 08:24:37', '2024-09-13 08:24:37');
+INSERT INTO `sccv2_return_product` (`return_product_aid`, `return_product_is_resolved`, `return_product_id`, `return_product_sales_list_id`, `return_product_date`, `return_product_qty`, `return_product_resolved_date`, `return_product_remarks`, `return_product_created`, `return_product_updated`) VALUES
+(1, 0, '1', '', '2024-09-13', '1', '', 'test', '2024-09-13 08:24:37', '2024-09-13 08:24:37'),
+(2, 0, '1', '7', '2024-09-19', '2', '', 'te', '2024-09-19 22:15:10', '2024-09-19 22:15:10'),
+(3, 0, '1', '7', '2024-09-19', '13', '', 'test', '2024-09-19 22:20:50', '2024-09-19 22:20:50');
 
 -- --------------------------------------------------------
 
@@ -605,7 +608,7 @@ ALTER TABLE `sccv2_product_price`
 -- AUTO_INCREMENT for table `sccv2_purchase`
 --
 ALTER TABLE `sccv2_purchase`
-  MODIFY `purchase_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `purchase_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `sccv2_receiving`
@@ -623,7 +626,7 @@ ALTER TABLE `sccv2_receiving_supply`
 -- AUTO_INCREMENT for table `sccv2_return_product`
 --
 ALTER TABLE `sccv2_return_product`
-  MODIFY `return_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `return_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sccv2_sales`

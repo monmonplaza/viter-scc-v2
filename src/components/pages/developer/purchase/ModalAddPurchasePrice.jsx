@@ -28,10 +28,9 @@ import {
 import { StoreContext } from "@/components/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { PillBottle, Plus, SquarePen, Trash, X } from "lucide-react";
+import { PillBottle, Plus, Trash, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-import ModalEditPurchase from "./ModalEditPurchase";
 
 const ModalAddPurchasePrice = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -74,10 +73,10 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
     mutationFn: (values) => queryData(`/${ver}/purchase`, "post", values),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["purchase"],
+        queryKey: ["purchase-read-new-data"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["purchase-read-new-data"],
+        queryKey: ["receiving-read-all-unit"],
       });
       // show error box
       if (!data.success) {
@@ -104,10 +103,21 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
     setItemEdit,
   });
 
-  const handleClose = () => {
+  const handleClose = async () => {
     queryClient.invalidateQueries({
-      queryKey: ["purchase"],
+      queryKey: ["purchase-read-new-data"],
     });
+
+    const result = await queryData(
+      `/${ver}/purchase/update-new-data`,
+      "put",
+      {}
+    );
+
+    if (result.data) {
+      // increment state to re-render page
+      queryClient.invalidateQueries({ queryKey: ["purchase"] });
+    }
 
     dispatch(setIsAnimating(false));
     setSupplierData(null);
@@ -133,9 +143,9 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
     purchase_delivery_date: itemEdit
       ? itemEdit.purchase_delivery_date
       : getDateNow(),
-    purchase_quantity: itemEdit ? itemEdit.purchase_quantity : "",
-    purchase_unit_id: itemEdit ? itemEdit.purchase_unit_id : "",
-    purchase_price: itemEdit ? itemEdit.purchase_price : "",
+    purchase_quantity: "",
+    purchase_unit_id: "",
+    purchase_price: "",
     searchSupplier: "",
     searchProduct: "",
   };
@@ -173,15 +183,20 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                   supplierData !== null ? supplierData?.supplier_aid : 0;
                 const purchase_product_id =
                   productData !== null ? productData?.product_aid : 0;
+                const purchase_total_amount =
+                  Number(values?.purchase_price) *
+                  Number(values?.purchase_quantity);
 
                 mutation.mutate({
                   ...values,
-                  purchase_reference_no:
-                    receivingData?.count > 0
-                      ? receivingData?.purchase_reference_no
-                      : 0,
+                  purchase_reference_no: itemEdit
+                    ? itemEdit.purchase_reference_no
+                    : receivingData?.count > 0
+                    ? receivingData?.purchase_reference_no
+                    : 0,
                   purchase_supplier_id,
                   purchase_product_id,
+                  purchase_total_amount,
                 });
               }}
             >
@@ -385,7 +400,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                               2
                             )}
                           </td>
-                          <td className="table-action !top-1">
+                          <td className="table-action ">
                             <ul>
                               <li>
                                 <button
