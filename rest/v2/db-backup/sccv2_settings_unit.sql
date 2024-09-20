@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2024 at 08:19 AM
+-- Generation Time: Sep 20, 2024 at 09:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,14 @@ CREATE TABLE `sccv2_settings_unit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `sccv2_settings_unit`
+--
+
+INSERT INTO `sccv2_settings_unit` (`settings_unit_aid`, `settings_unit_is_active`, `settings_unit_name`, `settings_unit_created`, `settings_unit_updated`) VALUES
+(1, 1, 'per box', '2024-08-27 14:52:04', '2024-08-27 15:01:01'),
+(2, 1, 'per pieces', '2024-08-27 15:01:31', '2024-08-27 15:01:45');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -53,7 +61,7 @@ ALTER TABLE `sccv2_settings_unit`
 -- AUTO_INCREMENT for table `sccv2_settings_unit`
 --
 ALTER TABLE `sccv2_settings_unit`
-  MODIFY `settings_unit_aid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `settings_unit_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

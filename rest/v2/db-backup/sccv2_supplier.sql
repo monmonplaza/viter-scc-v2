@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2024 at 02:26 PM
+-- Generation Time: Sep 20, 2024 at 09:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,8 +45,8 @@ CREATE TABLE `sccv2_supplier` (
 --
 
 INSERT INTO `sccv2_supplier` (`supplier_aid`, `supplier_name`, `supplier_representative`, `supplier_representative_phone`, `supplier_phone`, `supplier_address`, `supplier_email`, `supplier_is_active`, `supplier_datetime`, `supplier_created`) VALUES
-(1, 'Cyrene Lumabas', 'sd', '09563254123', '09094568723', 'san cristobal san pablo city', 'cyrenemlumabas@gmail.com', 1, '2024-08-27 18:55:25', '2024-08-27 18:55:25'),
-(2, 'Zaicy Lumabas', 'as', '09546214554521', '09653214587', 'as', 'zaicy@gmail.com', 1, '2024-08-27 18:56:00', '2024-08-27 18:56:00');
+(1, 'xx', 'xxx', 'xxx', 'xxx', 'xx', 'xxx@sasdas.com', 0, '', '2024-08-23 12:46:25'),
+(2, 'Amazing Chuchu', 'Ramon Plaza', '092122232321', '09221222212', '214 Purok 5 Barangay Sta Ana San Pablo City', 'ramon.plaza@frontlibusiness.com.ph', 1, '2024-08-23 12:53:54', '2024-08-23 12:53:54');
 
 --
 -- Indexes for dumped tables

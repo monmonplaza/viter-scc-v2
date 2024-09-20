@@ -1,22 +1,15 @@
-import Breadcrumbs from "@/components/partials/Breadcrumbs.jsx";
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
-import Pill from "@/components/partials/Pill";
 import {
-  Archive,
-  ArchiveRestore,
-  Plus,
   Ruler,
-  SquarePen,
   SquareUserRound,
-  Trash,
   UserRoundCog,
   UserRoundPen,
 } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import Developer from "./developer/Developer.jsx";
+import ProductCategory from "./product-category/ProductCategory.jsx";
 import Roles from "./roles/Roles.jsx";
 import Unit from "./unit/Unit.jsx";
 import User from "./user/User.jsx";
@@ -28,9 +21,16 @@ const Settings = () => {
     { label: "Roles", icon: <UserRoundCog size={14} /> },
     { label: "Users", icon: <UserRoundPen size={14} /> },
     { label: "Developer", icon: <SquareUserRound size={14} /> },
+    { label: "Category", icon: <Ruler size={14} /> },
   ];
 
-  const settingPages = [<Unit />, <Roles />, <User />, <Developer />];
+  const settingPages = [
+    <Unit />,
+    <Roles />,
+    <User />,
+    <Developer />,
+    <ProductCategory />,
+  ];
 
   const handleChangeSettingMenu = (index) => {
     setTabindex(index);

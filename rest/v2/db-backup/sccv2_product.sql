@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2024 at 02:40 PM
+-- Generation Time: Sep 20, 2024 at 09:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,6 +34,7 @@ CREATE TABLE `sccv2_product` (
   `product_sku` varchar(20) NOT NULL,
   `product_name` varchar(50) NOT NULL,
   `product_description` text NOT NULL,
+  `product_barcode` varchar(20) NOT NULL,
   `product_datetime` varchar(20) NOT NULL,
   `product_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -42,8 +43,9 @@ CREATE TABLE `sccv2_product` (
 -- Dumping data for table `sccv2_product`
 --
 
-INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_datetime`, `product_created`) VALUES
-(4, 1, '1', '97032254', 'Ballpen', 'This is a test data for product', '2024-09-12 19:06:21', '2024-09-12 19:06:21');
+INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_barcode`, `product_datetime`, `product_created`) VALUES
+(1, 1, '3', '76662451', 'Ballpen', 'This is test.', '', '2024-09-13 08:16:51', '2024-09-13 08:16:51'),
+(2, 1, '3', '22634202', 'egg', '', '', '2024-09-19 09:47:39', '2024-09-13 10:05:54');
 
 --
 -- Indexes for dumped tables
@@ -63,7 +65,7 @@ ALTER TABLE `sccv2_product`
 -- AUTO_INCREMENT for table `sccv2_product`
 --
 ALTER TABLE `sccv2_product`
-  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

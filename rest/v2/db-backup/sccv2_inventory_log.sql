@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 12, 2024 at 03:03 PM
+-- Generation Time: Sep 20, 2024 at 09:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,8 @@ CREATE TABLE `sccv2_inventory_log` (
 --
 
 INSERT INTO `sccv2_inventory_log` (`inventory_log_aid`, `inventory_log_product_id`, `inventory_log_available_stock`, `inventory_log_stock_in`, `inventory_log_stock_out`, `inventory_log_defective_product`, `inventory_log_return_product`, `inventory_log_created`, `inventory_log_updated`) VALUES
-(1, '4', '', '100', '', '10', '0', '2024-09-12 19:06:21', '2024-09-12 21:02:20');
+(1, '1', '', '190', '15', '', '0', '2024-09-13 08:16:51', '0000-00-00 00:00:00'),
+(2, '2', '', '200', '15', '6', '', '2024-09-13 10:05:54', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -64,7 +65,7 @@ ALTER TABLE `sccv2_inventory_log`
 -- AUTO_INCREMENT for table `sccv2_inventory_log`
 --
 ALTER TABLE `sccv2_inventory_log`
-  MODIFY `inventory_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `inventory_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
