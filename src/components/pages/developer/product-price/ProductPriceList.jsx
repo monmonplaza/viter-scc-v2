@@ -29,10 +29,12 @@ const ProductPriceList = ({ setItemEdit }) => {
   let counter = 1;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
@@ -102,11 +104,10 @@ const ProductPriceList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[200px]">Product</th>
-                <th className="w-[200px]">Expired</th>
                 <th className="min-w-[8rem] text-right">Suplier price</th>
-                <th className="min-w-[8rem] text-right">SCC Price</th>
+                <th className="min-w-[8rem] text-right">SCC Member Price</th>
                 <th className="min-w-[10rem] text-right">
-                  SCC Whole Sale Price
+                  SCC Member Whole Sale Price
                 </th>
                 <th className="min-w-[8rem] text-right">Price</th>
                 <th className="min-w-[10rem] text-right">Whole Sale Price</th>
@@ -143,10 +144,12 @@ const ProductPriceList = ({ setItemEdit }) => {
                         <td className="w-counter">{counter++}</td>
 
                         <td>
-                          {item.product_name} ({item.receiving_supply_barcode})
-                        </td>
-                        <td>
-                          {formatDate(item.receiving_supply_expiration_date)}
+                          {item.product_name}{" "}
+                          {`${
+                            item.receiving_supply_barcode !== ""
+                              ? `(${item.receiving_supply_barcode})`
+                              : ""
+                          }`}
                         </td>
                         <td className="text-right">
                           {pesoSign}

@@ -39,6 +39,7 @@ const CategoryList = ({ setItemEdit }) => {
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

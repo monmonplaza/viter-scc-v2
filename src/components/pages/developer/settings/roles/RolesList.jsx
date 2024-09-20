@@ -20,7 +20,6 @@ const RolesList = ({ setItemEdit }) => {
     handleEdit,
     handleArchive,
     handleRestore,
-
     aid,
     data,
     isActive,

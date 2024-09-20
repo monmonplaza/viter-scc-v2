@@ -20,6 +20,7 @@ const SearchModalProductDontHavePrice = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchProductPrice : ""
   );
+  const [searchValues, setSearchValues] = React.useState("");
 
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
@@ -33,19 +34,21 @@ const SearchModalProductDontHavePrice = ({
     "post",
     "search-product-dont-have-price",
     {
-      search,
+      search: searchValues,
     },
     {
-      search,
+      searchValues,
     }
   );
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
@@ -54,6 +57,7 @@ const SearchModalProductDontHavePrice = ({
     setOnFocus(false);
     setData(item);
     setSearch(item.product_name);
+    setSearchValues("");
   };
 
   const handleClickOutsideSearch = (e) => {

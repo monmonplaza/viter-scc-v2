@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2024 at 03:33 PM
+-- Generation Time: Sep 19, 2024 at 04:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,8 +41,8 @@ CREATE TABLE `sccv2_category` (
 --
 
 INSERT INTO `sccv2_category` (`category_aid`, `category_name`, `category_description`, `category_is_active`, `category_datetime`, `category_created`) VALUES
-(1, 'School Supply', 'School Supply', 1, '2024-09-12 19:13:23', '2024-08-27 18:53:16'),
-(2, 'dairy product', 'dairy product', 1, '2024-09-12 19:05:54', '2024-09-12 19:05:54');
+(1, 'vvvv', 'zxczxczxc', 1, '', '2024-08-23 09:59:31'),
+(3, 'Dairy', 'Dairy Products', 1, '2024-08-23 14:23:02', '2024-08-23 10:02:10');
 
 -- --------------------------------------------------------
 
@@ -53,6 +53,7 @@ INSERT INTO `sccv2_category` (`category_aid`, `category_name`, `category_descrip
 CREATE TABLE `sccv2_customer` (
   `customer_aid` int(11) NOT NULL,
   `customer_is_active` tinyint(1) NOT NULL,
+  `customer_is_member` tinyint(1) NOT NULL,
   `customer_name` varchar(200) NOT NULL,
   `customer_address` text NOT NULL,
   `customer_mobile_number` varchar(20) NOT NULL,
@@ -64,9 +65,8 @@ CREATE TABLE `sccv2_customer` (
 -- Dumping data for table `sccv2_customer`
 --
 
-INSERT INTO `sccv2_customer` (`customer_aid`, `customer_is_active`, `customer_name`, `customer_address`, `customer_mobile_number`, `customer_created`, `customer_updated`) VALUES
-(1, 1, 'Cyrene lumabas', 'San cristobal san pablo city laguna 4000', '09865326545', '2024-09-13 12:11:44', '2024-09-13 12:12:56'),
-(2, 1, 'Zaicy Lumabas', 'San Cristobal San Pablo City Laguna', '09095632587', '2024-09-15 15:28:10', '2024-09-15 15:28:10');
+INSERT INTO `sccv2_customer` (`customer_aid`, `customer_is_active`, `customer_is_member`, `customer_name`, `customer_address`, `customer_mobile_number`, `customer_created`, `customer_updated`) VALUES
+(1, 1, 1, 'Cyrene lumabas', 'San cristobal san pablo city laguna 4000', '09865326545', '2024-09-13 12:11:44', '2024-09-17 12:44:57');
 
 -- --------------------------------------------------------
 
@@ -79,8 +79,8 @@ CREATE TABLE `sccv2_defective_product` (
   `defective_product_receiving_supply_id` int(11) NOT NULL,
   `defective_product_is_resolve` tinyint(1) NOT NULL,
   `defective_product_qty` varchar(20) NOT NULL,
-  `defective_product_amount` varchar(20) NOT NULL,
   `defective_product_resolved_date` varchar(20) NOT NULL,
+  `defective_product_amount` varchar(20) NOT NULL,
   `defective_product_remarks` text NOT NULL,
   `defective_product_created` datetime NOT NULL,
   `defective_product_updated` datetime NOT NULL
@@ -90,9 +90,9 @@ CREATE TABLE `sccv2_defective_product` (
 -- Dumping data for table `sccv2_defective_product`
 --
 
-INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_amount`, `defective_product_resolved_date`, `defective_product_remarks`, `defective_product_created`, `defective_product_updated`) VALUES
-(7, 14, 0, '10', '100', '', '', '2024-09-12 20:32:52', '0000-00-00 00:00:00'),
-(8, 14, 0, '10', '100', '', '', '2024-09-12 21:02:20', '2024-09-12 21:02:20');
+INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_resolved_date`, `defective_product_amount`, `defective_product_remarks`, `defective_product_created`, `defective_product_updated`) VALUES
+(2, 2, 1, '2', '', '20', '', '2024-09-13 09:43:05', '0000-00-00 00:00:00'),
+(3, 4, 0, '6', '', '72', '', '2024-09-13 10:06:30', '2024-09-13 10:06:30');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,8 @@ CREATE TABLE `sccv2_inventory_log` (
 --
 
 INSERT INTO `sccv2_inventory_log` (`inventory_log_aid`, `inventory_log_product_id`, `inventory_log_available_stock`, `inventory_log_stock_in`, `inventory_log_stock_out`, `inventory_log_defective_product`, `inventory_log_return_product`, `inventory_log_created`, `inventory_log_updated`) VALUES
-(1, '4', '', '110', '', '20', '0', '2024-09-12 19:06:21', '2024-09-15 21:28:33');
+(1, '1', '', '100', '40', '0', '', '2024-09-13 08:16:51', '0000-00-00 00:00:00'),
+(2, '2', '', '100', '73', '6', '', '2024-09-13 10:05:54', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -132,6 +133,7 @@ CREATE TABLE `sccv2_product` (
   `product_sku` varchar(20) NOT NULL,
   `product_name` varchar(50) NOT NULL,
   `product_description` text NOT NULL,
+  `product_barcode` varchar(20) NOT NULL,
   `product_datetime` varchar(20) NOT NULL,
   `product_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -140,8 +142,9 @@ CREATE TABLE `sccv2_product` (
 -- Dumping data for table `sccv2_product`
 --
 
-INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_datetime`, `product_created`) VALUES
-(4, 1, '1', '97032254', 'Ballpen', 'This is a test data for product', '2024-09-12 19:06:21', '2024-09-12 19:06:21');
+INSERT INTO `sccv2_product` (`product_aid`, `product_is_active`, `product_category_id`, `product_sku`, `product_name`, `product_description`, `product_barcode`, `product_datetime`, `product_created`) VALUES
+(1, 1, '3', '76662451', 'Ballpen', 'This is test.', '', '2024-09-13 08:16:51', '2024-09-13 08:16:51'),
+(2, 1, '3', '22634202', 'egg', '', '', '2024-09-19 09:47:39', '2024-09-13 10:05:54');
 
 -- --------------------------------------------------------
 
@@ -163,6 +166,7 @@ CREATE TABLE `sccv2_product_price` (
   `product_price_percent` varchar(20) NOT NULL,
   `product_price_stock_in` varchar(20) NOT NULL,
   `product_price_stock_out` varchar(20) NOT NULL,
+  `product_price_available_stock` varchar(20) NOT NULL,
   `product_price_remarks` text NOT NULL,
   `product_price_created` datetime NOT NULL,
   `product_price_update` datetime NOT NULL
@@ -172,9 +176,41 @@ CREATE TABLE `sccv2_product_price` (
 -- Dumping data for table `sccv2_product_price`
 --
 
-INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
-(4, '4', '14', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '0', 'first test data', '2024-09-15 21:17:44', '2024-09-15 21:17:44'),
-(5, '4', '15', '11.11', '1', '11.11', '1', '1', '11.11', '11.11', '1', '10', '0', 'test', '2024-09-15 21:28:08', '2024-09-15 21:28:08');
+INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_available_stock`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
+(6, '1', '2', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '40', '60', 'test', '2024-09-17 12:56:40', '0000-00-00 00:00:00'),
+(7, '2', '3', '13.2', '10', '13.2', '10', '9', '13.08', '13.32', '11', '50', '50', '0', 'test', '2024-09-17 12:57:04', '0000-00-00 00:00:00'),
+(8, '2', '4', '13.2', '10', '13.2', '10', '9', '13.08', '13.26', '10.5', '50', '23', '21', '', '2024-09-17 12:57:59', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_purchase`
+--
+
+CREATE TABLE `sccv2_purchase` (
+  `purchase_aid` int(11) NOT NULL,
+  `purchase_is_ongoing` tinyint(1) NOT NULL,
+  `purchase_is_new_data` tinyint(1) NOT NULL,
+  `purchase_delivery_date` varchar(20) NOT NULL,
+  `purchase_date` varchar(20) NOT NULL,
+  `purchase_product_id` varchar(20) NOT NULL,
+  `purchase_quantity` varchar(20) NOT NULL,
+  `purchase_supplier_id` varchar(20) NOT NULL,
+  `purchase_unit_id` varchar(20) NOT NULL,
+  `purchase_price` varchar(20) NOT NULL,
+  `purchase_total_amount` varchar(20) NOT NULL,
+  `purchase_remarks` text NOT NULL,
+  `purchase_reference_no` varchar(50) NOT NULL,
+  `purchase_created` datetime NOT NULL,
+  `purchase_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_purchase`
+--
+
+INSERT INTO `sccv2_purchase` (`purchase_aid`, `purchase_is_ongoing`, `purchase_is_new_data`, `purchase_delivery_date`, `purchase_date`, `purchase_product_id`, `purchase_quantity`, `purchase_supplier_id`, `purchase_unit_id`, `purchase_price`, `purchase_total_amount`, `purchase_remarks`, `purchase_reference_no`, `purchase_created`, `purchase_updated`) VALUES
+(19, 0, 0, '2024-09-19', '2024-09-19', '1', '10', '2', '2', '100', '1000', '', '651738183', '2024-09-19 20:51:53', '2024-09-19 20:57:55');
 
 -- --------------------------------------------------------
 
@@ -198,7 +234,8 @@ CREATE TABLE `sccv2_receiving` (
 --
 
 INSERT INTO `sccv2_receiving` (`receiving_aid`, `receiving_date`, `receiving_reference_no`, `receiving_total_amount`, `receiving_is_complete`, `receiving_is_new_data`, `receiving_datetime`, `receiving_created`) VALUES
-(2, '2024-09-12', '3126520730', '1110', 1, 0, '2024-09-15 20:37:36', '2024-09-12 19:47:40');
+(1, '2024-09-13', '8515210432', '2200', 1, 0, '2024-09-17 12:47:54', '2024-09-13 08:20:02'),
+(2, '2024-09-18', '5872029894', '20', 0, 0, '2024-09-18 15:21:18', '2024-09-18 15:21:18');
 
 -- --------------------------------------------------------
 
@@ -210,19 +247,19 @@ CREATE TABLE `sccv2_receiving_supply` (
   `receiving_supply_aid` int(11) NOT NULL,
   `receiving_supply_is_active` tinyint(1) NOT NULL,
   `receiving_supply_have_price` tinyint(1) NOT NULL,
-  `receiving_supply_received_id` varchar(20) NOT NULL,
-  `receiving_supply_product_id` varchar(20) NOT NULL,
+  `receiving_supply_received_id` int(11) NOT NULL,
+  `receiving_supply_product_id` int(11) NOT NULL,
   `receiving_supply_barcode` varchar(100) NOT NULL,
-  `receiving_supply_supplier_id` varchar(20) NOT NULL,
+  `receiving_supply_supplier_id` int(11) NOT NULL,
   `receiving_supply_unit_id` varchar(20) NOT NULL,
-  `receiving_supply_quantity` varchar(20) NOT NULL,
+  `receiving_supply_quantity` int(20) NOT NULL,
   `receiving_supply_price` varchar(20) NOT NULL,
-  `receiving_supply_amount` varchar(20) NOT NULL,
+  `receiving_supply_amount` varchar(30) NOT NULL,
   `receiving_supply_expiration_date` varchar(20) NOT NULL,
   `receiving_supply_defective_product_qty` varchar(20) NOT NULL,
   `receiving_supply_defective_remarks` text NOT NULL,
-  `receiving_supply_datetime` datetime NOT NULL,
-  `receiving_supply_created` datetime NOT NULL
+  `receiving_supply_datetime` varchar(20) NOT NULL,
+  `receiving_supply_created` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -230,8 +267,10 @@ CREATE TABLE `sccv2_receiving_supply` (
 --
 
 INSERT INTO `sccv2_receiving_supply` (`receiving_supply_aid`, `receiving_supply_is_active`, `receiving_supply_have_price`, `receiving_supply_received_id`, `receiving_supply_product_id`, `receiving_supply_barcode`, `receiving_supply_supplier_id`, `receiving_supply_unit_id`, `receiving_supply_quantity`, `receiving_supply_price`, `receiving_supply_amount`, `receiving_supply_expiration_date`, `receiving_supply_defective_product_qty`, `receiving_supply_defective_remarks`, `receiving_supply_datetime`, `receiving_supply_created`) VALUES
-(14, 1, 1, '2', '4', '', '1', '1', '100', '10', '1000', '2024-09-15', '10', '', '0000-00-00 00:00:00', '2024-09-12 20:32:47'),
-(15, 1, 1, '2', '4', '1111', '2', '1', '10', '11', '110', '', '0', '', '2024-09-15 21:28:08', '2024-09-15 20:37:32');
+(2, 1, 1, 1, 1, '', 2, '1', 100, '10', '1000', '', '0', '', '', '2024-09-13 09:42:47'),
+(3, 1, 1, 1, 2, '', 2, '1', 50, '12', '600', '', '0', '', '2024-09-17 12:57:04', '2024-09-13 10:06:15'),
+(4, 1, 1, 1, 2, '', 2, '1', 50, '12', '600', '', '6', '', '2024-09-17 12:57:59', '2024-09-13 10:06:18'),
+(5, 1, 0, 2, 1, '', 2, '1', 1, '20', '20', '', '0', '', '2024-09-18 15:21:18', '2024-09-18 15:21:18');
 
 -- --------------------------------------------------------
 
@@ -243,13 +282,138 @@ CREATE TABLE `sccv2_return_product` (
   `return_product_aid` int(11) NOT NULL,
   `return_product_is_resolved` tinyint(1) NOT NULL,
   `return_product_id` varchar(20) NOT NULL,
+  `return_product_sales_list_id` varchar(20) NOT NULL,
   `return_product_date` varchar(20) NOT NULL,
   `return_product_qty` varchar(20) NOT NULL,
   `return_product_resolved_date` varchar(20) NOT NULL,
   `return_product_remarks` text NOT NULL,
-  `return_product_updated` datetime NOT NULL,
-  `return_product_created` datetime NOT NULL
+  `return_product_created` datetime NOT NULL,
+  `return_product_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_return_product`
+--
+
+INSERT INTO `sccv2_return_product` (`return_product_aid`, `return_product_is_resolved`, `return_product_id`, `return_product_sales_list_id`, `return_product_date`, `return_product_qty`, `return_product_resolved_date`, `return_product_remarks`, `return_product_created`, `return_product_updated`) VALUES
+(1, 0, '1', '', '2024-09-13', '1', '', 'test', '2024-09-13 08:24:37', '2024-09-13 08:24:37'),
+(2, 0, '1', '7', '2024-09-19', '2', '', 'te', '2024-09-19 22:15:10', '2024-09-19 22:15:10'),
+(3, 0, '1', '7', '2024-09-19', '13', '', 'test', '2024-09-19 22:20:50', '2024-09-19 22:20:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_sales`
+--
+
+CREATE TABLE `sccv2_sales` (
+  `sales_aid` int(11) NOT NULL,
+  `sales_customer_id` varchar(20) NOT NULL,
+  `sales_date` varchar(20) NOT NULL,
+  `sales_reference_no` varchar(50) NOT NULL,
+  `sales_total_amount` varchar(20) NOT NULL,
+  `sales_payment_amount` varchar(20) NOT NULL,
+  `sales_is_paid` tinyint(1) NOT NULL,
+  `sales_new_data` tinyint(1) NOT NULL,
+  `sales_payment_method` varchar(50) NOT NULL,
+  `sales_created` datetime NOT NULL,
+  `sales_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_sales`
+--
+
+INSERT INTO `sccv2_sales` (`sales_aid`, `sales_customer_id`, `sales_date`, `sales_reference_no`, `sales_total_amount`, `sales_payment_amount`, `sales_is_paid`, `sales_new_data`, `sales_payment_method`, `sales_created`, `sales_updated`) VALUES
+(7, '1', '2024-09-18', '13890', '22', '0', 0, 0, 'credit', '2024-09-18 19:05:43', '2024-09-18 19:13:13'),
+(9, '1', '2024-09-18', '12794', '1268.33', '1500', 1, 0, 'gcash', '2024-09-18 19:37:03', '2024-09-19 13:20:58'),
+(10, '1', '2024-09-19', '1412244', '', '', 0, 0, 'credit', '2024-09-19 07:30:10', '2024-09-19 07:30:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_sales_list`
+--
+
+CREATE TABLE `sccv2_sales_list` (
+  `sales_list_aid` int(11) NOT NULL,
+  `sales_list_sales_id` varchar(20) NOT NULL,
+  `sales_list_product_id` varchar(20) NOT NULL,
+  `sales_list_product_price_id` varchar(20) NOT NULL,
+  `sales_list_customer_id` varchar(20) NOT NULL,
+  `sales_list_quantity` varchar(20) NOT NULL,
+  `sales_list_price` varchar(20) NOT NULL,
+  `sales_list_date` varchar(20) NOT NULL,
+  `sales_list_created` datetime NOT NULL,
+  `sales_list_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_sales_list`
+--
+
+INSERT INTO `sccv2_sales_list` (`sales_list_aid`, `sales_list_sales_id`, `sales_list_product_id`, `sales_list_product_price_id`, `sales_list_customer_id`, `sales_list_quantity`, `sales_list_price`, `sales_list_date`, `sales_list_created`, `sales_list_updated`) VALUES
+(62, '7', '1', '6', '1', '12', '11', '2024-09-18', '2024-09-18 19:05:43', '2024-09-19 07:47:24'),
+(63, '7', '1', '6', '1', '1', '11', '2024-09-18', '2024-09-18 19:05:44', '2024-09-18 19:05:44'),
+(66, '9', '1', '6', '1', '20', '11', '2024-09-18', '2024-09-18 19:37:03', '2024-09-19 07:46:16'),
+(67, '9', '2', '7', '1', '30', '13.32', '2024-09-18', '2024-09-18 20:25:43', '2024-09-18 20:34:49'),
+(68, '9', '2', '8', '1', '10', '13.26', '2024-09-18', '2024-09-18 20:40:37', '2024-09-19 09:49:09'),
+(69, '9', '2', '8', '1', '13', '13.26', '2024-09-18', '2024-09-18 20:54:20', '2024-09-19 12:54:00'),
+(70, '9', '2', '7', '1', '20', '13.32', '2024-09-18', '2024-09-18 20:55:06', '2024-09-19 09:20:52'),
+(71, '10', '1', '6', '1', '', '11', '2024-09-19', '2024-09-19 07:30:10', '2024-09-19 12:51:21'),
+(72, '9', '1', '6', '1', '1', '11.05', '2024-09-18', '2024-09-19 12:59:28', '2024-09-19 13:02:03'),
+(73, '9', '1', '6', '1', '6', '11.05', '2024-09-18', '2024-09-19 13:00:09', '2024-09-19 13:20:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_settings_developer`
+--
+
+CREATE TABLE `sccv2_settings_developer` (
+  `developer_aid` int(11) NOT NULL,
+  `developer_fname` varchar(50) NOT NULL,
+  `developer_lname` varchar(50) NOT NULL,
+  `developer_email` varchar(100) NOT NULL,
+  `developer_email_new` varchar(100) NOT NULL,
+  `developer_role_id` int(11) NOT NULL,
+  `developer_key` varchar(255) NOT NULL,
+  `developer_password` varchar(255) NOT NULL,
+  `developer_is_active` tinyint(1) NOT NULL,
+  `developer_datetime` varchar(20) NOT NULL,
+  `developer_created` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_settings_developer`
+--
+
+INSERT INTO `sccv2_settings_developer` (`developer_aid`, `developer_fname`, `developer_lname`, `developer_email`, `developer_email_new`, `developer_role_id`, `developer_key`, `developer_password`, `developer_is_active`, `developer_datetime`, `developer_created`) VALUES
+(1, 'Ramon', 'Plaza', 'ramon.plaza@frontlinebusiness.com.ph', '', 7, '05a1cb047d6aca7451fec8279db846d2a34b0f58e3ce992fff5d4e10a68aa939', '$2y$10$MhszWhcDBOGVJa5JG6hBZuteZijzbEIWevuKpFDaQI9Ob4OVYQiB6', 1, '', '2024-09-18 08:41:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sccv2_settings_role`
+--
+
+CREATE TABLE `sccv2_settings_role` (
+  `role_aid` int(11) NOT NULL,
+  `role_name` varchar(20) NOT NULL,
+  `role_description` text NOT NULL,
+  `role_is_active` tinyint(1) NOT NULL,
+  `role_created` varchar(20) NOT NULL,
+  `role_datetime` varchar(20) NOT NULL,
+  `role_is_` tinyint(1) NOT NULL,
+  `role_is_developer` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sccv2_settings_role`
+--
+
+INSERT INTO `sccv2_settings_role` (`role_aid`, `role_name`, `role_description`, `role_is_active`, `role_created`, `role_datetime`, `role_is_`, `role_is_developer`) VALUES
+(7, 'Developer', 'Developer User', 1, '2024-09-17 15:01:54', '2024-09-17 15:01:54', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -270,8 +434,8 @@ CREATE TABLE `sccv2_settings_unit` (
 --
 
 INSERT INTO `sccv2_settings_unit` (`settings_unit_aid`, `settings_unit_is_active`, `settings_unit_name`, `settings_unit_created`, `settings_unit_updated`) VALUES
-(1, 1, 'Per piece', '2024-08-27 20:03:08', '2024-08-27 20:03:08'),
-(2, 1, 'per box', '2024-08-27 20:03:14', '2024-08-27 20:03:14');
+(1, 1, 'per box', '2024-08-27 14:52:04', '2024-08-27 15:01:01'),
+(2, 1, 'per pieces', '2024-08-27 15:01:31', '2024-08-27 15:01:45');
 
 -- --------------------------------------------------------
 
@@ -297,8 +461,8 @@ CREATE TABLE `sccv2_supplier` (
 --
 
 INSERT INTO `sccv2_supplier` (`supplier_aid`, `supplier_name`, `supplier_representative`, `supplier_representative_phone`, `supplier_phone`, `supplier_address`, `supplier_email`, `supplier_is_active`, `supplier_datetime`, `supplier_created`) VALUES
-(1, 'Cyrene Lumabas', 'sd', '09563254123', '09094568723', 'san cristobal san pablo city', 'cyrenemlumabas@gmail.com', 1, '2024-08-27 18:55:25', '2024-08-27 18:55:25'),
-(2, 'Zaicy Lumabas', 'as', '09546214554521', '09653214587', 'as', 'zaicy@gmail.com', 1, '2024-08-27 18:56:00', '2024-08-27 18:56:00');
+(1, 'xx', 'xxx', 'xxx', 'xxx', 'xx', 'xxx@sasdas.com', 0, '', '2024-08-23 12:46:25'),
+(2, 'Amazing Chuchu', 'Ramon Plaza', '092122232321', '09221222212', '214 Purok 5 Barangay Sta Ana San Pablo City', 'ramon.plaza@frontlibusiness.com.ph', 1, '2024-08-23 12:53:54', '2024-08-23 12:53:54');
 
 --
 -- Indexes for dumped tables
@@ -341,6 +505,12 @@ ALTER TABLE `sccv2_product_price`
   ADD PRIMARY KEY (`product_price_aid`);
 
 --
+-- Indexes for table `sccv2_purchase`
+--
+ALTER TABLE `sccv2_purchase`
+  ADD PRIMARY KEY (`purchase_aid`);
+
+--
 -- Indexes for table `sccv2_receiving`
 --
 ALTER TABLE `sccv2_receiving`
@@ -357,6 +527,30 @@ ALTER TABLE `sccv2_receiving_supply`
 --
 ALTER TABLE `sccv2_return_product`
   ADD PRIMARY KEY (`return_product_aid`);
+
+--
+-- Indexes for table `sccv2_sales`
+--
+ALTER TABLE `sccv2_sales`
+  ADD PRIMARY KEY (`sales_aid`);
+
+--
+-- Indexes for table `sccv2_sales_list`
+--
+ALTER TABLE `sccv2_sales_list`
+  ADD PRIMARY KEY (`sales_list_aid`);
+
+--
+-- Indexes for table `sccv2_settings_developer`
+--
+ALTER TABLE `sccv2_settings_developer`
+  ADD PRIMARY KEY (`developer_aid`);
+
+--
+-- Indexes for table `sccv2_settings_role`
+--
+ALTER TABLE `sccv2_settings_role`
+  ADD PRIMARY KEY (`role_aid`);
 
 --
 -- Indexes for table `sccv2_settings_unit`
@@ -378,37 +572,43 @@ ALTER TABLE `sccv2_supplier`
 -- AUTO_INCREMENT for table `sccv2_category`
 --
 ALTER TABLE `sccv2_category`
-  MODIFY `category_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `category_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sccv2_customer`
 --
 ALTER TABLE `sccv2_customer`
-  MODIFY `customer_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `customer_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sccv2_defective_product`
 --
 ALTER TABLE `sccv2_defective_product`
-  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sccv2_inventory_log`
 --
 ALTER TABLE `sccv2_inventory_log`
-  MODIFY `inventory_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `inventory_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sccv2_product`
 --
 ALTER TABLE `sccv2_product`
-  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sccv2_product_price`
 --
 ALTER TABLE `sccv2_product_price`
-  MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `sccv2_purchase`
+--
+ALTER TABLE `sccv2_purchase`
+  MODIFY `purchase_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `sccv2_receiving`
@@ -420,13 +620,37 @@ ALTER TABLE `sccv2_receiving`
 -- AUTO_INCREMENT for table `sccv2_receiving_supply`
 --
 ALTER TABLE `sccv2_receiving_supply`
-  MODIFY `receiving_supply_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `receiving_supply_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sccv2_return_product`
 --
 ALTER TABLE `sccv2_return_product`
-  MODIFY `return_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `return_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `sccv2_sales`
+--
+ALTER TABLE `sccv2_sales`
+  MODIFY `sales_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `sccv2_sales_list`
+--
+ALTER TABLE `sccv2_sales_list`
+  MODIFY `sales_list_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+
+--
+-- AUTO_INCREMENT for table `sccv2_settings_developer`
+--
+ALTER TABLE `sccv2_settings_developer`
+  MODIFY `developer_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sccv2_settings_role`
+--
+ALTER TABLE `sccv2_settings_role`
+  MODIFY `role_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `sccv2_settings_unit`

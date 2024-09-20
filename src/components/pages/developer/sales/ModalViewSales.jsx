@@ -1,5 +1,6 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import {
+  formatDate,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -8,7 +9,6 @@ import {
 import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
-import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { setIsAnimating } from "@/components/store/StoreAction";
@@ -19,7 +19,9 @@ import React from "react";
 const ModalAddSales = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   let counter = 1;
-  let totalQty = 0;
+  let totalAmount = 0;
+  let paymentAmount = 0;
+  let changeAmount = 0;
 
   const {
     isLoading: loadingSales,
@@ -44,6 +46,7 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
+  console.log("itemEdit", itemEdit);
   return (
     <>
       <WrapperModal>
@@ -61,45 +64,41 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
           <div className="p-4 space-y-6">
             {SalesData?.count > 0 && (
               <>
-                <div className="grid grid-cols-[1fr_5rem] gap-5">
-                  <ul className="flex !justify-between text-sm">
+                <div className="grid grid-cols-[1fr_5rem] gap-5 items-center">
+                  <ul className="grid grid-cols-3 text-sm">
                     <li className="!mb-0 mt-2 font-bold">
                       Date :
                       <span className="font-normal ml-2">
-                        {SalesData?.data[0].sales_reference_no}
+                        {formatDate(itemEdit.sales_date)}
                       </span>
                     </li>
                     <li className="!mb-0 mt-2 font-bold">
-                      Customer Name :
+                      Reference No. :
                       <span className="font-normal ml-2">
-                        {SalesData?.data[0].sales_reference_no}
+                        {itemEdit.sales_reference_no}
                       </span>
                     </li>
                     <li className="!mb-0 mt-2 font-bold">
-                      Reference No :
-                      <span className="font-normal ml-2">
-                        {SalesData?.data[0].sales_reference_no}
+                      Payment method :
+                      <span className="font-normal ml-2 capitalize">
+                        {itemEdit.sales_payment_method}
                       </span>
                     </li>
                     <li className="!mb-0 mt-2 font-bold">
-                      Reference No :
+                      Customer :
                       <span className="font-normal ml-2">
-                        {SalesData?.data[0].sales_reference_no}
-                      </span>
-                    </li>
-                    <li className="!mb-0 mt-2 font-bold">
-                      Reference No :
-                      <span className="font-normal ml-2">
-                        {SalesData?.data[0].sales_reference_no}
+                        {itemEdit.customer_name}
                       </span>
                     </li>
                   </ul>
-                  <button
-                    className="btn btn-accent ml-auto md:!m-0 !py-2 md:text-left md:mb-2"
-                    type="submit"
-                  >
-                    <Printer size={16} /> Print
-                  </button>
+                  <div className="">
+                    <button
+                      className="btn btn-accent md:text-left "
+                      type="submit"
+                    >
+                      <Printer size={16} /> Print
+                    </button>
+                  </div>
                 </div>
               </>
             )}
@@ -145,20 +144,15 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                       </tr>
                     )}
                     {SalesData?.data.map((item, key) => {
-                      totalQty +=
+                      totalAmount +=
                         Number(item.sales_list_price) *
                         Number(item.sales_list_quantity);
+
+                      paymentAmount = Number(item.sales_payment_amount);
+                      changeAmount =
+                        Number(item.sales_payment_amount) - Number(totalAmount);
                       return (
-                        <tr
-                          key={key}
-                          className={
-                            Number(
-                              item.receiving_supply_defective_product_qty
-                            ) !== 0
-                              ? "status-alert "
-                              : ""
-                          }
-                        >
+                        <tr key={key} className="">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.product_name}</td>
@@ -183,25 +177,46 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                       );
                     })}
                   </tbody>
-                  <tbody>
-                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={6} className="py-4 pl-2 text-right ">
-                        Total:
-                      </td>
-                      <td className="text-right py-4 pr-2">
-                        {pesoSign}
-                        {numberWithCommasToFixed(totalQty, 2)}
-                      </td>
-                    </tr>
-                  </tbody>
                 </table>
               </div>
             </div>
-            <div className="flex gap-3 mt-5 justify-end">
+            <ul className="relative text-right">
+              <li className="text-dark font-bold !border-none !shadow-none">
+                <span colSpan={5} className="py-4 pl-2 text-right text-xl">
+                  Total:
+                </span>
+                <span colSpan={2} className="text-right py-4 pr-2 text-xl">
+                  {pesoSign}
+                  {numberWithCommasToFixed(totalAmount, 2)}
+                </span>
+              </li>
+              <li className="text-dark font-bold !border-none !shadow-none">
+                <span colSpan={5} className="py-4 pl-2 text-right text-xl">
+                  Tendered Amount:
+                </span>
+                <span colSpan={2} className="text-right py-4 pr-2 text-xl">
+                  {pesoSign}
+                  {numberWithCommasToFixed(paymentAmount, 2)}
+                </span>
+              </li>
+              <li className="text-dark font-bold !border-none !shadow-none">
+                <span colSpan={5} className="py-4 pl-2 text-right text-xl">
+                  Change:
+                </span>
+                <span colSpan={2} className="text-right py-4 pr-2 text-xl">
+                  {pesoSign}
+                  {numberWithCommasToFixed(
+                    Number(paymentAmount) > 0 ? changeAmount : 0,
+                    2
+                  )}
+                </span>
+              </li>
+            </ul>
+            {/* <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </WrapperModal>

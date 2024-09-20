@@ -40,10 +40,12 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
   let totalAmount = 0;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
@@ -177,7 +179,14 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
                         <td>
-                          {<PillStatus isActive={item.receiving_is_complete} />}
+                          <PillStatus
+                            isActive={item.receiving_is_complete}
+                            text={`${
+                              item.receiving_is_complete
+                                ? "Completed"
+                                : "Ongoing"
+                            }`}
+                          />
                         </td>
                         <td>{formatDate(item.receiving_date)}</td>
                         <td>{item.receiving_reference_no}</td>
@@ -228,7 +237,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                               </>
                             ) : (
                               <>
-                                {1 === 1 ? (
+                                {1 === 0 ? (
                                   <li>
                                     <button
                                       data-tooltip="View"

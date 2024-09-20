@@ -150,6 +150,8 @@ const ModalProductPrice = ({ itemEdit }) => {
                 product_price_whole_sale_amount,
                 product_price_stock_in: productData?.receiving_supply_quantity,
                 product_price_stock_out: 0,
+                product_price_available_stock:
+                  productData?.receiving_supply_quantity,
               });
             }
           }}

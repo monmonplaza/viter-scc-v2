@@ -38,6 +38,7 @@ const ProductList = ({ setItemEdit }) => {
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

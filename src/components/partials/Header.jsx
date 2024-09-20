@@ -130,6 +130,31 @@ const Header = () => {
                       {store.credentials?.data.role_name}
                     </small>
                   </div>
+                  <ul className="">
+                    <li className="flex gap-4 items-center py-2 text-xs px-1">
+                      <Mail size={15} />
+                      <span className="truncate w-[200px] block">
+                        {store.credentials?.data.developer_email}
+                      </span>
+                    </li>
+                    <li className="border-y border-line ">
+                      <Link
+                        to="#"
+                        className="flex gap-4 items-center text-xs w-full hover:bg-secondary transition-colors py-2 px-1"
+                      >
+                        <UserPen size={15} /> Profile
+                      </Link>
+                    </li>
+                    <li className="">
+                      <button
+                        onClick={handleLogout}
+                        className="flex gap-4 items-center text-xs w-full hover:bg-secondary transition-colors py-2 px-1"
+                      >
+                        <LogOut size={15} />
+                        Sign Out
+                      </button>
+                    </li>
+                  </ul>
                 </div>
                 <ul className="">
                   <li className="flex gap-4 items-center py-2 text-xs px-1">

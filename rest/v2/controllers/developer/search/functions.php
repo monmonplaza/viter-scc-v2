@@ -32,10 +32,26 @@ function checkSearchProductPrice($object)
     return $query;
 }
 
-// Read search Product Receive Supply
+// Read search by product receive supply
 function checkSearchProductReceiveSupply($object)
 {
-    $query = $object->SeachProductReceiveSupply();
+    $query = $object->seachProductReceiveSupply();
     checkQuery($query, "Empty records. (search by product receive supply)");
+    return $query;
+}
+
+// Read search by sales list product
+function checkSearchSalesListProduct($object)
+{
+    $query = $object->searchSalesListProduct();
+    checkQuery($query, "Empty records. (search by sales list product)");
+    return $query;
+}
+
+// Read search reference number
+function checkSearchReferenceNo($object)
+{
+    $query = $object->searchReferenceNo();
+    checkQuery($query, "Empty records. (search reference number)");
     return $query;
 }

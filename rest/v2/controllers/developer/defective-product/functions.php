@@ -25,3 +25,11 @@ function checkUpdateInventoryDefectiveProduct($object)
     checkQuery($query, "There's a problem processing your request. (update Inventory Defective product)");
     return $query;
 }
+
+// Update Product Price Available Stock
+function checkUpdateProductPriceAvailableStock($object)
+{
+    $query = $object->updateProductPriceAvailableStock();
+    checkQuery($query, "There's a problem processing your request. (update Product Price Available Stock)");
+    return $query;
+}

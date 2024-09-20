@@ -21,6 +21,7 @@ const UnitList = ({ setItemEdit }) => {
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,

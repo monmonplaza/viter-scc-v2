@@ -36,10 +36,12 @@ const ReturnProductList = ({ setItemEdit }) => {
   let counter = 1;
 
   const [
+    handleReset,
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleSuspend,
     aid,
     data,
     isActive,
@@ -140,6 +142,7 @@ const ReturnProductList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
+                {/* <th className="w-[200px]">Customer</th> */}
                 <th className="w-[200px]">Name</th>
                 <th className="w-[200px]">Date</th>
                 <th className="text-center">Qyt</th>
@@ -175,14 +178,17 @@ const ReturnProductList = ({ setItemEdit }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}</td>
                         <td>
-                          {
-                            <PillStatus
-                              isActive={item.return_product_is_resolved}
-                              text="Resolve"
-                            />
-                          }
+                          <PillStatus
+                            isActive={item.return_product_is_resolved}
+                            text={`${
+                              item.return_product_is_resolved
+                                ? "Resolved"
+                                : "Ongoing"
+                            }`}
+                          />
                         </td>
 
+                        {/* <td>{item.customer_name}</td> */}
                         <td>{item.product_name}</td>
                         <td>{formatDate(item.return_product_date)}</td>
                         <td className="text-center">

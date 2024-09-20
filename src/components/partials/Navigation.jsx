@@ -8,7 +8,9 @@ import {
   PillBottle,
   ScanBarcode,
   Settings,
+  ShoppingBasket,
   TicketX,
+  Undo2,
   Users,
   Weight,
 } from "lucide-react";
@@ -28,17 +30,15 @@ const Navigation = ({ menu, submenu }) => {
       slug: "overview",
     },
     {
-      icon: <ClipboardList size={18} />,
-      text: "Inventory",
-      slug: "inventory",
+      icon: <ShoppingBasket size={18} />,
+      text: "Purchase Order",
+      slug: "purchase",
     },
-
     {
       icon: <ArrowRightLeft size={18} />,
       text: "Receiving",
       slug: "receiving",
     },
-
     {
       icon: <TicketX size={18} />,
       text: "Defective Product",
@@ -46,15 +46,9 @@ const Navigation = ({ menu, submenu }) => {
     },
 
     {
-      icon: <TicketX size={18} />,
+      icon: <Undo2 size={18} />,
       text: "Return Product",
       slug: "return-product",
-    },
-
-    {
-      icon: <Weight size={18} />,
-      text: "Sales",
-      slug: "sales",
     },
     {
       icon: <Barcode size={18} />,
@@ -66,6 +60,17 @@ const Navigation = ({ menu, submenu }) => {
       text: "Products Price",
       slug: "product-price",
     },
+    {
+      icon: <Weight size={18} />,
+      text: "Sales",
+      slug: "sales",
+    },
+    {
+      icon: <ClipboardList size={18} />,
+      text: "Inventory",
+      slug: "inventory",
+    },
+
     {
       icon: <PillBottle size={18} />,
       text: "Suppliers",

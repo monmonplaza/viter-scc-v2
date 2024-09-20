@@ -20,7 +20,7 @@ const DefectiveProduct = () => {
             <Header />
             <div className="main-wrapper  bg-secondary">
               <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">DefectiveProduct</h1>
+                <h1 className="mb-0">Defective Product</h1>
               </div>
               <DefectiveProductList />
             </div>

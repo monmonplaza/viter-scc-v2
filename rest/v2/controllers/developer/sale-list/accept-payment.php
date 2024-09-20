@@ -16,16 +16,22 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     checkPayload($data);
     $salesList->sales_aid = $data["sales_aid"];
+    $salesList->sales_total_amount = $data["sales_total_amount"];
+    $salesList->sales_payment_amount = $data["sales_payment_amount"];
+    $salesList->sales_payment_method = $data["sales_payment_method"];
+    $salesList->sales_updated = date("Y-m-d H:i:s");
 
-    if (intval($salesList->sales_aid) == 0) {
-        $query = checkReadAllNewData($salesList);
-        http_response_code(200);
-        getQueriedData($query);
+    $salesList->sales_new_data = 0;
+    if ($salesList->sales_payment_method == "credit") {
+        $salesList->sales_is_paid = 0;
     } else {
-        $query = checkReadById($salesList);
-        http_response_code(200);
-        getQueriedData($query);
+        $salesList->sales_is_paid = 1;
     }
+
+
+    $query = checkUpdateAcceptPayment($salesList);
+
+    returnSuccess($salesList, "accept payment", $query);
 }
 
 http_response_code(200);

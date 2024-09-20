@@ -5,7 +5,7 @@ const SearchNoData = () => {
     <>
       <div className="flex flex-col items-center gap-2 ">
         <svg
-          width="101"
+          width="70"
           height="94"
           viewBox="0 0 101 94"
           fill="none"

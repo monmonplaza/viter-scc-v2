@@ -20,6 +20,7 @@ const SearchModalProduct = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchProduct : ""
   );
+  const [searchValues, setSearchValues] = React.useState("");
 
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
@@ -33,19 +34,22 @@ const SearchModalProduct = ({
     "post",
     "search-product",
     {
-      search,
+      search: searchValues,
     },
     {
-      search,
+      searchValues,
     }
   );
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
+
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
@@ -54,6 +58,7 @@ const SearchModalProduct = ({
     setOnFocus(false);
     setData(item);
     setSearch(item.product_name);
+    setSearchValues("");
   };
 
   const handleClickOutsideSearch = (e) => {
