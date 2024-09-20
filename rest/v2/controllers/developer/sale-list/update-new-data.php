@@ -19,6 +19,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $salesList->sales_aid = checkIndex($isNewData[0], "sales_aid");
     }
     $query = checkUpdateSalesNewData($salesList);
+
+
     returnSuccess($salesList, "accept payment", $query);
 }
 

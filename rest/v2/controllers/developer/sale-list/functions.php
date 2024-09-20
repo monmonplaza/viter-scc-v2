@@ -72,6 +72,14 @@ function checkUpdateProductPriceAvailableStock($object)
     return $query;
 }
 
+// Update Product Price Available Stock
+function checkUpdateTotalAmount($object)
+{
+    $query = $object->updateTotalAmount();
+    checkQuery($query, "There's a problem processing your request. (update total amount)");
+    return $query;
+}
+
 // Read all
 function checkReadAllNewData($object)
 {

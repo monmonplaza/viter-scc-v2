@@ -144,7 +144,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                 <th className="w-[90px]">Status</th>
                 <th className="">Purchase Date</th>
                 <th className="">Delivery Date</th>
-                <th className="">Reference No.</th>
+                <th className="">PO No.</th>
                 <th className="text-right">Total Amount</th>
               </tr>
             </thead>
@@ -178,7 +178,12 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
                         <td>
-                          {<PillStatus isActive={item.purchase_is_ongoing} />}
+                          {
+                            <PillStatus
+                              isActive={item.purchase_is_ongoing}
+                              text={`${isActive ? "approved" : "requested"}`}
+                            />
+                          }
                         </td>
                         <td>{formatDate(item.purchase_date)}</td>
                         <td>{formatDate(item.purchase_delivery_date)}</td>
@@ -230,7 +235,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                                 </li>
                                 <li>
                                   <button
-                                    data-tooltip="Complete"
+                                    data-tooltip="Approved"
                                     className="tooltip"
                                     onClick={() =>
                                       handleRestore(
@@ -307,9 +312,9 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
         <ModalAdvanceConfirm
           mysqlApiArchive={`/${ver}/purchase/active`}
           queryKey="purchase"
-          item={formatDate(data.purchase_date)}
+          item={`${formatDate(data.purchase_date)} PO `}
           active={isActive}
-          text={isActive ? "complete" : "restore"}
+          text={isActive ? "approved" : "restore"}
           itemData={data}
         />
       )}

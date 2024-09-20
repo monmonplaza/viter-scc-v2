@@ -13,7 +13,7 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
-import { ListCollapse, PillBottle, SquarePen, X } from "lucide-react";
+import { ListCollapse, PillBottle, Printer, SquarePen, X } from "lucide-react";
 import React from "react";
 
 const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
@@ -53,7 +53,7 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
-              Manage Supplier Product
+              View Recieved Supply
             </h4>
             <button type="button" onClick={handleClose}>
               <X />
@@ -61,9 +61,30 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
           </div>
 
           <div className="p-4 space-y-6">
+            <div className="grid grid-cols-[1fr_5rem] gap-5 items-center">
+              <ul className="grid grid-cols-2 text-sm">
+                <li className="!mb-0 mt-2 font-bold">
+                  Date :
+                  <span className="font-normal ml-2">
+                    {formatDate(itemEdit.receiving_date)}
+                  </span>
+                </li>
+                <li className="!mb-0 mt-2 font-bold">
+                  Reference No. :
+                  <span className="font-normal ml-2">
+                    {itemEdit.receiving_reference_no}
+                  </span>
+                </li>
+              </ul>
+              <div className="">
+                <button className="btn btn-accent md:text-left " type="submit">
+                  <Printer size={16} /> Print
+                </button>
+              </div>
+            </div>
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
-              <div className="table-wrapper w-full">
+              <div className="table-wrapper w-full pb-0">
                 <table>
                   <thead className="relative">
                     <tr className="sticky top-0 bg-inherit">
@@ -105,13 +126,13 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                       return (
                         <tr
                           key={key}
-                          className={
+                          className={`${
                             Number(
                               item.receiving_supply_defective_product_qty
                             ) !== 0
                               ? "status-alert "
                               : ""
-                          }
+                          } border-t border-b-0`}
                         >
                           <td className="w-counter">{counter++}.</td>
 
@@ -162,7 +183,7 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                       );
                     })}
                   </tbody>
-                  <tbody>
+                  {/* <tbody>
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
                       <td colSpan={5} className=""></td>
                       <td className="py-4 pl-2 ">Total:</td>
@@ -184,23 +205,18 @@ const ModalViewSupplierProduct = ({ itemEdit, setIsView }) => {
                         {Number(totalDefects)}
                       </td>
                     </tr>
-                  </tbody>
+                  </tbody> */}
                 </table>
               </div>
             </div>
 
-            <h3 className="text-right mt-5 mr-7">
+            <h3 className="text-right mt-5 pb-8 mr-7">
               Total:{pesoSign}
               {numberWithCommasToFixed(
                 receivingData?.count > 0 ? receivingData?.amount : 0,
                 2
               )}
             </h3>
-            <div className="flex gap-3 mt-5 justify-end">
-              <button className="btn btn-accent" onClick={handleClose}>
-                Close
-              </button>
-            </div>
           </div>
         </div>
       </WrapperModal>

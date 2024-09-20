@@ -1,6 +1,10 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import {
+  InputCheckbox,
+  InputSelect,
+  InputText,
+} from "@/components/helpers/FormInputs";
 import {
   formatDate,
   getDateNow,
@@ -14,7 +18,6 @@ import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
 import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
-import ModalValidate from "@/components/partials/modal/ModalValidate";
 import SearchModalCustomer from "@/components/partials/search/SearchModalCustomer";
 import SearchModalProductPrice from "@/components/partials/search/SearchModalProductPrice";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton";
@@ -38,10 +41,11 @@ const ModalAddSales = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [modalItemEdit, setItemEdit] = React.useState(null);
   const [productData, setProductData] = React.useState(null);
-  const [customerData, setCustomerData] = React.useState(null);
+  const [customerData, setCustomerData] = React.useState(itemEdit);
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
+  const [editAmount, setEditAmount] = React.useState(false);
   const [paymentMethod, setPaymentMethod] = React.useState(
-    itemEdit ? itemEdit.sales_payment_method : ""
+    itemEdit ? itemEdit.sales_payment_method : "creadit"
   );
   const [quantity, setQuantity] = React.useState("");
   const [isUpdatequantity, setIsUpdateQuantity] = React.useState(0);
@@ -179,10 +183,6 @@ const ModalAddSales = ({ itemEdit }) => {
     }
   };
 
-  const handleChangeMethod = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-
   const handleSubmitte = () => {
     setIsRequiredAmountYup(Yup.string().required("Required"));
     setIsAcceptPayment(true);
@@ -209,13 +209,17 @@ const ModalAddSales = ({ itemEdit }) => {
     sales_list_quantity: "1",
     sales_payment_method: itemEdit ? itemEdit.sales_payment_method : "credit",
     searchCustomer: itemEdit ? itemEdit.customer_name : "",
+    sales_list_price: itemEdit ? itemEdit.sales_list_price : "",
     searchProduct: "",
-    sales_payment_amount: itemEdit ? itemEdit.sales_payment_amount : "0",
+    sales_payment_amount: itemEdit
+      ? Number(itemEdit.sales_payment_amount)
+      : "0",
     isUpdate: itemEdit ? true : false,
   };
 
   const yupSchema = Yup.object({
     sales_list_date: Yup.string().required("Required"),
+    sales_list_price: Yup.string().required("Required"),
     sales_payment_amount: isRequiredAmountYup,
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
@@ -236,7 +240,7 @@ const ModalAddSales = ({ itemEdit }) => {
           </div>
 
           <div className="p-4 space-y-6">
-            {itemEdit && SalesData?.count > 0 && (
+            {itemEdit && (
               <>
                 <div className="grid grid-cols-[1fr_5rem] gap-5 items-center">
                   <ul className="grid grid-cols-2 text-sm">
@@ -274,7 +278,6 @@ const ModalAddSales = ({ itemEdit }) => {
               initialValues={initVal}
               validationSchema={yupSchema}
               onSubmit={async (values, { setSubmitting, resetForm }) => {
-                let price = 0;
                 let productId = 0;
                 let customerId = 0;
                 let productPriceId = 0;
@@ -284,17 +287,11 @@ const ModalAddSales = ({ itemEdit }) => {
                 if (productData !== null) {
                   productId = productData?.product_price_product_id;
                   productPriceId = productData?.product_price_aid;
-                  if (customerData?.customer_is_member === 1) {
-                    price = productData?.product_price_scc_price;
-                  } else {
-                    price = productData?.product_price_amount;
-                  }
                 }
 
                 //
                 mutation.mutate({
                   ...values,
-                  sales_list_price: price,
                   sales_list_product_id: productId,
                   sales_list_customer_id: itemEdit
                     ? itemEdit.sales_customer_id
@@ -305,10 +302,18 @@ const ModalAddSales = ({ itemEdit }) => {
                   sales_list_product_price_id: productPriceId,
                   product_price_available_stock:
                     productData?.product_price_available_stock,
+                  sales_payment_method: paymentMethod,
                 });
               }}
             >
               {(props) => {
+                props.values.sales_list_price = !editAmount
+                  ? productData !== null
+                    ? customerData?.customer_is_member === 1
+                      ? productData?.product_price_scc_price
+                      : productData?.product_price_amount
+                    : props.values.sales_list_price
+                  : props.values.sales_list_price;
                 return (
                   <Form>
                     {!itemEdit && (
@@ -332,65 +337,39 @@ const ModalAddSales = ({ itemEdit }) => {
                         <div className="flex mb-2 gap-2">
                           <div className="input-wrap">
                             <InputText
-                              label="Receiving Date"
+                              label="Sales Date"
                               type="date"
                               name="sales_list_date"
                               disabled={mutation.isPending}
                             />
                           </div>
-                          <div className="input-wrap">
-                            <SearchModalCustomer
-                              setData={setCustomerData}
-                              props={props.values}
-                              label="Search Customer"
-                              name="searchCustomer"
-                              mutation={mutation}
-                              setIsRequiredYup={setIsRequiredCustomerYup}
-                            />
-                          </div>
-
-                          <div className="input-wrap">
-                            <InputSelect
-                              label="Payment method"
-                              name="sales_payment_method"
-                            >
-                              <optgroup label="Payment method">
-                                <option value="credit">Credit</option>
-                                <option value="cash">Cash</option>
-                                <option value="gcash">Gcash</option>
-                                <option value="card">
-                                  Card (ex. credit, debit )
-                                </option>
-                              </optgroup>
-                            </InputSelect>
-                          </div>
                         </div>
                       </>
                     )}
-                    <div className="md:grid md:grid-cols-[1fr_1fr]  gap-2 items-end">
-                      {itemEdit ? (
-                        <>
-                          <div className="input-wrap w-[15rem]">
-                            <InputSelect
-                              label="Payment method"
-                              name="sales_payment_method"
-                              onChange={(e) => handleChangeMethod(e)}
-                            >
-                              <optgroup label="Payment method">
-                                <option value="credit">Credit</option>
-                                <option value="cash">Cash</option>
-                                <option value="gcash">Gcash</option>
-                                <option value="card">
-                                  Card (ex. credit, debit )
-                                </option>
-                              </optgroup>
-                            </InputSelect>
-                          </div>
-                        </>
-                      ) : (
-                        <div></div>
-                      )}
-                      <div className="md:grid md:grid-cols-[1fr_1fr_5rem] gap-2 items-end">
+                    <div className="lg:grid lg:grid-cols-[10rem_1fr] gap-2 items-end">
+                      <div className=""></div>
+                      <div
+                        className={`${
+                          itemEdit
+                            ? "lg:grid lg:grid-cols-[1fr_15rem_8rem_5rem]"
+                            : "lg:grid lg:grid-cols-[15rem_1fr_15rem_8rem_5rem]"
+                        }  gap-2 items-end`}
+                      >
+                        {!itemEdit && (
+                          <>
+                            <div className="input-wrap">
+                              <SearchModalCustomer
+                                setData={setCustomerData}
+                                props={props.values}
+                                label="Search Customer"
+                                name="searchCustomer"
+                                mutation={mutation}
+                                setIsRequiredYup={setIsRequiredCustomerYup}
+                              />
+                            </div>
+                          </>
+                        )}
+
                         <div className="input-wrap">
                           <SearchModalProductPrice
                             setData={setProductData}
@@ -402,6 +381,75 @@ const ModalAddSales = ({ itemEdit }) => {
                           />
                         </div>
                         <div className="input-wrap">
+                          <InputSelect
+                            label="Product Price"
+                            name="sales_list_price"
+                            onChange={(e) => {
+                              setEditAmount(true);
+                            }}
+                          >
+                            {productData !== null ? (
+                              <>
+                                {customerData?.customer_is_member === 1 ? (
+                                  <optgroup label="Product Price">
+                                    <option
+                                      value={
+                                        productData?.product_price_scc_price
+                                      }
+                                    >
+                                      {pesoSign}
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_scc_price,
+                                        2
+                                      )}
+                                    </option>
+                                    <option
+                                      value={
+                                        productData?.product_price_scc_whole_sale_amount
+                                      }
+                                    >
+                                      {pesoSign}
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_scc_whole_sale_amount,
+                                        2
+                                      )}{" "}
+                                      - whole sale
+                                    </option>
+                                  </optgroup>
+                                ) : (
+                                  <optgroup label="Product Price">
+                                    <option
+                                      value={productData?.product_price_amount}
+                                    >
+                                      {pesoSign}
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_amount,
+                                        2
+                                      )}
+                                    </option>
+                                    <option
+                                      value={
+                                        productData?.product_price_whole_sale_amount
+                                      }
+                                    >
+                                      {pesoSign}
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_whole_sale_amount,
+                                        2
+                                      )}{" "}
+                                      - whole sale
+                                    </option>
+                                  </optgroup>
+                                )}
+                              </>
+                            ) : (
+                              <optgroup label="Product Price">
+                                <option value="">No Data</option>
+                              </optgroup>
+                            )}
+                          </InputSelect>
+                        </div>
+                        <div className="input-wrap">
                           <InputText
                             label="Qty"
                             type="text"
@@ -411,7 +459,7 @@ const ModalAddSales = ({ itemEdit }) => {
                           />
                         </div>
                         <button
-                          className="btn btn-accent ml-auto md:mt-0 mt-5 !py-1 md:text-left md:mb-2"
+                          className="btn btn-accent ml-auto lg:mt-0 mt-5 !py-1 md:text-left lg:mb-2 "
                           type="submit"
                           disabled={mutation.isPending}
                           onClick={handleSearch}
@@ -432,7 +480,7 @@ const ModalAddSales = ({ itemEdit }) => {
             </Formik>
             <div className="relative">
               {!loadingSales && fetchingSales && <SpinnerTable />}
-              <div className="table-wrapper w-full max-h-[30dvh] ">
+              <div className="table-wrapper w-full max-h-[30dvh] pb-0">
                 <table
                   className={`${
                     !loadingSales && SalesData.count > 7 ? "has-sticky" : ""
@@ -475,7 +523,7 @@ const ModalAddSales = ({ itemEdit }) => {
                         Number(item.sales_list_price) *
                         Number(item.sales_list_quantity);
                       return (
-                        <tr key={key} className="h-[3rem]">
+                        <tr key={key} className="h-[3rem] border-t border-b-0 ">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.product_name}</td>
@@ -521,7 +569,12 @@ const ModalAddSales = ({ itemEdit }) => {
                                   data-tooltip="Delete"
                                   className="tooltip"
                                   onClick={() =>
-                                    handleRemove(item.sales_list_aid, item)
+                                    handleRemove(item.sales_list_aid, {
+                                      ...item,
+                                      amount:
+                                        Number(item.sales_list_price) *
+                                        Number(item.sales_list_quantity),
+                                    })
                                   }
                                 >
                                   <Trash size={14} />
@@ -533,83 +586,107 @@ const ModalAddSales = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
-                  <tbody className="relative ">
-                    <tr className="sticky -bottom-4 opacity-[100] !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={5} className="py-4 pl-2 text-right text-2xl">
-                        Total:
-                      </td>
-                      <td colSpan={2} className="text-right py-4 pr-2 text-2xl">
-                        {pesoSign}
-                        {numberWithCommasToFixed(totalAmount, 2)}
-                      </td>
-                    </tr>
-                  </tbody>
                 </table>
               </div>
             </div>
-            {SalesData?.count > 0 && (
-              <div className="">
-                <Formik
-                  initialValues={initVal}
-                  validationSchema={yupSchema}
-                  onSubmit={async (values, { setSubmitting, resetForm }) => {
-                    //
-                    mutation.mutate({
-                      ...values,
-                      sales_aid: SalesData?.data[0].sales_aid,
-                      sales_total_amount: totalAmount,
-                      sales_payment_method: paymentMethod,
-                    });
-                  }}
-                >
-                  {(props) => {
-                    return (
-                      <Form>
-                        <div className=" ">
-                          <div className="flex justify-end">
-                            <div className="input-wrap">
-                              <InputText
-                                label="Amount"
-                                type="text"
-                                number="number"
-                                name="sales_payment_amount"
-                                className="text-right text-lg !m-0"
-                                disabled={mutation.isPending}
-                              />
+
+            <div className="sm:grid grid-cols-2 lg:grid-cols-[50rem_1fr] pb-8">
+              <div></div>
+              {SalesData?.count > 0 && (
+                <div className="">
+                  <ul>
+                    <li className="flex justify-end text-dark font-bold ">
+                      <span colSpan={5} className="pl-2 text-right text-2xl">
+                        Total:
+                      </span>
+                      <span colSpan={2} className="text-right pr-2 text-2xl">
+                        {pesoSign}
+                        {numberWithCommasToFixed(totalAmount, 2)}
+                      </span>
+                    </li>
+                  </ul>
+                  <Formik
+                    initialValues={initVal}
+                    validationSchema={yupSchema}
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                      //
+                      mutation.mutate({
+                        ...values,
+                        sales_aid: SalesData?.data[0].sales_aid,
+                        sales_total_amount: totalAmount,
+                        sales_payment_method: paymentMethod,
+                      });
+                    }}
+                  >
+                    {(props) => {
+                      return (
+                        <Form>
+                          <div className=" ">
+                            <div className="flex justify-end mb-2">
+                              <div className="input-wrap w-[16rem]">
+                                <InputSelect
+                                  label="Payment method"
+                                  name="sales_payment_method"
+                                  onChange={(e) => {
+                                    setPaymentMethod(e.target.value);
+                                  }}
+                                >
+                                  <optgroup label="Payment method">
+                                    <option value="credit">Credit</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="gcash">Gcash</option>
+                                    <option value="card">
+                                      Card (ex. credit, debit )
+                                    </option>
+                                  </optgroup>
+                                </InputSelect>
+                              </div>
                             </div>
+                            <div className="flex justify-end">
+                              <div className="input-wrap">
+                                <InputText
+                                  label="Amount"
+                                  type="text"
+                                  number="number"
+                                  name="sales_payment_amount"
+                                  className="text-right text-lg !m-0"
+                                  disabled={mutation.isPending}
+                                />
+                              </div>
+                            </div>
+                            <ul className="flex justify-end my-5">
+                              <li>Change :</li>
+                              {pesoSign}
+                              {numberWithCommasToFixed(
+                                Number(props.values.sales_payment_amount) === 0
+                                  ? 0
+                                  : Number(props.values.sales_payment_amount) -
+                                      Number(totalAmount),
+                                2
+                              )}
+                            </ul>
                           </div>
-                          <ul className="flex justify-end my-5">
-                            <li>Change :</li>
-                            {pesoSign}
-                            {numberWithCommasToFixed(
-                              Number(props.values.sales_payment_amount) === 0
-                                ? 0
-                                : Number(props.values.sales_payment_amount) -
-                                    Number(totalAmount),
-                              2
-                            )}
-                          </ul>
-                        </div>
-                        <div className="flex gap-3 mt-5 justify-end">
-                          <button
-                            className="btn btn-accent "
-                            type="submit"
-                            disabled={mutation.isPending}
-                            onClick={handleSubmitte}
-                          >
-                            {mutation.isPending ? (
-                              <SpinnerButton />
-                            ) : (
-                              <>Accept</>
-                            )}
-                          </button>
-                        </div>
-                      </Form>
-                    );
-                  }}
-                </Formik>
-              </div>
-            )}
+                          <div className="flex gap-3 mt-5 justify-end">
+                            <button
+                              className="btn btn-accent "
+                              type="submit"
+                              disabled={mutation.isPending}
+                              onClick={handleSubmitte}
+                            >
+                              {mutation.isPending ? (
+                                <SpinnerButton />
+                              ) : (
+                                <>Accept</>
+                              )}
+                            </button>
+                          </div>
+                        </Form>
+                      );
+                    }}
+                  </Formik>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -618,7 +695,7 @@ const ModalAddSales = ({ itemEdit }) => {
             mysqlApiDelete={`/${ver}/sales-list/${aid}`}
             queryKey="sales-list-read-new-receive"
             dataItem={data.product_name}
-            item={data}
+            item={{ ...data, totalAmount }}
           />
         )}
       </WrapperModal>

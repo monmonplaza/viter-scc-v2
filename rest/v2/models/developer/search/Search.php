@@ -16,6 +16,7 @@ class Search
     public $tblCustomer;
     public $tblSalesList;
     public $tblSales;
+    public $tblUnit;
 
 
     public function __construct($db)
@@ -30,6 +31,7 @@ class Search
         $this->tblCustomer = "sccv2_customer";
         $this->tblSalesList = "sccv2_sales_list";
         $this->tblSales = "sccv2_sales";
+        $this->tblUnit = "sccv2_settings_unit";
     }
 
     public function searchSupplier()
@@ -99,6 +101,7 @@ class Search
             $sql = "select ";
             $sql .= "product.*, ";
             $sql .= "pr.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "rs.receiving_supply_barcode, ";
             $sql .= "rs.receiving_supply_defective_product_qty, ";
             $sql .= "category.category_aid, ";
@@ -108,17 +111,19 @@ class Search
             $sql .= "{$this->tblProduct} as product, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as category ";
             $sql .= "where product.product_category_id = category.category_aid ";
             $sql .= "and rs.receiving_supply_product_id = product.product_aid ";
             $sql .= "and pr.product_price_product_id = product.product_aid ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and rs.receiving_supply_unit_id = u.settings_unit_aid  ";
             $sql .= "and cast(pr.product_price_available_stock as decimal(20,4)) > 0 ";
             $sql .= "and ( ";
             $sql .= "product.product_name like :product_name ";
             $sql .= "or category.category_name like :category_name ";
-            $sql .= "or rs.receiving_supply_barcode = :receiving_supply_barcode ";
+            $sql .= "or rs.receiving_supply_barcode like :receiving_supply_barcode ";
             $sql .= ") ";
             $sql .= "order by product.product_is_active desc, ";
             $sql .= "product.product_name asc ";
@@ -126,7 +131,7 @@ class Search
             $query->execute([
                 "category_name" => "%{$this->search}%",
                 "product_name" => "%{$this->search}%",
-                "receiving_supply_barcode" => $this->search,
+                "receiving_supply_barcode" => "%{$this->search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

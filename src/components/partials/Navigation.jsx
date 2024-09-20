@@ -42,7 +42,7 @@ const Navigation = ({ menu, submenu }) => {
     },
     {
       icon: <ShoppingBasket size={18} />,
-      text: "Purchase",
+      text: "Purchase Order",
       slug: "purchase",
     },
 

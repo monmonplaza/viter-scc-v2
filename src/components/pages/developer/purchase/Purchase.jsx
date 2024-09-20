@@ -35,7 +35,7 @@ const Purchase = () => {
               {/* <Breadcrumbs /> */}
 
               <div className="flex justify-between items-center my-5">
-                <h1 className="mb-0">Purchase</h1>
+                <h1 className="mb-0">Purchase Order</h1>
                 <div>
                   <button
                     className="btn btn-accent h-[34px]"

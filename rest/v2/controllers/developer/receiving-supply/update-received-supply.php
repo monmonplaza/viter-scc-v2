@@ -46,6 +46,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         checkUpdateReceiving($receiving_supply);
 
+        $receiving_supply->receiving_is_new_data = 0;
+        $receiving_supply->receiving_supply_have_price = 0;
+
         $query = checkCreate($receiving_supply);
 
         // // FOR INVETORY ONLY

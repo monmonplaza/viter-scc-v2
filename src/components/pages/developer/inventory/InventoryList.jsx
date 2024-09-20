@@ -134,6 +134,7 @@ const InventoryList = () => {
                         <td className="text-right">
                           {Number(item.inventory_log_stock_in) +
                             Number(item.inventory_log_return_product) -
+                            Number(item.inventory_log_stock_out) -
                             Number(item.inventory_log_defective_product)}
                         </td>
                       </tr>

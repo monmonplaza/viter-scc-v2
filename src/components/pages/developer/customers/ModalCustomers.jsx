@@ -79,8 +79,6 @@ const ModalCustomers = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     customer_name: Yup.string().required("Require"),
-    customer_mobile_number: Yup.string().required("Require"),
-    customer_address: Yup.string().required("Require"),
   });
 
   React.useEffect(() => handleEscape(handleClose), []);

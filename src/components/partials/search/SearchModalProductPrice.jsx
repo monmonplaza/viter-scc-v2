@@ -24,6 +24,9 @@ const SearchModalProductPrice = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchProduct : ""
   );
+  const [searchValues, setSearchValues] = React.useState(
+    itemEdit ? props.searchProduct : ""
+  );
 
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
@@ -37,27 +40,48 @@ const SearchModalProductPrice = ({
     "post",
     "search-product-price",
     {
-      search,
+      search: searchValues,
     },
     {
-      search,
+      searchValues,
     }
   );
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
   const handleClick = (item) => {
-    props.searchProduct = `${item.product_name} (${item.receiving_supply_barcode})`;
+    props.searchProduct = `${item.product_name}${` ${
+      item.receiving_supply_barcode !== ""
+        ? `(${item.receiving_supply_barcode})`
+        : ""
+    }`}${` - ${
+      item.product_price_available_stock !== ""
+        ? `${item.product_price_available_stock} ${item.settings_unit_name}`
+        : ""
+    }`}`;
     setOnFocus(false);
     setData(item);
-    setSearch(`${item.product_name} (${item.receiving_supply_barcode})`);
+    setSearchValues("");
+    setSearch(
+      `${item.product_name}${` ${
+        item.receiving_supply_barcode !== ""
+          ? `(${item.receiving_supply_barcode})`
+          : ""
+      }`}${` - ${
+        item.product_price_available_stock !== ""
+          ? `${item.product_price_available_stock} ${item.settings_unit_name}`
+          : ""
+      }`}`
+    );
   };
 
   const handleClickOutsideSearch = (e) => {
@@ -113,7 +137,17 @@ const SearchModalProductPrice = ({
                   key={key}
                   onClick={() => handleClick(item)}
                 >
-                  {item.product_name} ({item.receiving_supply_barcode})
+                  {item.product_name}{" "}
+                  {`${
+                    item.receiving_supply_barcode !== ""
+                      ? `(${item.receiving_supply_barcode})`
+                      : ""
+                  }`}
+                  {` - ${
+                    item.product_price_available_stock !== ""
+                      ? `${item.product_price_available_stock} ${item.settings_unit_name}`
+                      : ""
+                  }`}
                 </button>
               ))
             ) : (

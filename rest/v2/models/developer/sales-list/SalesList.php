@@ -422,6 +422,26 @@ class SalesList
     }
 
     // update
+    public function updateTotalAmount()
+    {
+        try {
+            $sql = "update {$this->tblSales} set ";
+            $sql .= "sales_total_amount = :sales_total_amount, ";
+            $sql .= "sales_updated = :sales_updated ";
+            $sql .= "where sales_aid = :sales_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_total_amount" => $this->sales_total_amount,
+                "sales_updated" => $this->sales_updated,
+                "sales_aid" => $this->sales_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
     public function update()
     {
         try {
@@ -594,6 +614,7 @@ class SalesList
         }
         return $query;
     }
+
 
     // delete
     public function delete()

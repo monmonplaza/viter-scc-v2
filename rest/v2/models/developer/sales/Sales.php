@@ -80,7 +80,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";
@@ -100,7 +101,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";
@@ -125,7 +127,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";
@@ -242,7 +245,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";
@@ -265,7 +269,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";
@@ -288,7 +293,8 @@ class Sales
     {
         try {
             $sql = "select sales.*, ";
-            $sql .= "c.customer_name ";
+            $sql .= "c.customer_name, ";
+            $sql .= "c.customer_is_member ";
             $sql .= "from ";
             $sql .= "{$this->tblSales} as sales, ";
             $sql .= "{$this->tblCustomer} as c ";

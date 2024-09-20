@@ -170,7 +170,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
-              Manage Supplier Product
+              Recieved Supply
             </h4>
             <button type="button" onClick={handleClose}>
               <X />
@@ -472,7 +472,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
-                  <tbody>
+                  {/* <tbody className="">
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
                       <td colSpan={5} className=""></td>
                       <td className="py-4 pl-2 ">Total:</td>
@@ -494,15 +494,17 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                         {Number(totalDefects)}
                       </td>
                     </tr>
-                  </tbody>
+                  </tbody> */}
                 </table>
               </div>
             </div>
-            <div className="flex gap-3 mt-5 justify-end">
-              <button className="btn btn-accent" onClick={handleClose}>
-                Close
-              </button>
-            </div>
+            <h3 className="text-right mt-5 pb-8 mr-7">
+              Total:{pesoSign}
+              {numberWithCommasToFixed(
+                receivingData?.count > 0 ? receivingData?.amount : 0,
+                2
+              )}
+            </h3>
           </div>
         </div>
 

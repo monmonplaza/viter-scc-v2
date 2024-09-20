@@ -20,6 +20,8 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   let counter = 1;
   let totalAmount = 0;
+  let paymentAmount = 0;
+  let changeAmount = 0;
 
   const {
     isLoading: loadingSales,
@@ -145,6 +147,10 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                       totalAmount +=
                         Number(item.sales_list_price) *
                         Number(item.sales_list_quantity);
+
+                      paymentAmount = Number(item.sales_payment_amount);
+                      changeAmount =
+                        Number(item.sales_payment_amount) - Number(totalAmount);
                       return (
                         <tr key={key} className="">
                           <td className="w-counter">{counter++}.</td>
@@ -186,11 +192,11 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
               </li>
               <li className="text-dark font-bold !border-none !shadow-none">
                 <span colSpan={5} className="py-4 pl-2 text-right text-xl">
-                  Recieved Amount:
+                  Tendered Amount:
                 </span>
                 <span colSpan={2} className="text-right py-4 pr-2 text-xl">
                   {pesoSign}
-                  {numberWithCommasToFixed(totalAmount, 2)}
+                  {numberWithCommasToFixed(paymentAmount, 2)}
                 </span>
               </li>
               <li className="text-dark font-bold !border-none !shadow-none">
@@ -199,7 +205,7 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                 </span>
                 <span colSpan={2} className="text-right py-4 pr-2 text-xl">
                   {pesoSign}
-                  {numberWithCommasToFixed(totalAmount, 2)}
+                  {numberWithCommasToFixed(changeAmount, 2)}
                 </span>
               </li>
             </ul>
