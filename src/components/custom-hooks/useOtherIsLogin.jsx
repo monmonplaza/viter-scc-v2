@@ -1,26 +1,28 @@
 import React from "react";
-import { setIsLogin } from "../../store/StoreAction";
-import { StoreContext } from "../../store/StoreContext";
 import { checkLocalStorage } from "../helpers/CheckLocalStorage";
+import { ver } from "../helpers/functions-general.jsx";
 import { checkRoleToRedirect } from "../helpers/login-functions";
 import { queryData } from "../helpers/queryData";
+import { setIsLogin } from "../store/StoreAction.jsx";
+import { StoreContext } from "../store/StoreContext.jsx";
 
-const useOtherLogin = (navigate) => {
+const useOtherIsLogin = (navigate) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [loginLoading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     setLoading(true);
     const fetchLogin = async () => {
-      const login = await queryData(`/v1/user-other/token`, "post", {
+      const login = await queryData(`/${ver}/settings-user/token`, "post", {
         token: checkLocalStorage().token,
       });
 
       if (typeof login === "undefined" || !login.success) {
-        localStorage.removeItem("restoToken");
+        localStorage.removeItem("localhristoken");
         setLoading(false);
       } else {
         setLoading(false);
+        // console.log("useOtherIsLogin", login.data);
         checkRoleToRedirect(navigate, login.data);
       }
     };
@@ -39,4 +41,4 @@ const useOtherLogin = (navigate) => {
   return { loginLoading };
 };
 
-export default useOtherLogin;
+export default useOtherIsLogin;

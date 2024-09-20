@@ -15,15 +15,16 @@ import React from "react";
 const RolesList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   let counter = 1;
-  const [
+  const {
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

@@ -16,9 +16,7 @@ const Overview = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
-              <Breadcrumbs />
-
+            <div className="main-wrapper  bg-secondary">
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Overview</h1>
 

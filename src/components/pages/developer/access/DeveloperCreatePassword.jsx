@@ -64,8 +64,6 @@ const DeveloperCreatePassword = () => {
     },
   });
 
-  console.log(developerKey);
-
   const initVal = {
     new_password: "",
     confirm_password: "",

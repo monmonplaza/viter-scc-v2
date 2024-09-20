@@ -12,11 +12,11 @@ if (array_key_exists("roleid", $_GET)) {
     $column_name = strtolower(str_replace(" ", "_", $data['item']));
     checkId($role->role_aid);
     // delete
-    // if ($column_name == "developer") {
-    //     isUserSystemAssociated($role);
-    // } else {
-    //     isUserOtherAssociated($role);
-    // }
+    if ($column_name == "developer") {
+        isUserSystemAssociated($role);
+    } else {
+        isUserOtherAssociated($role);
+    }
     checkDropColumnName($role, $column_name);
     $query = checkDelete($role);
 

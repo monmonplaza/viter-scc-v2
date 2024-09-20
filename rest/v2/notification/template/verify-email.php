@@ -44,7 +44,7 @@ function getHtmlVerifyEmail(
     <div style="padding: 10px 10px 0px">
     <div style="text-align: left">
     <img
-    src="' . $IMAGES_URL . '/fbs-logo.png"
+    src="https://sambahayancoop.com/wp-content/uploads/2023/07/logo.png"
     alt="fbs-logo"
     />
   </div>
@@ -83,7 +83,7 @@ function getHtmlVerifyEmail(
           href="' . $ROOT_DOMAIN . '' . $link . '?key=' . $key . '"
           style="
             padding: 4px 25px;
-            background-color: #630b3c;
+            background-color: #3c78d8;
             color: #fff;
             display: inline-block;
             text-decoration: none;

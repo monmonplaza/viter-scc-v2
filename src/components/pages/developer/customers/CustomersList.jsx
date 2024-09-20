@@ -33,7 +33,7 @@ const CustomersList = ({ setItemEdit }) => {
   const search = React.useRef({ value: "" });
   let counter = 1;
 
-  const [
+  const {
     handleRemove,
     handleEdit,
     handleArchive,
@@ -41,7 +41,7 @@ const CustomersList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

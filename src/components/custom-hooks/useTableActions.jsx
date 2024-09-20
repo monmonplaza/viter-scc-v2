@@ -49,16 +49,16 @@ const useTableActions = ({ setItemEdit }) => {
     dispatch(setIsSuspend(true));
   };
 
-  return [
-    handleReset,
+  return {
     handleRemove,
     handleEdit,
     handleArchive,
     handleRestore,
+    handleReset,
     handleSuspend,
     aid,
     data,
     isActive,
-  ];
+  };
 };
 export default useTableActions;

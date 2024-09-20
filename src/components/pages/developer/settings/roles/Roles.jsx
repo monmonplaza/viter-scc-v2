@@ -1,3 +1,4 @@
+import ModalValidate from "@/components/partials/modal/ModalValidate.jsx";
 import { setIsAdd } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
@@ -25,6 +26,7 @@ const Roles = () => {
         <RolesList setItemEdit={setItemEdit} />
       </div>
       {store.isAdd && <ModalRoles itemEdit={itemEdit} />}
+      {store.validate && <ModalValidate />}
     </>
   );
 };

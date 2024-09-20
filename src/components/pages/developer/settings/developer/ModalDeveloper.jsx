@@ -10,6 +10,7 @@ import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
   setError,
+  setIsAccountUpdated,
   setIsAdd,
   setIsAnimating,
   setMessage,
@@ -35,6 +36,11 @@ const ModalDeveloper = ({ itemEdit }) => {
     data: role,
   } = useQueryData(`/${ver}/settings-role`, "get", "settings-role");
 
+  const getDeveloperRoleId =
+    role?.count > 0 && role?.data.filter((rl) => rl.role_name === "Developer");
+
+  console.log(store.isAdd);
+
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
@@ -53,6 +59,7 @@ const ModalDeveloper = ({ itemEdit }) => {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
       } else {
+        dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
         dispatch(
           setMessage(
@@ -74,7 +81,6 @@ const ModalDeveloper = ({ itemEdit }) => {
         ) {
           dispatch(setIsAccountUpdated(true));
         }
-        dispatch(setIsAdd(false));
       }
     },
   });
@@ -94,7 +100,7 @@ const ModalDeveloper = ({ itemEdit }) => {
     developer_fname: itemEdit ? itemEdit.developer_fname : "",
     developer_lname: itemEdit ? itemEdit.developer_lname : "",
     developer_email: itemEdit ? itemEdit.developer_email : "",
-    developer_role_id: role?.count > 0 ? role?.data[0].role_aid : "",
+    developer_role_id: "",
     developer_email_old: itemEdit ? itemEdit.developer_email : "",
   };
 
@@ -123,7 +129,10 @@ const ModalDeveloper = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            mutation.mutate(values);
+            mutation.mutate({
+              ...values,
+              developer_role_id: getDeveloperRoleId[0].role_aid,
+            });
           }}
         >
           {(props) => {
@@ -163,7 +172,7 @@ const ModalDeveloper = ({ itemEdit }) => {
                         label="Role"
                         type="text"
                         name="developer_role_id"
-                        value={role?.data[0].role_name}
+                        value={!isLoading && getDeveloperRoleId[0].role_name}
                         disabled
                       />
                     </div>

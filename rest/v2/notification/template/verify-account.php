@@ -42,7 +42,7 @@ function getHtmlVerifyAccount(
     <div style="padding: 10px 10px 0px">
     <div style="text-align: center">
     <img
-      src="https://demo.frontlinebusiness.com.ph/dev/notification-images/fbas_logo_opt.png"
+      src="https://sambahayancoop.com/wp-content/uploads/2023/07/logo.png"
       alt=""
     />
   </div>

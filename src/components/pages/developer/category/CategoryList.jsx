@@ -34,7 +34,7 @@ const CategoryList = ({ setItemEdit }) => {
   let counter = 1;
   console.log(store.isSearch);
 
-  const [
+  const {
     handleRemove,
     handleEdit,
     handleArchive,
@@ -42,7 +42,7 @@ const CategoryList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

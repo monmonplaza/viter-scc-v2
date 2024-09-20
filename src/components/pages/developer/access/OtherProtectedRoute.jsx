@@ -7,7 +7,7 @@ import { StoreContext } from "@/components/store/StoreContext.jsx";
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const DeveloperProtectedRoute = ({ children }) => {
+const OtherProtectedRoute = ({ children }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [loading, setLoading] = React.useState(true);
   const [isAuth, setIsAuth] = React.useState("");
@@ -16,18 +16,13 @@ const DeveloperProtectedRoute = ({ children }) => {
 
   React.useEffect(() => {
     const fetchLogin = async () => {
-      const login = await queryData(
-        `/${ver}/settings-developer/token`,
-        "post",
-        {
-          token: localhristoken.token,
-        }
-      );
+      const login = await queryData(`/${ver}/settings-user/token`, "post", {
+        token: localhristoken.token,
+      });
 
       console.log(login);
 
-      const isUserKeyMatched =
-        login.data.user_key === login.data.developer_password;
+      const isUserKeyMatched = login.data.user_key === login.data.user_password;
 
       // check if the password from database is matched
       // to the password used to login
@@ -47,7 +42,7 @@ const DeveloperProtectedRoute = ({ children }) => {
         dispatch(setCredentials(login.data));
         setIsAuth("123");
         setLoading(false);
-        delete login.data.developer_password;
+        delete login.data.user_password;
         delete login.data.user_key;
         delete login.data.role_description;
         delete login.data.role_created;
@@ -83,7 +78,7 @@ const DeveloperProtectedRoute = ({ children }) => {
         ) : isAuth === "123" ? (
           children
         ) : isAuth === "456" ? (
-          <Navigate to={`${devNavUrl}/system/login`} />
+          <Navigate to={`${devNavUrl}/user/login`} />
         ) : (
           <p>API end point error / Page not found.</p>
         )}
@@ -92,4 +87,4 @@ const DeveloperProtectedRoute = ({ children }) => {
   }
 };
 
-export default DeveloperProtectedRoute;
+export default OtherProtectedRoute;

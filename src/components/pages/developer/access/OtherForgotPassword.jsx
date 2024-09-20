@@ -12,7 +12,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
-const DeveloperForgotPassword = () => {
+const OtherForgotPassword = () => {
   const queryClient = useQueryClient();
   const { store, dispatch } = React.useContext(StoreContext);
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -20,7 +20,7 @@ const DeveloperForgotPassword = () => {
 
   const mutation = useMutation({
     mutationFn: (values) =>
-      queryData(`/${ver}/settings-developer/reset`, "post", values),
+      queryData(`/${ver}/settings-user/reset`, "post", values),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["system"] });
@@ -71,9 +71,7 @@ const DeveloperForgotPassword = () => {
             </div>
           </div>
 
-          <h5 className="text-center my-3 text-base">
-            Developer - Forgot Password
-          </h5>
+          <h5 className="text-center my-3 text-base">User - Forgot Password</h5>
         </div>
 
         {isSuccess ? (
@@ -123,7 +121,7 @@ const DeveloperForgotPassword = () => {
             <p className="mt-5 text-center">
               Go back to
               <a
-                href={`${devNavUrl}/system/login`}
+                href={`${devNavUrl}/user/login`}
                 className="w-full text-content pl-1"
               >
                 <u>Login</u>
@@ -136,4 +134,4 @@ const DeveloperForgotPassword = () => {
   );
 };
 
-export default DeveloperForgotPassword;
+export default OtherForgotPassword;

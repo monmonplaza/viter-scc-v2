@@ -1,6 +1,7 @@
 import Breadcrumbs from "@/components/partials/Breadcrumbs.jsx";
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
+import ModalError from "@/components/partials/modal/ModalError.jsx";
 import ModalValidate from "@/components/partials/modal/ModalValidate.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import ToastSuccess from "@/components/partials/ToastSuccess.jsx";
@@ -11,7 +12,6 @@ import React from "react";
 import ModalAddSupplierProduct from "./ModalAddSupplierProduct.jsx";
 import ModalViewSupplierProduct from "./ModalViewSupplierProduct.jsx";
 import ReceivingList from "./ReceivingList.jsx";
-import ModalError from "@/components/partials/modal/ModalError.jsx";
 
 const Receiving = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -33,7 +33,7 @@ const Receiving = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
+            <div className="main-wrapper ">
               {/* <Breadcrumbs /> */}
 
               <div className="flex justify-between items-center my-5">

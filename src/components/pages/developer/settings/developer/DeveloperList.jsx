@@ -25,17 +25,16 @@ const DeveloperList = ({ setItemEdit }) => {
 
   let counter = 1;
 
-  const [
-    handleReset,
+  const {
     handleRemove,
     handleEdit,
-    handleArchive,
     handleRestore,
+    handleReset,
     handleSuspend,
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

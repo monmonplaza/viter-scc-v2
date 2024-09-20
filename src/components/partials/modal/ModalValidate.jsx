@@ -1,8 +1,7 @@
 import { setValidate } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
-import { Files } from "lucide-react";
+import { FileQuestion } from "lucide-react";
 import React from "react";
-import WrapperModal from "../wrapper/WrapperModal.jsx";
 
 const ModalValidate = () => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -28,8 +27,12 @@ const ModalValidate = () => {
       ></div>
       <div className="modal-center rounded-md !bg-secondary border border-line">
         <div className="p-5 pb-0">
-          <Files size={70} className="mx-auto mb-2 text-info !stroke-[4px]" />
-          <p className="text-base text-center text-balance py-5">
+          <FileQuestion
+            size={40}
+            className="mx-auto mb-2 text-info !stroke-[2px]"
+          />
+          <h2 className="text-center text-lg my-0 mt-5">Validation Fail</h2>
+          <p className="text-xs text-center text-balance py-5">
             {store.message}
           </p>
         </div>

@@ -32,7 +32,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         if ($readKey->rowCount() > 0) {
             $row = $readKey->fetch(PDO::FETCH_ASSOC);
             extract($row);
-            $user->user_email = $user_new_email;
+            $user->user_email = $user_email_new;
             // update
             $query = checkUpdateEmailForUser($user);
             returnSuccess($user, "System user", $query);

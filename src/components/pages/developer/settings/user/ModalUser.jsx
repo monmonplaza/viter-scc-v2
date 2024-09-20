@@ -10,6 +10,7 @@ import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
   setError,
+  setIsAccountUpdated,
   setIsAdd,
   setIsAnimating,
   setMessage,
@@ -29,28 +30,32 @@ const ModalUser = ({ itemEdit }) => {
   const queryClient = useQueryClient();
 
   const {
-    isLoading,
-    isFetching,
-    error,
+    isLoading: roleIsLoading,
+    isFetching: roleIsFetching,
+    error: roleError,
     data: role,
   } = useQueryData(`/${ver}/settings-role`, "get", "settings-role");
+
+  const getUserRoles =
+    role?.data !== undefined &&
+    role?.data.filter((item) => item.role_name !== "Developer");
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/settings-developer/${itemEdit.user_aid}`
-          : `/${ver}/settings-developer`,
+          ? `/${ver}/settings-user/${itemEdit.user_aid}`
+          : `/${ver}/settings-user`,
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["developer"] });
+      queryClient.invalidateQueries({ queryKey: ["settings-user"] });
 
       // show error box
       if (!data.success) {
-        dispatch(setError(true));
+        dispatch(setValidate(true));
         dispatch(setMessage(data.error));
       } else {
         dispatch(setSuccess(true));
@@ -88,18 +93,21 @@ const ModalUser = ({ itemEdit }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
-  const initVal = {
-    user_aid: itemEdit ? itemEdit.user_aid : "",
-    user_fname: itemEdit ? itemEdit.user_fname : "",
-    user_lname: itemEdit ? itemEdit.user_lname : "",
-    user_email: itemEdit ? itemEdit.user_email : "",
-    user_role_id: role?.count > 0 ? role?.data[0].role_aid : "",
-    user_email_old: itemEdit ? itemEdit.user_email : "",
-  };
+  const initVal = itemEdit
+    ? { ...itemEdit, user_email_old: itemEdit.user_email }
+    : {
+        user_aid: "",
+        user_fname: "",
+        user_lname: "",
+        user_email: "",
+        user_role_id: "",
+        user_email_old: "",
+      };
 
   const yupSchema = Yup.object({
     user_fname: Yup.string().required("Required"),
     user_lname: Yup.string().required("Required"),
+    user_role_id: Yup.string().required("Required"),
     user_email: Yup.string().required("Required").email("Invalid email"),
   });
 
@@ -112,7 +120,7 @@ const ModalUser = ({ itemEdit }) => {
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
             {itemEdit ? "Edit " : "Add "}
-            Role
+            User Role
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
@@ -158,13 +166,40 @@ const ModalUser = ({ itemEdit }) => {
                     </div>
 
                     <div className="input-wrap">
-                      <InputText
+                      <InputSelect
                         label="Role"
                         type="text"
                         name="user_role_id"
-                        value={role?.data[0].role_name}
-                        disabled
-                      />
+                        required={true}
+                        disabled={
+                          mutation.isPending || roleIsLoading || roleError
+                        }
+                      >
+                        {roleIsLoading ? (
+                          <option value="" hidden>
+                            Loading...
+                          </option>
+                        ) : roleError ? (
+                          <option value="" hidden>
+                            Error
+                          </option>
+                        ) : getUserRoles.length === 0 ? (
+                          <option value="" hidden>
+                            No Data
+                          </option>
+                        ) : (
+                          <optgroup label="Select Role">
+                            <option value="" hidden></option>
+                            {getUserRoles.map((item, key) => {
+                              return (
+                                <option value={item.role_aid} key={key}>
+                                  {item.role_name}
+                                </option>
+                              );
+                            })}
+                          </optgroup>
+                        )}
+                      </InputSelect>
                     </div>
                   </div>
 

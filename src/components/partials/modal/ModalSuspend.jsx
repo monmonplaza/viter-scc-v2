@@ -78,7 +78,7 @@ const ModalSuspend = ({
           </div>
 
           <div className="p-3">
-            <p className=" mb-2">
+            <p className="mb-2">
               {isOwnAccount
                 ? "Suspending your own account will make you unable to login and use the system. Do you still want to proceed?"
                 : msg}

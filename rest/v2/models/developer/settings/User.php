@@ -6,7 +6,7 @@ class User
     public $user_fname;
     public $user_lname;
     public $user_email;
-    public $user_new_email;
+    public $user_email_new;
     public $user_role_id;
     public $user_key;
     public $user_password;
@@ -57,7 +57,7 @@ class User
                 "user_role_id" => $this->user_role_id,
                 "user_key" => $this->user_key,
                 "user_created" => $this->user_created,
-                "user_datetime" => $this->user_datetime,
+                "user_datetime" => $this->user_datetime
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
@@ -134,7 +134,7 @@ class User
             $sql .= "where user.user_role_id = role.role_aid ";
             $sql .= "and user.user_email like :user_email ";
             $sql .= "and user.user_is_active = 1 ";
-            $sql .= "and role.role_is_user = 1 ";
+            // $sql .= "and role.role_is_user = 1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_email" => $this->user_email,
@@ -211,7 +211,7 @@ class User
         try {
             $sql = "select ";
             $sql .= "user_key, ";
-            $sql .= "user_new_email ";
+            $sql .= "user_email_new ";
             $sql .= "from {$this->tblUser} ";
             $sql .= "where user_key = :user_key ";
             $query = $this->connection->prepare($sql);
@@ -268,7 +268,7 @@ class User
         try {
             $sql = "update {$this->tblUser} set ";
             $sql .= "user_key = :user_key, ";
-            $sql .= "user_new_email = :user_email, ";
+            $sql .= "user_email_new = :user_email, ";
             $sql .= "user_datetime = :user_datetime ";
             $sql .= "where user_aid  = :user_aid ";
             $query = $this->connection->prepare($sql);
@@ -372,6 +372,68 @@ class User
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_email" => "{$this->user_email}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    public function filterByStatus()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblUser} ";
+            $sql .= "where user_is_active = :user_is_active  ";
+            $sql .= "order by user_is_active desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_is_active" => $this->user_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterByStatusAndSearch()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblUser} ";
+            $sql .= "where ";
+            $sql .= "user_is_active = :user_is_active ";
+            $sql .= "and user_fname like :user_fname ";
+            $sql .= "and user_lname like :user_lname ";
+            $sql .= "order by user_is_active desc, ";
+            $sql .= "user_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_fname" => "%{$this->user_search}%",
+                "user_lname" => "%{$this->user_search}%",
+                "user_is_active" => $this->user_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function updateEmailForUser()
+    {
+        try {
+            $sql = "update {$this->tblUser} set ";
+            $sql .= "user_email = :user_email, ";
+            $sql .= "user_email_new = '', ";
+            $sql .= "user_key = '', ";
+            $sql .= "user_datetime = :user_datetime ";
+            $sql .= "where user_key = :user_key ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_email" => $this->user_email,
+                "user_datetime" => $this->user_datetime,
+                "user_key" => $this->user_key,
             ]);
         } catch (PDOException $ex) {
             $query = false;

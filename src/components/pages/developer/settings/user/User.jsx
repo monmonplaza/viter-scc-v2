@@ -1,4 +1,5 @@
 import ModalError from "@/components/partials/modal/ModalError.jsx";
+import ModalValidate from "@/components/partials/modal/ModalValidate.jsx";
 import ToastSuccess from "@/components/partials/ToastSuccess.jsx";
 import { setIsAdd } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
@@ -29,7 +30,7 @@ const User = () => {
       {store.isAdd && <ModalUser itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
-      {store.error && <ModalError />}
+      {store.validate && <ModalValidate />}
     </>
   );
 };

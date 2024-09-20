@@ -539,7 +539,20 @@ function isAssociated($object)
     $count = $query->rowCount();
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
+// check association
+function isUserSystemAssociated($object)
+{
+    $query = $object->checkUserSystemAssociation();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
 
+function isUserOtherAssociated($object)
+{
+    $query = $object->checkUserOtherAssociation();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
 
 
 // compare two values
@@ -658,6 +671,60 @@ function tokenDeveloper(
             $returnData["data"] = array_merge(
                 (array)$row,
                 array('user_key' => $decoded->data->data->developer_password), // data from login
+                array('role' => $decoded->data->data->role_name),
+            );
+            $returnData["count"] = $result->rowCount();
+            $returnData["success"] = true;
+            $returnData["message"] = "Access granted.";
+            $response->setData($returnData);
+            $response->send();
+            return $returnData;
+        } catch (Exception $ex) {
+            $response->setSuccess(false);
+            $error["count"] = 0;
+            $error["success"] = false;
+            $error['error'] = "Catch no token found.";
+            $response->setData($error);
+            $response->send();
+            exit;
+        }
+    } else {
+        $response->setSuccess(false);
+        $error["count"] = 0;
+        $error["success"] = false;
+        $error['error'] = "No token found.";
+        $response->setData($error);
+        $response->send();
+        exit;
+    }
+    checkEndpoint();
+    http_response_code(200);
+    checkAccess();
+}
+
+
+
+// Token for system user
+function tokenUser(
+    $object,
+    $token,
+    $key
+) {
+    $response = new Response();
+    $error = [];
+    $returnData = [];
+
+    if (!empty($token)) {
+        try {
+            $decoded = JWT::decode($token, $key, array('HS256'));
+            $object->user_email = $decoded->data->email;
+            $result = checkLogin($object);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+
+            http_response_code(200);
+            $returnData["data"] = array_merge(
+                (array)$row,
+                array('user_key' => $decoded->data->data->user_password), // data from login
                 array('role' => $decoded->data->data->role_name),
             );
             $returnData["count"] = $result->rowCount();

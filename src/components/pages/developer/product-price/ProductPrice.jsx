@@ -1,14 +1,14 @@
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
-import { Plus } from "lucide-react";
-import ProductPriceList from "./ProductPriceList";
-import React from "react";
-import { StoreContext } from "@/components/store/StoreContext";
 import ToastSuccess from "@/components/partials/ToastSuccess";
 import ModalValidate from "@/components/partials/modal/ModalValidate";
-import ModalProductPrice from "./ModalProductPrice";
 import { setIsAdd } from "@/components/store/StoreAction";
+import { StoreContext } from "@/components/store/StoreContext";
+import { Plus } from "lucide-react";
+import React from "react";
+import ModalProductPrice from "./ModalProductPrice";
+import ProductPriceList from "./ProductPriceList";
 
 const ProductPrice = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -29,7 +29,7 @@ const ProductPrice = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
+            <div className="main-wrapper bg-secondary">
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Product Price</h1>
 

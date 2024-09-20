@@ -11,15 +11,15 @@ class Role
     public $connection;
     public $lastInsertedId;
     public $tblRole;
-    public $tblUserSystem;
-    public $tblUserOther;
+    public $tblDeveloper;
+    public $tblUser;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblRole = "sccv2_settings_role";
-        $this->tblUserSystem = "hr_local_settings_users_system";
-        $this->tblUserOther = "hr_local_settings_users_other";
+        $this->tblDeveloper = "sccv2_settings_developer";
+        $this->tblUser = "sccv2_settings_user";
     }
 
     // create
@@ -223,8 +223,8 @@ class Role
     public function checkUserSystemAssociation()
     {
         try {
-            $sql = "select user_system_role_id from {$this->tblUserSystem} ";
-            $sql .= "where user_system_role_id = :role_aid ";
+            $sql = "select developer_role_id from {$this->tblDeveloper} ";
+            $sql .= "where developer_role_id = :role_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_aid" => "{$this->role_aid}",
@@ -238,8 +238,8 @@ class Role
     public function checkUserOtherAssociation()
     {
         try {
-            $sql = "select user_other_role_id from {$this->tblUserOther} ";
-            $sql .= "where user_other_role_id = :role_aid ";
+            $sql = "select user_role_id from {$this->tblUser} ";
+            $sql .= "where user_role_id = :role_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_aid" => "{$this->role_aid}",

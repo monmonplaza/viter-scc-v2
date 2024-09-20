@@ -1,11 +1,11 @@
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
-import DefectiveProductList from "./DefectiveProductList";
 import ToastSuccess from "@/components/partials/ToastSuccess";
 import ModalValidate from "@/components/partials/modal/ModalValidate";
 import { StoreContext } from "@/components/store/StoreContext";
 import React from "react";
+import DefectiveProductList from "./DefectiveProductList";
 
 const DefectiveProduct = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,7 +18,7 @@ const DefectiveProduct = () => {
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
+            <div className="main-wrapper  bg-secondary">
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">DefectiveProduct</h1>
               </div>

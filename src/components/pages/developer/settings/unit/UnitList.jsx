@@ -16,7 +16,7 @@ const UnitList = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   let counter = 1;
 
-  const [
+  const {
     handleRemove,
     handleEdit,
     handleArchive,
@@ -24,10 +24,9 @@ const UnitList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
-
   const {
     isLoading,
     isFetching,

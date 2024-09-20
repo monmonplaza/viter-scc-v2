@@ -44,7 +44,7 @@ const Settings = () => {
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
-            <div className="main-wrapper bg-secondary">
+            <div className="bg-secondary">
               <div className="grid grid-cols-[250px_1fr] gap-5">
                 <div className="setting-nav bg-subnav min-h-[calc(100vh-90px)] border-r border-line  px-4 ">
                   <h2 className="my-7">Settings</h2>
@@ -72,7 +72,7 @@ const Settings = () => {
                   </ul>
                 </div>
 
-                <div className="setting-main my-7 max-w-[700px] w-full ">
+                <div className="setting-main  max-w-[700px] w-full ">
                   {settingPages[tabindex]}
                 </div>
               </div>

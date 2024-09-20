@@ -27,7 +27,7 @@ const ModalConfirm = ({ mysqlApiArchive, queryKey, item, active }) => {
         dispatch(setMessage(data.error));
       } else {
         dispatch(setSuccess(true));
-        dispatch(setMessage("Record Successfull Archived"));
+        dispatch(setMessage("Record updated"));
       }
     },
   });
@@ -62,7 +62,7 @@ const ModalConfirm = ({ mysqlApiArchive, queryKey, item, active }) => {
         <div className="p-3">
           <p className=" mb-2">
             You are about to {active ? "restore" : "archive"}{" "}
-            <span className="font-bold">{item}</span>.
+            <span className="font-bold">"{item}"</span>.
           </p>
           <p>Are you sure you want to continue?</p>
         </div>

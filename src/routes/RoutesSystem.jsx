@@ -79,10 +79,7 @@ export const routesSystem = [
     path: `${devNavUrl}/${urlSystem}/return-product`,
     element: <ReturnProduct />,
   },
-  // {
-  //   path: `${devNavUrl}/${urlSystem}/settings`,
-  //   element: <Unit />,
-  // },
+
   {
     path: `${devNavUrl}/${urlSystem}/unit`,
     element: <Unit />,

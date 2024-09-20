@@ -54,13 +54,32 @@ const Header = () => {
     setShow(false);
   };
 
-  const avatarLetter = `
-  ${store.credentials?.data.developer_fname.charAt(
-    0
-  )}${store.credentials?.data.developer_lname.charAt(0)}`;
+  const getUserCredentialByRole = () => {
+    if (store.credentials?.data.role_is_developer === 1) {
+      return {
+        name: `${store.credentials?.data.developer_fname} `,
+        fullname: `${store.credentials?.data.developer_fname} ${store.credentials?.data.developer_lname} `,
+        email: store.credentials?.data.developer_email,
+        letter: `${store.credentials?.data.developer_fname.charAt(
+          0
+        )}${store.credentials?.data.developer_lname.charAt(0)}`,
+      };
+    } else {
+      return {
+        name: `${store.credentials?.data.user_fname}`,
+        fullname: `${store.credentials?.data.user_fname} ${store.credentials?.data.user_lname} `,
+        email: store.credentials?.data.user_email,
+        letter: `${store.credentials?.data.user_fname.charAt(
+          0
+        )}${store.credentials?.data.user_lname.charAt(0)}`,
+      };
+    }
+  };
+
   return (
     <>
-      <header className="p-4 flex justify-end bg-primary border-b border-line">
+      <header className="p-4 flex justify-between items-center bg-primary border-b border-line">
+        <h3 className="mb-0 leading-2">Content Management System</h3>
         <div className="profile flex items-center gap-3">
           <div
             className="flex items-center border border-line rounded-2xl p-1 leading-none w-[48px] cursor-pointer hover:border-accent transition-all bg-secondary"
@@ -78,7 +97,8 @@ const Header = () => {
           <div className="flex items-center gap-3">
             <div>
               <h4 className="mb-0 leading-none font-medium">
-                Hi {store.credentials?.data.developer_fname},
+                Hi
+                <span className="pl-1">{getUserCredentialByRole().name}</span>,
               </h4>
               <small className="leading-none text-xs block">
                 {store.credentials?.data.role}
@@ -89,7 +109,7 @@ const Header = () => {
                 className="size-8 bg-accent text-white center-all rounded-full cursor-pointer"
                 onClick={() => setShow(!show)}
               >
-                {avatarLetter}
+                {getUserCredentialByRole().letter}
               </div>
               <div
                 className={`absolute top-[110%] border right-3  w-[250px] p-2 rounded-md border-line bg-primary z-[9999999] ${
@@ -98,13 +118,13 @@ const Header = () => {
               >
                 <div className=" flex gap-2 items-center mb-2">
                   <div className="center-all gap-3 bg-accent text-white size-6 rounded-full text-xs">
-                    {avatarLetter}
+                    {getUserCredentialByRole().letter}
                   </div>
 
                   <div className="translate-y-1">
                     <h5 className="text-xs leading-none mb-0">
-                      {store.credentials?.data.developer_fname}{" "}
-                      {store.credentials?.data.developer_lname}
+                      {" "}
+                      {getUserCredentialByRole().fullname}
                     </h5>
                     <small className="text-[10px]  block">
                       {store.credentials?.data.role_name}
@@ -115,7 +135,7 @@ const Header = () => {
                   <li className="flex gap-4 items-center py-2 text-xs px-1">
                     <Mail size={15} />
                     <span className="truncate w-[200px] block">
-                      {store.credentials?.data.developer_email}
+                      {getUserCredentialByRole().email}
                     </span>
                   </li>
                   <li className="border-y border-line ">

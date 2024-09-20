@@ -14,6 +14,8 @@ const ToastSuccess = () => {
     dispatch(setSuccess(false));
   };
 
+  console.log(store.isAccountUpdated);
+
   React.useEffect(() => {
     setTimeout(() => {
       handleClose();
@@ -21,7 +23,7 @@ const ToastSuccess = () => {
         localStorage.removeItem("localhristoken");
         store.credentials.data.role_is_developer === 1
           ? window.location.replace(`${devNavUrl}/developer/login`)
-          : window.location.replace(`${devNavUrl}/login`);
+          : window.location.replace(`${devNavUrl}/user/login`);
         dispatch(setIsAccountUpdated(false));
         return;
       }
@@ -39,7 +41,7 @@ const ToastSuccess = () => {
           <CircleCheckBig color="#fff" size={22} />
         </div>
         <div className="bg-light p-2 px-4 text-sm ">
-          <p className="mb-0  text-dark">{store.message}</p>
+          <p className="mb-0 text-dark">{store.message}</p>
         </div>
         <button className="p-2 bg-light rounded-r-md">
           <X size={14} onClick={handleClose} />

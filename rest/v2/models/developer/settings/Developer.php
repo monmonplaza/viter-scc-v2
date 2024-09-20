@@ -6,7 +6,7 @@ class Developer
     public $developer_fname;
     public $developer_lname;
     public $developer_email;
-    public $developer_new_email;
+    public $developer_email_new;
     public $developer_role_id;
     public $developer_key;
     public $developer_password;
@@ -211,7 +211,7 @@ class Developer
         try {
             $sql = "select ";
             $sql .= "developer_key, ";
-            $sql .= "developer_new_email ";
+            $sql .= "developer_email_new ";
             $sql .= "from {$this->tblDeveloper} ";
             $sql .= "where developer_key = :developer_key ";
             $query = $this->connection->prepare($sql);
@@ -268,7 +268,7 @@ class Developer
         try {
             $sql = "update {$this->tblDeveloper} set ";
             $sql .= "developer_key = :developer_key, ";
-            $sql .= "developer_new_email = :developer_email, ";
+            $sql .= "developer_email_new = :developer_email, ";
             $sql .= "developer_datetime = :developer_datetime ";
             $sql .= "where developer_aid  = :developer_aid ";
             $query = $this->connection->prepare($sql);
@@ -372,6 +372,28 @@ class Developer
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "developer_email" => "{$this->developer_email}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    public function updateEmailForUser()
+    {
+        try {
+            $sql = "update {$this->tblDeveloper} set ";
+            $sql .= "developer_email = :developer_email, ";
+            $sql .= "developer_email_new = '', ";
+            $sql .= "developer_key = '', ";
+            $sql .= "developer_datetime = :developer_datetime ";
+            $sql .= "where developer_key = :developer_key ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "developer_email" => $this->developer_email,
+                "developer_datetime" => $this->developer_datetime,
+                "developer_key" => $this->developer_key,
             ]);
         } catch (PDOException $ex) {
             $query = false;

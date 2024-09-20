@@ -41,7 +41,7 @@ function getHtmlResetPassword(
     <div style="padding: 10px 10px 0px">
       <div style="text-align: center">
         <img
-          src="https://demo.frontlinebusiness.com.ph/dev/notification-images/fbas_logo_opt.png"
+          src="https://sambahayancoop.com/wp-content/uploads/2023/07/logo.png"
           alt=""
         />
       </div>
@@ -72,7 +72,7 @@ function getHtmlResetPassword(
           It looks like you need to reset your password using
           <strong>' . $email . '</strong> as account email address.
           Please click the button below to reset your password
-          and start using the  FBAS System again.
+          and start using the  SCC System.
         </p>
 
         <a

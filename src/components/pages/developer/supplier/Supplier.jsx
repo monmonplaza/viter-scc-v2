@@ -29,7 +29,7 @@ const Supplier = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
+            <div className="main-wrapper ">
               <Breadcrumbs />
 
               <div className="flex justify-between items-center my-5">
