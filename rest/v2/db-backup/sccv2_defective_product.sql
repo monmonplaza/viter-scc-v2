@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2024 at 06:32 AM
+-- Generation Time: Sep 20, 2024 at 09:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,7 +32,9 @@ CREATE TABLE `sccv2_defective_product` (
   `defective_product_receiving_supply_id` int(11) NOT NULL,
   `defective_product_is_resolve` tinyint(1) NOT NULL,
   `defective_product_qty` varchar(20) NOT NULL,
+  `defective_product_resolved_date` varchar(20) NOT NULL,
   `defective_product_amount` varchar(20) NOT NULL,
+  `defective_product_remarks` text NOT NULL,
   `defective_product_created` datetime NOT NULL,
   `defective_product_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,11 +43,9 @@ CREATE TABLE `sccv2_defective_product` (
 -- Dumping data for table `sccv2_defective_product`
 --
 
-INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_amount`, `defective_product_created`, `defective_product_updated`) VALUES
-(1, 93, 0, '5', '5', '2024-08-29 10:44:23', '2024-08-29 10:44:23'),
-(2, 101, 1, '20', '200', '2024-08-29 10:46:12', '2024-08-29 10:49:06'),
-(3, 101, 0, '60', '600', '2024-08-29 10:49:54', '2024-08-29 10:49:54'),
-(4, 80, 0, '2', '100', '2024-08-29 12:21:21', '2024-08-29 12:21:21');
+INSERT INTO `sccv2_defective_product` (`defective_product_aid`, `defective_product_receiving_supply_id`, `defective_product_is_resolve`, `defective_product_qty`, `defective_product_resolved_date`, `defective_product_amount`, `defective_product_remarks`, `defective_product_created`, `defective_product_updated`) VALUES
+(2, 2, 1, '2', '', '20', '', '2024-09-13 09:43:05', '0000-00-00 00:00:00'),
+(3, 4, 0, '6', '', '72', '', '2024-09-13 10:06:30', '2024-09-13 10:06:30');
 
 --
 -- Indexes for dumped tables
@@ -65,7 +65,7 @@ ALTER TABLE `sccv2_defective_product`
 -- AUTO_INCREMENT for table `sccv2_defective_product`
 --
 ALTER TABLE `sccv2_defective_product`
-  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `defective_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
