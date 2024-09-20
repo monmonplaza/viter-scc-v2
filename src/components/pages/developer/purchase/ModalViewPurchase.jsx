@@ -37,7 +37,7 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
     { purchase_reference_no: itemEdit ? itemEdit.purchase_reference_no : "0" }
   );
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -47,7 +47,7 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

@@ -39,7 +39,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
   let counter = 1;
   let totalAmount = 0;
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -49,7 +49,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

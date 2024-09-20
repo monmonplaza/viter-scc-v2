@@ -33,7 +33,7 @@ const SupplierList = ({ setItemEdit }) => {
   const search = React.useRef({ value: "" });
   let counter = 1;
   console.log(store.isSearch);
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -43,7 +43,7 @@ const SupplierList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

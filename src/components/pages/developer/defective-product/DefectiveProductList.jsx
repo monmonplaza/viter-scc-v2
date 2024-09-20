@@ -32,7 +32,7 @@ const DefectiveProductList = ({ setItemEdit }) => {
   let counter = 1;
   let totalAmount = 0;
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -42,7 +42,7 @@ const DefectiveProductList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

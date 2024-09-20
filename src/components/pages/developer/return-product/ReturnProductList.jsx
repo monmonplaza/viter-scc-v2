@@ -35,7 +35,7 @@ const ReturnProductList = ({ setItemEdit }) => {
   const search = React.useRef({ value: "" });
   let counter = 1;
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -45,7 +45,7 @@ const ReturnProductList = ({ setItemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

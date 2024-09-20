@@ -89,7 +89,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
     },
   });
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -99,7 +99,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

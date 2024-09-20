@@ -37,7 +37,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
   let counter = 1;
   let totalAmount = 0;
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -47,7 +47,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 

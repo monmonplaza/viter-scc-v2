@@ -97,7 +97,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
     },
   });
 
-  const [
+  const {
     handleReset,
     handleRemove,
     handleEdit,
@@ -107,7 +107,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
     aid,
     data,
     isActive,
-  ] = useTableActions({
+  } = useTableActions({
     setItemEdit,
   });
 
