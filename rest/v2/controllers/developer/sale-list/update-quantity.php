@@ -79,6 +79,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             checkUpdateProductPriceAvailableStock($salesList);
         }
     }
+
+    $totalSalesAmount = $data["totalSalesAmount"];
+    $salesList->sales_list_price = $data["sales_list_price"];
+
+    $amount = (float)$salesList->sales_list_price * (float)$salesList->sales_list_quantity;
+    $amountOld = (float)$salesList->sales_list_price * (float)$sales_list_quantity_old;
+
+    $salesList->sales_aid = $data["sales_list_sales_id"];
+    $salesList->sales_total_amount = (float)$totalSalesAmount + (float)$amount - (float)$amountOld;
+
+
+    checkUpdateTotalAmount($salesList);
     returnSuccess($salesList, "udpate quantity", $query);
 }
 

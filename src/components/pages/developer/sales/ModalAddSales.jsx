@@ -45,7 +45,7 @@ const ModalAddSales = ({ itemEdit }) => {
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
   const [editAmount, setEditAmount] = React.useState(false);
   const [paymentMethod, setPaymentMethod] = React.useState(
-    itemEdit ? itemEdit.sales_payment_method : "creadit"
+    itemEdit ? itemEdit.sales_payment_method : "credit"
   );
   const [quantity, setQuantity] = React.useState("");
   const [isUpdatequantity, setIsUpdateQuantity] = React.useState(0);
@@ -166,6 +166,9 @@ const ModalAddSales = ({ itemEdit }) => {
         sales_list_aid: val.sales_list_aid,
         product_price_available_stock: val.product_price_available_stock,
         sales_list_quantity_old: val.sales_list_quantity,
+        totalSalesAmount: val.sales_total_amount,
+        sales_list_sales_id: val.sales_list_sales_id,
+        sales_list_price: val.sales_list_price,
       }
     );
 
@@ -219,7 +222,7 @@ const ModalAddSales = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     sales_list_date: Yup.string().required("Required"),
-    sales_list_price: Yup.string().required("Required"),
+    sales_list_price: !isAcceptPayment && Yup.string().required("Required"),
     sales_payment_amount: isRequiredAmountYup,
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
@@ -289,7 +292,11 @@ const ModalAddSales = ({ itemEdit }) => {
                   productPriceId = productData?.product_price_aid;
                 }
 
-                //
+                let totalSalesAmount =
+                  SalesData?.count > 0
+                    ? SalesData?.data[0].sales_total_amount
+                    : 0;
+
                 mutation.mutate({
                   ...values,
                   sales_list_product_id: productId,
@@ -303,6 +310,7 @@ const ModalAddSales = ({ itemEdit }) => {
                   product_price_available_stock:
                     productData?.product_price_available_stock,
                   sales_payment_method: paymentMethod,
+                  totalSalesAmount,
                 });
               }}
             >
@@ -397,7 +405,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                         productData?.product_price_scc_price
                                       }
                                     >
-                                      {pesoSign}
+                                      &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_scc_price,
                                         2
@@ -408,7 +416,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                         productData?.product_price_scc_whole_sale_amount
                                       }
                                     >
-                                      {pesoSign}
+                                      &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_scc_whole_sale_amount,
                                         2
@@ -421,7 +429,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                     <option
                                       value={productData?.product_price_amount}
                                     >
-                                      {pesoSign}
+                                      &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_amount,
                                         2
@@ -432,7 +440,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                         productData?.product_price_whole_sale_amount
                                       }
                                     >
-                                      {pesoSign}
+                                      &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_whole_sale_amount,
                                         2
@@ -589,7 +597,6 @@ const ModalAddSales = ({ itemEdit }) => {
                 </table>
               </div>
             </div>
-
             <div className="sm:grid grid-cols-2 lg:grid-cols-[50rem_1fr] pb-8">
               <div></div>
               {SalesData?.count > 0 && (

@@ -100,5 +100,12 @@ if (count($receivedProduct) > 0) {
     }
 }
 
+$totalSalesAmount = $data["totalSalesAmount"];
+$amount = (float)$salesList->sales_list_price * (float)$salesList->sales_list_quantity;
+
+$salesList->sales_aid = $salesList->sales_list_sales_id;
+$salesList->sales_total_amount = (float)$totalSalesAmount + (float)$amount;
+
+checkUpdateTotalAmount($salesList);
 
 returnSuccess($salesList, "Sales List", $query);
