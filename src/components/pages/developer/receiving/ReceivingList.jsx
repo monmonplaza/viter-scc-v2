@@ -230,7 +230,7 @@ const ReceivingList = ({ setItemEdit, setIsView }) => {
                               </>
                             ) : (
                               <>
-                                {1 === 1 ? (
+                                {1 === 0 ? (
                                   <li>
                                     <button
                                       data-tooltip="View"

@@ -205,7 +205,10 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                 </span>
                 <span colSpan={2} className="text-right py-4 pr-2 text-xl">
                   {pesoSign}
-                  {numberWithCommasToFixed(changeAmount, 2)}
+                  {numberWithCommasToFixed(
+                    Number(paymentAmount) > 0 ? changeAmount : 0,
+                    2
+                  )}
                 </span>
               </li>
             </ul>

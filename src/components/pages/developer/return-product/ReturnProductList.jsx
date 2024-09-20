@@ -142,6 +142,7 @@ const ReturnProductList = ({ setItemEdit }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
+                {/* <th className="w-[200px]">Customer</th> */}
                 <th className="w-[200px]">Name</th>
                 <th className="w-[200px]">Date</th>
                 <th className="text-center">Qyt</th>
@@ -185,6 +186,7 @@ const ReturnProductList = ({ setItemEdit }) => {
                           }
                         </td>
 
+                        {/* <td>{item.customer_name}</td> */}
                         <td>{item.product_name}</td>
                         <td>{formatDate(item.return_product_date)}</td>
                         <td className="text-center">
