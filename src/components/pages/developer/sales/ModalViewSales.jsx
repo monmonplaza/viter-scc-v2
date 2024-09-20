@@ -212,11 +212,11 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                 </span>
               </li>
             </ul>
-            <div className="flex gap-3 mt-5 justify-end">
+            {/* <div className="flex gap-3 mt-5 justify-end">
               <button className="btn btn-accent" onClick={handleClose}>
                 Close
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </WrapperModal>

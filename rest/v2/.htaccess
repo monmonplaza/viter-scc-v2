@@ -147,6 +147,7 @@ RewriteRule ^purchase/([0-9]+)$ controllers/developer/purchase/purchase.php?purc
 RewriteRule ^purchase/page/([0-9]+)$ controllers/developer/purchase/page.php?start=$1 [L]  
 RewriteRule ^purchase/active$ controllers/developer/purchase/active.php [L]  
 RewriteRule ^purchase/search$ controllers/developer/purchase/search.php [L]  
+RewriteRule ^purchase/delete-by-id/([0-9]+)$ controllers/developer/purchase/delete-by-id.php?purchaseid=$1 [L]  
 RewriteRule ^purchase/read-new-data$ controllers/developer/purchase/read-new-data.php [L]   
 RewriteRule ^purchase/update-new-data$ controllers/developer/purchase/update-new-data.php [L]   
 RewriteRule ^purchase/page-group-reference-no/([0-9]+)$ controllers/developer/purchase/page-group-reference-no.php?start=$1 [L]  

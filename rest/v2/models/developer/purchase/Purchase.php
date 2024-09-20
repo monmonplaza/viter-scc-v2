@@ -415,6 +415,22 @@ class Purchase
     {
         try {
             $sql = "delete from {$this->tblPurchase} ";
+            $sql .= "where purchase_aid = :purchase_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_aid" => $this->purchase_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteAll()
+    {
+        try {
+            $sql = "delete from {$this->tblPurchase} ";
             $sql .= "where purchase_reference_no = :purchase_reference_no ";
             $query = $this->connection->prepare($sql);
             $query->execute([

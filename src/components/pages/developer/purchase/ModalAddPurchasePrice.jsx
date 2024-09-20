@@ -378,7 +378,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                         Number(item.purchase_quantity);
                       totalPrice += Number(item.purchase_price);
                       return (
-                        <tr key={key} className="">
+                        <tr key={key} className="border-t border-b-0">
                           <td className="w-counter">{counter++}.</td>
 
                           <td>{item.supplier_name}</td>
@@ -419,7 +419,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                       );
                     })}
                   </tbody>
-                  <tbody>
+                  {/* <tbody>
                     <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
                       <td colSpan={5} className="py-4 pl-2 text-right">
                         Total:
@@ -433,21 +433,27 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                         {numberWithCommasToFixed(totalAmount, 2)}
                       </td>
                     </tr>
-                  </tbody>
+                  </tbody> */}
                 </table>
               </div>
             </div>
-            <div className="flex gap-3 mt-5 justify-end">
-              <button className="btn btn-accent" onClick={handleClose}>
-                Close
-              </button>
-            </div>
+            <ul>
+              <li className="flex justify-end text-dark font-bold pb-8">
+                <span colSpan={5} className="pl-2 text-right text-2xl">
+                  Total:
+                </span>
+                <span colSpan={2} className="text-right pr-2 text-2xl">
+                  {pesoSign}
+                  {numberWithCommasToFixed(totalAmount, 2)}
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 
         {store.isDelete && (
           <ModalAdvanceDelete
-            mysqlApiDelete={`/${ver}/purchase/${aid}`}
+            mysqlApiDelete={`/${ver}/purchase/delete-by-id/${aid}`}
             queryKey="purchase-read-new-data"
             dataItem={data.product_name}
             item={data}

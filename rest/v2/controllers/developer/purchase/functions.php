@@ -63,3 +63,11 @@ function checkReadAllByReferenceNo($object)
     checkQuery($query, "Empty records. (read All By Reference No)");
     return $query;
 }
+
+// Delete 
+function checkDeleteAll($object)
+{
+    $query = $object->deleteAll();
+    checkQuery($query, "There's a problem processing your request. (delete all)");
+    return $query;
+}
