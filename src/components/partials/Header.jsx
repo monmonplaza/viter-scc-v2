@@ -79,7 +79,12 @@ const Header = () => {
   return (
     <>
       <header className="p-4 flex justify-between items-center bg-primary border-b border-line">
-        <h3 className="mb-0 leading-2">Content Management System</h3>
+        <div>
+          <h3 className="leading-none uppercase text-[19px] font-medium">
+            Inventory and Sale
+          </h3>
+          <p>Management System</p>
+        </div>
         <div className="profile flex items-center gap-3">
           <div
             className="flex items-center border border-line rounded-2xl p-1 leading-none w-[48px] cursor-pointer hover:border-accent transition-all bg-secondary"
@@ -130,31 +135,6 @@ const Header = () => {
                       {store.credentials?.data.role_name}
                     </small>
                   </div>
-                  <ul className="">
-                    <li className="flex gap-4 items-center py-2 text-xs px-1">
-                      <Mail size={15} />
-                      <span className="truncate w-[200px] block">
-                        {store.credentials?.data.developer_email}
-                      </span>
-                    </li>
-                    <li className="border-y border-line ">
-                      <Link
-                        to="#"
-                        className="flex gap-4 items-center text-xs w-full hover:bg-secondary transition-colors py-2 px-1"
-                      >
-                        <UserPen size={15} /> Profile
-                      </Link>
-                    </li>
-                    <li className="">
-                      <button
-                        onClick={handleLogout}
-                        className="flex gap-4 items-center text-xs w-full hover:bg-secondary transition-colors py-2 px-1"
-                      >
-                        <LogOut size={15} />
-                        Sign Out
-                      </button>
-                    </li>
-                  </ul>
                 </div>
                 <ul className="">
                   <li className="flex gap-4 items-center py-2 text-xs px-1">
