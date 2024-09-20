@@ -20,6 +20,7 @@ const SearchModalSupplier = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchSupplier : ""
   );
+  const [searchValues, setSearchValues] = React.useState("");
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
 
@@ -32,19 +33,21 @@ const SearchModalSupplier = ({
     "post",
     "search-supplier",
     {
-      search,
+      search: searchValues,
     },
     {
-      search,
+      searchValues,
     }
   );
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
@@ -53,6 +56,7 @@ const SearchModalSupplier = ({
     setOnFocus(false);
     setData(item);
     setSearch(item.supplier_name);
+    setSearchValues("");
   };
 
   const handleClickOutsideSearch = (e) => {

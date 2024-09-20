@@ -21,6 +21,7 @@ const SearchModalSalesProduct = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchSalesProduct : ""
   );
+  const [searchValues, setSearchValues] = React.useState("");
 
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
@@ -34,12 +35,12 @@ const SearchModalSalesProduct = ({
     "post",
     "search-sales-product",
     {
-      search,
+      search: searchValues,
       sales_list_sales_id:
         typeof salesData?.sales_aid === "undefined" ? 0 : salesData?.sales_aid,
     },
     {
-      search,
+      searchValues,
       sales_list_sales_id: salesData?.sales_aid,
     }
   );
@@ -47,9 +48,11 @@ const SearchModalSalesProduct = ({
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
@@ -58,6 +61,7 @@ const SearchModalSalesProduct = ({
     setOnFocus(false);
     setData(item);
     setSearch(`${item.product_name} (${item.sales_list_quantity})`);
+    setSearchValues("");
   };
 
   const handleClickOutsideSearch = (e) => {

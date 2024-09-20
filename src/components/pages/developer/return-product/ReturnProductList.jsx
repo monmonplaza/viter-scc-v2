@@ -178,12 +178,14 @@ const ReturnProductList = ({ setItemEdit }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}</td>
                         <td>
-                          {
-                            <PillStatus
-                              isActive={item.return_product_is_resolved}
-                              text="Resolve"
-                            />
-                          }
+                          <PillStatus
+                            isActive={item.return_product_is_resolved}
+                            text={`${
+                              item.return_product_is_resolved
+                                ? "Resolved"
+                                : "Ongoing"
+                            }`}
+                          />
                         </td>
 
                         {/* <td>{item.customer_name}</td> */}

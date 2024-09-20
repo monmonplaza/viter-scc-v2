@@ -178,12 +178,14 @@ const DefectiveProductList = ({ setItemEdit }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
                         <td>
-                          {
-                            <PillStatus
-                              isActive={item.defective_product_is_resolve}
-                              text="Resolve"
-                            />
-                          }
+                          <PillStatus
+                            isActive={item.defective_product_is_resolve}
+                            text={`${
+                              item.defective_product_is_resolve
+                                ? "Resolved"
+                                : "Ongoing"
+                            }`}
+                          />
                         </td>
 
                         <td>{formatDate(item.receiving_date)}</td>

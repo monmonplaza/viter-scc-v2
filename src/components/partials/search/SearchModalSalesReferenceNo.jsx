@@ -20,6 +20,7 @@ const SearchModalSalesReferenceNo = ({
   const [search, setSearch] = React.useState(
     itemEdit ? props.searchSalesReference : ""
   );
+  const [searchValues, setSearchValues] = React.useState("");
 
   const [onFocus, setOnFocus] = React.useState(false);
   const refSearch = React.useRef();
@@ -33,19 +34,21 @@ const SearchModalSalesReferenceNo = ({
     "post",
     "search-sales-reference-no",
     {
-      search,
+      search: searchValues,
     },
     {
-      search,
+      searchValues,
     }
   );
 
   const handleChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
+    setSearchValues(e.target.value);
     if (e.target.value === "") {
       setData(null);
       setSearch("");
+      setSearchValues("");
     }
   };
 
@@ -54,6 +57,7 @@ const SearchModalSalesReferenceNo = ({
     setOnFocus(false);
     setData(item);
     setSearch(`${item.sales_reference_no} (${item.customer_name})`);
+    setSearchValues("");
   };
 
   const handleClickOutsideSearch = (e) => {

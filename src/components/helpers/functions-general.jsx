@@ -41,7 +41,7 @@ export const numberWithCommasToFixed = (item, x) => {
   return result;
 };
 
-export const pesoSign = <span className="mx-1"> &#8369; </span>;
+export const pesoSign = <span className=""> &#8369; </span>;
 
 export const formatDate = (dateVal, val = "", format = "") => {
   const formatedDate = val;

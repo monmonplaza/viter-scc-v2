@@ -181,7 +181,11 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                           {
                             <PillStatus
                               isActive={item.purchase_is_ongoing}
-                              text={`${isActive ? "approved" : "requested"}`}
+                              text={`${
+                                item.purchase_is_ongoing
+                                  ? "approved"
+                                  : "requested"
+                              }`}
                             />
                           }
                         </td>

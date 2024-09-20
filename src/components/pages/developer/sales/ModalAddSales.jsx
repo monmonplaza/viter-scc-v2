@@ -217,7 +217,7 @@ const ModalAddSales = ({ itemEdit }) => {
   };
 
   React.useEffect(() => {
-    if (customerData === null) {
+    if (customerData === null && customerGuest?.count > 0) {
       setCustomerData(guestData[0]);
     }
 

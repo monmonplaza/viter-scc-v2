@@ -170,7 +170,13 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                     return (
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
-                        <td>{<PillStatus isActive={item.sales_is_paid} />}</td>
+                        <td>
+                          <PillStatus
+                            isActive={item.sales_is_paid}
+                            text={`${item.sales_is_paid ? "Paid" : "Unpaid"}`}
+                          />
+                        </td>
+
                         <td>{formatDate(item.sales_date)}</td>
                         <td>{item.sales_reference_no}</td>
                         <td className="text-right">
