@@ -41,7 +41,9 @@ const ModalAddSales = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [modalItemEdit, setItemEdit] = React.useState(null);
   const [productData, setProductData] = React.useState(null);
-  const [customerData, setCustomerData] = React.useState(itemEdit);
+  const [customerData, setCustomerData] = React.useState(
+    itemEdit ? itemEdit : null
+  );
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
   const [editAmount, setEditAmount] = React.useState(false);
   const [paymentMethod, setPaymentMethod] = React.useState(
@@ -55,6 +57,18 @@ const ModalAddSales = ({ itemEdit }) => {
   let counter = 1;
   let totalAmount = 0;
 
+  const { data: customerGuest } = useQueryData(
+    `/${ver}/search-customer`,
+    "post",
+    "search-customer",
+    {
+      search: "guest",
+    }
+  );
+
+  let guestData = customerGuest?.data.filter(
+    (gItem) => gItem.customer_name === "Guest"
+  );
   const {
     isLoading: loadingSales,
     isFetching: fetchingSales,
@@ -202,7 +216,13 @@ const ModalAddSales = ({ itemEdit }) => {
     }
   };
 
-  React.useEffect(() => handleEscape(handleClose), []);
+  React.useEffect(() => {
+    if (customerData === null) {
+      setCustomerData(guestData[0]);
+    }
+
+    handleEscape(handleClose);
+  }, [customerData]);
 
   const initVal = {
     ...itemEdit,
