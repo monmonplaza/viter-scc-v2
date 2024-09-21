@@ -1,9 +1,10 @@
-import { InputText } from "@/components/helpers/FormInputs";
+import { InputText, InputTextArea } from "@/components/helpers/FormInputs";
 import { handleEscape, ver } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
+  setError,
   setIsAdd,
   setIsAnimating,
   setMessage,
@@ -24,15 +25,15 @@ const ModalProductCategory = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/settings-unit/${itemEdit.settings_unit_aid}`
-          : `/${ver}/settings-unit`,
+          ? `/${ver}/settings-category/${itemEdit.category_aid}`
+          : `/${ver}/settings-category`,
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["settings-unit"],
+        queryKey: ["category"],
       });
 
       // show error box
@@ -58,14 +59,17 @@ const ModalProductCategory = ({ itemEdit }) => {
   React.useEffect(() => handleEscape(handleClose), []);
 
   const initVal = itemEdit
-    ? { ...itemEdit, settings_unit_name_old: itemEdit.settings_unit_name }
+    ? { ...itemEdit, category_name_old: itemEdit.category_name }
     : {
-        settings_unit_name: "",
-        settings_unit_name_old: "",
+        category_aid: "",
+        category_name: "",
+        category_description: "",
+        category_name_old: "",
       };
 
   const yupSchema = Yup.object({
-    settings_unit_name: Yup.string().required("Require"),
+    category_name: Yup.string().required("Require"),
+    category_description: Yup.string().required("Require"),
   });
 
   React.useEffect(() => handleEscape(handleClose), []);
@@ -77,7 +81,7 @@ const ModalProductCategory = ({ itemEdit }) => {
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
             {itemEdit ? "Edit " : "Add "}
-            Unit
+            Category Product
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
@@ -99,7 +103,15 @@ const ModalProductCategory = ({ itemEdit }) => {
                       <InputText
                         label="Name"
                         type="text"
-                        name="settings_unit_name"
+                        name="category_name"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+
+                    <div className="input-wrap">
+                      <InputTextArea
+                        label="Description"
+                        name="category_description"
                         disabled={mutation.isPending}
                       />
                     </div>

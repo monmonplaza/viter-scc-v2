@@ -1,6 +1,5 @@
 import { devNavUrl, urlSystem } from "@/components/helpers/functions-general";
 import DeveloperProtectedRoute from "@/components/pages/developer/access/DeveloperProtectedRoute.jsx";
-import Category from "@/components/pages/developer/category/Category.jsx";
 import Customers from "@/components/pages/developer/customers/Customers";
 import DefectiveProduct from "@/components/pages/developer/defective-product/DefectiveProduct";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
@@ -88,14 +87,6 @@ export const routesSystem = [
       <DeveloperProtectedRoute>
         {" "}
         <Customers />
-      </DeveloperProtectedRoute>
-    ),
-  },
-  {
-    path: `${devNavUrl}/${urlSystem}/category`,
-    element: (
-      <DeveloperProtectedRoute>
-        <Category />
       </DeveloperProtectedRoute>
     ),
   },
