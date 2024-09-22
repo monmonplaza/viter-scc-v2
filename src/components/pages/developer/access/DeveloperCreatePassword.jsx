@@ -141,7 +141,7 @@ const DeveloperCreatePassword = () => {
         <PageNotFound />
       ) : (
         <div className="h-screen w-full center-all bg-primary">
-          <div className="max-w-[340px] w-full bg-secondary p-4 py-6 rounded-md translate-y-[10vw]">
+          <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[30vw] sm:-translate-y-[5vw]">
             <div className="login-header">
               <div className=" flex gap-2 items-center justify-center my-2">
                 <div className="p-1 py-2 bg-accent rounded-xl inline-block">
@@ -304,7 +304,7 @@ const DeveloperCreatePassword = () => {
                 </p>
 
                 <Link
-                  to={`${devNavUrl}/system/login`}
+                  to={`${devNavUrl}/developer/login`}
                   className="btn btn-accent w-full justify-center"
                 >
                   Login

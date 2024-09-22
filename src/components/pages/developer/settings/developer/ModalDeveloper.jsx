@@ -52,7 +52,7 @@ const ModalDeveloper = ({ itemEdit }) => {
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["developer"] });
+      queryClient.invalidateQueries({ queryKey: ["settings-developer"] });
 
       // show error box
       if (!data.success) {

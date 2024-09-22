@@ -111,7 +111,7 @@ const Header = () => {
             </div>
             <div ref={menuRef} className="relative">
               <div
-                className="size-8 bg-accent text-white center-all rounded-full cursor-pointer"
+                className="uppercase size-8 bg-accent text-white center-all rounded-full cursor-pointer"
                 onClick={() => setShow(!show)}
               >
                 {getUserCredentialByRole().letter}
@@ -122,7 +122,7 @@ const Header = () => {
                 }`}
               >
                 <div className=" flex gap-2 items-center mb-2">
-                  <div className="center-all gap-3 bg-accent text-white size-6 rounded-full text-xs">
+                  <div className="center-all gap-3 bg-accent text-white size-6 rounded-full text-xs uppercase">
                     {getUserCredentialByRole().letter}
                   </div>
 

@@ -123,7 +123,7 @@ const DeveloperForgotPassword = () => {
             <p className="mt-5 text-center">
               Go back to
               <a
-                href={`${devNavUrl}/system/login`}
+                href={`${devNavUrl}/developer/login`}
                 className="w-full text-content pl-1"
               >
                 <u>Login</u>

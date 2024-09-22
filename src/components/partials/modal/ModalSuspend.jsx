@@ -24,7 +24,12 @@ const ModalSuspend = ({
   const { store, dispatch } = React.useContext(StoreContext);
   const queryClient = useQueryClient();
 
-  const isOwnAccount = store.credentials.data.developer_email === email;
+  let isOwnAccount;
+  if (store.credentials.data.role_name === "developer") {
+    isOwnAccount = store.credentials.data.developer_email === email;
+  } else {
+    isOwnAccount = store.credentials.data.user_email === email;
+  }
 
   const mutation = useMutation({
     mutationFn: (values) => queryData(mysqlApiSuspend, "put", values),
@@ -91,7 +96,7 @@ const ModalSuspend = ({
               onClick={handleYes}
               disabled={mutation.isPending}
             >
-              {mutation.isPending && <SpinnerButton />} Yes, Confirm
+              {mutation.isPending && <SpinnerButton />} Yes, confirm
             </button>
             <button
               className="btn btn-discard center-all w-full whitespace-nowrap"
