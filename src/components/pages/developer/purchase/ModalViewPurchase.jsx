@@ -16,10 +16,12 @@ import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
 import { PillBottle, Trash, X } from "lucide-react";
 import React from "react";
+import ModalPurchasePrint from "./ModalPurchasePrint.jsx";
 
 const ModalViewPurchase = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
   const [modalItemEdit, setItemEdit] = React.useState(null);
+  const [printPreview, setPrintPreview] = React.useState(false);
   let counter = 1;
   let totalAmount = 0;
   let totalPrice = 0;
@@ -36,6 +38,8 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
     { purchase_reference_no: itemEdit ? itemEdit.purchase_reference_no : "0" },
     { purchase_reference_no: itemEdit ? itemEdit.purchase_reference_no : "0" }
   );
+
+  const handlePrintPreview = () => setPrintPreview(true);
 
   const {
     handleReset,
@@ -77,7 +81,9 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
 
           <div className="p-4 space-y-6">
             <div className="flex gap-3 justify-end">
-              <button className="btn btn-accent">Print</button>
+              <button className="btn btn-accent" onClick={handlePrintPreview}>
+                Print
+              </button>
             </div>
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
@@ -209,6 +215,7 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
           />
         )}
       </WrapperModal>
+      {printPreview && <ModalPurchasePrint setPrintPreview={setPrintPreview} />}
     </>
   );
 };

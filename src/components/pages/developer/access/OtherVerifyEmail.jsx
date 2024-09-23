@@ -2,6 +2,7 @@ import useQueryData from "@/components/custom-hooks/useQueryData.jsx";
 import {
   devNavUrl,
   getUrlParam,
+  urlAdmin,
   ver,
 } from "@/components/helpers/functions-general.jsx";
 import PageNotFound from "@/components/partials/PageNotFound.jsx";
@@ -25,7 +26,7 @@ const OtherVerifyEmail = () => {
         <PageNotFound />
       ) : (
         <div className="bg-primary h-screen center-all">
-          <div className=" relative -translate-y-[30vw] sm:-translate-y-[5vw]">
+          <div className=" relative -translate-y-[100px] sm:-translate-y-[150px]">
             <div className="m-auto max-w-[340px] text-center p-6 bg-secondary rounded-md ">
               <Check
                 size={40}
@@ -37,8 +38,8 @@ const OtherVerifyEmail = () => {
                 using your new email.
               </p>
               <a
-                href={`${devNavUrl}/user/login`}
-                className="btn btn-accent w-full flex justify-center items-center gap-2"
+                href={`${devNavUrl}/login`}
+                className="btn btn-accent w-full flex justify-center items-center gap-2 hover:underline"
               >
                 Go to login
               </a>

@@ -6,6 +6,7 @@ import {
 import {
   devNavUrl,
   getUrlParam,
+  urlSystem,
   ver,
 } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
@@ -141,7 +142,7 @@ const DeveloperCreatePassword = () => {
         <PageNotFound />
       ) : (
         <div className="h-screen w-full center-all bg-primary">
-          <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[30vw] sm:-translate-y-[5vw]">
+          <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px] sm:-translate-y-[150px] shadow-md">
             <div className="login-header">
               <div className=" flex gap-2 items-center justify-center my-2">
                 <div className="p-1 py-2 bg-accent rounded-xl inline-block">
@@ -304,7 +305,7 @@ const DeveloperCreatePassword = () => {
                 </p>
 
                 <Link
-                  to={`${devNavUrl}/developer/login`}
+                  to={`${devNavUrl}/${urlSystem}/login`}
                   className="btn btn-accent w-full justify-center"
                 >
                   Login

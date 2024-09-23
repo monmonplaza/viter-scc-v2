@@ -1,4 +1,8 @@
-import { devNavUrl, ver } from "@/components/helpers/functions-general.jsx";
+import {
+  devNavUrl,
+  urlAdmin,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import PageNotFound from "@/components/partials/PageNotFound.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
@@ -23,10 +27,6 @@ const OtherProtectedRoute = ({ children }) => {
       console.log(login);
 
       const isUserKeyMatched = login.data.user_key === login.data.user_password;
-
-      // check if the password from database is matched
-      // to the password used to login
-      // if not, logout the user
 
       if (isUserKeyMatched === false) {
         setLoading(false);
@@ -78,7 +78,7 @@ const OtherProtectedRoute = ({ children }) => {
         ) : isAuth === "123" ? (
           children
         ) : isAuth === "456" ? (
-          <Navigate to={`${devNavUrl}/user/login`} />
+          <Navigate to={`${devNavUrl}/${urlAdmin}/login`} />
         ) : (
           <p>API end point error / Page not found.</p>
         )}

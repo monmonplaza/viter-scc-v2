@@ -1,5 +1,9 @@
 import { InputText } from "@/components/helpers/FormInputs.jsx";
-import { devNavUrl, ver } from "@/components/helpers/functions-general.jsx";
+import {
+  devNavUrl,
+  urlSystem,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import Logo from "@/components/partials/icons/Logo.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
@@ -55,7 +59,7 @@ const DeveloperForgotPassword = () => {
 
   return (
     <div className="h-screen w-full center-all bg-primary">
-      <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[30vw] sm:-translate-y-[5vw]">
+      <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px] sm:-translate-y-[150px] shadow-md">
         <div className="login-header">
           <div className=" flex gap-2 items-center justify-center my-2">
             <div className="p-1 py-2 bg-accent rounded-xl inline-block">
@@ -123,8 +127,8 @@ const DeveloperForgotPassword = () => {
             <p className="mt-5 text-center">
               Go back to
               <a
-                href={`${devNavUrl}/developer/login`}
-                className="w-full text-content pl-1"
+                href={`${devNavUrl}/${urlSystem}/login`}
+                className="w-full text-content pl-1 hover:underline"
               >
                 <u>Login</u>
               </a>

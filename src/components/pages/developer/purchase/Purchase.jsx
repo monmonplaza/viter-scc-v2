@@ -59,7 +59,6 @@ const Purchase = () => {
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}
-      <ModalPurchasePrint />
     </>
   );
 };

@@ -1,4 +1,8 @@
-import { devNavUrl, ver } from "@/components/helpers/functions-general.jsx";
+import {
+  devNavUrl,
+  urlSystem,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import PageNotFound from "@/components/partials/PageNotFound.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
@@ -83,7 +87,7 @@ const DeveloperProtectedRoute = ({ children }) => {
         ) : isAuth === "123" ? (
           children
         ) : isAuth === "456" ? (
-          <Navigate to={`${devNavUrl}/system/login`} />
+          <Navigate to={`${devNavUrl}/${urlSystem}/login`} />
         ) : (
           <p>API end point error / Page not found.</p>
         )}

@@ -98,13 +98,8 @@ const Navigation = ({ menu, submenu }) => {
 
   const handleResetSearch = () => dispatch(setIsSearch(false));
 
-  const getRole = () => {
-    if (store.credentials?.data.role_is_developer === 1) {
-      return "developer/";
-    } else {
-      return "user/";
-    }
-  };
+  const getRole = () => store.credentials?.data.role.toLowerCase();
+
   return (
     <nav className="py-2 px-4">
       <div className=" flex gap-2 items-center mt-2">
@@ -128,7 +123,7 @@ const Navigation = ({ menu, submenu }) => {
               <li className="nav-link mb-2 opacity-60 hover:opacity-100">
                 <Link
                   onClick={handleResetSearch}
-                  to={`${devNavUrl}/${getRole()}${link.slug}`}
+                  to={`${devNavUrl}/${getRole()}/${link.slug}`}
                   className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
                     menu === link.slug ? "active" : ""
                   }`}

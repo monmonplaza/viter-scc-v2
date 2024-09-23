@@ -1,11 +1,11 @@
-// export const urlPathSinglePageWebsite =
-//   "http://localhost/react-vite/viter-scc-v2";
-// export const imgUrlPathSinglePageWebsite =
-//   "http://localhost/react-vite/viter-scc-v2/public";
+export const urlPathSinglePageWebsite =
+  "http://localhost/react-vite/viter-scc-v2";
+export const imgUrlPathSinglePageWebsite =
+  "http://localhost/react-vite/viter-scc-v2/public/img";
 
 // Online Dev
-export const urlPathSinglePageWebsite = "https://app.sambahayancoop.com";
-export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
+// export const urlPathSinglePageWebsite = "https://app.sambahayancoop.com";
+// export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
 
 export const devApiUrl = `${urlPathSinglePageWebsite}/rest`;
 export const devBaseUrl = `${urlPathSinglePageWebsite}`;
@@ -14,7 +14,8 @@ export const devNavUrl = "";
 
 export const ver = "v2";
 export const urlSystem = "developer";
-export const urlOther = "user";
+export const urlAdmin = "admin";
+export const urlCashier = "cashier";
 
 // test
 export const devKey =

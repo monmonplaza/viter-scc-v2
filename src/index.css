@@ -326,6 +326,16 @@
   .main-wrapper {
     @apply p-2 md:p-8 md:py-4 bg-secondary;
   }
+
+  .receipt-preview p,
+  .receipt-preview h5,
+  .receipt-preview li {
+    @apply text-black;
+  }
+
+  .receipt-preview p {
+    @apply opacity-70;
+  }
 }
 
 @layer utilities {
