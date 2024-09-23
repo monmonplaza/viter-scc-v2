@@ -8,6 +8,7 @@ import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { Plus } from "lucide-react";
 import React from "react";
 import ModalAddPurchasePrice from "./ModalAddPurchasePrice.jsx";
+import ModalPurchasePrint from "./ModalPurchasePrint.jsx";
 import ModalViewPurchase from "./ModalViewPurchase.jsx";
 import PurchaseList from "./PurchaseList.jsx";
 
@@ -58,6 +59,7 @@ const Purchase = () => {
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}
+      <ModalPurchasePrint />
     </>
   );
 };
