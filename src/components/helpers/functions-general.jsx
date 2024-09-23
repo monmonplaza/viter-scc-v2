@@ -3,7 +3,7 @@
 // export const imgUrlPathSinglePageWebsite =
 //   "http://localhost/react-vite/viter-scc-v2/public";
 
-// Online Dev
+// Online Dev only
 export const urlPathSinglePageWebsite = "https://app.sambahayancoop.com";
 export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
 
