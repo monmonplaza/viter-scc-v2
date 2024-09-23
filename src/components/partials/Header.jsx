@@ -81,7 +81,7 @@ const Header = () => {
       <header className="p-4 flex justify-between items-center bg-primary border-b border-line">
         <div>
           <h3 className="leading-none uppercase text-[19px] font-medium">
-            Inventory and Sale
+            Inventory and Sales
           </h3>
           <p>Management System</p>
         </div>
