@@ -150,7 +150,7 @@ const DeveloperLogin = () => {
                     </button>
 
                     <a
-                      href={`${devNavUrl}/system/forgot-password`}
+                      href={`${devNavUrl}/developer/forgot-password`}
                       className="text-xs block text-center mt-5"
                     >
                       Forgot Password

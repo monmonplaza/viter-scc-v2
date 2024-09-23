@@ -1,7 +1,10 @@
 <?php
-require '../../../core/header.php';
-require '../../../core/functions.php';
-require '../../../models/developer/category/Category.php';
+// set http header
+require '../../../../core/header.php';
+// use needed functions
+require '../../../../core/functions.php';
+// use needed classes
+require '../../../../models/developer/settings/Category.php';
 
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);

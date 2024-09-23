@@ -37,7 +37,7 @@ const OtherVerifyEmail = () => {
                 using your new email.
               </p>
               <a
-                href={`${devNavUrl}/developer/login`}
+                href={`${devNavUrl}/user/login`}
                 className="btn btn-accent w-full flex justify-center items-center gap-2"
               >
                 Go to login

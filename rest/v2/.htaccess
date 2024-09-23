@@ -17,14 +17,7 @@ RewriteRule ^product/active/([0-9]+)$ controllers/developer/product/active.php?p
 RewriteRule ^product/page/([0-9]+)$ controllers/developer/product/page.php?start=$1 [L]
 RewriteRule ^product/search$ controllers/developer/product/search.php [L]
 RewriteRule ^product/read-all-category$ controllers/developer/product/read-all-category.php [L]
- 
-### CATEGORY ###
-RewriteRule ^category$ controllers/developer/category/category.php [L]
-RewriteRule ^category/([0-9]+)$ controllers/developer/category/category.php?categoryid=$1 [L]
-RewriteRule ^category/active/([0-9]+)$ controllers/developer/category/active.php?categoryid=$1 [L]
-RewriteRule ^category/page/([0-9]+)$ controllers/developer/category/page.php?start=$1 [L]
-RewriteRule ^category/search$ controllers/developer/category/search.php [L]
- 
+  
 ### SUPPLIER ###
 RewriteRule ^supplier$ controllers/developer/supplier/supplier.php [L]
 RewriteRule ^supplier/([0-9]+)$ controllers/developer/supplier/supplier.php?supplierid=$1 [L]
@@ -151,8 +144,17 @@ RewriteRule ^purchase/delete-by-id/([0-9]+)$ controllers/developer/purchase/dele
 RewriteRule ^purchase/read-new-data$ controllers/developer/purchase/read-new-data.php [L]   
 RewriteRule ^purchase/update-new-data$ controllers/developer/purchase/update-new-data.php [L]   
 RewriteRule ^purchase/page-group-reference-no/([0-9]+)$ controllers/developer/purchase/page-group-reference-no.php?start=$1 [L]  
+  
+### SETTINGS CATEGORY ###
+RewriteRule ^settings-category$ controllers/developer/settings/category/category.php [L]
+RewriteRule ^settings-category/([0-9]+)$ controllers/developer/settings/category/category.php?categoryid=$1 [L]
+RewriteRule ^settings-category/active/([0-9]+)$ controllers/developer/settings/category/active.php?categoryid=$1 [L]
+RewriteRule ^settings-category/page/([0-9]+)$ controllers/developer/settings/category/page.php?start=$1 [L]
+RewriteRule ^settings-category/search$ controllers/developer/settings/category/search.php [L]
  
 
+
+ 
 
 
 

@@ -46,11 +46,6 @@ const Navigation = ({ menu, submenu }) => {
     },
 
     {
-      icon: <Undo2 size={18} />,
-      text: "Return Product",
-      slug: "return-product",
-    },
-    {
       icon: <Barcode size={18} />,
       text: "Products",
       slug: "products",
@@ -64,6 +59,11 @@ const Navigation = ({ menu, submenu }) => {
       icon: <Weight size={18} />,
       text: "Sales",
       slug: "sales",
+    },
+    {
+      icon: <Undo2 size={18} />,
+      text: "Return Product",
+      slug: "return-product",
     },
     {
       icon: <ClipboardList size={18} />,
@@ -80,11 +80,6 @@ const Navigation = ({ menu, submenu }) => {
       icon: <Users size={18} />,
       text: "Customers",
       slug: "customers",
-    },
-    {
-      icon: <Group size={18} />,
-      text: "Category",
-      slug: "category",
     },
     {
       icon: <Settings size={18} />,
