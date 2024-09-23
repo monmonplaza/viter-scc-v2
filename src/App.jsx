@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import {
   devNavUrl,
-  urlAdmin,
   urlSystem,
 } from "./components/helpers/functions-general.jsx";
 import DeveloperCreatePassword from "./components/pages/developer/access/DeveloperCreatePassword.jsx";
@@ -15,7 +14,7 @@ import OtherLogin from "./components/pages/developer/access/OtherLogin.jsx";
 import OtherVerifyEmail from "./components/pages/developer/access/OtherVerifyEmail.jsx";
 import PageNotFound from "./components/partials/PageNotFound.jsx";
 import { StoreProvider } from "./components/store/StoreContext";
-import { RoutesAdmin } from "./routes/RoutesAdmin.jsx";
+import { routesAdmin } from "./routes/RoutesAdmin";
 import { routesSystem } from "./routes/RoutesSystem";
 
 function App() {
@@ -68,7 +67,7 @@ function App() {
               {routesSystem.map(({ ...routeProps }, key) => {
                 return <Route key={key} {...routeProps} />;
               })}
-              {RoutesAdmin.map(({ ...routeProps }, key) => {
+              {routesAdmin.map(({ ...routeProps }, key) => {
                 return <Route key={key} {...routeProps} />;
               })}
             </Routes>

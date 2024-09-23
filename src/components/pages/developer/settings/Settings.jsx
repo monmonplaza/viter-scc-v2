@@ -1,6 +1,7 @@
 import Footer from "@/components/partials/Footer.jsx";
 import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
+import { StoreContext } from "@/components/store/StoreContext.jsx";
 import {
   Ruler,
   SquareUserRound,
@@ -15,6 +16,7 @@ import Unit from "./unit/Unit.jsx";
 import User from "./user/User.jsx";
 
 const Settings = () => {
+  const { store } = React.useContext(StoreContext);
   const [tabindex, setTabindex] = React.useState(0);
   const links = [
     { label: "Unit", icon: <Ruler size={14} /> },
@@ -23,6 +25,8 @@ const Settings = () => {
     { label: "Developer", icon: <SquareUserRound size={14} /> },
     { label: "Category", icon: <Ruler size={14} /> },
   ];
+
+  console.log(store.credentials);
 
   const settingPages = [
     <Unit />,
