@@ -4,6 +4,7 @@ import Navigation from "@/components/partials/Navigation.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import {
   Ruler,
+  Shapes,
   SquareUserRound,
   UserRoundCog,
   UserRoundPen,
@@ -35,14 +36,14 @@ const Settings = () => {
       { label: "Roles", icon: <UserRoundCog size={14} /> },
       { label: "Users", icon: <UserRoundPen size={14} /> },
       { label: "Developer", icon: <SquareUserRound size={14} /> },
-      { label: "Category", icon: <Ruler size={14} /> },
+      { label: "Category", icon: <Shapes size={14} /> },
     ];
   } else {
     settingPages = [<Unit />, <User />, <ProductCategory />];
     settingsLink = [
       { label: "Unit", icon: <Ruler size={14} /> },
       { label: "Users", icon: <UserRoundPen size={14} /> },
-      { label: "Category", icon: <Ruler size={14} /> },
+      { label: "Category", icon: <Shapes size={14} /> },
     ];
   }
 
