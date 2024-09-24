@@ -103,7 +103,7 @@
   /* add mo to pg madami nng data sticky top-0 */
 
   aside {
-    @apply min-w-[250px] border-r border-line min-h-[100dvh] sticky top-0 bg-primary;
+    @apply min-w-[250px] border-r border-line min-h-[100dvh] sticky top-0 bg-primary z-50 transition-all;
   }
 
   .table-wrapper {
@@ -357,11 +357,11 @@
 
 .custom-scroll::-webkit-scrollbar:vertical,
 .custom-scroll::-webkit-scrollbar:horizontal {
-  @apply w-2;
+  @apply w-2 bg-primary;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  @apply bg-transparent bg-primary;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {

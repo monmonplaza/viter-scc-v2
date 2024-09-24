@@ -25,6 +25,7 @@ const initVal = {
   isLogin: false,
   isLogout: false,
   isAccountUpdated: false,
+  isShowMobileNav: false,
 
   isUploadFile: false,
   credentials: {},

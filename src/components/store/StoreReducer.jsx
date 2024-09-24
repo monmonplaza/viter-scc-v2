@@ -1,4 +1,4 @@
-import { setIsArchive } from "./StoreAction";
+import { setIsArchive, setIsShowMobileNav } from "./StoreAction";
 
 export const StoreReducer = (state, action) => {
   switch (action.type) {
@@ -142,6 +142,11 @@ export const StoreReducer = (state, action) => {
       return {
         ...state,
         isAccountUpdated: action.payload,
+      };
+    case "IS_SHOW_MOBILE_NAV":
+      return {
+        ...state,
+        isShowMobileNav: action.payload,
       };
 
     case "CREDENTIALS":

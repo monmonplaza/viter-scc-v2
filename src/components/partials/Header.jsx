@@ -1,8 +1,8 @@
-import { LogOut, Mail, Moon, Sun, UserPen } from "lucide-react";
+import { LogOut, Mail, Menu, Moon, Sun, UserPen } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "../helpers/functions-general.jsx";
-import { setIsLogout } from "../store/StoreAction.jsx";
+import { setIsLogout, setIsShowMobileNav } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 import ModalLogout from "./modal/ModalLogout.jsx";
 
@@ -79,23 +79,26 @@ const Header = () => {
     }
   };
 
+  const handleShowMobileNav = () =>
+    dispatch(setIsShowMobileNav(!store.isShowMobileNav));
+
   return (
     <>
       <header className="p-4 flex justify-between items-center bg-primary border-b border-line">
         <div>
-          <h3 className="leading-none uppercase text-[19px] font-medium">
+          <h3 className="leading-none uppercase text-[clamp(14px,4vw,19px)] font-medium">
             Inventory and Sales
           </h3>
           <p>Management System</p>
         </div>
         <div className="profile flex items-center gap-3">
           <div
-            className="flex items-center border border-line rounded-2xl p-1 leading-none w-[48px] cursor-pointer hover:border-accent transition-all bg-secondary"
+            className="flex items-center border border-line rounded-2xl p-1 leading-none w-[40px] cursor-pointer hover:border-accent transition-all bg-secondary"
             onClick={handleTheme}
           >
             <button
               className={` transition-all ${
-                isDark ? "translate-x-6" : "translate-x-0"
+                isDark ? "translate-x-4" : "translate-x-0"
               }`}
             >
               {isDark ? <Moon size={14} /> : <Sun size={14} />}
@@ -103,7 +106,7 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div>
+            <div className="hidden md:block">
               <h4 className="mb-0 leading-none font-medium">
                 Hi
                 <span className="pl-1">{getUserCredentialByRole().name},</span>
@@ -167,6 +170,10 @@ const Header = () => {
               </div>
             </div>
           </div>
+
+          <button className="md:hidden" onClick={handleShowMobileNav}>
+            <Menu size={30} />
+          </button>
         </div>
       </header>
 

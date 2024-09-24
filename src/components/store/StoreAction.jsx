@@ -163,6 +163,12 @@ export const setIsAccountUpdated = (val) => {
     payload: val,
   };
 };
+export const setIsShowMobileNav = (val) => {
+  return {
+    type: "IS_SHOW_MOBILE_NAV",
+    payload: val,
+  };
+};
 
 export const setCredentials = (data) => {
   return {

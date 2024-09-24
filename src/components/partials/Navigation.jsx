@@ -101,41 +101,43 @@ const Navigation = ({ menu, submenu }) => {
   const getRole = () => store.credentials?.data.role.toLowerCase();
 
   return (
-    <nav className="py-2 px-4">
-      <div className=" flex gap-2 items-center mt-2">
-        <div className="p-1 py-2 bg-accent rounded-xl inline-block">
-          <Logo />
+    <aside className={`${store.isShowMobileNav ? "left-0" : "-left-full"}`}>
+      <nav className="py-2 px-4">
+        <div className=" flex gap-2 items-center mt-2">
+          <div className="p-1 py-2 bg-accent rounded-xl inline-block">
+            <Logo />
+          </div>
+          <div className="translate-y-1">
+            <h4 className="leading-none uppercase text-[19px] font-medium">
+              Sambahayan
+            </h4>
+            <span className="text-[11px] leading-none -translate-y-2 block font-regular">
+              Consumer Cooperative
+            </span>
+          </div>
         </div>
-        <div className="translate-y-1">
-          <h4 className="leading-none uppercase text-[19px] font-medium">
-            Sambahayan
-          </h4>
-          <span className="text-[11px] leading-none -translate-y-2 block font-regular">
-            Consumer Cooperative
-          </span>
-        </div>
-      </div>
 
-      <div className="mt-5">
-        {links.map((link, key) => {
-          return (
-            <ul key={key}>
-              <li className="nav-link mb-2 opacity-60 hover:opacity-100">
-                <Link
-                  onClick={handleResetSearch}
-                  to={`${devNavUrl}/${getRole()}/${link.slug}`}
-                  className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
-                    menu === link.slug ? "active" : ""
-                  }`}
-                >
-                  {link.icon} {link.text}
-                </Link>
-              </li>
-            </ul>
-          );
-        })}
-      </div>
-    </nav>
+        <div className="mt-5">
+          {links.map((link, key) => {
+            return (
+              <ul key={key}>
+                <li className="nav-link mb-2 opacity-60 hover:opacity-100">
+                  <Link
+                    onClick={handleResetSearch}
+                    to={`${devNavUrl}/${getRole()}/${link.slug}`}
+                    className={`flex gap-4 text-sm items-center leading-none p-3 font-medium hover:bg-secondary text-dark rounded-md transition-all ${
+                      menu === link.slug ? "active" : ""
+                    }`}
+                  >
+                    {link.icon} {link.text}
+                  </Link>
+                </li>
+              </ul>
+            );
+          })}
+        </div>
+      </nav>
+    </aside>
   );
 };
 
