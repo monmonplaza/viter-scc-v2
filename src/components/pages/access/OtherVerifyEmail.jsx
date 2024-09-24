@@ -27,7 +27,7 @@ const OtherVerifyEmail = () => {
       ) : (
         <div className="bg-primary h-screen center-all">
           <div className=" relative -translate-y-[100px] sm:-translate-y-[150px]">
-            <div className="m-auto max-w-[340px] text-center p-6 bg-secondary rounded-md ">
+            <div className="m-auto max-w-[340px] text-center p-6 bg-secondary rounded-md">
               <Check
                 size={40}
                 className="mx-auto stroke-success !stroke-[4px]"

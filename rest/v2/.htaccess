@@ -10,6 +10,12 @@ Header set Access-Control-Allow-Origin *
 #################################### ALL FOR DEVELOPER #################################
 
 
+### ACCOUNT CHANGE PASS ### 
+RewriteRule ^account/developer/update-password$ controllers/developer/account/account-change-password.php [L] 
+RewriteRule ^account/admin/update-password$ controllers/admin/account/account-change-password.php [L] 
+
+
+
 ### PRODUCT ###
 RewriteRule ^product$ controllers/developer/product/product.php [L]
 RewriteRule ^product/([0-9]+)$ controllers/developer/product/product.php?productid=$1 [L]

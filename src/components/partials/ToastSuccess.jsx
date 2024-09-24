@@ -23,7 +23,7 @@ const ToastSuccess = () => {
         localStorage.removeItem("localhristoken");
         store.credentials.data.role_is_developer === 1
           ? window.location.replace(`${devNavUrl}/developer/login`)
-          : window.location.replace(`${devNavUrl}/user/login`);
+          : window.location.replace(`${devNavUrl}/login`);
         dispatch(setIsAccountUpdated(false));
         return;
       }

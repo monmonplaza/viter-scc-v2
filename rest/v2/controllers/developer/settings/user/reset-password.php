@@ -27,7 +27,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $user->user_key = $encrypt->doHash(rand());
     $user->user_datetime = date("Y-m-d H:i:s");
     $user->user_email = trim($data["email"]);
-    $password_link = "/user/create-password";
+    $password_link = "/create-password";
 
     $query = $user->readLogin();
     if ($query->rowCount() == 0) {

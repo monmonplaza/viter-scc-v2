@@ -18,23 +18,33 @@ import User from "./user/User.jsx";
 const Settings = () => {
   const { store } = React.useContext(StoreContext);
   const [tabindex, setTabindex] = React.useState(0);
-  const links = [
-    { label: "Unit", icon: <Ruler size={14} /> },
-    { label: "Roles", icon: <UserRoundCog size={14} /> },
-    { label: "Users", icon: <UserRoundPen size={14} /> },
-    { label: "Developer", icon: <SquareUserRound size={14} /> },
-    { label: "Category", icon: <Ruler size={14} /> },
-  ];
+  let settingPages = [];
+  let settingsLink = [];
 
-  console.log(store.credentials);
+  if (store.credentials?.data.role === "Developer") {
+    settingPages = [
+      <Unit />,
+      <Roles />,
+      <User />,
+      <Developer />,
+      <ProductCategory />,
+    ];
 
-  const settingPages = [
-    <Unit />,
-    <Roles />,
-    <User />,
-    <Developer />,
-    <ProductCategory />,
-  ];
+    settingsLink = [
+      { label: "Unit", icon: <Ruler size={14} /> },
+      { label: "Roles", icon: <UserRoundCog size={14} /> },
+      { label: "Users", icon: <UserRoundPen size={14} /> },
+      { label: "Developer", icon: <SquareUserRound size={14} /> },
+      { label: "Category", icon: <Ruler size={14} /> },
+    ];
+  } else {
+    settingPages = [<Unit />, <User />, <ProductCategory />];
+    settingsLink = [
+      { label: "Unit", icon: <Ruler size={14} /> },
+      { label: "Users", icon: <UserRoundPen size={14} /> },
+      { label: "Category", icon: <Ruler size={14} /> },
+    ];
+  }
 
   const handleChangeSettingMenu = (index) => {
     setTabindex(index);
@@ -53,7 +63,7 @@ const Settings = () => {
                 <div className="setting-nav bg-subnav min-h-[calc(100vh-90px)] border-r border-line  px-4 ">
                   <h2 className="my-7">Settings</h2>
                   <ul className="space-y-2">
-                    {links.map((link, key) => {
+                    {settingsLink.map((link, key) => {
                       return (
                         <li
                           key={key}

@@ -1,6 +1,7 @@
 import { LogOut, Mail, Moon, Sun, UserPen } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { devNavUrl } from "../helpers/functions-general.jsx";
 import { setIsLogout } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 import ModalLogout from "./modal/ModalLogout.jsx";
@@ -50,15 +51,17 @@ const Header = () => {
   }, [theme]);
 
   const handleLogout = () => {
-    dispatch(setIsLogout(true));
-    setShow(false);
+    localStorage.removeItem("localhristoken");
+    store.credentials.data.role_is_developer === 1
+      ? window.location.replace(`${devNavUrl}/developer/login`)
+      : window.location.replace(`${devNavUrl}/login`);
   };
 
   const getUserCredentialByRole = () => {
     if (store.credentials?.data.role_is_developer === 1) {
       return {
-        name: `${store.credentials?.data.developer_fname} `,
-        fullname: `${store.credentials?.data.developer_fname} ${store.credentials?.data.developer_lname} `,
+        name: `${store.credentials?.data.developer_fname}`,
+        fullname: `${store.credentials?.data.developer_fname} ${store.credentials?.data.developer_lname}`,
         email: store.credentials?.data.developer_email,
         letter: `${store.credentials?.data.developer_fname.charAt(
           0
@@ -103,7 +106,7 @@ const Header = () => {
             <div>
               <h4 className="mb-0 leading-none font-medium">
                 Hi
-                <span className="pl-1">{getUserCredentialByRole().name}</span>,
+                <span className="pl-1">{getUserCredentialByRole().name},</span>
               </h4>
               <small className="leading-none text-xs block">
                 {store.credentials?.data.role}
@@ -145,7 +148,7 @@ const Header = () => {
                   </li>
                   <li className="border-y border-line ">
                     <Link
-                      to="#"
+                      to={`${devNavUrl}/${store.credentials?.data.role_name.toLowerCase()}/account`}
                       className="flex gap-4 items-center text-xs w-full hover:bg-secondary transition-colors py-2 px-1"
                     >
                       <UserPen size={15} /> Profile

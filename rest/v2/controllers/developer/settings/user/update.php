@@ -19,7 +19,7 @@ if (array_key_exists("userid", $_GET)) {
     $user->user_datetime = date("Y-m-d H:i:s");
     $user_email_old = strtolower($data["user_email_old"]);
     $user->user_key = $encrypt->doHash(rand());
-    $link = "/user/verify-email";
+    $link = "/verify-email";
 
     checkId($user->user_aid);
     // check name

@@ -58,7 +58,7 @@
   }
 
   body {
-    @apply text-body  font-regular;
+    @apply text-body  font-regular bg-zinc-900 min-h-screen w-full;
   }
 
   a {

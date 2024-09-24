@@ -25,7 +25,7 @@ const ModalSuspend = ({
   const queryClient = useQueryClient();
 
   let isOwnAccount;
-  if (store.credentials.data.role_name === "developer") {
+  if (store.credentials.data.role_name === "Developer") {
     isOwnAccount = store.credentials.data.developer_email === email;
   } else {
     isOwnAccount = store.credentials.data.user_email === email;

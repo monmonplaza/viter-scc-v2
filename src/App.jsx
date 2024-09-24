@@ -4,14 +4,14 @@ import {
   devNavUrl,
   urlSystem,
 } from "./components/helpers/functions-general.jsx";
-import DeveloperCreatePassword from "./components/pages/developer/access/DeveloperCreatePassword.jsx";
-import DeveloperForgotPassword from "./components/pages/developer/access/DeveloperForgotPassword.jsx";
-import DeveloperLogin from "./components/pages/developer/access/DeveloperLogin.jsx";
-import DeveloperVerifyEmail from "./components/pages/developer/access/DeveloperVerifyEmail.jsx";
-import OtherCreatePassword from "./components/pages/developer/access/OtherCreatePassword.jsx";
-import OtherForgotPassword from "./components/pages/developer/access/OtherForgotPassword.jsx";
-import OtherLogin from "./components/pages/developer/access/OtherLogin.jsx";
-import OtherVerifyEmail from "./components/pages/developer/access/OtherVerifyEmail.jsx";
+import DeveloperCreatePassword from "./components/pages/access/DeveloperCreatePassword.jsx";
+import DeveloperForgotPassword from "./components/pages/access/DeveloperForgotPassword.jsx";
+import DeveloperLogin from "./components/pages/access/DeveloperLogin.jsx";
+import DeveloperVerifyEmail from "./components/pages/access/DeveloperVerifyEmail.jsx";
+import OtherCreatePassword from "./components/pages/access/OtherCreatePassword.jsx";
+import OtherForgotPassword from "./components/pages/access/OtherForgotPassword.jsx";
+import OtherLogin from "./components/pages/access/OtherLogin.jsx";
+import OtherVerifyEmail from "./components/pages/access/OtherVerifyEmail.jsx";
 import PageNotFound from "./components/partials/PageNotFound.jsx";
 import { StoreProvider } from "./components/store/StoreContext";
 import { routesAdmin } from "./routes/RoutesAdmin";

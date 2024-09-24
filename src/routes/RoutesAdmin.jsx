@@ -1,5 +1,6 @@
 import { devNavUrl, urlAdmin } from "@/components/helpers/functions-general";
-import OtherProtectedRoute from "@/components/pages/developer/access/OtherProtectedRoute.jsx";
+import OtherProtectedRoute from "@/components/pages/access/OtherProtectedRoute.jsx";
+import Account from "@/components/pages/admin/account/Account.jsx";
 import Customers from "@/components/pages/developer/customers/Customers";
 import DefectiveProduct from "@/components/pages/developer/defective-product/DefectiveProduct";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
@@ -15,6 +16,15 @@ import Unit from "@/components/pages/developer/settings/unit/Unit";
 import Supplier from "@/components/pages/developer/supplier/Supplier.jsx";
 
 export const routesAdmin = [
+  {
+    path: `${devNavUrl}/${urlAdmin}/account`,
+    element: (
+      <OtherProtectedRoute>
+        <Account />
+      </OtherProtectedRoute>
+    ),
+  },
+
   {
     path: `${devNavUrl}/${urlAdmin}/overview`,
     element: (

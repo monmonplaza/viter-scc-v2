@@ -22,7 +22,7 @@ $user->user_key = $encrypt->doHash(rand());
 $user->user_is_active = 1;
 $user->user_created = date("Y-m-d H:i:s");
 $user->user_datetime = date("Y-m-d H:i:s");
-$password_link = "/user/create-password";
+$password_link = "/create-password";
 // check email
 isEmailExist($user, $user->user_email);
 // send email notification
