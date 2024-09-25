@@ -729,7 +729,12 @@ const ModalAddSales = ({ itemEdit }) => {
           />
         )}
       </WrapperModal>
-      {isPrint && <ModalSalesPrint setIsPrint={setIsPrint} />}
+      {isPrint && (
+        <ModalSalesPrint
+          setIsPrint={setIsPrint}
+          refno={itemEdit.sales_reference_no}
+        />
+      )}
     </>
   );
 };

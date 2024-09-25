@@ -280,7 +280,10 @@ const OtherCreatePassword = () => {
                           </li>
                         </ul>
 
-                        <button className="btn btn-accent w-full justify-center mt-5">
+                        <button
+                          className="btn btn-accent w-full justify-center mt-5"
+                          disabled={mutation.isPending && <SpinnerButton />}
+                        >
                           Create Password
                         </button>
                       </Form>

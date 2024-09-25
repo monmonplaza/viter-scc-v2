@@ -6,12 +6,22 @@ import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { PrinterIcon } from "lucide-react";
 import React from "react";
 
-const ModalSalesPrint = ({ setIsPrint }) => {
+const ModalSalesPrint = ({ setIsPrint, refno }) => {
   const handleClose = () => setIsPrint(false);
+
+  const date = new Date();
+  const dateNow = date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  console.log(dateNow);
+
   return (
     <WrapperModal>
       {" "}
-      <div className="modal-center  !max-w-[350px] !bg-primary print:!top-0 print:!translate-y-0 border border-line">
+      <div className="modal-center  !max-w-[370px] !bg-primary print:!top-0 print:!translate-y-0 border border-line">
         <div className="px-5 p-4 flex justify-between items-center print:hidden">
           <h3 className="mb-0 text-body flex gap-2">
             <PrinterIcon /> Print Preview
@@ -25,7 +35,7 @@ const ModalSalesPrint = ({ setIsPrint }) => {
             </button>
           </div>
         </div>
-        <div className="p-1 bg-gray-100">
+        <div className="p-1 bg-gray-100 max-h-[660px] overflow-auto print:overflow-visible print:h-auto">
           <main className=" m-5 bg-white shadow-md receipt-preview print:m-0 print:shadow-none">
             <div className="pt-6 px-4">
               <div className="flex flex-col items-center mb-3">
@@ -48,13 +58,13 @@ const ModalSalesPrint = ({ setIsPrint }) => {
             </div>
 
             <div className="text-center mb-5">
-              <p className="mb-0">Reference No.: 2001</p>
+              <p className="mb-0">Reference No.: {refno}</p>
               <p className="mb-0">Tue 12/03/2012 - 11:21:23 AM</p>
               <p>Cashier: Jhonny</p>
             </div>
 
             <div className="grid grid-rows-[1fr_auto] px-4 overflow-auto">
-              <div className="h-[300px] overflow-auto print:overflow-visible print:h-auto">
+              <div className="">
                 <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-2 border-b border-line ">
                   <h5 className="mb-0 ">Description</h5>
                   <h5 className="mb-0 ">QTY</h5>
@@ -169,7 +179,7 @@ const ModalSalesPrint = ({ setIsPrint }) => {
               </div>
             </div>
 
-            <ul className="text-[10px] py-5 text-center">
+            <ul className="text-[10px] py-5 text-center px-2">
               <li className="gap-1.5">
                 1118 Alvarez Street, Purok 3, Brgy. San Jose, San Pablo City,
                 <br />

@@ -118,10 +118,6 @@ const DeveloperCreatePassword = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   dispatch(setCreatePassSuccess(true));
-  // }, []);
-
   React.useEffect(() => {
     function setThemeColor() {
       const body = document.querySelector("body");
@@ -282,7 +278,10 @@ const DeveloperCreatePassword = () => {
                           </li>
                         </ul>
 
-                        <button className="btn btn-accent w-full justify-center mt-5">
+                        <button
+                          className="btn btn-accent w-full justify-center mt-5"
+                          disabled={mutation.isPending && <SpinnerButton />}
+                        >
                           Create Password
                         </button>
                       </Form>

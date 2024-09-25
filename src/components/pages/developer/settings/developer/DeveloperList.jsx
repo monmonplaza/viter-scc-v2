@@ -55,15 +55,15 @@ const DeveloperList = ({ setItemEdit }) => {
         {!isLoading && isFetching && <SpinnerTable />}
 
         <div className="table-wrapper  w-full">
-          <table>
+          <table className="w-full">
             <thead>
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
-                <th className="w-[120px]">First Name</th>
-                <th className="w-[120px]">Last Name</th>
-                <th className="w-[100px] ">Email</th>
-                <th></th>
+                <th className="">First Name</th>
+                <th className="">Last Name</th>
+                <th className="">Email</th>
+                <th className="w-0"></th>
               </tr>
             </thead>
 

@@ -100,7 +100,7 @@ const Settings = () => {
                   </ul>
                 </div>
 
-                <div className="setting-main  w-full ">
+                <div className="setting-main  w-full pr-3 ">
                   {settingPages[tabindex]}
                 </div>
               </div>
