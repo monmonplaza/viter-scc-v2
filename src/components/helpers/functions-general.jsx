@@ -10,7 +10,7 @@ export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
 export const devApiUrl = `${urlPathSinglePageWebsite}/rest`;
 export const devBaseUrl = `${urlPathSinglePageWebsite}`;
 export const devBaseImgUrl = `${imgUrlPathSinglePageWebsite}`;
-export const devNavUrl = "";
+export const devNavUrl = "/v2";
 
 export const ver = "v2";
 export const urlSystem = "developer";
