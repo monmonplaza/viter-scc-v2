@@ -733,6 +733,7 @@ const ModalAddSales = ({ itemEdit }) => {
         <ModalSalesPrint
           setIsPrint={setIsPrint}
           refno={itemEdit.sales_reference_no}
+          salesDate={itemEdit.sales_date}
         />
       )}
     </>

@@ -6,22 +6,18 @@ import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { PrinterIcon } from "lucide-react";
 import React from "react";
 
-const ModalSalesPrint = ({ setIsPrint, refno }) => {
+const ModalSalesPrint = ({ setIsPrint, refno, salesDate }) => {
   const handleClose = () => setIsPrint(false);
 
   const date = new Date();
-  const dateNow = date.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
+  const dayName = days[date];
 
-  console.log(dateNow);
-
+  console.log(date);
   return (
     <WrapperModal>
       {" "}
-      <div className="modal-center  !max-w-[370px] !bg-primary print:!top-0 print:!translate-y-0 border border-line">
+      <div className="modal-center  !max-w-[370px] !bg-primary print:!top-0 print:!translate-y-0 ">
         <div className="px-5 p-4 flex justify-between items-center print:hidden">
           <h3 className="mb-0 text-body flex gap-2">
             <PrinterIcon /> Print Preview
@@ -36,7 +32,7 @@ const ModalSalesPrint = ({ setIsPrint, refno }) => {
           </div>
         </div>
         <div className="p-1 bg-gray-100 max-h-[660px] overflow-auto print:overflow-visible print:h-auto">
-          <main className=" m-5 bg-white shadow-md receipt-preview print:m-0 print:shadow-none">
+          <main className=" m-5 bg-white shadow-md receipt-preview print:m-0 print:shadow-none  border border-line">
             <div className="pt-6 px-4">
               <div className="flex flex-col items-center mb-3">
                 <div className="flex gap-2 items-center ">
@@ -59,13 +55,15 @@ const ModalSalesPrint = ({ setIsPrint, refno }) => {
 
             <div className="text-center mb-5">
               <p className="mb-0">Reference No.: {refno}</p>
-              <p className="mb-0">Tue 12/03/2012 - 11:21:23 AM</p>
-              <p>Cashier: Jhonny</p>
+              <p className="mb-0">
+                {salesDate}
+                {/* {date.toLocaleString("ph-PH", { timeZone: "Asia/Manila" })} */}
+              </p>
             </div>
 
             <div className="grid grid-rows-[1fr_auto] px-4 overflow-auto">
               <div className="">
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-2 border-b border-line ">
+                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-2  ">
                   <h5 className="mb-0 ">Description</h5>
                   <h5 className="mb-0 ">QTY</h5>
                   <h5 className="mb-0 text-right">Price</h5>
