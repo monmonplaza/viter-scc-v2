@@ -8,9 +8,8 @@ const Inventory = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation menu="inventory" />
-        </aside>
+        <Navigation menu="inventory" />
+
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />

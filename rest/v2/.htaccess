@@ -10,7 +10,7 @@ Header set Access-Control-Allow-Origin *
 #################################### ALL FOR DEVELOPER #################################
 
 
-### ACCOUNT CHANGE PASS ### 
+### ACCOUNT CHANGE PASSWORD ### 
 RewriteRule ^account/developer/update-password$ controllers/developer/account/account-change-password.php [L] 
 RewriteRule ^account/admin/update-password$ controllers/admin/account/account-change-password.php [L] 
 
@@ -158,15 +158,6 @@ RewriteRule ^settings-category/active/([0-9]+)$ controllers/developer/settings/c
 RewriteRule ^settings-category/page/([0-9]+)$ controllers/developer/settings/category/page.php?start=$1 [L]
 RewriteRule ^settings-category/search$ controllers/developer/settings/category/search.php [L]
  
-
-
- 
-
-
-
-
-
-
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 
 RewriteRule ^search-product-price$ controllers/developer/search/search-product-price.php [L] 

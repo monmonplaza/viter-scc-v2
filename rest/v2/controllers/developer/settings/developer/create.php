@@ -34,4 +34,18 @@ sendEmail(
 );
 // create
 $query = checkCreate($developer);
-returnSuccess($developer, "User system", $query);
+
+if ($query->rowCount() > 0) {
+    // send email notification
+    $mailData = sendEmail(
+        $password_link,
+        $developer->developer_fname,
+        $developer->developer_email,
+        $developer->developer_key
+    );
+}
+// create
+if ($mailData["mail_success"] == true) {
+    returnSuccess($developer, "User system", $query);
+}
+returnError($mailData["error"]);

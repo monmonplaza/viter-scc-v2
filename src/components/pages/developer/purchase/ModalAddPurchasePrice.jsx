@@ -163,7 +163,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none">
+        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none max-h-[80dvh] overflow-auto ">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />

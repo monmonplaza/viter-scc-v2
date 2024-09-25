@@ -3,7 +3,9 @@ import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import {
+  CogIcon,
   Ruler,
+  Settings2,
   Shapes,
   SquareUserRound,
   UserRoundCog,
@@ -19,6 +21,7 @@ import User from "./user/User.jsx";
 const Settings = () => {
   const { store } = React.useContext(StoreContext);
   const [tabindex, setTabindex] = React.useState(0);
+  const [showSettings, setShowSettings] = React.useState(false);
   let settingPages = [];
   let settingsLink = [];
 
@@ -49,21 +52,31 @@ const Settings = () => {
 
   const handleChangeSettingMenu = (index) => {
     setTabindex(index);
+    setShowSettings(false);
   };
+
+  const handleShowSettings = () => setShowSettings(!showSettings);
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation menu="settings" />
-        </aside>
+        <Navigation menu="settings" />
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
             <div className="bg-secondary">
-              <div className="grid grid-cols-[250px_1fr] gap-5">
-                <div className="setting-nav bg-subnav min-h-[calc(100vh-90px)] border-r border-line  px-4 ">
-                  <h2 className="my-7">Settings</h2>
-                  <ul className="space-y-2">
+              <div className="grid md:grid-cols-[250px_1fr] gap-5">
+                <div className="setting-nav bg-subnav md:min-h-[calc(100vh-100px)] border-r border-line  px-4 relative ">
+                  <div className="flex justify-between items-center">
+                    <h2 className="my-3 md:my-7 ">Settings</h2>
+                    <button className="md:hidden" onClick={handleShowSettings}>
+                      <Settings2 />
+                    </button>
+                  </div>
+                  <ul
+                    className={`${
+                      showSettings ? "max-h-[500px]" : "max-h-0"
+                    } space-y-2 h-auto md:h-unset overflow-hidden transition-all absolute md:static bg-subnav z-30 w-full left-0 md:overflow-visible px-3 md:px-0`}
+                  >
                     {settingsLink.map((link, key) => {
                       return (
                         <li
@@ -87,7 +100,7 @@ const Settings = () => {
                   </ul>
                 </div>
 
-                <div className="setting-main  max-w-[700px] w-full ">
+                <div className="setting-main  w-full ">
                   {settingPages[tabindex]}
                 </div>
               </div>

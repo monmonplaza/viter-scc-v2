@@ -84,6 +84,13 @@ const OtherForgotPassword = () => {
             <p className="text-balance">
               We have successfully send the instruction to your email.{" "}
             </p>
+
+            <a
+              href={`${devNavUrl}/login`}
+              className="btn btn-accent w-1/2 text-center mt-5 center-all"
+            >
+              Back to Login
+            </a>
           </div>
         ) : (
           <div className="login-body">

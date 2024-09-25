@@ -6,6 +6,7 @@ import {
 } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import Logo from "@/components/partials/icons/Logo.jsx";
+import ModalError from "@/components/partials/modal/ModalError.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import { setError, setMessage } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
@@ -58,85 +59,96 @@ const DeveloperForgotPassword = () => {
   }, [theme]);
 
   return (
-    <div className="h-screen w-full center-all bg-primary">
-      <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px] sm:-translate-y-[150px] shadow-md rounded-md">
-        <div className="login-header">
-          <div className=" flex gap-2 items-center justify-center my-2">
-            <div className="p-1 py-2 bg-accent rounded-xl inline-block">
-              <Logo />
+    <>
+      <div className="h-screen w-full center-all bg-primary">
+        <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px] sm:-translate-y-[150px] shadow-md rounded-md">
+          <div className="login-header">
+            <div className=" flex gap-2 items-center justify-center my-2">
+              <div className="p-1 py-2 bg-accent rounded-xl inline-block">
+                <Logo />
+              </div>
+              <div className="translate-y-1">
+                <h4 className="leading-none uppercase text-[19px] font-medium">
+                  Sambahayan
+                </h4>
+                <span className="text-[11px] leading-none -translate-y-2 block font-regular">
+                  Consumer Cooperative
+                </span>
+              </div>
             </div>
-            <div className="translate-y-1">
-              <h4 className="leading-none uppercase text-[19px] font-medium">
-                Sambahayan
-              </h4>
-              <span className="text-[11px] leading-none -translate-y-2 block font-regular">
-                Consumer Cooperative
-              </span>
-            </div>
+
+            <h5 className="text-center my-3 text-base">
+              Developer - Forgot Password
+            </h5>
           </div>
 
-          <h5 className="text-center my-3 text-base">
-            Developer - Forgot Password
-          </h5>
-        </div>
+          {isSuccess ? (
+            <div className="login-message center-all flex-col text-center py-5">
+              <MailCheck size={60} stroke={"#00ff00"} className="mb-3" />
+              <p className="text-balance">
+                We have successfully send the instruction to your email.{" "}
+              </p>
 
-        {isSuccess ? (
-          <div className="login-message center-all flex-col text-center py-5">
-            <MailCheck size={60} stroke={"#00ff00"} className="mb-3" />
-            <p className="text-balance">
-              We have successfully send the instruction to your email.{" "}
-            </p>
-          </div>
-        ) : (
-          <div className="login-body">
-            <p>
-              Enter your registered email to receive instruction on how to reset
-              your password
-            </p>
-            <Formik
-              initialValues={initVal}
-              validationSchema={yupSchema}
-              onSubmit={async (values, { setSubmitting, resetForm }) => {
-                mutation.mutate(values);
-              }}
-            >
-              {(props) => {
-                return (
-                  <Form>
-                    <div className="input-wrap">
-                      <InputText
-                        label="Email"
-                        type="text"
-                        name="email"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-
-                    <button
-                      className="btn btn-accent w-full justify-center mt-5"
-                      type="submit"
-                      disabled={mutation.isPending || !props.dirty}
-                    >
-                      {mutation.isPending && <SpinnerButton />} Reset Password
-                    </button>
-                  </Form>
-                );
-              }}
-            </Formik>
-
-            <p className="mt-5 text-center">
-              Go back to
               <a
                 href={`${devNavUrl}/${urlSystem}/login`}
-                className="w-full text-content pl-1 hover:underline"
+                className="btn btn-accent w-1/2 text-center mt-5 center-all"
               >
-                <u>Login</u>
+                Back to Login
               </a>
-            </p>
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="login-body">
+              <p>
+                Enter your registered email to receive instruction on how to
+                reset your password
+              </p>
+              <Formik
+                initialValues={initVal}
+                validationSchema={yupSchema}
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
+                  mutation.mutate(values);
+                }}
+              >
+                {(props) => {
+                  return (
+                    <Form>
+                      <div className="input-wrap">
+                        <InputText
+                          label="Email"
+                          type="text"
+                          name="email"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+
+                      <button
+                        className="btn btn-accent w-full justify-center mt-5"
+                        type="submit"
+                        disabled={mutation.isPending || !props.dirty}
+                      >
+                        {mutation.isPending && <SpinnerButton />} Reset Password
+                      </button>
+                    </Form>
+                  );
+                }}
+              </Formik>
+
+              <p className="mt-5 text-center">
+                Go back to
+                <a
+                  href={`${devNavUrl}/${urlSystem}/login`}
+                  className="w-full text-content pl-1 hover:underline"
+                >
+                  <u>Login</u>
+                </a>
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      {store.error && <ModalError />}
+    </>
   );
 };
 

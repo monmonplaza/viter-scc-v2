@@ -25,13 +25,19 @@ $user->user_datetime = date("Y-m-d H:i:s");
 $password_link = "/create-password";
 // check email
 isEmailExist($user, $user->user_email);
-// send email notification
-sendEmail(
-    $password_link,
-    $user->user_fname,
-    $user->user_email,
-    $user->user_key
-);
-// create
 $query = checkCreate($user);
-returnSuccess($user, "User system", $query);
+if ($query->rowCount() > 0) {
+    sendEmail(
+        $password_link,
+        $user->user_fname,
+        $user->user_email,
+        $user->user_key
+    );
+}
+
+// create
+if ($mailData["mail_success"] == true) {
+    returnSuccess($developer, "User", $query);
+}
+
+returnError($mailData["error"]);

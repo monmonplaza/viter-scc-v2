@@ -43,7 +43,7 @@ const UnitList = ({ setItemEdit }) => {
       <div className="relative ">
         {!isLoading && isFetching && <SpinnerTable />}
 
-        <div className="table-wrapper  !max-w-[685px]">
+        <div className="table-wrapper  w-full">
           <table>
             <thead>
               <tr>

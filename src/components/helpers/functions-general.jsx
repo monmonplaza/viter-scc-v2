@@ -103,3 +103,10 @@ export const getUrlParam = (id) => {
 export function setStorageRoute(jwt, isDev) {
   localStorage.setItem("localhristoken", JSON.stringify({ token: jwt, isDev }));
 }
+
+export function formatInPeso(number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "PHP",
+  }).format(number);
+}

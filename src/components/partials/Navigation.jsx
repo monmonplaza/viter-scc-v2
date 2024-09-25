@@ -17,7 +17,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "../helpers/functions-general.jsx";
-import { setIsSearch } from "../store/StoreAction.jsx";
+import { setIsSearch, setIsShowMobileNav } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 import Logo from "./icons/Logo.jsx";
 
@@ -96,12 +96,19 @@ const Navigation = ({ menu, submenu }) => {
     },
   ];
 
-  const handleResetSearch = () => dispatch(setIsSearch(false));
+  const handleResetSearch = () => {
+    dispatch(setIsSearch(false));
+    dispatch(setIsShowMobileNav(false));
+  };
 
   const getRole = () => store.credentials?.data.role.toLowerCase();
 
   return (
-    <aside className={`${store.isShowMobileNav ? "left-0" : "-left-full"}`}>
+    <aside
+      className={`z-[9999999]  ${
+        store.isShowMobileNav ? "left-0" : "-left-full"
+      }`}
+    >
       <nav className="py-2 px-4">
         <div className=" flex gap-2 items-center mt-2">
           <div className="p-1 py-2 bg-accent rounded-xl inline-block">

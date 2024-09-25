@@ -34,20 +34,23 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         returnError("Invalid email. Please use a registered one.");
     }
 
-    $mail = sendEmail(
-        $password_link,
-        $user->user_email,
-        $user->user_key
-    );
-
     $query = checkResetPassword($user);
-    http_response_code(200);
-    returnSuccess($user, "User system", $query, $user->user_email);
-    // return 404 error if endpoint not available
+
+    if ($query->rowCount() > 0) {
+        $mail = sendEmail(
+            $password_link,
+            $user->user_email,
+            $user->user_key
+        );
+    }
+
+    if ($mailData["mail_success"] == true) {
+        http_response_code(200);
+        returnSuccess($developer, "User", $query);
+    }
+
+    returnError($mailData["error"]);
     checkEndpoint();
 }
 
-http_response_code(200);
-// when authentication is cancelled
-// header('HTTP/1.0 401 Unauthorized');
 checkAccess();
