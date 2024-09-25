@@ -22,9 +22,8 @@ const Product = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation menu="products" />
-        </aside>
+        <Navigation menu="products" />
+
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />

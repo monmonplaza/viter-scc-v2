@@ -36,6 +36,7 @@ import { Form, Formik } from "formik";
 import { PillBottle, Plus, Printer, Trash, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
+import ModalSalesPrint from "./ModalSalesPrint.jsx";
 
 const ModalAddSales = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -54,6 +55,7 @@ const ModalAddSales = ({ itemEdit }) => {
   const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
   const [isRequiredCustomerYup, setIsRequiredCustomerYup] = React.useState("");
   const [isRequiredAmountYup, setIsRequiredAmountYup] = React.useState("");
+  const [isPrint, setIsPrint] = React.useState(false);
   let counter = 1;
   let totalAmount = 0;
 
@@ -251,7 +253,7 @@ const ModalAddSales = ({ itemEdit }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 ">
+        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 max-h-[80dvh] overflow-auto">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
@@ -290,6 +292,7 @@ const ModalAddSales = ({ itemEdit }) => {
                     <button
                       className="btn btn-accent md:text-left "
                       type="submit"
+                      onClick={() => setIsPrint(true)}
                     >
                       <Printer size={16} /> Print
                     </button>
@@ -374,8 +377,7 @@ const ModalAddSales = ({ itemEdit }) => {
                         </div>
                       </>
                     )}
-                    <div className="lg:grid lg:grid-cols-[10rem_1fr] gap-2 items-end">
-                      <div className=""></div>
+                    <div className="lg:grid lg:grid-cols-[1fr_10rem] gap-2 items-end">
                       <div
                         className={`${
                           itemEdit
@@ -500,6 +502,7 @@ const ModalAddSales = ({ itemEdit }) => {
                             </>
                           )}
                         </button>
+                        <div className=""></div>
                       </div>
                     </div>
                   </Form>
@@ -726,6 +729,7 @@ const ModalAddSales = ({ itemEdit }) => {
           />
         )}
       </WrapperModal>
+      {isPrint && <ModalSalesPrint setIsPrint={setIsPrint} />}
     </>
   );
 };

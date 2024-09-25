@@ -34,13 +34,22 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         returnError("Invalid email. Please use a registered one.");
     }
 
-    $mail = sendEmail(
-        $password_link,
-        $developer->developer_email,
-        $developer->developer_key
-    );
-
     $query = checkResetPassword($developer);
+    if ($query->rowCount() > 0) {
+        $mail = sendEmail(
+            $password_link,
+            $developer->developer_email,
+            $developer->developer_key
+        );
+    }
+
+    if ($mailData["mail_success"] == true) {
+        http_response_code(200);
+        returnSuccess($developer, "User system", $query);
+    }
+
+
+
     http_response_code(200);
     returnSuccess($developer, "User system", $query, $developer->developer_email);
     // return 404 error if endpoint not available

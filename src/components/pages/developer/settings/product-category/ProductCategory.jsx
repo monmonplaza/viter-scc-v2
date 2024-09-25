@@ -2,8 +2,8 @@ import { setIsAdd } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
 import { Plus } from "lucide-react";
 import React from "react";
-import ProductCategoryList from "./ProductCategoryList";
 import ModalProductCategory from "./ModalProductCategory";
+import ProductCategoryList from "./ProductCategoryList";
 
 const ProductCategory = () => {
   const { store, dispatch } = React.useContext(StoreContext);

@@ -89,7 +89,7 @@ const Header = () => {
           <h3 className="leading-none uppercase text-[clamp(14px,4vw,19px)] font-medium">
             Inventory and Sales
           </h3>
-          <p>Management System</p>
+          <p className="mb-0 text-sm">Management System</p>
         </div>
         <div className="profile flex items-center gap-3">
           <div

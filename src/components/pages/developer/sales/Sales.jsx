@@ -24,9 +24,8 @@ const Sales = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation menu="sales" />
-        </aside>
+        <Navigation menu="sales" />
+
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />

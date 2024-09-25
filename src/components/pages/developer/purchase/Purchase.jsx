@@ -31,10 +31,10 @@ const Purchase = () => {
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
-            <div className="main-wrapper p-2 md:p-8 bg-secondary">
+            <div className="main-wrapper bg-secondary">
               {/* <Breadcrumbs /> */}
 
-              <div className="flex justify-between items-center my-5">
+              <div className="flex justify-between items-center my-5 px-2 md:px-0">
                 <h1 className="mb-0">Purchase Order</h1>
                 <div>
                   <button

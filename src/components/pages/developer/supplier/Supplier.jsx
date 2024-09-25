@@ -22,16 +22,11 @@ const Supplier = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation menu="suppliers" />
-        </aside>
+        <Navigation menu="suppliers" />
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
-
             <div className="main-wrapper ">
-              <Breadcrumbs />
-
               <div className="flex justify-between items-center my-5">
                 <h1 className="mb-0">Suppliers</h1>
                 <div>

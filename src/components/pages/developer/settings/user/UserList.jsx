@@ -137,7 +137,7 @@ const UserList = ({ setItemEdit }) => {
       <div className="relative ">
         {status !== "loading" && isFetching && <SpinnerTable />}
 
-        <div className="table-wrapper  !max-w-[685px]">
+        <div className="table-wrapper w-full">
           <table
             className={`${result?.pages[0].count > 22 ? "has-sticky" : ""}`}
           >

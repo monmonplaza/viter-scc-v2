@@ -27,7 +27,6 @@ const ProductCategoryList = ({ setItemEdit }) => {
   const [filterData, setFilterData] = React.useState("all");
   const search = React.useRef({ value: "" });
   let counter = 1;
-  console.log(store.isSearch);
 
   const {
     handleRemove,
@@ -121,7 +120,7 @@ const ProductCategoryList = ({ setItemEdit }) => {
       <div className="relative">
         {status !== "loading" && isFetching && <SpinnerTable />}
 
-        <div className="table-wrapper  !max-w-[685px]">
+        <div className="table-wrapper md:w-full">
           <table>
             <thead>
               <tr>

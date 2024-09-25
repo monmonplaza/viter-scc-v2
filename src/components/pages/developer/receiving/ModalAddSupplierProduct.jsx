@@ -13,6 +13,7 @@ import { queryData } from "@/components/helpers/queryData";
 import SearchNoData from "@/components/partials/icons/SearchNoData";
 import ServerError from "@/components/partials/icons/ServerError";
 import LoaderTable from "@/components/partials/LoaderTable";
+import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 import ModalDelete from "@/components/partials/modal/ModalDelete";
 import SearchModalProduct from "@/components/partials/search/SearchModalProduct";
 import SearchModalSupplier from "@/components/partials/search/SearchModalSupplier";
@@ -33,7 +34,6 @@ import { PillBottle, Plus, SquarePen, Trash, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 import ModalEditSupplierProduct from "./ModalEditSupplierProduct";
-import ModalAdvanceDelete from "@/components/partials/modal/ModalAdvanceDelete";
 
 const ModalAddSupplierProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
@@ -166,7 +166,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
   return (
     <>
       <WrapperModal>
-        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none">
+        <div className="modal-center rounded-md !bg-primary !max-w-[1200px] border border-line mx-2 !animate-none max-h-[80dvh] overflow-auto">
           <div className="p-2.5 border-b border-line flex justify-between">
             <h4 className="flex items-center gap-2 !font-medium text-body mb-0">
               <PillBottle size={16} />
