@@ -97,10 +97,26 @@ function checkDeleteDefective($object)
     return $query;
 }
 
+// Delete Inventory Log 
+function checkDeleteDefectiveOngoing($object)
+{
+    $query = $object->deleteDefectiveOngoing();
+    checkQuery($query, "There's a problem processing your request. (delete defective)");
+    return $query;
+}
+
 // check association
 function isAssociateDefective($object)
 {
     $query = $object->checkAssociationDefective();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+
+// check association
+function isAssociateProductPrice($object)
+{
+    $query = $object->checkAssociateProductPrice();
     $count = $query->rowCount();
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }

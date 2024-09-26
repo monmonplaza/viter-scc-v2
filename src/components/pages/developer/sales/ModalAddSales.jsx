@@ -210,6 +210,7 @@ const ModalAddSales = ({ itemEdit }) => {
   const handleSearch = () => {
     setIsRequiredAmountYup("");
     setIsAcceptPayment(false);
+
     if (customerData === null || typeof customerData === "undefined") {
       setIsRequiredCustomerYup(Yup.string().required("Required"));
     }

@@ -50,6 +50,7 @@ class ReceivingSupply
     public $tblUnit;
     public $tblDefectiveProduct;
     public $tblInventoryLog;
+    public $tblProductPrice;
 
     public function __construct($db)
     {
@@ -61,6 +62,7 @@ class ReceivingSupply
         $this->tblUnit = "sccv2_settings_unit";
         $this->tblDefectiveProduct = "sccv2_defective_product";
         $this->tblInventoryLog = "sccv2_inventory_log";
+        $this->tblProductPrice = "sccv2_product_price";
     }
 
     // create
@@ -424,6 +426,23 @@ class ReceivingSupply
         return $query;
     }
 
+    // delete
+    public function deleteDefectiveOngoing()
+    {
+        try {
+            $sql = "delete from {$this->tblDefectiveProduct} ";
+            $sql .= "where defective_product_receiving_supply_id = :defective_product_receiving_supply_id ";
+            $sql .= "and defective_product_is_resolve = '0' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // name
     public function checkAssociationDefective()
     {
@@ -434,6 +453,22 @@ class ReceivingSupply
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkAssociateProductPrice()
+    {
+        try {
+            $sql = "select product_price_supply_id from {$this->tblProductPrice} ";
+            $sql .= "where product_price_supply_id = :product_price_supply_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_price_supply_id" => $this->receiving_supply_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
