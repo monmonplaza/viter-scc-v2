@@ -57,6 +57,8 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
         //     $receiving_supply->inventory_log_defective_product = checkIndex($updateInventoryLog[0], "total_defective_product_qty");
         //     checkUpdateInventoryDefectiveProduct($receiving_supply);
         // }
+    } else {
+        checkDeleteDefectiveOngoing($receiving_supply);
     }
 
 

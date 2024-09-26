@@ -1,10 +1,6 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { InputSearch } from "@/components/helpers/FormInputs";
-import {
-  numberWithCommasToFixed,
-  pesoSign,
-  ver,
-} from "@/components/helpers/functions-general";
+import { ver } from "@/components/helpers/functions-general";
 import { StoreContext } from "@/components/store/StoreContext";
 import React from "react";
 import SearchNoData from "../icons/SearchNoData";
@@ -96,10 +92,15 @@ const SearchModalProductPrice = ({
   };
 
   React.useEffect(() => {
+    if (isFetching) {
+      setData(null);
+      setSearch("");
+      setSearchValues("");
+    }
     document.addEventListener("click", handleClickOutsideSearch);
     return () =>
       document.removeEventListener("click", handleClickOutsideSearch);
-  }, []);
+  }, [isFetching]);
 
   return (
     <>

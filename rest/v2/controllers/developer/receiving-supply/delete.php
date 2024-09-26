@@ -14,29 +14,11 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
     checkId($receiving_supply->receiving_supply_aid);
 
     isAssociateDefective($receiving_supply);
+    isAssociateProductPrice($receiving_supply);
 
     $query = checkDelete($receiving_supply);
     checkDeleteDefective($receiving_supply);
 
-    // // FOR INVETORY ONLY
-    // // STOCK IN
-    // $updateInventoryStockIn = getResultData($receiving_supply->checkProductTotalQty());
-    // if (count($updateInventoryStockIn) > 0) {
-    //     $receiving_supply->inventory_log_stock_in = checkIndex($updateInventoryStockIn[0], "total_product_stock_qty");
-    // } else {
-    //     $receiving_supply->inventory_log_stock_in = 0;
-    // }
-
-    // // FOR INVETORY ONLY
-    // // DEFECTIVE  
-    // $updateInventoryDefective = getResultData($receiving_supply->checkDefectiveProductTotalQty());
-    // if (count($updateInventoryDefective) > 0) {
-    //     $receiving_supply->inventory_log_defective_product = checkIndex($updateInventoryDefective[0], "total_defective_product_qty");
-    // } else {
-    //     $receiving_supply->inventory_log_defective_product = 0;
-    // }
-    // checkUpdateInventoryStockIn($receiving_supply);
-    // checkUpdateInventoryDefectiveProduct($receiving_supply);
     returnSuccess($receiving_supply, "Receiving Supply", $query);
 }
 

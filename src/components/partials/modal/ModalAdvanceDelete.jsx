@@ -27,6 +27,18 @@ const ModalAdvanceDelete = ({
     mutationFn: (values) => queryData(mysqlApiDelete, "delete", values),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });
+      queryClient.invalidateQueries({
+        queryKey: ["search-product-price"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["search-customer"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["sales-list-read-new-receive"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["sales"],
+      });
       handleClose();
       if (!data.success) {
         dispatch(setValidate(true));
