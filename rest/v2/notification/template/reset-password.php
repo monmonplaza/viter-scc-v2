@@ -123,9 +123,8 @@ function getHtmlResetPassword(
       >
         <p style="font-size: 10px; line-height: 1.4; opacity: 0.5">
           &copy; ' . date("Y") . ' All Rights Reserved <br />
-          Frontline Business Solutions, Inc., Baloc Road, Brgy. San Ignacio
-          <br />
-          San Pablo City, 4000, Laguna, Philippines
+          Sambahay Consumer Cooperative.
+         
         </p>
       </div>
     </div>
