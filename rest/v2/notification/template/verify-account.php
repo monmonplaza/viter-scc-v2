@@ -74,7 +74,7 @@ function getHtmlVerifyAccount(
           Please confirm that you want to use
           <strong>' . $email . '</strong> as account email address.
           Click the button below to set your password
-          and start using the FBAS System.
+          and start using the SCC System.
         </p>
 
         <a

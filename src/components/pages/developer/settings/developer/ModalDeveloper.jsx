@@ -39,8 +39,6 @@ const ModalDeveloper = ({ itemEdit }) => {
   const getDeveloperRoleId =
     role?.count > 0 && role?.data.filter((rl) => rl.role_name === "Developer");
 
-  console.log(store.isAdd);
-
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
@@ -119,7 +117,7 @@ const ModalDeveloper = ({ itemEdit }) => {
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
             {itemEdit ? "Edit " : "Add "}
-            Role
+            Developer
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
