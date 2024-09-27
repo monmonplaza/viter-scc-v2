@@ -16,6 +16,7 @@ if (array_key_exists("userid", $_GET)) {
     $user->user_fname = trim($data["user_fname"]);
     $user->user_lname = trim($data["user_lname"]);
     $user->user_email = trim($data["user_email"]);
+    $user->user_role_id = trim($data["user_role_id"]);
     $user->user_datetime = date("Y-m-d H:i:s");
     $user_email_old = strtolower($data["user_email_old"]);
     $user->user_key = $encrypt->doHash(rand());

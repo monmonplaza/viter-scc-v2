@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { devNavUrl } from "../helpers/functions-general.jsx";
 import { setIsLogout, setIsShowMobileNav } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
+import Logo from "./icons/Logo.jsx";
 import ModalLogout from "./modal/ModalLogout.jsx";
 
 const Header = () => {
@@ -85,11 +86,21 @@ const Header = () => {
   return (
     <>
       <header className="p-4 flex justify-between items-center bg-primary border-b border-line">
-        <div>
-          <h3 className="leading-none uppercase text-[clamp(14px,4vw,19px)] font-medium">
-            Inventory and Sales
-          </h3>
-          <p className="mb-0 text-sm">Management System</p>
+        <div className="flex gap-5 items-center">
+          {store.credentials?.data.role_is_cashier === 1 && (
+            <div className=" flex gap-2 items-center ">
+              <div className="p-1 py-2 bg-accent rounded-xl inline-block -translate-y-1">
+                <Logo />
+              </div>
+            </div>
+          )}
+
+          <div>
+            <h3 className="leading-none uppercase text-[clamp(14px,4vw,19px)] font-medium">
+              Inventory and Sales
+            </h3>
+            <p className="mb-0 text-sm">Management System</p>
+          </div>
         </div>
         <div className="profile flex items-center gap-3">
           <div

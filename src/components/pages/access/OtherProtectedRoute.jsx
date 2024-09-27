@@ -24,8 +24,6 @@ const OtherProtectedRoute = ({ children }) => {
         token: localhristoken.token,
       });
 
-      console.log(login);
-
       const isUserKeyMatched = login.data.user_key === login.data.user_password;
 
       if (isUserKeyMatched === false) {
@@ -78,7 +76,7 @@ const OtherProtectedRoute = ({ children }) => {
         ) : isAuth === "123" ? (
           children
         ) : isAuth === "456" ? (
-          <Navigate to={`${devNavUrl}/${urlAdmin}/login`} />
+          <Navigate to={`${devNavUrl}/login`} />
         ) : (
           <p>API end point error / Page not found.</p>
         )}

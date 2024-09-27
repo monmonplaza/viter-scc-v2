@@ -44,7 +44,7 @@ function getHtmlVerifyEmail(
     <div style="padding: 10px 10px 0px">
     <div style="text-align: left">
     <img
-    src="https://sambahayancoop.com/wp-content/uploads/2023/07/logo.png"
+    src="' . $IMAGES_URL . '/scc-logo-full.png"
     alt="fbs-logo"
     />
   </div>

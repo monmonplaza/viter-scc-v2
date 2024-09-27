@@ -93,16 +93,14 @@ const ModalUser = ({ itemEdit }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
-  const initVal = itemEdit
-    ? { ...itemEdit, user_email_old: itemEdit.user_email }
-    : {
-        user_aid: "",
-        user_fname: "",
-        user_lname: "",
-        user_email: "",
-        user_role_id: "",
-        user_email_old: "",
-      };
+  const initVal = {
+    user_aid: itemEdit ? itemEdit.user_aid : "",
+    user_fname: itemEdit ? itemEdit.user_fname : "",
+    user_lname: itemEdit ? itemEdit.user_lname : "",
+    user_email: itemEdit ? itemEdit.user_email : "",
+    user_role_id: itemEdit ? itemEdit.user_role_id : "",
+    user_email_old: itemEdit ? itemEdit.user_email : "",
+  };
 
   const yupSchema = Yup.object({
     user_fname: Yup.string().required("Required"),

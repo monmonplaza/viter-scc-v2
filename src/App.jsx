@@ -15,6 +15,7 @@ import OtherVerifyEmail from "./components/pages/access/OtherVerifyEmail.jsx";
 import PageNotFound from "./components/partials/PageNotFound.jsx";
 import { StoreProvider } from "./components/store/StoreContext";
 import { routesAdmin } from "./routes/RoutesAdmin";
+import { RoutesCashier } from "./routes/RoutesCashier.jsx";
 import { routesSystem } from "./routes/RoutesSystem";
 
 function App() {
@@ -68,6 +69,10 @@ function App() {
                 return <Route key={key} {...routeProps} />;
               })}
               {routesAdmin.map(({ ...routeProps }, key) => {
+                return <Route key={key} {...routeProps} />;
+              })}
+
+              {RoutesCashier.map(({ ...routeProps }, key) => {
                 return <Route key={key} {...routeProps} />;
               })}
             </Routes>

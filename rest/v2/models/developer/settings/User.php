@@ -247,12 +247,14 @@ class User
             $sql = "update {$this->tblUser} set ";
             $sql .= "user_fname = :user_fname, ";
             $sql .= "user_lname = :user_lname, ";
+            $sql .= "user_role_id = :user_role_id, ";
             $sql .= "user_datetime = :user_datetime ";
             $sql .= "where user_aid  = :user_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_fname" => $this->user_fname,
                 "user_lname" => $this->user_lname,
+                "user_role_id" => $this->user_role_id,
                 "user_datetime" => $this->user_datetime,
                 "user_aid" => $this->user_aid,
             ]);

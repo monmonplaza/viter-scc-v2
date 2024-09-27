@@ -1,4 +1,9 @@
-import { devNavUrl, urlAdmin, urlSystem } from "./functions-general";
+import {
+  devNavUrl,
+  urlAdmin,
+  urlCashier,
+  urlSystem,
+} from "./functions-general";
 
 export const checkRoleToRedirect = (navigate, data) => {
   // console.log("checkRoleToRedirect", data);
@@ -20,5 +25,5 @@ export const checkRoleToRedirect = (navigate, data) => {
     ? navigate(`${devNavUrl}/${urlSystem}/overview`)
     : data.role_is_admin === 1
     ? navigate(`${devNavUrl}/${urlAdmin}/overview`)
-    : navigate(`${devNavUrl}/${data.role_name.toLowerCase()}/time`);
+    : navigate(`${devNavUrl}/${urlCashier}/sales`);
 };

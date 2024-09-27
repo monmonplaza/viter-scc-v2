@@ -1,0 +1,28 @@
+
+CONTROLLERS  
+        - rest/v2/controllers/developer/settings/user/update.php
+  
+MODELS 
+        - rest/v2/models/developer/settings/User.php
+  
+CORE
+    - 
+
+HTACCESS
+    - 
+
+
+DB-BACKUP  
+    -  
+
+NOTIFICATION
+    - rest/v2/notification/template/reset-password.php
+    - rest/v2/notification/template/verify-account.php
+    - rest/v2/notification/template/verify-email.php
+
+    - rest/v2/notification/verify-email.php
+    - rest/v2/notification/reset-password.php
+    - rest/v2/notification/verify-account.php
+
+IMAGES
+    - public/img/scc-logo-full.png

@@ -30,7 +30,8 @@ function sendEmail($password_link, $email, $key)
 			$password_link,
 			$email,
 			$key,
-			ROOT_DOMAIN
+			ROOT_DOMAIN,
+			IMAGES_URL
 		);
 		$mail->addAddress($email);
 

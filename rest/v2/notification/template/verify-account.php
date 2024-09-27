@@ -5,7 +5,8 @@ function getHtmlVerifyAccount(
   $name,
   $email,
   $key,
-  $ROOT_DOMAIN
+  $ROOT_DOMAIN,
+  $IMAGES_URL
 ) {
   $html = '
   <style>
@@ -42,7 +43,7 @@ function getHtmlVerifyAccount(
     <div style="padding: 10px 10px 0px">
     <div style="text-align: center">
     <img
-      src="https://sambahayancoop.com/wp-content/uploads/2023/07/logo.png"
+    src="' . $IMAGES_URL . '/scc-logo-full.png"
       alt=""
     />
   </div>

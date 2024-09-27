@@ -154,7 +154,7 @@ const DeveloperLogin = () => {
                     <button
                       className="btn btn-accent w-full justify-center mt-5"
                       type="submit"
-                      disabled={mutation.isLoading || !props.dirty}
+                      disabled={mutation.isPending || !props.dirty}
                     >
                       {mutation.isPending && <SpinnerButton />} Login
                     </button>
