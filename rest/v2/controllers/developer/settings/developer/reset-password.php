@@ -36,7 +36,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     $query = checkResetPassword($developer);
     if ($query->rowCount() > 0) {
-        $mail = sendEmail(
+        $mailData = sendEmail(
             $password_link,
             $developer->developer_email,
             $developer->developer_key
