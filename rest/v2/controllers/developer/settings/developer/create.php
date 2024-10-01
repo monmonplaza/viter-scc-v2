@@ -25,13 +25,7 @@ $developer->developer_datetime = date("Y-m-d H:i:s");
 $password_link = "/developer/create-password";
 // check email
 isEmailExist($developer, $developer->developer_email);
-// send email notification
-sendEmail(
-    $password_link,
-    $developer->developer_fname,
-    $developer->developer_email,
-    $developer->developer_key
-);
+
 // create
 $query = checkCreate($developer);
 

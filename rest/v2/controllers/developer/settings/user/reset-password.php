@@ -37,7 +37,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $query = checkResetPassword($user);
 
     if ($query->rowCount() > 0) {
-        $mail = sendEmail(
+        $mailData = sendEmail(
             $password_link,
             $user->user_email,
             $user->user_key

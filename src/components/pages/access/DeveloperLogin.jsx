@@ -93,7 +93,7 @@ const DeveloperLogin = () => {
   return (
     <>
       <div className="h-screen w-full center-all bg-primary">
-        <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px] sm:-translate-y-[150px] shadow-md rounded-md">
+        <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px]  shadow-md rounded-md">
           <div className="login-header">
             <div className=" flex gap-2 items-center justify-center my-2">
               <div className="p-1 py-2 bg-accent rounded-xl inline-block">
@@ -135,7 +135,7 @@ const DeveloperLogin = () => {
                         label="Password"
                         type={password ? "password" : "text"}
                         name="password"
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || !props.dirty}
                       />
 
                       <button

@@ -1,0 +1,6 @@
+
+controllers
+- rest/v2/controllers/developer/settings/developer/reset-password.php
+
+- rest/v2/controllers/developer/settings/developer/create.php
+- rest/v2/controllers/developer/settings/user/reset-password.php
