@@ -207,7 +207,8 @@ const ModalAddSales = ({ itemEdit }) => {
     setIsAcceptPayment(true);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (props) => {
+    props.values.sales_list_quantity = "1";
     setIsRequiredAmountYup("");
     setIsAcceptPayment(false);
 
@@ -493,7 +494,9 @@ const ModalAddSales = ({ itemEdit }) => {
                           className="btn btn-accent ml-auto lg:mt-0 mt-5 !py-1 md:text-left lg:mb-2 "
                           type="submit"
                           disabled={mutation.isPending}
-                          onClick={handleSearch}
+                          onClick={() => {
+                            handleSearch(props);
+                          }}
                         >
                           {mutation.isPending ? (
                             <SpinnerButton />
@@ -641,6 +644,16 @@ const ModalAddSales = ({ itemEdit }) => {
                     validationSchema={yupSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
                       //
+
+                      if (
+                        values.sales_payment_method !== "credit" &&
+                        Number(values.sales_payment_amount) <
+                          Number(totalAmount)
+                      ) {
+                        dispatch(setValidate(true));
+                        dispatch(setMessage("Insuficient payment amount"));
+                        return;
+                      }
                       mutation.mutate({
                         ...values,
                         sales_aid: SalesData?.data[0].sales_aid,

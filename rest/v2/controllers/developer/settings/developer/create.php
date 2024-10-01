@@ -23,9 +23,10 @@ $developer->developer_key = $encrypt->doHash(rand());
 $developer->developer_created = date("Y-m-d H:i:s");
 $developer->developer_datetime = date("Y-m-d H:i:s");
 $password_link = "/developer/create-password";
+
+
 // check email
 isEmailExist($developer, $developer->developer_email);
-
 // create
 $query = checkCreate($developer);
 

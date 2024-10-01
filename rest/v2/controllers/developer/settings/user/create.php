@@ -23,21 +23,22 @@ $user->user_is_active = 1;
 $user->user_created = date("Y-m-d H:i:s");
 $user->user_datetime = date("Y-m-d H:i:s");
 $password_link = "/create-password";
-// check email
+// check email 
 isEmailExist($user, $user->user_email);
 $query = checkCreate($user);
+
 if ($query->rowCount() > 0) {
-    sendEmail(
+    $mailData = sendEmail(
         $password_link,
         $user->user_fname,
         $user->user_email,
         $user->user_key
     );
 }
-
+returnError($mailData);
 // create
 if ($mailData["mail_success"] == true) {
-    returnSuccess($developer, "User", $query);
+    returnSuccess($user, "User", $query);
 }
 
 returnError($mailData["error"]);
