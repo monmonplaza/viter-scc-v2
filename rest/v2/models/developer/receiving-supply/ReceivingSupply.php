@@ -10,6 +10,7 @@ class ReceivingSupply
     public $receiving_supply_amount;
     public $receiving_supply_is_active;
     public $receiving_supply_defective_product_qty;
+    public $receiving_supply_whole_sale_quantity;
     public $receiving_supply_defective_remarks;
     public $receiving_supply_datetime;
     public $receiving_supply_created;
@@ -105,6 +106,7 @@ class ReceivingSupply
             $sql .= "receiving_supply_supplier_id, ";
             $sql .= "receiving_supply_unit_id, ";
             $sql .= "receiving_supply_quantity, ";
+            $sql .= "receiving_supply_whole_sale_quantity, ";
             $sql .= "receiving_supply_price, ";
             $sql .= "receiving_supply_amount, ";
             $sql .= "receiving_supply_expiration_date, ";
@@ -119,6 +121,7 @@ class ReceivingSupply
             $sql .= ":receiving_supply_supplier_id, ";
             $sql .= ":receiving_supply_unit_id, ";
             $sql .= ":receiving_supply_quantity, ";
+            $sql .= ":receiving_supply_whole_sale_quantity, ";
             $sql .= ":receiving_supply_price, ";
             $sql .= ":receiving_supply_amount, ";
             $sql .= ":receiving_supply_expiration_date, ";
@@ -135,6 +138,7 @@ class ReceivingSupply
                 "receiving_supply_supplier_id" => $this->receiving_supply_supplier_id,
                 "receiving_supply_unit_id" => $this->receiving_supply_unit_id,
                 "receiving_supply_quantity" => $this->receiving_supply_quantity,
+                "receiving_supply_whole_sale_quantity" => $this->receiving_supply_whole_sale_quantity,
                 "receiving_supply_price" => $this->receiving_supply_price,
                 "receiving_supply_amount" => $this->receiving_supply_amount,
                 "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
@@ -301,6 +305,7 @@ class ReceivingSupply
             $sql .= "receiving_supply_supplier_id = :receiving_supply_supplier_id, ";
             $sql .= "receiving_supply_unit_id = :receiving_supply_unit_id, ";
             $sql .= "receiving_supply_quantity = :receiving_supply_quantity, ";
+            $sql .= "receiving_supply_whole_sale_quantity = :receiving_supply_whole_sale_quantity, ";
             $sql .= "receiving_supply_price = :receiving_supply_price, ";
             $sql .= "receiving_supply_expiration_date = :receiving_supply_expiration_date, ";
             $sql .= "receiving_supply_barcode = :receiving_supply_barcode, ";
@@ -315,6 +320,7 @@ class ReceivingSupply
                 "receiving_supply_supplier_id" => $this->receiving_supply_supplier_id,
                 "receiving_supply_unit_id" => $this->receiving_supply_unit_id,
                 "receiving_supply_quantity" => $this->receiving_supply_quantity,
+                "receiving_supply_whole_sale_quantity" => $this->receiving_supply_whole_sale_quantity,
                 "receiving_supply_price" => $this->receiving_supply_price,
                 "receiving_supply_expiration_date" => $this->receiving_supply_expiration_date,
                 "receiving_supply_barcode" => $this->receiving_supply_barcode,

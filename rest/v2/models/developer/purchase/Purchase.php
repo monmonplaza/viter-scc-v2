@@ -382,12 +382,14 @@ class Purchase
         try {
             $sql = "update {$this->tblPurchase} set ";
             $sql .= "purchase_delivery_start_date = :purchase_delivery_start_date, ";
+            $sql .= "purchase_delivery_end_date = :purchase_delivery_end_date, ";
             $sql .= "purchase_date = :purchase_date, ";
             $sql .= "purchase_updated = :purchase_updated ";
             $sql .= "where purchase_reference_no = :purchase_reference_no ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_delivery_start_date" => $this->purchase_delivery_start_date,
+                "purchase_delivery_end_date" => $this->purchase_delivery_end_date,
                 "purchase_date" => $this->purchase_date,
                 "purchase_updated" => $this->purchase_updated,
                 "purchase_reference_no" => $this->purchase_reference_no,

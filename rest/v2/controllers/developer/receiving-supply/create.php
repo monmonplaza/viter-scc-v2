@@ -15,6 +15,7 @@ $receiving_supply->receiving_supply_product_id = checkIndex($data, "receiving_su
 $receiving_supply->receiving_supply_supplier_id = checkIndex($data, "receiving_supply_supplier_id");
 $receiving_supply->receiving_supply_unit_id = checkIndex($data, "receiving_supply_unit_id");
 $receiving_supply->receiving_supply_quantity = checkIndex($data, "receiving_supply_quantity");
+$receiving_supply->receiving_supply_whole_sale_quantity = checkIndex($data, "receiving_supply_whole_sale_quantity");
 $receiving_supply->receiving_supply_price = checkIndex($data, "receiving_supply_price");
 $receiving_supply->receiving_supply_amount = checkIndex($data, "receiving_supply_amount");
 $receiving_supply->receiving_supply_expiration_date = $data["receiving_supply_expiration_date"];
@@ -35,6 +36,8 @@ if ($receiving_supply->receiving_supply_barcode != "") {
     isBarcodeExist($receiving_supply, $receiving_supply->receiving_supply_barcode, $receiving_supply->receiving_supply_product_id);
 }
 
+
+
 $isNewData = getResultData($receiving_supply->checkDateGetLastAid());
 if (count($isNewData) == 0) {
     isDateExist($receiving_supply, $receiving_supply->receiving_date);
@@ -47,8 +50,9 @@ if (count($isNewData) == 0) {
     checkUpdateReceiving($receiving_supply);
 }
 
-
-
+if ($receiving_supply->receiving_supply_barcode == "") {
+    $receiving_supply->receiving_supply_barcode = substr($receiving_supply->lastInsertedId . rand(1000, 9999) . $receiving_supply->receiving_supply_product_id . $receiving_supply->receiving_supply_supplier_id, 0, 9);
+}
 
 $query = checkCreate($receiving_supply);
 
