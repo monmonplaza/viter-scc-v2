@@ -6,7 +6,8 @@ class Purchase
     public $purchase_product_id;
     public $purchase_date;
     public $purchase_quantity;
-    public $purchase_delivery_date;
+    public $purchase_delivery_start_date;
+    public $purchase_delivery_end_date;
     public $purchase_remarks;
     public $purchase_price;
     public $purchase_supplier_id;
@@ -50,7 +51,8 @@ class Purchase
         try {
             $sql = "insert into {$this->tblPurchase} ";
             $sql .= "( purchase_product_id, ";
-            $sql .= "purchase_delivery_date, ";
+            $sql .= "purchase_delivery_start_date, ";
+            $sql .= "purchase_delivery_end_date, ";
             $sql .= "purchase_date, ";
             $sql .= "purchase_price, ";
             $sql .= "purchase_is_ongoing, ";
@@ -63,7 +65,8 @@ class Purchase
             $sql .= "purchase_updated, ";
             $sql .= "purchase_created ) values ( ";
             $sql .= ":purchase_product_id, ";
-            $sql .= ":purchase_delivery_date, ";
+            $sql .= ":purchase_delivery_start_date, ";
+            $sql .= ":purchase_delivery_end_date, ";
             $sql .= ":purchase_date, ";
             $sql .= ":purchase_price, ";
             $sql .= ":purchase_is_ongoing, ";
@@ -78,7 +81,8 @@ class Purchase
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_product_id" => $this->purchase_product_id,
-                "purchase_delivery_date" => $this->purchase_delivery_date,
+                "purchase_delivery_start_date" => $this->purchase_delivery_start_date,
+                "purchase_delivery_end_date" => $this->purchase_delivery_end_date,
                 "purchase_date" => $this->purchase_date,
                 "purchase_price" => $this->purchase_price,
                 "purchase_is_ongoing" => $this->purchase_is_ongoing,
@@ -285,9 +289,11 @@ class Purchase
             $sql .= "and purc.purchase_supplier_id = s.supplier_aid ";
             $sql .= "and (p.product_name like :product_name ";
             $sql .= "or MONTHNAME(purc.purchase_date) like :month_name ";
-            $sql .= "or MONTHNAME(purc.purchase_delivery_date) like :delivery_date_month_name ";
+            $sql .= "or MONTHNAME(purc.purchase_delivery_start_date) like :delivery_date_month_name ";
+            $sql .= "or MONTHNAME(purc.purchase_delivery_end_date) like :delivery_date_end_month_name ";
             $sql .= "or purc.purchase_date like :purchase_date ";
-            $sql .= "or purc.purchase_delivery_date like :purchase_delivery_date ";
+            $sql .= "or purc.purchase_delivery_start_date like :purchase_delivery_start_date ";
+            $sql .= "or purc.purchase_delivery_end_date like :purchase_delivery_end_date ";
             $sql .= "or s.supplier_name like :supplier_name ";
             $sql .= ") ";
             $sql .= "order by purc.purchase_is_ongoing asc, ";
@@ -298,8 +304,10 @@ class Purchase
                 "month_name" => "%{$this->purchase_search}%",
                 "delivery_date_month_name" => "%{$this->purchase_search}%",
                 "purchase_date" => "%{$this->purchase_search}%",
-                "purchase_delivery_date" => "%{$this->purchase_search}%",
+                "purchase_delivery_start_date" => "%{$this->purchase_search}%",
                 "supplier_name" => "%{$this->purchase_search}%",
+                "delivery_date_end_month_name" => "%{$this->purchase_search}%",
+                "purchase_delivery_end_date" => "%{$this->purchase_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -373,13 +381,13 @@ class Purchase
     {
         try {
             $sql = "update {$this->tblPurchase} set ";
-            $sql .= "purchase_delivery_date = :purchase_delivery_date, ";
+            $sql .= "purchase_delivery_start_date = :purchase_delivery_start_date, ";
             $sql .= "purchase_date = :purchase_date, ";
             $sql .= "purchase_updated = :purchase_updated ";
             $sql .= "where purchase_reference_no = :purchase_reference_no ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "purchase_delivery_date" => $this->purchase_delivery_date,
+                "purchase_delivery_start_date" => $this->purchase_delivery_start_date,
                 "purchase_date" => $this->purchase_date,
                 "purchase_updated" => $this->purchase_updated,
                 "purchase_reference_no" => $this->purchase_reference_no,
@@ -458,14 +466,14 @@ class Purchase
             $sql .= "and purc.purchase_supplier_id = s.supplier_aid ";
             $sql .= "and ( ";
             $sql .= "DATE(purc.purchase_date) = DATE(:purchase_date) ";
-            $sql .= "and DATE(purc.purchase_delivery_date) = DATE(:purchase_delivery_date) ";
+            $sql .= "and DATE(purc.purchase_delivery_start_date) = DATE(:purchase_delivery_start_date) ";
             $sql .= " ) ";
             $sql .= "order by purc.purchase_is_ongoing asc, ";
             $sql .= "DATE(purc.purchase_date) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_date" => $this->purchase_date,
-                "purchase_delivery_date" => $this->purchase_date,
+                "purchase_delivery_start_date" => $this->purchase_date,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -517,9 +525,11 @@ class Purchase
             $sql .= "and purc.purchase_is_ongoing = :purchase_is_ongoing ";
             $sql .= "and (p.product_name like :product_name ";
             $sql .= "or MONTHNAME(purc.purchase_date) like :month_name ";
-            $sql .= "or MONTHNAME(purc.purchase_delivery_date) like :delivery_date_month_name ";
+            $sql .= "or MONTHNAME(purc.purchase_delivery_start_date) like :delivery_date_month_name ";
+            $sql .= "or MONTHNAME(purc.purchase_delivery_end_date) like :delivery_date_end_month_name ";
             $sql .= "or purc.purchase_date like :purchase_date ";
-            $sql .= "or purc.purchase_delivery_date like :purchase_delivery_date ";
+            $sql .= "or purc.purchase_delivery_start_date like :purchase_delivery_start_date ";
+            $sql .= "or purc.purchase_delivery_end_date like :purchase_delivery_end_date ";
             $sql .= "or s.supplier_name like :supplier_name ";
             $sql .= ") ";
             $sql .= "order by purc.purchase_is_ongoing asc, ";
@@ -530,8 +540,10 @@ class Purchase
                 "month_name" => "%{$this->purchase_search}%",
                 "delivery_date_month_name" => "%{$this->purchase_search}%",
                 "purchase_date" => "%{$this->purchase_search}%",
-                "purchase_delivery_date" => "%{$this->purchase_search}%",
+                "purchase_delivery_start_date" => "%{$this->purchase_search}%",
                 "supplier_name" => "%{$this->purchase_search}%",
+                "delivery_date_end_month_name" => "%{$this->purchase_search}%",
+                "purchase_delivery_end_date" => "%{$this->purchase_search}%",
                 "purchase_is_ongoing" => $this->purchase_is_ongoing,
             ]);
         } catch (PDOException $ex) {

@@ -1,0 +1,19 @@
+
+CONTROLLERS  
+        - rest/v2/controllers/developer/purchase/create.php
+        - rest/v2/controllers/developer/purchase/update.php
+  
+MODELS 
+        - rest/v2/models/developer/purchase/Purchase.php
+  
+CORE
+    - 
+
+HTACCESS
+    - 
+
+
+DB-BACKUP  
+    -  rest/v2/db-backup/sccv2_purchase.sql
+        -> `purchase_delivery_start_date` varchar(20) NOT NULL,
+        -> `purchase_delivery_end_date` varchar(20) NOT NULL,
