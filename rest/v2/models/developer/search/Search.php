@@ -145,6 +145,7 @@ class Search
         try {
             $sql = "select ";
             $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name, ";
             $sql .= "c.category_aid, ";
@@ -154,10 +155,12 @@ class Search
             $sql .= "{$this->tblProduct} as p, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
             $sql .= "{$this->tblReceiving} as r, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as c ";
             $sql .= "where p.product_category_id = c.category_aid ";
             $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
             $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
+            $sql .= "and rs.receiving_supply_unit_id = u.settings_unit_aid ";
             $sql .= "and r.receiving_is_complete = '1' ";
             $sql .= "and rs.receiving_supply_have_price = '0' ";
             $sql .= "and rs.receiving_supply_is_active = '1' ";

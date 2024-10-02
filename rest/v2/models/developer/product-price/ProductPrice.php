@@ -15,9 +15,13 @@ class ProductPrice
     public $product_price_stock_in;
     public $product_price_stock_out;
     public $product_price_available_stock;
-    public $product_price_remarks;
+    public $product_price_whole_sale_qty;
+    public $product_price_promo_end_date;
+    public $product_price_promo_percent;
+    public $product_price_promo_amount;
     public $product_price_update;
     public $product_price_created;
+
 
     public $receiving_supply_have_price;
 
@@ -31,6 +35,7 @@ class ProductPrice
     public $tblProduct;
     public $tblReceivingSupply;
     public $tblCategory;
+    public $tblUnit;
 
     public function __construct($db)
     {
@@ -39,6 +44,7 @@ class ProductPrice
         $this->tblProduct = "sccv2_product";
         $this->tblReceivingSupply = "sccv2_receiving_supply";
         $this->tblCategory = "sccv2_category";
+        $this->tblUnit = "sccv2_settings_unit";
     }
 
     // create
@@ -59,7 +65,10 @@ class ProductPrice
             $sql .= "product_price_stock_in, ";
             $sql .= "product_price_stock_out, ";
             $sql .= "product_price_available_stock, ";
-            $sql .= "product_price_remarks, ";
+            $sql .= "product_price_whole_sale_qty, ";
+            $sql .= "product_price_promo_end_date, ";
+            $sql .= "product_price_promo_percent, ";
+            $sql .= "product_price_promo_amount, ";
             $sql .= "product_price_update, ";
             $sql .= "product_price_created ) values ( ";
             $sql .= ":product_price_product_id, ";
@@ -75,7 +84,10 @@ class ProductPrice
             $sql .= ":product_price_stock_in, ";
             $sql .= ":product_price_stock_out, ";
             $sql .= ":product_price_available_stock, ";
-            $sql .= ":product_price_remarks, ";
+            $sql .= ":product_price_whole_sale_qty, ";
+            $sql .= ":product_price_promo_end_date, ";
+            $sql .= ":product_price_promo_percent, ";
+            $sql .= ":product_price_promo_amount, ";
             $sql .= ":product_price_update, ";
             $sql .= ":product_price_created ) ";
             $query = $this->connection->prepare($sql);
@@ -93,7 +105,10 @@ class ProductPrice
                 "product_price_stock_in" => $this->product_price_stock_in,
                 "product_price_stock_out" => $this->product_price_stock_out,
                 "product_price_available_stock" => $this->product_price_available_stock,
-                "product_price_remarks" => $this->product_price_remarks,
+                "product_price_whole_sale_qty" => $this->product_price_whole_sale_qty,
+                "product_price_promo_end_date" => $this->product_price_promo_end_date,
+                "product_price_promo_percent" => $this->product_price_promo_percent,
+                "product_price_promo_amount" => $this->product_price_promo_amount,
                 "product_price_update" => $this->product_price_update,
                 "product_price_created" => $this->product_price_created,
             ]);
@@ -111,6 +126,7 @@ class ProductPrice
             $sql = "select ";
             $sql .= "pr.*, ";
             $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name, ";
             $sql .= "c.category_aid, ";
@@ -120,12 +136,14 @@ class ProductPrice
             $sql .= "{$this->tblProduct} as p, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as c ";
             $sql .= "where p.product_category_id = c.category_aid ";
             $sql .= "and p.product_aid = pr.product_price_product_id ";
             $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "order by p.product_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -141,6 +159,7 @@ class ProductPrice
             $sql = "select ";
             $sql .= "pr.*, ";
             $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name, ";
             $sql .= "c.category_aid, ";
@@ -150,12 +169,14 @@ class ProductPrice
             $sql .= "{$this->tblProduct} as p, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as c ";
             $sql .= "where p.product_category_id = c.category_aid ";
             $sql .= "and p.product_aid = pr.product_price_product_id ";
             $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "order by p.product_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -177,6 +198,7 @@ class ProductPrice
             $sql = "select ";
             $sql .= "pr.*, ";
             $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name, ";
             $sql .= "c.category_aid, ";
@@ -186,12 +208,14 @@ class ProductPrice
             $sql .= "{$this->tblProduct} as p, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as c ";
             $sql .= "where p.product_category_id = c.category_aid ";
             $sql .= "and p.product_aid = pr.product_price_product_id ";
             $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "and (p.product_name like :product_name ";
             $sql .= "or rs.receiving_supply_barcode like :receiving_supply_barcode ";
             $sql .= ") ";
@@ -214,6 +238,7 @@ class ProductPrice
             $sql = "select ";
             $sql .= "pr.*, ";
             $sql .= "rs.*, ";
+            $sql .= "u.settings_unit_name, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name, ";
             $sql .= "c.category_aid, ";
@@ -223,6 +248,7 @@ class ProductPrice
             $sql .= "{$this->tblProduct} as p, ";
             $sql .= "{$this->tblProductPrice} as pr, ";
             $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblUnit} as u, ";
             $sql .= "{$this->tblCategory} as c ";
             $sql .= "where pr.product_price_aid = :product_price_aid ";
             $sql .= "and p.product_category_id = c.category_aid ";
@@ -230,6 +256,7 @@ class ProductPrice
             $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
             $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and u.settings_unit_aid = rs.receiving_supply_unit_id ";
             $sql .= "order by p.product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -255,7 +282,10 @@ class ProductPrice
             $sql .= "product_price_scc_whole_sale_amount = :product_price_scc_whole_sale_amount, ";
             $sql .= "product_price_scc_whole_sale_percent = :product_price_scc_whole_sale_percent, ";
             $sql .= "product_price_stock_out = :product_price_stock_out, ";
-            $sql .= "product_price_remarks = :product_price_remarks, ";
+            $sql .= "product_price_whole_sale_qty = :product_price_whole_sale_qty, ";
+            $sql .= "product_price_promo_end_date = :product_price_promo_end_date, ";
+            $sql .= "product_price_promo_percent = :product_price_promo_percent, ";
+            $sql .= "product_price_promo_amount = :product_price_promo_amount, ";
             $sql .= "product_price_update = :product_price_update ";
             $sql .= "where product_price_aid = :product_price_aid ";
             $query = $this->connection->prepare($sql);
@@ -269,7 +299,10 @@ class ProductPrice
                 "product_price_scc_whole_sale_amount" => $this->product_price_scc_whole_sale_amount,
                 "product_price_scc_whole_sale_percent" => $this->product_price_scc_whole_sale_percent,
                 "product_price_stock_out" => $this->product_price_stock_out,
-                "product_price_remarks" => $this->product_price_remarks,
+                "product_price_whole_sale_qty" => $this->product_price_whole_sale_qty,
+                "product_price_promo_end_date" => $this->product_price_promo_end_date,
+                "product_price_promo_percent" => $this->product_price_promo_percent,
+                "product_price_promo_amount" => $this->product_price_promo_amount,
                 "product_price_update" => $this->product_price_update,
                 "product_price_aid" => $this->product_price_aid,
             ]);

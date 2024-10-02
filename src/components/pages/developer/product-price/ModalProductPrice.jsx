@@ -5,6 +5,7 @@ import {
   InputTextArea,
 } from "@/components/helpers/FormInputs";
 import {
+  getDateNow,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -79,7 +80,9 @@ const ModalProductPrice = ({ itemEdit }) => {
         product_price_scc_whole_sale_percent: 0,
         product_price_percent: 0,
         product_price_whole_sale_percent: 0,
-        product_price_remarks: "",
+        product_price_whole_sale_qty: 1,
+        product_price_promo_end_date: getDateNow(),
+        product_price_promo_percent: 0,
       };
 
   const yupSchema = Yup.object({
@@ -140,6 +143,11 @@ const ModalProductPrice = ({ itemEdit }) => {
                   Number(productData?.receiving_supply_price) +
                 Number(productData?.receiving_supply_price);
 
+              const product_price_promo_amount =
+                (Number(values?.product_price_promo_percent) / 100) *
+                  Number(productData?.receiving_supply_price) +
+                Number(productData?.receiving_supply_price);
+
               mutation.mutate({
                 ...values,
                 product_price_product_id: productData?.product_aid,
@@ -148,6 +156,7 @@ const ModalProductPrice = ({ itemEdit }) => {
                 product_price_scc_whole_sale_amount,
                 product_price_amount,
                 product_price_whole_sale_amount,
+                product_price_promo_amount,
                 product_price_stock_in: productData?.receiving_supply_quantity,
                 product_price_stock_out: 0,
                 product_price_available_stock:
@@ -233,9 +242,28 @@ const ModalProductPrice = ({ itemEdit }) => {
                     </div>
 
                     <div className="input-wrap">
-                      <InputTextArea
-                        label="Remarks"
-                        name="product_price_remarks"
+                      <InputText
+                        label="Whole sale QTY "
+                        type="text"
+                        number="number"
+                        name="product_price_whole_sale_qty"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="input-wrap">
+                      <InputText
+                        label="Promo end date"
+                        type="date"
+                        name="product_price_promo_end_date"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="input-wrap">
+                      <InputText
+                        label="Promo Percent (%)"
+                        type="text"
+                        number="number"
+                        name="product_price_promo_percent"
                         disabled={mutation.isPending}
                       />
                     </div>

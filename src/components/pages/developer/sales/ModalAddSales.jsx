@@ -47,6 +47,7 @@ const ModalAddSales = ({ itemEdit }) => {
   );
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
   const [editAmount, setEditAmount] = React.useState(false);
+  const [isWholeSale, setIsWholeSale] = React.useState(false);
   const [paymentMethod, setPaymentMethod] = React.useState(
     itemEdit ? itemEdit.sales_payment_method : "credit"
   );
@@ -207,6 +208,14 @@ const ModalAddSales = ({ itemEdit }) => {
     setIsAcceptPayment(true);
   };
 
+  const handlePrice = (e) => {
+    setEditAmount(true);
+    setIsWholeSale(false);
+    if (e.target.options[e.target.selectedIndex].id === "wholesale") {
+      setIsWholeSale(true);
+    }
+  };
+
   const handleSearch = (props) => {
     props.values.sales_list_quantity = "1";
     setIsRequiredAmountYup("");
@@ -347,6 +356,10 @@ const ModalAddSales = ({ itemEdit }) => {
                       : productData?.product_price_amount
                     : props.values.sales_list_price
                   : props.values.sales_list_price;
+
+                props.values.sales_list_quantity = isWholeSale
+                  ? productData?.product_price_whole_sale_qty
+                  : props.values.sales_list_quantity;
                 return (
                   <Form>
                     {!itemEdit && (
@@ -417,7 +430,7 @@ const ModalAddSales = ({ itemEdit }) => {
                             label="Product Price"
                             name="sales_list_price"
                             onChange={(e) => {
-                              setEditAmount(true);
+                              handlePrice(e);
                             }}
                           >
                             {productData !== null ? (
@@ -428,6 +441,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_scc_price
                                       }
+                                      id="price"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
@@ -439,6 +453,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_scc_whole_sale_amount
                                       }
+                                      id="wholesale"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
@@ -452,6 +467,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                   <optgroup label="Product Price">
                                     <option
                                       value={productData?.product_price_amount}
+                                      id="price"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
@@ -463,6 +479,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_whole_sale_amount
                                       }
+                                      id="wholesale"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(

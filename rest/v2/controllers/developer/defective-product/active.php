@@ -24,8 +24,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $defectiveProduct->defective_product_aid = $_GET['defectiveproductid'];
         $defectiveProduct->defective_product_is_resolve = trim($data["isActive"]);
         $defectiveProduct->defective_product_receiving_supply_id = checkIndex($data, "receiving_supply_aid");
+        $defectiveProduct->defective_product_is_refund = checkIndex($data, "defective_product_is_refund");
 
-
+        $defectiveProduct->defective_product_updated = date("Y-m-d H:i:s");
 
         checkId($defectiveProduct->defective_product_aid);
         $defectiveProduct->receiving_supply_defective_remarks = "";
@@ -38,22 +39,34 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         }
 
         checkUpdateReceivingSupply($defectiveProduct);
-
         $query = checkActive($defectiveProduct);
 
-        // FOR INVETORY ONLY
-        // DEFECTIVE   
-        $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
-        $defectiveProduct->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
-        $defectiveProduct->inventory_log_updated = date("Y-m-d H:i:s");
-        $updateInventoryDefective = getResultData($defectiveProduct->checkDefectiveProductTotalQty());
-        if (count($updateInventoryDefective) > 0) {
-            $defectiveProduct->inventory_log_defective_product = checkIndex($updateInventoryDefective[0], "total_defective_product_qty");
+        if (intval($defectiveProduct->defective_product_is_refund) == 0) {
+            // FOR INVETORY ONLY
+            // DEFECTIVE EXCHANGE
+            $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
+            $defectiveProduct->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
+            $defectiveProduct->inventory_log_updated = date("Y-m-d H:i:s");
+            $updateInventoryDefective = getResultData($defectiveProduct->checkDefectiveProductTotalQty());
+            if (count($updateInventoryDefective) > 0) {
+                $defectiveProduct->inventory_log_defective_product = checkIndex($updateInventoryDefective[0], "total_defective_product_qty");
+            } else {
+                $defectiveProduct->inventory_log_defective_product = 0;
+            }
+            checkUpdateInventoryDefectiveProduct($defectiveProduct);
         } else {
-            $defectiveProduct->inventory_log_defective_product = 0;
-        }
-        checkUpdateInventoryDefectiveProduct($defectiveProduct);
+            // FOR INVETORY ONLY
+            // DEFECTIVE REFUND    
+            $defectiveProduct->receiving_supply_product_id = checkIndex($data, "receiving_supply_product_id");
+            $defectiveProduct->inventory_log_product_id = checkIndex($data, "receiving_supply_product_id");
+            $defectiveProduct->inventory_log_updated = date("Y-m-d H:i:s");
+            $updateInventoryDefectiveRefund = getResultData($defectiveProduct->readAllDefectiveRefundProductTotalQty());
+            if (count($updateInventoryDefectiveRefund) > 0) {
+                $defectiveProduct->inventory_log_refund_product = checkIndex($updateInventoryDefectiveRefund[0], "total_refund_product_qty");
 
+                checkUpdateInventoryDefectiveRefundProduct($defectiveProduct);
+            }
+        }
 
         $receivedProduct = getResultData($defectiveProduct->checkReadReceivingSupply());
         if (count($receivedProduct) > 0) {
@@ -62,8 +75,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
                 $product_price_stock_in = $receivedProduct[$a]['total_stockin'];
                 $product_price_stock_out = $receivedProduct[$a]['total_stockout'];
                 $receiving_supply_defective_product_qty = $receivedProduct[$a]['total_defective'];
+                $refund_product_qty = 0;
 
-                $totalStockIn = (float)$product_price_stock_in - (float)$receiving_supply_defective_product_qty;
+                $readAllRefund = getResultData($defectiveProduct->readAllDefectiveRefundProductTotalQty());
+
+                if (count($readAllRefund) > 0) {
+                    $refund_product_qty = checkIndex($readAllRefund[0], "total_refund_product_qty");
+                }
+
+                $totalStockIn = (float)$product_price_stock_in -
+                    (float)$receiving_supply_defective_product_qty -
+                    (float)$refund_product_qty;
+
                 $totalAvailbaleStock = (float)$totalStockIn - (float)$product_price_stock_out;
 
                 $defectiveProduct->product_price_aid = $receivedProduct[$a]['product_price_aid'];

@@ -53,7 +53,11 @@ const SearchModalProductDontHavePrice = ({
   };
 
   const handleClick = (item) => {
-    props.searchProduct = `${item.product_name} (${item.product_receiving_supply_barcodebarcode})`;
+    props.searchProduct = `${item.product_name}  ${
+      item.receiving_supply_barcode !== ""
+        ? `(${item.receiving_supply_barcode})`
+        : ""
+    } `;
     setOnFocus(false);
     setData(item);
     setSearch(item.product_name);
@@ -113,7 +117,12 @@ const SearchModalProductDontHavePrice = ({
                   key={key}
                   onClick={() => handleClick(item)}
                 >
-                  {item.product_name} ({item.receiving_supply_barcode})
+                  {item.product_name}{" "}
+                  {`${
+                    item.receiving_supply_barcode !== ""
+                      ? `(${item.receiving_supply_barcode})`
+                      : ""
+                  }`}
                 </button>
               ))
             ) : (
