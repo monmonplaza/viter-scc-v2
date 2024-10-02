@@ -54,11 +54,11 @@
 
 @layer base {
   html {
-    @apply h-full;
+    @apply h-full dark:bg-primary;
   }
 
   body {
-    @apply text-body  font-regular bg-zinc-900 min-h-screen w-full;
+    @apply text-body  font-regular  min-h-screen w-full;
   }
 
   a {

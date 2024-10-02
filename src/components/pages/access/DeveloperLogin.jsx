@@ -11,7 +11,9 @@ import { queryData } from "@/components/helpers/queryData.jsx";
 import Logo from "@/components/partials/icons/Logo.jsx";
 import ModalError from "@/components/partials/modal/ModalError.jsx";
 import ModalValidate from "@/components/partials/modal/ModalValidate.jsx";
+import Spinner from "@/components/partials/spinners/Spinner.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
+import SpinnerWindow from "@/components/partials/spinners/SpinnerWindow.jsx";
 import {
   setCredentials,
   setError,
@@ -90,89 +92,93 @@ const DeveloperLogin = () => {
 
     setThemeColor();
   }, [theme]);
+
   return (
     <>
-      <div className="h-screen w-full center-all bg-primary">
-        <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px]  shadow-md rounded-md">
-          <div className="login-header">
-            <div className=" flex gap-2 items-center justify-center my-2">
-              <div className="p-1 py-2 bg-accent rounded-xl inline-block">
-                <Logo />
+      {loginLoading ? (
+        <SpinnerWindow />
+      ) : (
+        <div className="dark:bg-primary h-screen w-full center-all bg-primary">
+          <div className="max-w-[340px] w-full bg-secondary p-4 -translate-y-[100px]  shadow-md rounded-md">
+            <div className="login-header">
+              <div className=" flex gap-2 items-center justify-center my-2">
+                <div className="p-1 py-2 bg-accent rounded-xl inline-block">
+                  <Logo />
+                </div>
+                <div className="translate-y-1">
+                  <h4 className="leading-none uppercase text-[19px] font-medium">
+                    Sambahayan
+                  </h4>
+                  <span className="text-[11px] leading-none -translate-y-2 block font-regular">
+                    Consumer Cooperative
+                  </span>
+                </div>
               </div>
-              <div className="translate-y-1">
-                <h4 className="leading-none uppercase text-[19px] font-medium">
-                  Sambahayan
-                </h4>
-                <span className="text-[11px] leading-none -translate-y-2 block font-regular">
-                  Consumer Cooperative
-                </span>
-              </div>
-            </div>
 
-            <h5 className="text-center my-3 text-base">Developer</h5>
-          </div>
-          <div className="login-body">
-            <Formik
-              initialValues={initVal}
-              validationSchema={yupSchema}
-              onSubmit={async (values, { setSubmitting, resetForm }) => {
-                mutation.mutate(values);
-              }}
-            >
-              {(props) => {
-                return (
-                  <Form>
-                    <div className="input-wrap relative">
-                      <InputText
-                        label="Email"
-                        type="email"
-                        name="developer_email"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="input-wrap relative">
-                      <InputText
-                        label="Password"
-                        type={password ? "password" : "text"}
-                        name="password"
-                        disabled={mutation.isPending || !props.dirty}
-                      />
+              <h5 className="text-center my-3 text-base">Developer</h5>
+            </div>
+            <div className="login-body">
+              <Formik
+                initialValues={initVal}
+                validationSchema={yupSchema}
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
+                  mutation.mutate(values);
+                }}
+              >
+                {(props) => {
+                  return (
+                    <Form>
+                      <div className="input-wrap relative">
+                        <InputText
+                          label="Email"
+                          type="email"
+                          name="developer_email"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <div className="input-wrap relative">
+                        <InputText
+                          label="Password"
+                          type={password ? "password" : "text"}
+                          name="password"
+                          disabled={mutation.isPending || !props.dirty}
+                        />
+
+                        <button
+                          onClick={() => togglePassword(!password)}
+                          className={`absolute top-[30px] right-2 `}
+                          type="button"
+                        >
+                          {password ? (
+                            <Eye size={20} strokeWidth={1} />
+                          ) : (
+                            <EyeOff size={20} strokeWidth={1} />
+                          )}
+                        </button>
+                      </div>
 
                       <button
-                        onClick={() => togglePassword(!password)}
-                        className="absolute top-[30px] right-2"
-                        type="button"
+                        className="btn btn-accent w-full justify-center mt-5"
+                        type="submit"
+                        disabled={mutation.isPending || !props.dirty}
                       >
-                        {password ? (
-                          <Eye size={20} strokeWidth={1} />
-                        ) : (
-                          <EyeOff size={20} strokeWidth={1} />
-                        )}
+                        {mutation.isPending && <SpinnerButton />} Login
                       </button>
-                    </div>
 
-                    <button
-                      className="btn btn-accent w-full justify-center mt-5"
-                      type="submit"
-                      disabled={mutation.isPending || !props.dirty}
-                    >
-                      {mutation.isPending && <SpinnerButton />} Login
-                    </button>
-
-                    <a
-                      href={`${devNavUrl}/${urlSystem}/forgot-password`}
-                      className="text-xs block text-center mt-5 hover:underline"
-                    >
-                      Forgot Password
-                    </a>
-                  </Form>
-                );
-              }}
-            </Formik>
+                      <a
+                        href={`${devNavUrl}/${urlSystem}/forgot-password`}
+                        className="text-xs block text-center mt-5 hover:underline"
+                      >
+                        Forgot Password
+                      </a>
+                    </Form>
+                  );
+                }}
+              </Formik>
+            </div>
           </div>
         </div>
-      </div>
-
+      )}
       {store.error && <ModalError />}
     </>
   );

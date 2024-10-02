@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="SCC Inventory And Sales" />
     <title>SCC Inventory And Sales</title>
+
+    <script>
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+
+    <style>
+      html.dark {
+        background: #0d1117;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

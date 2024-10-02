@@ -20,10 +20,10 @@ const Header = () => {
   const handleTheme = () => {
     setIsDark(!isDark);
     if (isDark) {
-      document.querySelector("body").classList.remove("dark");
+      document.querySelector("html").classList.remove("dark");
       localStorage.setItem("theme", "light");
     } else {
-      document.querySelector("body").classList.add("dark");
+      document.querySelector("html").classList.add("dark");
       localStorage.setItem("theme", "dark");
     }
   };
@@ -42,7 +42,7 @@ const Header = () => {
 
   React.useEffect(() => {
     function setThemeColor() {
-      const body = document.querySelector("body");
+      const body = document.querySelector("html");
       body.setAttribute("class", "");
       body.classList.add(theme);
       setTheme(localStorage.getItem("theme"));
