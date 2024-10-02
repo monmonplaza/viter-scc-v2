@@ -4,9 +4,11 @@ class DefectiveProduct
     public $defective_product_aid;
     public $defective_product_receiving_supply_id;
     public $defective_product_is_resolve;
+    public $defective_product_is_refund;
     public $defective_product_resolved_date;
     public $defective_product_qty;
     public $defective_product_amount;
+    public $defective_product_remarks;
     public $defective_product_created;
     public $defective_product_updated;
 
@@ -15,6 +17,7 @@ class DefectiveProduct
 
     public $receiving_supply_product_id;
     public $receiving_supply_defective_product_qty;
+    public $receiving_supply_defective_remarks;
 
     public $inventory_log_defective_product;
     public $inventory_log_product_id;
@@ -58,13 +61,17 @@ class DefectiveProduct
             $sql .= "( defective_product_receiving_supply_id, ";
             $sql .= "defective_product_qty, ";
             $sql .= "defective_product_is_resolve, ";
+            $sql .= "defective_product_is_refund, ";
             $sql .= "defective_product_amount, ";
+            $sql .= "defective_product_remarks, ";
             $sql .= "defective_product_updated, ";
             $sql .= "defective_product_created ) values ( ";
             $sql .= ":defective_product_receiving_supply_id, ";
             $sql .= ":defective_product_qty, ";
             $sql .= ":defective_product_is_resolve, ";
+            $sql .= ":defective_product_is_refund, ";
             $sql .= ":defective_product_amount, ";
+            $sql .= ":defective_product_remarks, ";
             $sql .= ":defective_product_updated, ";
             $sql .= ":defective_product_created ) ";
             $query = $this->connection->prepare($sql);
@@ -72,7 +79,9 @@ class DefectiveProduct
                 "defective_product_receiving_supply_id" => $this->defective_product_receiving_supply_id,
                 "defective_product_qty" => $this->defective_product_qty,
                 "defective_product_is_resolve" => $this->defective_product_is_resolve,
+                "defective_product_is_refund" => $this->defective_product_is_refund,
                 "defective_product_amount" => $this->defective_product_amount,
+                "defective_product_remarks" => $this->defective_product_remarks,
                 "defective_product_updated" => $this->defective_product_updated,
                 "defective_product_created" => $this->defective_product_created,
             ]);
@@ -216,12 +225,15 @@ class DefectiveProduct
     {
         try {
             $sql = "update {$this->tblDefectiveProduct} set ";
+            $sql .= "defective_product_is_refund = :defective_product_is_refund, ";
             $sql .= "defective_product_qty = :defective_product_qty, ";
             $sql .= "defective_product_amount = :defective_product_amount, ";
+            $sql .= "defective_product_remarks = :defective_product_remarks, ";
             $sql .= "defective_product_updated = :defective_product_updated ";
             $sql .= "where defective_product_aid = :defective_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "defective_product_is_refund" => $this->defective_product_is_refund,
                 "defective_product_qty" => $this->defective_product_qty,
                 "defective_product_amount" => $this->defective_product_amount,
                 "defective_product_updated" => $this->defective_product_updated,
@@ -371,12 +383,13 @@ class DefectiveProduct
         try {
             $sql = "update {$this->tblReceivingSupply} set ";
             $sql .= "receiving_supply_defective_product_qty = :receiving_supply_defective_product_qty, ";
-            $sql .= "receiving_supply_defective_remarks = '', ";
+            $sql .= "receiving_supply_defective_remarks = :receiving_supply_defective_remarks, ";
             $sql .= "receiving_supply_datetime = :receiving_supply_datetime ";
             $sql .= "where receiving_supply_aid = :receiving_supply_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "receiving_supply_defective_product_qty" => $this->receiving_supply_defective_product_qty,
+                "receiving_supply_defective_remarks" => $this->receiving_supply_defective_remarks,
                 "receiving_supply_datetime" => $this->defective_product_updated,
                 "receiving_supply_aid" => $this->defective_product_receiving_supply_id,
             ]);

@@ -86,6 +86,9 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
       queryClient.invalidateQueries({
         queryKey: ["receiving-supply-read-new-receive"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["search-all-receive-product"],
+      });
       // show error box
       if (!data.success) {
         dispatch(setValidate(true));
@@ -147,7 +150,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
       : "",
     receiving_supply_unit_id: "",
     receiving_supply_quantity: "",
-    receiving_supply_whole_sale_quantity: "",
     receiving_supply_price: "",
     searchSupplier: "",
     searchProduct: "",
@@ -216,7 +218,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       </div>
                     </div>
 
-                    <div className="md:grid md:grid-cols-[1fr_1fr_8rem_8rem_8rem_1fr_1fr_1fr_5rem] gap-2 mb-5 items-end">
+                    <div className="md:grid md:grid-cols-[1fr_1fr_8rem_8rem_1fr_1fr_1fr_5rem] gap-2 mb-5 items-end">
                       <div className="input-wrap">
                         <SearchModalSupplier
                           setData={setSupplierData}
@@ -293,15 +295,6 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                             </optgroup>
                           )}
                         </InputSelect>
-                      </div>
-                      <div className="input-wrap">
-                        <InputText
-                          label="Whole sale QTY"
-                          type="text"
-                          number="number"
-                          name="receiving_supply_whole_sale_quantity"
-                          disabled={mutation.isPending}
-                        />
                       </div>
                       <div className="input-wrap">
                         <InputText

@@ -166,4 +166,5 @@ RewriteRule ^search-supplier$ controllers/developer/search/search-supplier.php [
 RewriteRule ^search-product-dont-have-price$ controllers/developer/search/search-product-dont-have-price.php [L] 
 RewriteRule ^search-sales-reference-no$ controllers/developer/search/search-sales-reference-no.php [L] 
 RewriteRule ^search-sales-product$ controllers/developer/search/search-sales-product.php [L] 
+RewriteRule ^search-all-receive-product$ controllers/developer/search/search-all-receive-product.php [L] 
  

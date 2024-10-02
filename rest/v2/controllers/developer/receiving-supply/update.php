@@ -13,7 +13,6 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
     $receiving_supply->receiving_supply_supplier_id = checkIndex($data, "receiving_supply_supplier_id");
     $receiving_supply->receiving_supply_unit_id = checkIndex($data, "receiving_supply_unit_id");
     $receiving_supply->receiving_supply_quantity = checkIndex($data, "receiving_supply_quantity");
-    $receiving_supply->receiving_supply_whole_sale_quantity = checkIndex($data, "receiving_supply_whole_sale_quantity");
     $receiving_supply->receiving_supply_price = checkIndex($data, "receiving_supply_price");
     $receiving_supply->receiving_supply_amount = checkIndex($data, "receiving_supply_amount");
     $receiving_supply->receiving_supply_expiration_date = $data["receiving_supply_expiration_date"];

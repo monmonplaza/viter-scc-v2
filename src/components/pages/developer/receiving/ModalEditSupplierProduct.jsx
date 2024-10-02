@@ -92,8 +92,6 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     receiving_supply_received_id: itemEdit.receiving_supply_received_id,
     receiving_supply_unit_id: itemEdit.receiving_supply_unit_id,
     receiving_supply_quantity: itemEdit.receiving_supply_quantity,
-    receiving_supply_whole_sale_quantity:
-      itemEdit.receiving_supply_whole_sale_quantity,
     receiving_supply_price: itemEdit.receiving_supply_price,
     receiving_supply_expiration_date: itemEdit.receiving_supply_expiration_date,
     receiving_supply_barcode: itemEdit.receiving_supply_barcode,
@@ -255,15 +253,6 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                             </optgroup>
                           )}
                         </InputSelect>
-                      </div>
-                      <div className="input-wrap">
-                        <InputText
-                          label="whole sale Qty"
-                          type="text"
-                          number="number"
-                          name="receiving_supply_whole_sale_quantity"
-                          disabled={mutation.isPending}
-                        />
                       </div>
                       <div className="input-wrap">
                         <InputText

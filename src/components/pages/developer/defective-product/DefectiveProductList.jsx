@@ -178,14 +178,21 @@ const DefectiveProductList = ({ setItemEdit }) => {
                       <tr key={key}>
                         <td className="w-counter">{counter++}.</td>
                         <td>
-                          <PillStatus
-                            isActive={item.defective_product_is_resolve}
-                            text={`${
+                          <div
+                            className={`inline-block text-xs text-center rounded-md px-2 py-[5px] w-[90px] text-white capitalize ${
                               item.defective_product_is_resolve
-                                ? "Resolved"
-                                : "Ongoing"
+                                ? "bg-success text-white"
+                                : "bg-warning  text-gray-500"
                             }`}
-                          />
+                          >
+                            <span>
+                              {item.defective_product_is_resolve === 1
+                                ? item.defective_product_is_refund === 1
+                                  ? "Refunded"
+                                  : "Exchanged"
+                                : "Ongoing"}
+                            </span>
+                          </div>
                         </td>
 
                         <td>{formatDate(item.receiving_date)}</td>

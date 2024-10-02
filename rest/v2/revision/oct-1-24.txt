@@ -25,6 +25,4 @@ HTACCESS
 DB-BACKUP  
     -  rest/v2/db-backup/sccv2_purchase.sql
         -> `purchase_delivery_start_date` varchar(20) NOT NULL,
-        -> `purchase_delivery_end_date` varchar(20) NOT NULL,
-    - rest/v2/db-backup/sccv2_receiving_supply.sql
-        -> `receiving_supply_whole_sale_quantity` varchar(20) NOT NULL,
+        -> `purchase_delivery_end_date` varchar(20) NOT NULL, 
