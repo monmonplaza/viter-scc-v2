@@ -28,6 +28,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
 
         checkId($defectiveProduct->defective_product_aid);
+        $defectiveProduct->receiving_supply_defective_remarks = "";
 
         if (intval($defectiveProduct->defective_product_is_resolve) == 1) {
             $defectiveProduct->receiving_supply_defective_product_qty = 0;

@@ -1,0 +1,26 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/defective-product/active.php
+    - rest/v2/controllers/developer/defective-product/create.php
+    - rest/v2/controllers/developer/defective-product/update.php
+    - rest/v2/controllers/developer/receiving-supply/create.php
+    - rest/v2/controllers/developer/receiving-supply/update-received-supply.php
+    - rest/v2/controllers/developer/receiving-supply/update.php
+    - rest/v2/controllers/developer/search/functions.php
+    - rest/v2/controllers/developer/search/search-all-receive-product.php
+  
+MODELS 
+    - rest/v2/models/developer/defective-product/DefectiveProduct.php
+    - rest/v2/models/developer/receiving-supply/ReceivingSupply.php
+    - rest/v2/models/developer/search/Search.php
+  
+CORE
+    - 
+
+HTACCESS
+    - rest/v2/.htaccess
+
+
+DB-BACKUP  
+    - rest/v2/db-backup/sccv2_defective_product.sql
+        -> `defective_product_is_refund` tinyint(1) NOT NULL,

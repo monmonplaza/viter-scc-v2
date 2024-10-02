@@ -47,8 +47,9 @@ if (count($isNewData) == 0) {
     checkUpdateReceiving($receiving_supply);
 }
 
-
-
+// if ($receiving_supply->receiving_supply_barcode == "") {
+//     $receiving_supply->receiving_supply_barcode = substr($receiving_supply->lastInsertedId . rand(1000, 9999) . $receiving_supply->receiving_supply_product_id . $receiving_supply->receiving_supply_supplier_id, 0, 9);
+// }
 
 $query = checkCreate($receiving_supply);
 

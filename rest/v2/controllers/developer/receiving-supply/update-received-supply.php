@@ -49,6 +49,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $receiving_supply->receiving_is_new_data = 0;
         $receiving_supply->receiving_supply_have_price = 0;
 
+
+        // if ($receiving_supply->receiving_supply_barcode == "") {
+        //     $receiving_supply->receiving_supply_barcode = substr($receiving_supply->receiving_aid . rand(1000, 9999) . $receiving_supply->receiving_supply_product_id . $receiving_supply->receiving_supply_supplier_id, 0, 9);
+        // }
+
         $query = checkCreate($receiving_supply);
 
         returnSuccess($receiving_supply, "receiving_supply", $query);

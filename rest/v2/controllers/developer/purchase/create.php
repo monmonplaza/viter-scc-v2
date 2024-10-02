@@ -10,7 +10,8 @@ if (array_key_exists("purchaseid", $_GET)) {
 
 checkPayload($data);
 
-$purchase->purchase_delivery_date = checkIndex($data, "purchase_delivery_date");
+$purchase->purchase_delivery_start_date = checkIndex($data, "purchase_delivery_start_date");
+$purchase->purchase_delivery_end_date = checkIndex($data, "purchase_delivery_end_date");
 $purchase->purchase_date = checkIndex($data, "purchase_date");
 $purchase->purchase_product_id = checkIndex($data, "purchase_product_id");
 $purchase->purchase_quantity = checkIndex($data, "purchase_quantity");

@@ -1,12 +1,11 @@
-import useQueryData from "@/components/custom-hooks/useQueryData";
 import {
   InputCheckbox,
-  InputSelect,
   InputText,
   InputTextArea,
 } from "@/components/helpers/FormInputs";
 import { handleEscape, ver } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
+import SearchAllModalReceivedProduct from "@/components/partials/search/SearchAllModalReceivedProduct";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import {
@@ -22,23 +21,27 @@ import { Form, Formik } from "formik";
 import { File, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-const ModalCustomers = ({ itemEdit }) => {
+const ModalAddDefectiveProduct = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
+  const [productData, setProductData] = React.useState(
+    itemEdit ? itemEdit : null
+  );
+  const [isRequiredProductYup, setIsRequiredProductYup] = React.useState("");
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/customer/${itemEdit.customer_aid}`
-          : `/${ver}/customer`,
+          ? `/${ver}/defective-product/${itemEdit.defective_product_aid}`
+          : `/${ver}/defective-product`,
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["customer"],
+        queryKey: ["defective-product"],
       });
 
       // show error box
@@ -66,21 +69,25 @@ const ModalCustomers = ({ itemEdit }) => {
   const initVal = itemEdit
     ? {
         ...itemEdit,
-        customer_name_old: itemEdit.customer_name,
-        customer_is_member: itemEdit?.customer_is_member === 1 ? true : false,
+        defective_product_is_refund:
+          itemEdit?.defective_product_is_refund === 1 ? true : false,
       }
     : {
-        customer_aid: "",
-        customer_name: "",
-        customer_address: "",
-        customer_mobile_number: "",
-        customer_is_member: false,
+        defective_product_qty: "",
+        defective_product_remarks: "",
+        defective_product_is_refund: false,
+        searchReceiveProduct: "",
       };
 
   const yupSchema = Yup.object({
-    customer_name: Yup.string().required("Require"),
+    searchReceiveProduct: isRequiredProductYup,
   });
 
+  const handleSearch = () => {
+    if (productData === null || typeof productData === "undefined") {
+      setIsRequiredProductYup(Yup.string().required("Required"));
+    }
+  };
   React.useEffect(() => handleEscape(handleClose), []);
 
   return (
@@ -90,7 +97,7 @@ const ModalCustomers = ({ itemEdit }) => {
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
             {itemEdit ? "Edit " : "Add "}
-            Customer
+            Defective Product
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
@@ -100,7 +107,18 @@ const ModalCustomers = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            mutation.mutate(values);
+            if (productData === null) {
+              dispatch(setValidate(true));
+              dispatch(setMessage("Invalid Product"));
+              return;
+            }
+            mutation.mutate({
+              ...values,
+              defective_product_receiving_supply_id:
+                productData?.receiving_supply_aid,
+              defective_product_amount: productData?.receiving_supply_price,
+            });
+            _;
           }}
         >
           {(props) => {
@@ -109,36 +127,40 @@ const ModalCustomers = ({ itemEdit }) => {
                 <div className=" modal-body  ">
                   <div className="modal-form">
                     <div className="input-wrap">
-                      <InputText
-                        label="Name"
-                        type="text"
-                        name="customer_name"
-                        disabled={mutation.isPending}
+                      <SearchAllModalReceivedProduct
+                        setData={setProductData}
+                        props={props.values}
+                        label="Search Product"
+                        name="searchReceiveProduct"
+                        mutation={mutation}
+                        setIsRequiredYup={setIsRequiredProductYup}
                       />
                     </div>
 
                     <div className="flex my-5">
                       <InputCheckbox
-                        label="Is member?"
+                        label="Is Refund?"
                         type="checkbox"
                         disabled={mutation.isLoading}
-                        name="customer_is_member"
+                        name="defective_product_is_refund"
                         id="select_all"
                       />
                     </div>
 
                     <div className="input-wrap">
-                      <InputTextArea
-                        label="Address"
-                        name="customer_address"
+                      <InputText
+                        label="Defective Qty"
+                        type="text"
+                        number="number"
+                        name="defective_product_qty"
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="input-wrap">
-                      <InputText
-                        label="Mobile Number"
+                      <InputTextArea
+                        label="Defective Remarks"
                         type="text"
-                        name="customer_mobile_number"
+                        name="defective_product_remarks"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -148,6 +170,7 @@ const ModalCustomers = ({ itemEdit }) => {
                     <button
                       className="btn btn-accent"
                       type="submit"
+                      onClick={handleSearch}
                       disabled={mutation.isPending}
                     >
                       {mutation.isPending ? (
@@ -176,4 +199,4 @@ const ModalCustomers = ({ itemEdit }) => {
   );
 };
 
-export default ModalCustomers;
+export default ModalAddDefectiveProduct;

@@ -140,10 +140,14 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
 
   const initVal = {
     purchase_date: itemEdit ? itemEdit.purchase_date : getDateNow(),
-    purchase_delivery_date: itemEdit
-      ? itemEdit.purchase_delivery_date
+    purchase_delivery_start_date: itemEdit
+      ? itemEdit.purchase_delivery_start_date
+      : getDateNow(),
+    purchase_delivery_end_date: itemEdit
+      ? itemEdit.purchase_delivery_end_date
       : getDateNow(),
     purchase_quantity: "",
+    purchase_whole_sale_quantity: "",
     purchase_unit_id: "",
     purchase_price: "",
     searchSupplier: "",
@@ -152,7 +156,7 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     purchase_date: Yup.string().required("Require"),
-    purchase_delivery_date: Yup.string().required("Require"),
+    purchase_delivery_start_date: Yup.string().required("Require"),
     purchase_quantity: Yup.string().required("Require"),
     purchase_unit_id: Yup.string().required("Require"),
     purchase_price: Yup.string().required("Require"),
@@ -214,9 +218,17 @@ const ModalAddPurchasePrice = ({ itemEdit }) => {
                       </div>
                       <div className="input-wrap">
                         <InputText
-                          label="Delivery Date"
+                          label="Start Delivery Date"
                           type="date"
-                          name="purchase_delivery_date"
+                          name="purchase_delivery_start_date"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <div className="input-wrap">
+                        <InputText
+                          label="Last Delivery Date"
+                          type="date"
+                          name="purchase_delivery_end_date"
                           disabled={mutation.isPending}
                         />
                       </div>

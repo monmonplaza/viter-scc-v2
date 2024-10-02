@@ -86,6 +86,9 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
       queryClient.invalidateQueries({
         queryKey: ["receiving-supply-read-new-receive"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["search-all-receive-product"],
+      });
       // show error box
       if (!data.success) {
         dispatch(setValidate(true));
@@ -238,7 +241,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                       </div>
                       <div className="input-wrap">
                         <InputText
-                          label="Qty"
+                          label="QTY"
                           type="text"
                           number="number"
                           name="receiving_supply_quantity"

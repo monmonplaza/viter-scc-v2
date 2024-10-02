@@ -40,6 +40,14 @@ function checkSearchProductReceiveSupply($object)
     return $query;
 }
 
+// Read search by product receive supply
+function checkAllSearchProductReceiveSupply($object)
+{
+    $query = $object->seachProductReceiveSupply();
+    checkQuery($query, "Empty records. (search by product receive supply)");
+    return $query;
+}
+
 // Read search by sales list product
 function checkSearchSalesListProduct($object)
 {

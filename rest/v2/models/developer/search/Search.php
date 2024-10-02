@@ -177,6 +177,40 @@ class Search
     }
 
     // read all
+    public function seachAllProductReceiveSupply()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "rs.*, ";
+            $sql .= "p.product_aid, ";
+            $sql .= "p.product_name, ";
+            $sql .= "c.category_aid, ";
+            $sql .= "c.category_name, ";
+            $sql .= "c.category_description ";
+            $sql .= "from ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblReceiving} as r, ";
+            $sql .= "{$this->tblCategory} as c ";
+            $sql .= "where p.product_category_id = c.category_aid ";
+            $sql .= "and p.product_aid = rs.receiving_supply_product_id ";
+            $sql .= "and r.receiving_aid = rs.receiving_supply_received_id ";
+            $sql .= "and (p.product_name like :product_name ";
+            $sql .= "or rs.receiving_supply_barcode like :receiving_supply_barcode ";
+            $sql .= ") ";
+            $sql .= "order by p.product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "product_name" => "%{$this->search}%",
+                "receiving_supply_barcode" => "%{$this->search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
     public function searchSalesListProduct()
     {
         try {

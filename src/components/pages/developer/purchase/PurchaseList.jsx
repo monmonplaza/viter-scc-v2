@@ -190,7 +190,7 @@ const PurchaseList = ({ setItemEdit, setIsView }) => {
                           }
                         </td>
                         <td>{formatDate(item.purchase_date)}</td>
-                        <td>{formatDate(item.purchase_delivery_date)}</td>
+                        <td>{formatDate(item.purchase_delivery_start_date)}</td>
                         <td>{item.purchase_reference_no}</td>
                         <td className="text-right">
                           {pesoSign}
