@@ -1,0 +1,20 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/receiving-supply/update.php
+    - rest/v2/controllers/developer/sale-list/create.php
+  
+MODELS 
+    - rest/v2/models/developer/receiving-supply/ReceivingSupply.php
+    - rest/v2/models/developer/sales-list/SalesList.php
+  
+CORE
+    - 
+
+HTACCESS
+    - 
+
+
+DB-BACKUP  
+    - rest/v2/db-backup/sccv2_receiving_supply.sql
+    - rest/v2/db-backup/sccv2_sales.sql
+    - rest/v2/db-backup/sccv2_sales_list.sql

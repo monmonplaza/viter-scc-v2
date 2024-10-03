@@ -9,6 +9,8 @@ class SalesList
     public $sales_list_price;
     public $sales_list_date;
     public $sales_list_product_price_id;
+    public $sales_list_discount_amount;
+    public $sales_list_discount;
     public $sales_list_updated;
     public $sales_list_created;
 
@@ -21,6 +23,7 @@ class SalesList
     public $sales_new_data;
     public $sales_payment_amount;
     public $sales_payment_method;
+    public $sales_payment_tracking_number;
     public $sales_created;
     public $sales_updated;
 
@@ -75,6 +78,8 @@ class SalesList
             $sql .= "sales_list_quantity, ";
             $sql .= "sales_list_price, ";
             $sql .= "sales_list_date, ";
+            $sql .= "sales_list_discount, ";
+            $sql .= "sales_list_discount_amount, ";
             $sql .= "sales_list_updated, ";
             $sql .= "sales_list_created ) values ( ";
             $sql .= ":sales_list_sales_id, ";
@@ -84,6 +89,8 @@ class SalesList
             $sql .= ":sales_list_quantity, ";
             $sql .= ":sales_list_price, ";
             $sql .= ":sales_list_date, ";
+            $sql .= ":sales_list_discount, ";
+            $sql .= ":sales_list_discount_amount, ";
             $sql .= ":sales_list_updated, ";
             $sql .= ":sales_list_created ) ";
             $query = $this->connection->prepare($sql);
@@ -95,6 +102,8 @@ class SalesList
                 "sales_list_quantity" => $this->sales_list_quantity,
                 "sales_list_price" => $this->sales_list_price,
                 "sales_list_date" => $this->sales_list_date,
+                "sales_list_discount" => $this->sales_list_discount,
+                "sales_list_discount_amount" => $this->sales_list_discount_amount,
                 "sales_list_updated" => $this->sales_list_updated,
                 "sales_list_created" => $this->sales_list_created,
             ]);
@@ -115,6 +124,7 @@ class SalesList
             $sql .= "sales_is_paid, ";
             $sql .= "sales_new_data, ";
             $sql .= "sales_payment_method, ";
+            $sql .= "sales_payment_tracking_number, ";
             $sql .= "sales_created, ";
             $sql .= "sales_updated ) values ( ";
             $sql .= ":sales_customer_id, ";
@@ -123,6 +133,7 @@ class SalesList
             $sql .= ":sales_is_paid, ";
             $sql .= ":sales_new_data, ";
             $sql .= ":sales_payment_method, ";
+            $sql .= ":sales_payment_tracking_number, ";
             $sql .= ":sales_created, ";
             $sql .= ":sales_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -133,6 +144,7 @@ class SalesList
                 "sales_is_paid" => $this->sales_is_paid,
                 "sales_new_data" => $this->sales_new_data,
                 "sales_payment_method" => $this->sales_payment_method,
+                "sales_payment_tracking_number" => $this->sales_payment_tracking_number,
                 "sales_updated" => $this->sales_updated,
                 "sales_created" => $this->sales_created,
             ]);
@@ -190,6 +202,7 @@ class SalesList
             $sql .= "sales_total_amount = :sales_total_amount, ";
             $sql .= "sales_payment_amount = :sales_payment_amount, ";
             $sql .= "sales_payment_method = :sales_payment_method, ";
+            $sql .= "sales_payment_tracking_number = :sales_payment_tracking_number, ";
             $sql .= "sales_is_paid = :sales_is_paid, ";
             $sql .= "sales_new_data = :sales_new_data, ";
             $sql .= "sales_updated = :sales_updated ";
@@ -199,6 +212,7 @@ class SalesList
                 "sales_total_amount" => $this->sales_total_amount,
                 "sales_payment_amount" => $this->sales_payment_amount,
                 "sales_payment_method" => $this->sales_payment_method,
+                "sales_payment_tracking_number" => $this->sales_payment_tracking_number,
                 "sales_is_paid" => $this->sales_is_paid,
                 "sales_new_data" => $this->sales_new_data,
                 "sales_updated" => $this->sales_updated,
@@ -216,6 +230,7 @@ class SalesList
         try {
             $sql = "update {$this->tblSales} set ";
             $sql .= "sales_payment_method = :sales_payment_method, ";
+            $sql .= "sales_payment_tracking_number = :sales_payment_tracking_number, ";
             $sql .= "sales_is_paid = :sales_is_paid, ";
             $sql .= "sales_customer_id = :sales_customer_id, ";
             $sql .= "sales_date = :sales_date, ";
@@ -225,6 +240,7 @@ class SalesList
             $query->execute([
                 "sales_customer_id" => $this->sales_customer_id,
                 "sales_payment_method" => $this->sales_payment_method,
+                "sales_payment_tracking_number" => $this->sales_payment_tracking_number,
                 "sales_is_paid" => $this->sales_is_paid,
                 "sales_date" => $this->sales_date,
                 "sales_updated" => $this->sales_updated,

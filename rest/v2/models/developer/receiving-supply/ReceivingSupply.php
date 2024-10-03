@@ -9,6 +9,7 @@ class ReceivingSupply
     public $receiving_supply_price;
     public $receiving_supply_amount;
     public $receiving_supply_is_active;
+    public $receiving_supply_is_refund;
     public $receiving_supply_defective_product_qty;
     public $receiving_supply_defective_remarks;
     public $receiving_supply_datetime;
@@ -632,6 +633,7 @@ class ReceivingSupply
             $sql = "insert into {$this->tblDefectiveProduct} ";
             $sql .= "( defective_product_receiving_supply_id, ";
             $sql .= "defective_product_is_resolve, ";
+            $sql .= "defective_product_is_refund, ";
             $sql .= "defective_product_qty, ";
             $sql .= "defective_product_amount, ";
             $sql .= "defective_product_remarks, ";
@@ -639,6 +641,7 @@ class ReceivingSupply
             $sql .= "defective_product_created ) values ( ";
             $sql .= ":defective_product_receiving_supply_id, ";
             $sql .= ":defective_product_is_resolve, ";
+            $sql .= ":defective_product_is_refund, ";
             $sql .= ":defective_product_qty, ";
             $sql .= ":defective_product_amount, ";
             $sql .= ":defective_product_remarks, ";
@@ -648,6 +651,7 @@ class ReceivingSupply
             $query->execute([
                 "defective_product_receiving_supply_id" => $this->receiving_supply_aid,
                 "defective_product_is_resolve" => $this->receiving_is_complete,
+                "defective_product_is_refund" => $this->receiving_supply_is_refund,
                 "defective_product_qty" => $this->receiving_supply_defective_product_qty,
                 "defective_product_amount" => $this->defective_product_amount,
                 "defective_product_remarks" => $this->receiving_supply_defective_remarks,
@@ -665,6 +669,7 @@ class ReceivingSupply
     {
         try {
             $sql = "update {$this->tblDefectiveProduct} set ";
+            $sql .= "defective_product_is_refund = :defective_product_is_refund, ";
             $sql .= "defective_product_qty = :defective_product_qty, ";
             $sql .= "defective_product_remarks = :defective_product_remarks, ";
             $sql .= "defective_product_amount = :defective_product_amount, ";
@@ -672,6 +677,7 @@ class ReceivingSupply
             $sql .= "where defective_product_aid = :defective_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "defective_product_is_refund" => $this->receiving_supply_is_refund,
                 "defective_product_qty" => $this->receiving_supply_defective_product_qty,
                 "defective_product_remarks" => $this->receiving_supply_defective_remarks,
                 "defective_product_amount" => $this->defective_product_amount,

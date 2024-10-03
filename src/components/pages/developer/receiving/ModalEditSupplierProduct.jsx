@@ -1,11 +1,11 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import {
+  InputCheckbox,
   InputSelect,
   InputText,
   InputTextArea,
 } from "@/components/helpers/FormInputs";
 import {
-  formatDate,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -102,6 +102,9 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
     searchProduct: itemEdit.product_name,
 
     // defective details
+    receiving_supply_is_refund:
+      itemEdit.receiving_supply_is_refund === 1 ? true : false,
+
     receiving_supply_defective_product_qty:
       itemEdit.receiving_supply_defective_product_qty,
   };
@@ -291,9 +294,23 @@ const ModalEditSupplierProduct = ({ itemEdit, setEditSupplier }) => {
                           )}
                         </span>
                       </p>
+
+                      <div className="flex my-5">
+                        <InputCheckbox
+                          label="Is Refund?"
+                          type="checkbox"
+                          disabled={mutation.isLoading}
+                          name="receiving_supply_is_refund"
+                          id="select_all"
+                        />
+                      </div>
                       <div className="input-wrap">
                         <InputText
-                          label="Defective Qty"
+                          label={`${
+                            props.values.receiving_supply_is_refund
+                              ? "Refund Amount"
+                              : "Defective Amount"
+                          }`}
                           type="text"
                           number="number"
                           name="receiving_supply_defective_product_qty"
