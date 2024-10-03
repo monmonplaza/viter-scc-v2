@@ -49,7 +49,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $productReturn->inventory_log_return_product = 0;
         }
 
-
         checkUpdateInventoryReturnProduct($productReturn);
         http_response_code(200);
         returnSuccess($productReturn, "Return Product", $query);

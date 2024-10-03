@@ -242,8 +242,6 @@ const ModalAddSales = ({ itemEdit }) => {
     handleEscape(handleClose);
   }, [customerData, customerGuest]);
 
-  console.log("customerData", customerData);
-
   const initVal = {
     ...itemEdit,
     sales_aid: itemEdit ? itemEdit.sales_aid : 0,
@@ -252,7 +250,7 @@ const ModalAddSales = ({ itemEdit }) => {
     sales_list_quantity: 1,
     sales_payment_method: itemEdit ? itemEdit.sales_payment_method : "credit",
     searchCustomer: itemEdit ? itemEdit.customer_name : "",
-    sales_list_price: itemEdit ? itemEdit.sales_list_price : "",
+    sales_list_price: "",
     sales_list_discount: "",
     discount_amount: 0,
     original_amount: 0,
@@ -371,18 +369,22 @@ const ModalAddSales = ({ itemEdit }) => {
                 });
                 if (itemEdit) {
                   setProductData(null);
-                  editAmount(false);
+                  setEditAmount(false);
                   resetForm();
                 }
               }}
             >
               {(props) => {
-                // props.values.sales_list_price =
-                //   !editAmount && productData !== null
-                //     ? customerData?.customer_is_member === 1
-                //       ? productData?.product_price_scc_price
-                //       : productData?.product_price_amount
-                //     : props.values.sales_list_price;
+                props.values.sales_list_price =
+                  !editAmount && productData !== null
+                    ? customerData?.customer_is_member === 1
+                      ? productData?.product_price_scc_price
+                      : productData?.product_price_amount
+                    : props.values.sales_list_price;
+
+                props.values.sales_list_quantity = editAmount
+                  ? props.values.sales_list_quantity
+                  : 1;
 
                 if (customerData?.customer_is_member === 1) {
                   props.values.original_amount =
@@ -759,8 +761,8 @@ const ModalAddSales = ({ itemEdit }) => {
                       return (
                         <Form>
                           <div className=" ">
-                            <div className="flex justify-end mb-2">
-                              <div className="input-wrap w-[16rem]">
+                            <div className="flex justify-end mb-2 ">
+                              <div className="input-wrap mr-2">
                                 <InputSelect
                                   label="Payment method"
                                   name="sales_payment_method"
@@ -778,6 +780,16 @@ const ModalAddSales = ({ itemEdit }) => {
                                   </optgroup>
                                 </InputSelect>
                               </div>
+                              <div className="input-wrap ">
+                                <InputText
+                                  label="Tracking Number"
+                                  type="text"
+                                  number="number"
+                                  name="sales_payment_tracking_number"
+                                  className="text-right !m-0"
+                                  disabled={mutation.isPending}
+                                />
+                              </div>
                             </div>
                             <div className="flex justify-end">
                               <div className="input-wrap">
@@ -786,16 +798,6 @@ const ModalAddSales = ({ itemEdit }) => {
                                   type="text"
                                   number="number"
                                   name="sales_payment_amount"
-                                  className="text-right text-lg !m-0"
-                                  disabled={mutation.isPending}
-                                />
-                              </div>
-                              <div className="input-wrap">
-                                <InputText
-                                  label="Tracking Number"
-                                  type="text"
-                                  number="number"
-                                  name="sales_payment_tracking_number"
                                   className="text-right text-lg !m-0"
                                   disabled={mutation.isPending}
                                 />
@@ -849,8 +851,8 @@ const ModalAddSales = ({ itemEdit }) => {
       {isPrint && (
         <ModalSalesPrint
           setIsPrint={setIsPrint}
-          refno={itemEdit.sales_reference_no}
-          salesDate={itemEdit.sales_date}
+          itemEdit={itemEdit}
+          SalesData={SalesData}
         />
       )}
     </>

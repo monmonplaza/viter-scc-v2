@@ -1,5 +1,6 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import {
+  InputCheckbox,
   InputSelect,
   InputText,
   InputTextArea,
@@ -72,15 +73,19 @@ const ModalReturnProduct = ({ itemEdit }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
-  console.log("itemEdit", itemEdit);
-
   const initVal = itemEdit
-    ? { ...itemEdit, searchProduct: itemEdit.product_name }
+    ? {
+        ...itemEdit,
+        searchProduct: itemEdit.product_name,
+        return_product_is_refund:
+          itemEdit.return_product_is_refund === 1 ? true : false,
+      }
     : {
         return_product_id: "",
         return_product_date: getDateNow(),
         return_product_qty: "",
         return_product_remarks: "",
+        return_product_is_refund: false,
         searchProduct: "",
       };
 
@@ -99,8 +104,6 @@ const ModalReturnProduct = ({ itemEdit }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
-  console.log("productData", productData);
-
   return (
     <WrapperModal>
       <div className=" modal-main ">
@@ -118,18 +121,20 @@ const ModalReturnProduct = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            // let totalQty = 0;
-            // if (productData !== null) {
-            //   totalQty =
-            //     Number(productData?.sales_list_quantity) -
-            //     Number(values.return_product_qty);
-            // }
+            if (productData == null) {
+              dispatch(setValidate(true));
+              dispatch(setMessage("Invalid Quantity"));
+              return;
+            }
 
-            // if (Number(totalQty) > 0) {
-            //   dispatch(setValidate(true));
-            //   dispatch(setMessage("Invalid Quantity"));
-            //   return;
-            // }
+            if (
+              Number(values.return_product_qty) >
+              Number(productData?.sales_list_total_qty)
+            ) {
+              dispatch(setValidate(true));
+              dispatch(setMessage("Invalid Quantity"));
+              return;
+            }
 
             mutation.mutate({
               ...values,
@@ -188,6 +193,15 @@ const ModalReturnProduct = ({ itemEdit }) => {
                         number="number"
                         name="return_product_qty"
                         disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="flex my-5">
+                      <InputCheckbox
+                        label="Is Refund?"
+                        type="checkbox"
+                        disabled={mutation.isLoading}
+                        name="return_product_is_refund"
+                        id="select_all"
                       />
                     </div>
                     <div className="input-wrap">

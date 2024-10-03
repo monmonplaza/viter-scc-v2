@@ -19,6 +19,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $salesList->sales_total_amount = $data["sales_total_amount"];
     $salesList->sales_payment_amount = $data["sales_payment_amount"];
     $salesList->sales_payment_method = $data["sales_payment_method"];
+    $salesList->sales_payment_tracking_number = $data["sales_payment_tracking_number"];
     $salesList->sales_updated = date("Y-m-d H:i:s");
 
     $salesList->sales_new_data = 0;

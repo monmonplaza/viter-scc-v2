@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2024 at 03:07 AM
+-- Generation Time: Oct 03, 2024 at 07:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,6 +38,8 @@ CREATE TABLE `sccv2_sales_list` (
   `sales_list_date` varchar(20) NOT NULL,
   `sales_list_discount` varchar(20) NOT NULL,
   `sales_list_discount_amount` varchar(20) NOT NULL,
+  `sales_list_return_qty` varchar(20) NOT NULL,
+  `sales_list_total_qty` varchar(20) NOT NULL,
   `sales_list_created` datetime NOT NULL,
   `sales_list_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -46,13 +48,12 @@ CREATE TABLE `sccv2_sales_list` (
 -- Dumping data for table `sccv2_sales_list`
 --
 
-INSERT INTO `sccv2_sales_list` (`sales_list_aid`, `sales_list_sales_id`, `sales_list_product_id`, `sales_list_product_price_id`, `sales_list_customer_id`, `sales_list_quantity`, `sales_list_price`, `sales_list_date`, `sales_list_discount`, `sales_list_discount_amount`, `sales_list_created`, `sales_list_updated`) VALUES
-(53, '2', '3', '1', '2', '1', '8.88', '2024-10-03', 'promo', '0', '2024-10-03 09:02:12', '2024-10-03 09:02:12'),
-(54, '2', '2', '2', '2', '1', '8.88', '2024-10-03', 'promo', '-3.48', '2024-10-03 09:02:16', '2024-10-03 09:02:16'),
-(58, '3', '2', '2', '2', '1', '5.4', '2024-10-03', '', '0', '2024-10-03 09:06:29', '2024-10-03 09:06:29'),
-(59, '3', '3', '1', '2', '1', '8.88', '2024-10-03', '', '0', '2024-10-03 09:06:33', '2024-10-03 09:06:33'),
-(60, '3', '3', '1', '2', '25', '8.8', '2024-10-03', 'wholesale', '2', '2024-10-03 09:06:36', '2024-10-03 09:06:36'),
-(61, '3', '2', '2', '2', '25', '8.8', '2024-10-03', 'wholesale', '-85', '2024-10-03 09:06:40', '2024-10-03 09:06:40');
+INSERT INTO `sccv2_sales_list` (`sales_list_aid`, `sales_list_sales_id`, `sales_list_product_id`, `sales_list_product_price_id`, `sales_list_customer_id`, `sales_list_quantity`, `sales_list_price`, `sales_list_date`, `sales_list_discount`, `sales_list_discount_amount`, `sales_list_return_qty`, `sales_list_total_qty`, `sales_list_created`, `sales_list_updated`) VALUES
+(92, '4', '2', '2', '1', '1', '5.35', '2024-10-03', '', '0', '', '', '2024-10-03 12:21:50', '2024-10-03 12:21:50'),
+(93, '2', '2', '2', '2', '1', '5', '2024-10-03', 'promo', '0.4', '', '', '2024-10-03 12:43:03', '2024-10-03 12:43:03'),
+(94, '2', '3', '1', '2', '25', '8.8', '2024-10-03', 'wholesale', '2', '', '', '2024-10-03 12:43:07', '2024-10-03 12:43:07'),
+(95, '2', '2', '2', '2', '1', '5.4', '2024-10-03', 'wholesale', '0', '', '', '2024-10-03 12:43:18', '2024-10-03 12:43:18'),
+(96, '2', '3', '1', '2', '1', '8.88', '2024-10-03', 'wholesale', '0', '', '', '2024-10-03 12:43:20', '2024-10-03 12:43:20');
 
 --
 -- Indexes for dumped tables
@@ -72,7 +73,7 @@ ALTER TABLE `sccv2_sales_list`
 -- AUTO_INCREMENT for table `sccv2_sales_list`
 --
 ALTER TABLE `sccv2_sales_list`
-  MODIFY `sales_list_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `sales_list_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

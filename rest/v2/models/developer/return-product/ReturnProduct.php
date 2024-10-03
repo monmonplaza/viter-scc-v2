@@ -9,6 +9,7 @@ class ReturnProduct
     public $return_product_qty;
     public $return_product_resolved_date;
     public $return_product_remarks;
+    public $return_product_is_refund;
     public $return_product_updated;
     public $return_product_created;
 
@@ -48,6 +49,7 @@ class ReturnProduct
             $sql .= "return_product_is_resolved, ";
             $sql .= "return_product_qty, ";
             $sql .= "return_product_remarks, ";
+            $sql .= "return_product_is_refund, ";
             $sql .= "return_product_updated, ";
             $sql .= "return_product_created ) values ( ";
             $sql .= ":return_product_id, ";
@@ -56,6 +58,7 @@ class ReturnProduct
             $sql .= ":return_product_is_resolved, ";
             $sql .= ":return_product_qty, ";
             $sql .= ":return_product_remarks, ";
+            $sql .= ":return_product_is_refund, ";
             $sql .= ":return_product_updated, ";
             $sql .= ":return_product_created ) ";
             $query = $this->connection->prepare($sql);
@@ -66,6 +69,7 @@ class ReturnProduct
                 "return_product_is_resolved" => $this->return_product_is_resolved,
                 "return_product_qty" => $this->return_product_qty,
                 "return_product_remarks" => $this->return_product_remarks,
+                "return_product_is_refund" => $this->return_product_is_refund,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_created" => $this->return_product_created,
             ]);
@@ -186,6 +190,7 @@ class ReturnProduct
             $sql .= "return_product_date = :return_product_date, ";
             $sql .= "return_product_qty = :return_product_qty, ";
             $sql .= "return_product_remarks = :return_product_remarks, ";
+            $sql .= "return_product_is_refund = :return_product_is_refund, ";
             $sql .= "return_product_updated = :return_product_updated ";
             $sql .= "where return_product_aid = :return_product_aid ";
             $query = $this->connection->prepare($sql);
@@ -195,6 +200,7 @@ class ReturnProduct
                 "return_product_date" => $this->return_product_date,
                 "return_product_qty" => $this->return_product_qty,
                 "return_product_remarks" => $this->return_product_remarks,
+                "return_product_is_refund" => $this->return_product_is_refund,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_aid" => $this->return_product_aid,
             ]);
@@ -326,6 +332,7 @@ class ReturnProduct
             $sql .= "{$this->tblReturnProduct} ";
             $sql .= "where return_product_id = :return_product_id ";
             $sql .= "and return_product_is_resolved = '1' ";
+            $sql .= "and return_product_is_refund = '0' ";
             $sql .= "group by return_product_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([

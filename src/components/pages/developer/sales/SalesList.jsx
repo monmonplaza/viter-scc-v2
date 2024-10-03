@@ -136,6 +136,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
               <tr>
                 <th className="w-counter">#</th>
                 <th className="w-[90px]">Status</th>
+                <th className="">Customer</th>
                 <th className="">Date</th>
                 <th className="">Reference No.</th>
                 <th className="text-right">Total Amount</th>
@@ -177,6 +178,7 @@ const SalesList = ({ setItemEdit, setIsView }) => {
                           />
                         </td>
 
+                        <td>{item.customer_name}</td>
                         <td>{formatDate(item.sales_date)}</td>
                         <td>{item.sales_reference_no}</td>
                         <td className="text-right">

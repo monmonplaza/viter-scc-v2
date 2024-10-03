@@ -1,6 +1,7 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
 import {
+  formatDate,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -14,7 +15,7 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { setIsAdd, setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
-import { PillBottle, Trash, X } from "lucide-react";
+import { PillBottle, Printer, Trash, X } from "lucide-react";
 import React from "react";
 import ModalPurchasePrint from "./ModalPurchasePrint.jsx";
 
@@ -80,11 +81,41 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
           </div>
 
           <div className="p-4 space-y-6">
-            <div className="flex gap-3 justify-end">
-              <button className="btn btn-accent" onClick={handlePrintPreview}>
-                Print
-              </button>
-            </div>
+            {receivingData?.count > 0 && (
+              <>
+                <div className="grid grid-cols-[1fr_5rem] gap-5 items-center">
+                  <ul className="grid grid-cols-3 text-sm">
+                    <li className="!mb-0 mt-2 font-bold">
+                      Purchase Date :
+                      <span className="font-normal ml-2">
+                        {formatDate(itemEdit.purchase_date)}
+                      </span>
+                    </li>
+                    <li className="!mb-0 mt-2 font-bold">
+                      Start Delivery Date :
+                      <span className="font-normal ml-2">
+                        {formatDate(itemEdit.purchase_delivery_start_date)}
+                      </span>
+                    </li>
+                    <li className="!mb-0 mt-2 font-bold">
+                      Last Delivery Date :
+                      <span className="font-normal ml-2 capitalize">
+                        {formatDate(itemEdit.purchase_delivery_end_date)}
+                      </span>
+                    </li>
+                  </ul>
+                  <div className="">
+                    <button
+                      className="btn btn-accent md:text-left "
+                      type="submit"
+                      onClick={handlePrintPreview}
+                    >
+                      <Printer size={16} /> Print
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
             <div className="relative">
               {!loadingReceiving && fetchingReceiving && <SpinnerTable />}
               <div className="table-wrapper w-full max-h-[30dvh] ">
@@ -174,21 +205,6 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
                       );
                     })}
                   </tbody>
-                  {/* <tbody>
-                    <tr className=" !bg-primary !text-sm text-dark font-bold !border-none !shadow-none">
-                      <td colSpan={5} className="py-4 pl-2 text-right">
-                        Total:
-                      </td>
-                      <td className="text-right py-4 pr-2">
-                        {pesoSign}
-                        {numberWithCommasToFixed(totalPrice, 2)}
-                      </td>
-                      <td className="text-right py-4 pr-2">
-                        {pesoSign}
-                        {numberWithCommasToFixed(totalAmount, 2)}
-                      </td>
-                    </tr>
-                  </tbody> */}
                 </table>
               </div>
             </div>
@@ -215,7 +231,12 @@ const ModalViewPurchase = ({ itemEdit, setIsView }) => {
           />
         )}
       </WrapperModal>
-      {printPreview && <ModalPurchasePrint setPrintPreview={setPrintPreview} />}
+      {printPreview && (
+        <ModalPurchasePrint
+          setPrintPreview={setPrintPreview}
+          receivingData={receivingData}
+        />
+      )}
     </>
   );
 };
