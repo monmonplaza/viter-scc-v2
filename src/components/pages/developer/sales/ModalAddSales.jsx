@@ -172,6 +172,12 @@ const ModalAddSales = ({ itemEdit }) => {
   };
 
   const handleUpdateQuantity = async (e, val) => {
+    if (isNaN(e.target.value)) {
+      dispatch(setValidate(true));
+      dispatch(setMessage("Invalid Quantity"));
+      return;
+    }
+
     setQuantity(e.target.value);
 
     queryClient.invalidateQueries({ queryKey: ["sales"] });
@@ -186,6 +192,7 @@ const ModalAddSales = ({ itemEdit }) => {
         totalSalesAmount: val.sales_total_amount,
         sales_list_sales_id: val.sales_list_sales_id,
         sales_list_price: val.sales_list_price,
+        sales_list_return_qty: val.sales_list_return_qty,
       }
     );
 

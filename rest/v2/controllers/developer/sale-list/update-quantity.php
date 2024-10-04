@@ -31,6 +31,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         returnError("Invalid Quantity");
     }
 
+    $salesList->sales_list_total_qty = (float)$data['sales_list_quantity'] - (float)$data['sales_list_return_qty'];
 
     $query = checkUpdateQuantity($salesList);
 

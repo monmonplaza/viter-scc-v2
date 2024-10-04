@@ -11,6 +11,8 @@ class SalesList
     public $sales_list_product_price_id;
     public $sales_list_discount_amount;
     public $sales_list_discount;
+    public $sales_list_total_qty;
+    public $sales_list_return_qty;
     public $sales_list_updated;
     public $sales_list_created;
 
@@ -80,6 +82,8 @@ class SalesList
             $sql .= "sales_list_date, ";
             $sql .= "sales_list_discount, ";
             $sql .= "sales_list_discount_amount, ";
+            $sql .= "sales_list_total_qty, ";
+            $sql .= "sales_list_return_qty, ";
             $sql .= "sales_list_updated, ";
             $sql .= "sales_list_created ) values ( ";
             $sql .= ":sales_list_sales_id, ";
@@ -91,6 +95,8 @@ class SalesList
             $sql .= ":sales_list_date, ";
             $sql .= ":sales_list_discount, ";
             $sql .= ":sales_list_discount_amount, ";
+            $sql .= ":sales_list_total_qty, ";
+            $sql .= ":sales_list_return_qty, ";
             $sql .= ":sales_list_updated, ";
             $sql .= ":sales_list_created ) ";
             $query = $this->connection->prepare($sql);
@@ -104,6 +110,8 @@ class SalesList
                 "sales_list_date" => $this->sales_list_date,
                 "sales_list_discount" => $this->sales_list_discount,
                 "sales_list_discount_amount" => $this->sales_list_discount_amount,
+                "sales_list_total_qty" => $this->sales_list_total_qty,
+                "sales_list_return_qty" => $this->sales_list_return_qty,
                 "sales_list_updated" => $this->sales_list_updated,
                 "sales_list_created" => $this->sales_list_created,
             ]);
@@ -423,11 +431,13 @@ class SalesList
         try {
             $sql = "update {$this->tblSalesList} set ";
             $sql .= "sales_list_quantity = :sales_list_quantity, ";
+            $sql .= "sales_list_total_qty = :sales_list_total_qty, ";
             $sql .= "sales_list_updated = :sales_list_updated ";
             $sql .= "where sales_list_aid = :sales_list_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_list_quantity" => $this->sales_list_quantity,
+                "sales_list_total_qty" => $this->sales_list_total_qty,
                 "sales_list_updated" => $this->sales_list_updated,
                 "sales_list_aid" => $this->sales_list_aid,
             ]);
@@ -463,11 +473,13 @@ class SalesList
         try {
             $sql = "update {$this->tblSalesList} set ";
             $sql .= "sales_list_quantity = :sales_list_quantity, ";
+            $sql .= "sales_list_total_qty = :sales_list_total_qty, ";
             $sql .= "sales_list_updated = :sales_list_updated ";
             $sql .= "where sales_list_aid = :sales_list_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_list_quantity" => $this->sales_list_quantity,
+                "sales_list_total_qty" => $this->sales_list_total_qty,
                 "sales_list_updated" => $this->sales_list_updated,
                 "sales_list_aid" => $this->sales_list_aid,
             ]);

@@ -23,8 +23,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $productReturn->return_product_aid = $_GET['returnproductid'];
         $productReturn->return_product_is_resolved = trim($data["isActive"]);
+
+        $productReturn->return_product_sales_list_id = checkIndex($data, "return_product_sales_list_id");
         $productReturn->return_product_updated = date("Y-m-d H:i:s");
 
+        $sales_list_quantity = $data["sales_list_quantity"];
         if (intval($productReturn->return_product_is_resolved) === 1) {
             $productReturn->return_product_resolved_date = date("Y-m-d");
         } else {
@@ -50,6 +53,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         }
 
         checkUpdateInventoryReturnProduct($productReturn);
+        $productReturn->sales_list_total_qty = (float)$sales_list_quantity - (float)$productReturn->inventory_log_return_product;
+        checkUpdateSalesListRefund($productReturn);
         http_response_code(200);
         returnSuccess($productReturn, "Return Product", $query);
     }

@@ -218,7 +218,9 @@ class Search
     {
         try {
             $sql = "select ";
+            $sql .= "sl.sales_list_aid, ";
             $sql .= "sl.sales_list_quantity, ";
+            $sql .= "sl.sales_list_total_qty, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
@@ -227,6 +229,8 @@ class Search
             $sql .= "where p.product_aid = sl.sales_list_product_id ";
             $sql .= "and sl.sales_list_sales_id = :sales_list_sales_id ";
             $sql .= "and p.product_name like :product_name ";
+            $sql .= "and sl.sales_list_total_qty != '0' ";
+            $sql .= "and sl.sales_list_total_qty != '' ";
             $sql .= "order by p.product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([

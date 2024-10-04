@@ -14,6 +14,7 @@ class ReturnProduct
     public $return_product_created;
 
     public $product_name;
+    public $sales_list_total_qty;
 
     public $inventory_log_return_product;
     public $inventory_log_product_id;
@@ -29,6 +30,7 @@ class ReturnProduct
     public $tblReturnProduct;
     public $tblProduct;
     public $tblInventoryLog;
+    public $tblSalesList;
 
     public function __construct($db)
     {
@@ -36,6 +38,7 @@ class ReturnProduct
         $this->tblReturnProduct = "sccv2_return_product";
         $this->tblProduct = "sccv2_product";
         $this->tblInventoryLog = "sccv2_inventory_log";
+        $this->tblSalesList = "sccv2_sales_list";
     }
 
     // create
@@ -85,12 +88,15 @@ class ReturnProduct
     {
         try {
             $sql = "select rp.*, ";
+            $sql .= "sl.*, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} as rp, ";
-            $sql .= "{$this->tblProduct} as p ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
             $sql .= "where rp.return_product_id = p.product_aid ";
+            $sql .= "and sl.sales_list_aid = rp.return_product_sales_list_id ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
             $sql .= "DATE(rp.return_product_date) desc, ";
             $sql .= "p.product_name asc ";
@@ -106,12 +112,15 @@ class ReturnProduct
     {
         try {
             $sql = "select rp.*, ";
+            $sql .= "sl.*, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} as rp, ";
-            $sql .= "{$this->tblProduct} as p ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
             $sql .= "where rp.return_product_id = p.product_aid ";
+            $sql .= "and sl.sales_list_aid = rp.return_product_sales_list_id ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
             $sql .= "DATE(rp.return_product_date) desc, ";
             $sql .= "p.product_name asc ";
@@ -133,12 +142,15 @@ class ReturnProduct
     {
         try {
             $sql = "select rp.*, ";
+            $sql .= "sl.*, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} as rp, ";
-            $sql .= "{$this->tblProduct} as p ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
             $sql .= "where rp.return_product_id = p.product_aid ";
+            $sql .= "and sl.sales_list_aid = rp.return_product_sales_list_id ";
             $sql .= "and (p.product_name like :product_name ";
             $sql .= "or MONTHNAME(rp.return_product_date) like :month_name ";
             $sql .= "or MONTHNAME(rp.return_product_resolved_date) like :resolved_month_name ";
@@ -268,12 +280,15 @@ class ReturnProduct
     {
         try {
             $sql = "select rp.*, ";
+            $sql .= "sl.*, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} as rp, ";
-            $sql .= "{$this->tblProduct} as p ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
             $sql .= "where rp.return_product_is_resolved = :return_product_is_resolved  ";
+            $sql .= "and sl.sales_list_aid = rp.return_product_sales_list_id ";
             $sql .= "and rp.return_product_id = p.product_aid ";
             $sql .= "order by rp.return_product_is_resolved asc, ";
             $sql .= "p.product_name asc ";
@@ -291,12 +306,15 @@ class ReturnProduct
     {
         try {
             $sql = "select rp.*, ";
+            $sql .= "sl.*, ";
             $sql .= "p.product_aid, ";
             $sql .= "p.product_name ";
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} as rp, ";
-            $sql .= "{$this->tblProduct} as p ";
+            $sql .= "{$this->tblProduct} as p, ";
+            $sql .= "{$this->tblSalesList} as sl ";
             $sql .= "where rp.return_product_is_resolved = :return_product_is_resolved ";
+            $sql .= "and sl.sales_list_aid = rp.return_product_sales_list_id ";
             $sql .= "and rp.return_product_id = p.product_aid ";
             $sql .= "and (p.product_name like :product_name ";
             $sql .= "or MONTHNAME(rp.return_product_date) like :month_name ";
@@ -331,8 +349,7 @@ class ReturnProduct
             $sql .= "from ";
             $sql .= "{$this->tblReturnProduct} ";
             $sql .= "where return_product_id = :return_product_id ";
-            $sql .= "and return_product_is_resolved = '1' ";
-            $sql .= "and return_product_is_refund = '0' ";
+            $sql .= "and return_product_is_refund = '1' ";
             $sql .= "group by return_product_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -355,8 +372,30 @@ class ReturnProduct
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "inventory_log_return_product" => $this->inventory_log_return_product,
-                "inventory_log_updated" => $this->inventory_log_updated,
-                "inventory_log_product_id" => $this->inventory_log_product_id,
+                "inventory_log_updated" => $this->return_product_updated,
+                "inventory_log_product_id" => $this->return_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Inventory Log
+    public function updateSalesListRefund()
+    {
+        try {
+            $sql = "update {$this->tblSalesList} set ";
+            $sql .= "sales_list_return_qty = :sales_list_return_qty, ";
+            $sql .= "sales_list_total_qty = :sales_list_total_qty, ";
+            $sql .= "sales_list_updated = :sales_list_updated ";
+            $sql .= "where sales_list_aid = :sales_list_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_list_return_qty" => $this->inventory_log_return_product,
+                "sales_list_total_qty" => $this->sales_list_total_qty,
+                "sales_list_updated" => $this->return_product_updated,
+                "sales_list_aid" => $this->return_product_sales_list_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;

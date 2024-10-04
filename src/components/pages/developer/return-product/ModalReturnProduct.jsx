@@ -143,8 +143,12 @@ const ModalReturnProduct = ({ itemEdit }) => {
                   ? productData?.product_aid
                   : "",
               return_product_sales_list_id:
-                typeof salesProductData?.sales_aid !== "undefined"
-                  ? salesProductData?.sales_aid
+                typeof productData?.sales_list_aid !== "undefined"
+                  ? productData?.sales_list_aid
+                  : "",
+              sales_list_quantity:
+                typeof productData?.sales_list_quantity !== "undefined"
+                  ? productData?.sales_list_quantity
                   : "",
             });
           }}

@@ -1,0 +1,25 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/return-product/active.php
+    - rest/v2/controllers/developer/return-product/create.php
+    - rest/v2/controllers/developer/return-product/delete.php
+    - rest/v2/controllers/developer/return-product/functions.php
+    - rest/v2/controllers/developer/return-product/update.php
+    - rest/v2/controllers/developer/sale-list/create.php
+    - rest/v2/controllers/developer/sale-list/update-quantity.php
+    - rest/v2/controllers/developer/sale-list/update.php
+  
+MODELS 
+    - rest/v2/models/developer/return-product/ReturnProduct.php
+    - rest/v2/models/developer/sales-list/SalesList.php
+    - rest/v2/models/developer/search/Search.php
+  
+CORE
+    - 
+
+HTACCESS
+    - 
+
+
+DB-BACKUP  
+    - 

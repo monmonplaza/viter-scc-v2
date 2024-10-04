@@ -22,15 +22,18 @@ $productReturn->return_product_updated = date("Y-m-d H:i:s");
 
 $query = checkCreate($productReturn);
 
-// $productReturn->sales_list_return_qty = 0;
-// $productReturn->sales_list_total_qty = 0;
 
-// $updateInventoryDefective = getResultData($defectiveProduct->readSalesListRefund());
-// if (count($updateInventoryDefective) > 0) {
-//     $defectiveProduct->inventory_log_defective_product = checkIndex($updateInventoryDefective[0], "total_defective_product_qty");
-// } else {
-//     $defectiveProduct->inventory_log_defective_product = 0;
-// }
+$sales_list_quantity = $data["sales_list_quantity"];
 
+// UPDATE INVENTORY
+$updateInventoryRefund = getResultData($productReturn->checkReturnProductTotalQty());
+if (count($updateInventoryRefund) > 0) {
+    $productReturn->inventory_log_return_product = checkIndex($updateInventoryRefund[0], "total_return_product_qty");
+} else {
+    $productReturn->inventory_log_return_product = 0;
+}
+checkUpdateInventoryReturnProduct($productReturn);
 
+$productReturn->sales_list_total_qty = (float)$sales_list_quantity - (float)$productReturn->inventory_log_return_product;
+checkUpdateSalesListRefund($productReturn);
 returnSuccess($productReturn, "Return Product", $query);

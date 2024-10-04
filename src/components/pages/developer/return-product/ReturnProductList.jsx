@@ -181,9 +181,9 @@ const ReturnProductList = ({ setItemEdit }) => {
                           <PillStatus
                             isActive={item.return_product_is_resolved}
                             text={`${
-                              item.return_product_is_resolved
-                                ? "Resolved"
-                                : "Ongoing"
+                              item.return_product_is_refund
+                                ? "Refunded"
+                                : "Exchanged"
                             }`}
                           />
                         </td>
@@ -200,7 +200,7 @@ const ReturnProductList = ({ setItemEdit }) => {
 
                         <td className="table-action">
                           <ul>
-                            {item.return_product_is_resolved === 1 ? (
+                            {item.return_product_is_resolved === 0 ? (
                               <>
                                 <li>
                                   <button
@@ -219,16 +219,20 @@ const ReturnProductList = ({ setItemEdit }) => {
 
                                 <li>
                                   <button
-                                    data-tooltip="Archive"
+                                    data-tooltip={`${
+                                      item.return_product_is_refund
+                                        ? "Refunded"
+                                        : "Exchanged"
+                                    }`}
                                     className="tooltip"
                                     onClick={() =>
-                                      handleArchive(
+                                      handleRestore(
                                         item.return_product_aid,
                                         item
                                       )
                                     }
                                   >
-                                    <Archive size={14} />
+                                    <ArchiveRestore size={14} />
                                   </button>
                                 </li>
                               </>
@@ -239,13 +243,13 @@ const ReturnProductList = ({ setItemEdit }) => {
                                     data-tooltip="Restore"
                                     className="tooltip"
                                     onClick={() =>
-                                      handleRestore(
+                                      handleArchive(
                                         item.return_product_aid,
                                         item
                                       )
                                     }
                                   >
-                                    <ArchiveRestore size={14} />
+                                    <Archive size={14} />
                                   </button>
                                 </li>
                                 <li>
