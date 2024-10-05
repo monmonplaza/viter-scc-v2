@@ -1,13 +1,13 @@
 import React from "react";
 //
-export const urlPathSinglePageWebsite =
-  "http://localhost/react-vite/viter-scc-v2";
-export const imgUrlPathSinglePageWebsite =
-  "http://localhost/react-vite/viter-scc-v2/public/img";
+// export const urlPathSinglePageWebsite =
+//   "http://localhost/react-vite/viter-scc-v2";
+// export const imgUrlPathSinglePageWebsite =
+//   "http://localhost/react-vite/viter-scc-v2/public/img";
 
 // Online Dev only
-// export const urlPathSinglePageWebsite = "https://app.sambahayancoop.com";
-// export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
+export const urlPathSinglePageWebsite = "https://app.sambahayancoop.com";
+export const imgUrlPathSinglePageWebsite = "https://app.sambahayancoop.com/img";
 
 export const devApiUrl = `${urlPathSinglePageWebsite}/rest`;
 export const devBaseUrl = `${urlPathSinglePageWebsite}`;
