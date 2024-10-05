@@ -52,6 +52,7 @@ class SalesList
     public $tblDefectiveProduct;
     public $tblInventoryLog;
     public $tblProductPrice;
+    public $tblCategory;
 
     public function __construct($db)
     {
@@ -66,6 +67,7 @@ class SalesList
         $this->tblDefectiveProduct = "sccv2_defective_product";
         $this->tblInventoryLog = "sccv2_inventory_log";
         $this->tblProductPrice = "sccv2_product_price";
+        $this->tblCategory = "sccv2_category";
     }
 
     // create
@@ -653,6 +655,44 @@ class SalesList
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_list_aid" => $this->sales_list_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchProductPrice()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "product.*, ";
+            $sql .= "pr.*, ";
+            $sql .= "u.settings_unit_name, ";
+            $sql .= "rs.receiving_supply_barcode, ";
+            $sql .= "rs.receiving_supply_defective_product_qty, ";
+            $sql .= "category.category_aid, ";
+            $sql .= "category.category_name, ";
+            $sql .= "category.category_description ";
+            $sql .= "from ";
+            $sql .= "{$this->tblProduct} as product, ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblProductPrice} as pr, ";
+            $sql .= "{$this->tblUnit} as u, ";
+            $sql .= "{$this->tblCategory} as category ";
+            $sql .= "where product.product_category_id = category.category_aid ";
+            $sql .= "and rs.receiving_supply_product_id = product.product_aid ";
+            $sql .= "and pr.product_price_product_id = product.product_aid ";
+            $sql .= "and pr.product_price_product_id = rs.receiving_supply_product_id ";
+            $sql .= "and pr.product_price_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and rs.receiving_supply_unit_id = u.settings_unit_aid  ";
+            $sql .= "and cast(pr.product_price_available_stock as decimal(20,4)) > 0 ";
+            $sql .= "and rs.receiving_supply_barcode = :receiving_supply_barcode ";
+            $sql .= "order by product.product_is_active desc, ";
+            $sql .= "product.product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_barcode" => $this->sales_list_search,
             ]);
         } catch (PDOException $ex) {
             $query = false;

@@ -185,6 +185,13 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
               initialValues={initVal}
               validationSchema={yupSchema}
               onSubmit={async (values, { setSubmitting, resetForm }) => {
+                let receiving_supply_barcode = "";
+                if (productData === null) {
+                  dispatch(setValidate(true));
+                  dispatch(setMessage("Invalid product"));
+                  return;
+                }
+
                 const receiving_supply_supplier_id =
                   supplierData !== null ? supplierData?.supplier_aid : 0;
                 const receiving_supply_product_id =
@@ -194,6 +201,11 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                   Number(values.receiving_supply_price) *
                   Number(values.receiving_supply_quantity);
 
+                receiving_supply_barcode =
+                  productData?.product_barcode !== ""
+                    ? productData?.product_barcode
+                    : values.receiving_supply_barcode;
+
                 mutation.mutate({
                   ...values,
                   receiving_total_amount:
@@ -201,6 +213,7 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                   receiving_supply_amount,
                   receiving_supply_supplier_id,
                   receiving_supply_product_id,
+                  receiving_supply_barcode,
                 });
               }}
             >
@@ -319,7 +332,12 @@ const ModalAddSupplierProduct = ({ itemEdit }) => {
                           type="text"
                           number="number"
                           name="receiving_supply_barcode"
-                          disabled={mutation.isPending}
+                          disabled={
+                            productData !== null &&
+                            productData?.product_barcode !== ""
+                              ? true
+                              : mutation.isPending
+                          }
                         />
                       </div>
                       <button

@@ -1,13 +1,11 @@
+import React from "react";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
-import {
-  InputCheckbox,
-  InputSelect,
-  InputText,
-} from "@/components/helpers/FormInputs";
+import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import {
   formatDate,
   getDateNow,
+  GetFocus,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -34,7 +32,6 @@ import { StoreContext } from "@/components/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { PillBottle, Plus, Printer, Trash, X } from "lucide-react";
-import React from "react";
 import * as Yup from "yup";
 import ModalSalesPrint from "./ModalSalesPrint.jsx";
 
@@ -59,6 +56,7 @@ const ModalAddSales = ({ itemEdit }) => {
   const [isPrint, setIsPrint] = React.useState(false);
   let counter = 1;
   let totalAmount = 0;
+  GetFocus("btnClose");
 
   const { data: customerGuest } = useQueryData(
     `/${ver}/search-customer`,
@@ -256,7 +254,7 @@ const ModalAddSales = ({ itemEdit }) => {
     sales_new_data: itemEdit ? itemEdit.sales_new_data : "",
     sales_list_quantity: 1,
     sales_payment_method: itemEdit ? itemEdit.sales_payment_method : "credit",
-    searchCustomer: itemEdit ? itemEdit.customer_name : "",
+    searchCustomer: "",
     sales_list_price: "",
     sales_list_discount: "",
     discount_amount: 0,
@@ -273,7 +271,6 @@ const ModalAddSales = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     sales_list_date: Yup.string().required("Required"),
-    sales_list_price: !isAcceptPayment && Yup.string().required("Required"),
     sales_payment_amount: isRequiredAmountYup,
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
@@ -360,6 +357,7 @@ const ModalAddSales = ({ itemEdit }) => {
 
                 mutation.mutate({
                   ...values,
+                  productData: productData,
                   sales_list_product_id: productId,
                   sales_list_customer_id: itemEdit
                     ? itemEdit.sales_customer_id
@@ -373,6 +371,8 @@ const ModalAddSales = ({ itemEdit }) => {
                   sales_payment_method: paymentMethod,
                   totalSalesAmount,
                   sales_list_discount_amount,
+
+                  isMember: customerData?.customer_is_member,
                 });
                 if (itemEdit) {
                   setProductData(null);

@@ -1,11 +1,7 @@
 import { CircleCheckBig, X } from "lucide-react";
 import React from "react";
 import { devNavUrl } from "../helpers/functions-general.jsx";
-import {
-  setIsAccountUpdated,
-  setIsAnimating,
-  setSuccess,
-} from "../store/StoreAction.jsx";
+import { setIsAccountUpdated, setSuccess } from "../store/StoreAction.jsx";
 import { StoreContext } from "../store/StoreContext.jsx";
 
 const ToastSuccess = () => {
@@ -13,8 +9,6 @@ const ToastSuccess = () => {
   const handleClose = () => {
     dispatch(setSuccess(false));
   };
-
-  console.log(store.isAccountUpdated);
 
   React.useEffect(() => {
     setTimeout(() => {

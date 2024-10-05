@@ -10,15 +10,12 @@ if (array_key_exists("saleslistid", $_GET)) {
 
 checkPayload($data);
 
+$productData = $data["productData"];
 $salesList->sales_list_date = checkIndex($data, "sales_list_date");
-$salesList->sales_list_product_id = checkIndex($data, "sales_list_product_id");
-$salesList->sales_list_customer_id = checkIndex($data, "sales_list_customer_id");
 $salesList->sales_list_quantity = checkIndex($data, "sales_list_quantity");
 $salesList->sales_list_total_qty = checkIndex($data, "sales_list_quantity");
-$salesList->sales_list_price = checkIndex($data, "sales_list_price");
-$salesList->sales_list_discount = $data["sales_list_discount"];
-$salesList->sales_list_discount_amount = checkIndex($data, "sales_list_discount_amount");
-$salesList->sales_list_product_price_id = checkIndex($data, "sales_list_product_price_id");
+$salesList->sales_payment_method = checkIndex($data, "sales_payment_method");
+$salesList->sales_list_customer_id = checkIndex($data, "sales_list_customer_id");
 $salesList->sales_list_created = date("Y-m-d H:i:s");
 $salesList->sales_list_updated = date("Y-m-d H:i:s");
 
@@ -26,12 +23,44 @@ $salesList->sales_list_return_qty = 0;
 
 $salesList->sales_date = checkIndex($data, "sales_list_date");
 $salesList->sales_customer_id = checkIndex($data, "sales_customer_id");
-$salesList->sales_payment_method = checkIndex($data, "sales_payment_method");
 $salesList->sales_payment_tracking_number = $data["sales_payment_tracking_number"];
 $salesList->sales_created = date("Y-m-d H:i:s");
 $salesList->sales_updated = date("Y-m-d H:i:s");
 
-$product_price_available_stock = checkIndex($data, "product_price_available_stock");
+
+$salesList->sales_list_price = 0;
+$salesList->sales_list_discount = "";
+$salesList->sales_list_discount_amount = 0;
+$salesList->sales_list_product_price_id = 0;
+$salesList->sales_list_product_id = 0;
+$product_price_available_stock = 0;
+
+if ($productData != null) {
+    $salesList->sales_list_price = checkIndex($data, "sales_list_price");
+    $salesList->sales_list_discount = $data["sales_list_discount"];
+    $salesList->sales_list_discount_amount = checkIndex($data, "sales_list_discount_amount");
+    $salesList->sales_list_product_price_id = checkIndex($data, "sales_list_product_price_id");
+    $salesList->sales_list_product_id = checkIndex($data, "sales_list_product_id");
+    $product_price_available_stock = checkIndex($data, "product_price_available_stock");
+} else {
+    $salesList->sales_list_search = $data["searchProduct"];
+    $isNewData = getResultData($salesList->searchProductPrice());
+    if (count($isNewData) > 0) {
+        $salesList->sales_list_price = "";
+        $salesList->sales_list_product_price_id = $isNewData[0]["product_price_aid"];
+        $salesList->sales_list_product_id = $isNewData[0]["product_price_product_id"];
+        $product_price_available_stock = $isNewData[0]["product_price_available_stock"];
+
+        if ($data["isMember"] == 1) {
+            $salesList->sales_list_price = $isNewData[0]["product_price_scc_price"];
+        } else {
+            $salesList->sales_list_price = $isNewData[0]["product_price_amount"];
+        }
+
+
+        $salesList->sales_list_discount_amount = 0;
+    }
+}
 
 $isValidQtyProduct = (float)$product_price_available_stock - (float)$salesList->sales_list_quantity;
 
@@ -105,8 +134,8 @@ if (count($receivedProduct) > 0) {
         checkUpdateProductPriceAvailableStock($salesList);
     }
 }
-
 $totalSalesAmount = $data["totalSalesAmount"];
+
 $amount = (float)$salesList->sales_list_price * (float)$salesList->sales_list_quantity;
 
 $salesList->sales_aid = $salesList->sales_list_sales_id;
