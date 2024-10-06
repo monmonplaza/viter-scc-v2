@@ -1,0 +1,27 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/defective-product/active.php
+    - rest/v2/controllers/developer/defective-product/create.php
+    - rest/v2/controllers/developer/defective-product/functions.php
+    - rest/v2/controllers/developer/defective-product/update.php
+    - rest/v2/controllers/developer/product-price/create.php
+    - rest/v2/controllers/developer/product-price/update.php
+  
+MODELS 
+    - rest/v2/models/developer/defective-product/DefectiveProduct.php
+    - rest/v2/models/developer/product-price/ProductPrice.php
+    - rest/v2/models/developer/search/Search.php
+  
+CORE
+    - 
+
+HTACCESS
+    - rest/v2/.htaccess
+
+
+DB-BACKUP  
+    - rest/v2/db-backup/sccv2_product_price.sql
+        -> `product_price_whole_sale_qty` varchar(20) NOT NULL,
+        -> `product_price_promo_end_date` varchar(20) NOT NULL,
+        -> `product_price_promo_percent` varchar(20) NOT NULL,
+        -> `product_price_promo_amount` varchar(20) NOT NULL,

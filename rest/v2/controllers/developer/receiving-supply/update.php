@@ -21,6 +21,8 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
     $receiving_supply->receiving_supply_created = date("Y-m-d H:i:s");
     $receiving_supply->receiving_supply_datetime = date("Y-m-d H:i:s");
 
+    $receiving_supply->receiving_supply_is_refund = $data["receiving_supply_is_refund"];
+
     $receiving_supply->receiving_aid = checkIndex($data, "receiving_supply_received_id");
     $receiving_supply->receiving_date = checkIndex($data, "receiving_date");
     $receiving_supply->receiving_is_complete = 0;
@@ -40,6 +42,7 @@ if (array_key_exists("receivingsupplyid", $_GET)) {
     }
 
     // CREATE UPDATE DEFECTIVE
+    // receiving_supply->receiving_supply_is_refund
     if (intval($receiving_supply->receiving_supply_defective_product_qty) != 0) {
 
         $isDefectiveExist = getResultData($receiving_supply->checkDefectiveById());

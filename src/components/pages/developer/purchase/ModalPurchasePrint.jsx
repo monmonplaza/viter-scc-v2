@@ -1,10 +1,18 @@
-import { devBaseImgUrl } from "@/components/helpers/functions-general.jsx";
+import {
+  devBaseImgUrl,
+  formatInPeso,
+} from "@/components/helpers/functions-general.jsx";
+import SearchNoData from "@/components/partials/icons/SearchNoData";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { PrinterIcon } from "lucide-react";
 
-const ModalPurchasePrint = ({ setPrintPreview }) => {
+const ModalPurchasePrint = ({ setPrintPreview, receivingData }) => {
+  let totalAmount = 0;
+  let totalPrice = 0;
+  let counter = 1;
   const handleClose = () => setPrintPreview(false);
 
+  console.log("receivingData", receivingData);
   return (
     <>
       <WrapperModal>
@@ -91,7 +99,8 @@ const ModalPurchasePrint = ({ setPrintPreview }) => {
 
               <div className="min-h-[400px] grid grid-rows-[1fr_auto]">
                 <div className="px-4">
-                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-2 py-3 border-y border-line mb-5">
+                  <div className="grid grid-cols-[1rem_2fr_1fr_1fr_1fr_1fr_1fr] gap-2 py-3 border-y border-line mb-5">
+                    <h5 className="mb-0 ">#</h5>
                     <h5 className="mb-0 ">Supplier</h5>
                     <h5 className="mb-0 ">Product</h5>
                     <h5 className="mb-0 ">Unit</h5>
@@ -99,30 +108,36 @@ const ModalPurchasePrint = ({ setPrintPreview }) => {
                     <h5 className="mb-0 ">Price</h5>
                     <h5 className="mb-0 ">Amount</h5>
                   </div>
-                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-0.5 ">
-                    <p>Amazing ChuChu</p>
-                    <p>Ballpen</p>
-                    <p>Per Box</p>
-                    <p>10</p>
-                    <p>10.00</p>
-                    <p>100.00</p>
-                  </div>
-                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-0.5">
-                    <p>Amazing ChuChu</p>
-                    <p>Ballpen</p>
-                    <p>Per Box</p>
-                    <p>10</p>
-                    <p>10.00</p>
-                    <p>100.00</p>
-                  </div>
-                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-0.5">
-                    <p>Amazing ChuChu</p>
-                    <p>Ballpen</p>
-                    <p>Per Box</p>
-                    <p>10</p>
-                    <p>10.00</p>
-                    <p>100.00</p>
-                  </div>
+
+                  {receivingData?.count > 0 ? (
+                    receivingData?.data.map((item, key) => {
+                      totalAmount +=
+                        Number(item.purchase_price) *
+                        Number(item.purchase_quantity);
+                      totalPrice += Number(item.purchase_price);
+                      return (
+                        <div
+                          key={key}
+                          className="grid grid-cols-[1rem_2fr_1fr_1fr_1fr_1fr_1fr] gap-2 mb-0.5 "
+                        >
+                          <p>{counter++}.</p>
+                          <p>{item.supplier_name}</p>
+                          <p>{item.product_name}</p>
+                          <p>{item.settings_unit_name}</p>
+                          <p>{item.purchase_quantity}</p>
+                          <p>{formatInPeso(item.purchase_price)}</p>
+                          <p>
+                            {formatInPeso(
+                              Number(item.purchase_price) *
+                                Number(item.purchase_quantity)
+                            )}
+                          </p>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <SearchNoData />
+                  )}
                 </div>
 
                 <div className="border-t  py-5 flex justify-between pr-10 bg-gray-200 px-4">
@@ -140,7 +155,8 @@ const ModalPurchasePrint = ({ setPrintPreview }) => {
                   </ul>
 
                   <h3 className="text-black">
-                    <span className="pr-5">Total:</span> 400.00
+                    <span className="pr-5">Total:</span>
+                    {formatInPeso(totalAmount)}
                   </h3>
                 </div>
               </div>

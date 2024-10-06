@@ -81,6 +81,7 @@ const SearchAllModalReceivedProduct = ({
     }
   };
 
+  console.log("search", search);
   React.useEffect(() => {
     document.addEventListener("click", handleClickOutsideSearch);
     return () =>

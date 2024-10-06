@@ -1,3 +1,5 @@
+import React from "react";
+//
 // export const urlPathSinglePageWebsite =
 //   "http://localhost/react-vite/viter-scc-v2";
 // export const imgUrlPathSinglePageWebsite =
@@ -110,3 +112,11 @@ export function formatInPeso(number) {
     currency: "PHP",
   }).format(number);
 }
+
+// get focus on a button
+export const GetFocus = (id) => {
+  React.useEffect(() => {
+    const obj = document.getElementById(id);
+    obj.focus();
+  }, []);
+};

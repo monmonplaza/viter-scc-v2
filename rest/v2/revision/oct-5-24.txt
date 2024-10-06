@@ -1,0 +1,19 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/product/create.php
+    - rest/v2/controllers/developer/product/update.php
+    - rest/v2/controllers/developer/sale-list/create.php
+  
+MODELS 
+    - rest/v2/models/developer/Product/Product.php
+    - rest/v2/models/developer/sales-list/SalesList.php
+  
+CORE
+    - 
+
+HTACCESS
+    - 
+
+
+DB-BACKUP  
+    - 

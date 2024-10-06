@@ -92,15 +92,10 @@ const SearchModalProductPrice = ({
   };
 
   React.useEffect(() => {
-    if (isFetching) {
-      setData(null);
-      setSearch("");
-      setSearchValues("");
-    }
     document.addEventListener("click", handleClickOutsideSearch);
     return () =>
       document.removeEventListener("click", handleClickOutsideSearch);
-  }, [isFetching]);
+  }, []);
 
   return (
     <>
@@ -119,6 +114,7 @@ const SearchModalProductPrice = ({
           disabled={mutation.isLoading}
           value={search}
           refVal={refSearch}
+          id="btnClose"
         />
 
         {onFocus && (

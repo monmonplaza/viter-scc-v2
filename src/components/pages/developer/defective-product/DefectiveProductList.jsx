@@ -17,7 +17,7 @@ import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
 import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ArchiveRestore, ClipboardCheck } from "lucide-react";
+import { ArchiveRestore, ClipboardCheck, SquarePen } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -180,9 +180,9 @@ const DefectiveProductList = ({ setItemEdit }) => {
                         <td>
                           <div
                             className={`inline-block text-xs text-center rounded-md px-2 py-[5px] w-[90px] text-white capitalize ${
-                              item.defective_product_is_resolve
+                              item.defective_product_is_resolve === 1
                                 ? "bg-success text-white"
-                                : "bg-warning  text-gray-500"
+                                : "bg-gray-200 text-gray-800"
                             }`}
                           >
                             <span>
@@ -190,7 +190,9 @@ const DefectiveProductList = ({ setItemEdit }) => {
                                 ? item.defective_product_is_refund === 1
                                   ? "Refunded"
                                   : "Exchanged"
-                                : "Ongoing"}
+                                : item.defective_product_is_refund === 1
+                                ? "Refund"
+                                : "Exchange"}
                             </span>
                           </div>
                         </td>
@@ -221,6 +223,17 @@ const DefectiveProductList = ({ setItemEdit }) => {
                           <ul>
                             {item.defective_product_is_resolve === 0 ? (
                               <>
+                                <li>
+                                  <button
+                                    data-tooltip="Edit"
+                                    className="tooltip"
+                                    onClick={() =>
+                                      handleEdit(item.customer_aid, item)
+                                    }
+                                  >
+                                    <SquarePen size={14} />
+                                  </button>
+                                </li>
                                 <li>
                                   <button
                                     data-tooltip="Resolve"

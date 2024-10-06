@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 20, 2024 at 09:31 AM
+-- Generation Time: Oct 02, 2024 at 10:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,6 +42,10 @@ CREATE TABLE `sccv2_product_price` (
   `product_price_stock_in` varchar(20) NOT NULL,
   `product_price_stock_out` varchar(20) NOT NULL,
   `product_price_available_stock` varchar(20) NOT NULL,
+  `product_price_whole_sale_qty` varchar(20) NOT NULL,
+  `product_price_promo_end_date` varchar(20) NOT NULL,
+  `product_price_promo_percent` varchar(20) NOT NULL,
+  `product_price_promo_amount` varchar(20) NOT NULL,
   `product_price_remarks` text NOT NULL,
   `product_price_created` datetime NOT NULL,
   `product_price_update` datetime NOT NULL
@@ -51,11 +55,9 @@ CREATE TABLE `sccv2_product_price` (
 -- Dumping data for table `sccv2_product_price`
 --
 
-INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_available_stock`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
-(6, '1', '2', '11', '10', '11', '10', '9.5', '10.95', '11.05', '10.5', '100', '15', '85', 'whole price for scc member is 5 pcs\nwhole price for not a member is 10 pcs', '2024-09-17 12:56:40', '0000-00-00 00:00:00'),
-(7, '2', '3', '13.2', '10', '13.2', '10', '9', '13.08', '13.32', '11', '50', '1', '49', 'whole price for scc member is 5 pcs\nwhole price for not a member is 10 pcs', '2024-09-17 12:57:04', '0000-00-00 00:00:00'),
-(8, '2', '4', '13.2', '10', '13.2', '10', '9', '13.08', '13.26', '10.5', '50', '14', '30', 'whole price for scc member is 5 pcs\nwhole price for not a member is 10 pcs', '2024-09-17 12:57:59', '0000-00-00 00:00:00'),
-(9, '2', '19', '30', '50', '30', '50', '40', '28', '32', '60', '100', '1', '99', 'whole price for scc member is 5 pcs\nwhole price for not a member is 10 pcs', '2024-09-20 09:22:44', '0000-00-00 00:00:00');
+INSERT INTO `sccv2_product_price` (`product_price_aid`, `product_price_product_id`, `product_price_supply_id`, `product_price_scc_price`, `product_price_scc_percent`, `product_price_whole_sale_amount`, `product_price_whole_sale_percent`, `product_price_scc_whole_sale_percent`, `product_price_scc_whole_sale_amount`, `product_price_amount`, `product_price_percent`, `product_price_stock_in`, `product_price_stock_out`, `product_price_available_stock`, `product_price_whole_sale_qty`, `product_price_promo_end_date`, `product_price_promo_percent`, `product_price_promo_amount`, `product_price_remarks`, `product_price_created`, `product_price_update`) VALUES
+(1, '3', '2', '8.8', '10', '8.8', '10', '9', '8.72', '8.88', '11', '500', '0', '480', '25', '2024-10-02', '8', '8.64', '', '2024-10-02 15:47:54', '2024-10-02 16:04:49'),
+(2, '2', '1', '5.35', '7', '5.35', '7', '6', '5.3', '5.4', '8', '50', '1', '39', '1', '2024-10-02', '0', '5', '', '2024-10-02 15:55:05', '2024-10-02 16:04:49');
 
 --
 -- Indexes for dumped tables
@@ -75,7 +77,7 @@ ALTER TABLE `sccv2_product_price`
 -- AUTO_INCREMENT for table `sccv2_product_price`
 --
 ALTER TABLE `sccv2_product_price`
-  MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `product_price_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

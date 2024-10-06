@@ -14,12 +14,14 @@ class DefectiveProduct
 
     public $product_price_aid;
     public $product_price_available_stock;
+    public $sales_list_product_id;
 
     public $receiving_supply_product_id;
     public $receiving_supply_defective_product_qty;
     public $receiving_supply_defective_remarks;
 
     public $inventory_log_defective_product;
+    public $inventory_log_refund_product;
     public $inventory_log_product_id;
     public $inventory_log_updated;
 
@@ -38,6 +40,7 @@ class DefectiveProduct
     public $tblUnit;
     public $tblInventoryLog;
     public $tblProductPrice;
+    public $tblSalesList;
 
 
     public function __construct($db)
@@ -51,6 +54,7 @@ class DefectiveProduct
         $this->tblUnit = "sccv2_settings_unit";
         $this->tblInventoryLog = "sccv2_inventory_log";
         $this->tblProductPrice = "sccv2_product_price";
+        $this->tblSalesList = "sccv2_sales_list";
     }
 
     // create
@@ -220,12 +224,24 @@ class DefectiveProduct
         return $query;
     }
 
+    // read all inventory
+    public function readAllInventory()
+    {
+        try {
+            $sql = "select * from {$this->tblDefectiveProduct} ";
+            $sql .= "order by defective_product_aid desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // update
     public function update()
     {
         try {
             $sql = "update {$this->tblDefectiveProduct} set ";
-            $sql .= "defective_product_is_refund = :defective_product_is_refund, ";
             $sql .= "defective_product_qty = :defective_product_qty, ";
             $sql .= "defective_product_amount = :defective_product_amount, ";
             $sql .= "defective_product_remarks = :defective_product_remarks, ";
@@ -233,9 +249,9 @@ class DefectiveProduct
             $sql .= "where defective_product_aid = :defective_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "defective_product_is_refund" => $this->defective_product_is_refund,
                 "defective_product_qty" => $this->defective_product_qty,
                 "defective_product_amount" => $this->defective_product_amount,
+                "defective_product_remarks" => $this->defective_product_remarks,
                 "defective_product_updated" => $this->defective_product_updated,
                 "defective_product_aid" => $this->defective_product_aid,
             ]);
@@ -289,6 +305,7 @@ class DefectiveProduct
         try {
             $sql = "select defective_product_receiving_supply_id from {$this->tblDefectiveProduct} ";
             $sql .= "where defective_product_receiving_supply_id = :defective_product_receiving_supply_id ";
+            $sql .= "and defective_product_is_resolve = '0' ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "defective_product_receiving_supply_id" => "{$this->defective_product_receiving_supply_id}",
@@ -411,6 +428,54 @@ class DefectiveProduct
             $sql .= "{$this->tblDefectiveProduct} as dp ";
             $sql .= "where dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
             $sql .= "and dp.defective_product_is_resolve = '0' ";
+            $sql .= "and dp.defective_product_is_refund = '0' ";
+            $sql .= "and rs.receiving_supply_product_id = :receiving_supply_product_id ";
+            $sql .= "group by rs.receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_product_id" => $this->receiving_supply_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function checkDefectiveRefundProductTotalQty()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(dp.defective_product_qty) as total_refund_product_qty ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblDefectiveProduct} as dp ";
+            $sql .= "where dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and dp.defective_product_is_resolve = '0' ";
+            $sql .= "and dp.defective_product_is_refund = '1' ";
+            $sql .= "and rs.receiving_supply_product_id = :receiving_supply_product_id ";
+            $sql .= "group by rs.receiving_supply_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "receiving_supply_product_id" => $this->receiving_supply_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readAllDefectiveRefundProductTotalQty()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(dp.defective_product_qty) as total_refund_product_qty ";
+            $sql .= "from ";
+            $sql .= "{$this->tblReceivingSupply} as rs, ";
+            $sql .= "{$this->tblDefectiveProduct} as dp ";
+            $sql .= "where dp.defective_product_receiving_supply_id = rs.receiving_supply_aid ";
+            $sql .= "and dp.defective_product_is_refund = '1' ";
             $sql .= "and rs.receiving_supply_product_id = :receiving_supply_product_id ";
             $sql .= "group by rs.receiving_supply_product_id ";
             $query = $this->connection->prepare($sql);
@@ -436,6 +501,47 @@ class DefectiveProduct
                 "inventory_log_defective_product" => $this->inventory_log_defective_product,
                 "inventory_log_updated" => $this->inventory_log_updated,
                 "inventory_log_product_id" => $this->inventory_log_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Inventory Log
+    public function updateInventoryDefectiveRefundProduct()
+    {
+        try {
+            $sql = "update {$this->tblInventoryLog} set ";
+            $sql .= "inventory_log_refund_product = :inventory_log_refund_product, ";
+            $sql .= "inventory_log_updated = :inventory_log_updated ";
+            $sql .= "where inventory_log_product_id = :inventory_log_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "inventory_log_refund_product" => $this->inventory_log_refund_product,
+                "inventory_log_updated" => $this->inventory_log_updated,
+                "inventory_log_product_id" => $this->inventory_log_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readStockOutSales($inventory_log_product_id)
+    {
+        try {
+            $sql = "select sales_list_product_id, ";
+            $sql .= "SUM(sales_list_quantity) as total_stock_out ";
+            $sql .= "from ";
+            $sql .= "{$this->tblSalesList} ";
+            $sql .= "where sales_list_product_id = :sales_list_product_id ";
+            $sql .= "group by sales_list_product_id ";
+            $sql .= "order by sales_list_product_id desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_list_product_id" => $inventory_log_product_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;

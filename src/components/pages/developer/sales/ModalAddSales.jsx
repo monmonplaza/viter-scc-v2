@@ -1,13 +1,11 @@
+import React from "react";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import useTableActions from "@/components/custom-hooks/useTableActions";
-import {
-  InputCheckbox,
-  InputSelect,
-  InputText,
-} from "@/components/helpers/FormInputs";
+import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import {
   formatDate,
   getDateNow,
+  GetFocus,
   handleEscape,
   numberWithCommasToFixed,
   pesoSign,
@@ -34,7 +32,6 @@ import { StoreContext } from "@/components/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { PillBottle, Plus, Printer, Trash, X } from "lucide-react";
-import React from "react";
 import * as Yup from "yup";
 import ModalSalesPrint from "./ModalSalesPrint.jsx";
 
@@ -47,6 +44,7 @@ const ModalAddSales = ({ itemEdit }) => {
   );
   const [isAcceptPayment, setIsAcceptPayment] = React.useState(false);
   const [editAmount, setEditAmount] = React.useState(false);
+  const [isWholeSale, setIsWholeSale] = React.useState(false);
   const [paymentMethod, setPaymentMethod] = React.useState(
     itemEdit ? itemEdit.sales_payment_method : "credit"
   );
@@ -58,6 +56,7 @@ const ModalAddSales = ({ itemEdit }) => {
   const [isPrint, setIsPrint] = React.useState(false);
   let counter = 1;
   let totalAmount = 0;
+  GetFocus("btnClose");
 
   const { data: customerGuest } = useQueryData(
     `/${ver}/search-customer`,
@@ -171,6 +170,12 @@ const ModalAddSales = ({ itemEdit }) => {
   };
 
   const handleUpdateQuantity = async (e, val) => {
+    if (isNaN(e.target.value)) {
+      dispatch(setValidate(true));
+      dispatch(setMessage("Invalid Quantity"));
+      return;
+    }
+
     setQuantity(e.target.value);
 
     queryClient.invalidateQueries({ queryKey: ["sales"] });
@@ -185,6 +190,7 @@ const ModalAddSales = ({ itemEdit }) => {
         totalSalesAmount: val.sales_total_amount,
         sales_list_sales_id: val.sales_list_sales_id,
         sales_list_price: val.sales_list_price,
+        sales_list_return_qty: val.sales_list_return_qty,
       }
     );
 
@@ -207,8 +213,21 @@ const ModalAddSales = ({ itemEdit }) => {
     setIsAcceptPayment(true);
   };
 
+  const handlePrice = (e, props) => {
+    setEditAmount(true);
+    props.values.sales_list_price = e.target.value;
+    props.values.sales_list_discount =
+      e.target.options[e.target.selectedIndex].id;
+
+    if (e.target.options[e.target.selectedIndex].id === "wholesale") {
+      props.values.sales_list_quantity =
+        productData?.product_price_whole_sale_qty;
+    } else {
+      props.values.sales_list_quantity = 1;
+    }
+  };
+
   const handleSearch = (props) => {
-    props.values.sales_list_quantity = "1";
     setIsRequiredAmountYup("");
     setIsAcceptPayment(false);
 
@@ -226,18 +245,24 @@ const ModalAddSales = ({ itemEdit }) => {
     }
 
     handleEscape(handleClose);
-  }, [customerData]);
+  }, [customerData, customerGuest]);
 
   const initVal = {
     ...itemEdit,
     sales_aid: itemEdit ? itemEdit.sales_aid : 0,
     sales_list_date: itemEdit ? itemEdit.sales_date : getDateNow(),
     sales_new_data: itemEdit ? itemEdit.sales_new_data : "",
-    sales_list_quantity: "1",
+    sales_list_quantity: 1,
     sales_payment_method: itemEdit ? itemEdit.sales_payment_method : "credit",
-    searchCustomer: itemEdit ? itemEdit.customer_name : "",
-    sales_list_price: itemEdit ? itemEdit.sales_list_price : "",
+    searchCustomer: "",
+    sales_list_price: "",
+    sales_list_discount: "",
+    discount_amount: 0,
+    original_amount: 0,
     searchProduct: "",
+    sales_payment_tracking_number: itemEdit
+      ? itemEdit.sales_payment_tracking_number
+      : "",
     sales_payment_amount: itemEdit
       ? Number(itemEdit.sales_payment_amount)
       : "0",
@@ -246,7 +271,6 @@ const ModalAddSales = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     sales_list_date: Yup.string().required("Required"),
-    sales_list_price: !isAcceptPayment && Yup.string().required("Required"),
     sales_payment_amount: isRequiredAmountYup,
     searchCustomer: isRequiredCustomerYup,
     searchProduct: isRequiredProductYup,
@@ -309,12 +333,21 @@ const ModalAddSales = ({ itemEdit }) => {
                 let productId = 0;
                 let customerId = 0;
                 let productPriceId = 0;
+                let sales_list_discount_amount = 0;
                 if (customerData !== null) {
                   customerId = customerData?.customer_aid;
                 }
                 if (productData !== null) {
                   productId = productData?.product_price_product_id;
                   productPriceId = productData?.product_price_aid;
+                  const origin_price =
+                    Number(values.original_amount) *
+                    Number(values.sales_list_quantity);
+                  const total_price =
+                    Number(values.sales_list_price) *
+                    Number(values.sales_list_quantity);
+                  sales_list_discount_amount =
+                    Number(origin_price) - Number(total_price);
                 }
 
                 let totalSalesAmount =
@@ -324,6 +357,7 @@ const ModalAddSales = ({ itemEdit }) => {
 
                 mutation.mutate({
                   ...values,
+                  productData: productData,
                   sales_list_product_id: productId,
                   sales_list_customer_id: itemEdit
                     ? itemEdit.sales_customer_id
@@ -336,17 +370,36 @@ const ModalAddSales = ({ itemEdit }) => {
                     productData?.product_price_available_stock,
                   sales_payment_method: paymentMethod,
                   totalSalesAmount,
+                  sales_list_discount_amount,
+
+                  isMember: customerData?.customer_is_member,
                 });
+                if (itemEdit) {
+                  setProductData(null);
+                  setEditAmount(false);
+                  resetForm();
+                }
               }}
             >
               {(props) => {
-                props.values.sales_list_price = !editAmount
-                  ? productData !== null
+                props.values.sales_list_price =
+                  !editAmount && productData !== null
                     ? customerData?.customer_is_member === 1
                       ? productData?.product_price_scc_price
                       : productData?.product_price_amount
-                    : props.values.sales_list_price
-                  : props.values.sales_list_price;
+                    : props.values.sales_list_price;
+
+                props.values.sales_list_quantity = editAmount
+                  ? props.values.sales_list_quantity
+                  : 1;
+
+                if (customerData?.customer_is_member === 1) {
+                  props.values.original_amount =
+                    productData?.product_price_scc_price;
+                } else {
+                  props.values.original_amount =
+                    productData?.product_price_amount;
+                }
                 return (
                   <Form>
                     {!itemEdit && (
@@ -417,7 +470,7 @@ const ModalAddSales = ({ itemEdit }) => {
                             label="Product Price"
                             name="sales_list_price"
                             onChange={(e) => {
-                              setEditAmount(true);
+                              handlePrice(e, props);
                             }}
                           >
                             {productData !== null ? (
@@ -428,6 +481,7 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_scc_price
                                       }
+                                      id=""
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
@@ -439,19 +493,41 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_scc_whole_sale_amount
                                       }
+                                      id="wholesale"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_scc_whole_sale_amount,
                                         2
+                                      )}
+                                      (
+                                      {
+                                        productData?.product_price_whole_sale_qty
+                                      }{" "}
+                                      qty) - whole sale
+                                    </option>
+                                    <option
+                                      value={
+                                        productData?.product_price_promo_amount
+                                      }
+                                      id="promo"
+                                    >
+                                      &#8369;
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_promo_amount,
+                                        2
                                       )}{" "}
-                                      - whole sale
+                                      promo{" "}
+                                      {formatDate(
+                                        productData?.product_price_promo_end_date
+                                      )}
                                     </option>
                                   </optgroup>
                                 ) : (
                                   <optgroup label="Product Price">
                                     <option
                                       value={productData?.product_price_amount}
+                                      id=""
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
@@ -463,13 +539,35 @@ const ModalAddSales = ({ itemEdit }) => {
                                       value={
                                         productData?.product_price_whole_sale_amount
                                       }
+                                      id="wholesale"
                                     >
                                       &#8369;
                                       {numberWithCommasToFixed(
                                         productData?.product_price_whole_sale_amount,
                                         2
+                                      )}
+                                      (
+                                      {
+                                        productData?.product_price_whole_sale_qty
+                                      }{" "}
+                                      qty) - whole sale
+                                    </option>
+                                    <option
+                                      value={
+                                        productData?.product_price_promo_amount
+                                      }
+                                      id="promo"
+                                    >
+                                      &#8369;
+                                      {numberWithCommasToFixed(
+                                        productData?.product_price_promo_amount,
+                                        2
                                       )}{" "}
-                                      - whole sale
+                                      (
+                                      {formatDate(
+                                        productData?.product_price_promo_end_date
+                                      )}
+                                      ){" - "}promo
                                     </option>
                                   </optgroup>
                                 )}
@@ -529,6 +627,7 @@ const ModalAddSales = ({ itemEdit }) => {
                       <th>Unit</th>
                       <th className="text-center w-[10rem]">Qty</th>
                       <th className="text-right ">Price</th>
+                      <th className="text-center">is Discounded</th>
                       <th className="text-right">Amount</th>
                     </tr>
                   </thead>
@@ -588,6 +687,9 @@ const ModalAddSales = ({ itemEdit }) => {
                           <td className="text-right">
                             {pesoSign}
                             {numberWithCommasToFixed(item.sales_list_price, 2)}
+                          </td>
+                          <td className="text-center">
+                            {item.sales_list_discount}
                           </td>
                           <td className="text-right">
                             {pesoSign}
@@ -666,8 +768,8 @@ const ModalAddSales = ({ itemEdit }) => {
                       return (
                         <Form>
                           <div className=" ">
-                            <div className="flex justify-end mb-2">
-                              <div className="input-wrap w-[16rem]">
+                            <div className="flex justify-end mb-2 ">
+                              <div className="input-wrap mr-2">
                                 <InputSelect
                                   label="Payment method"
                                   name="sales_payment_method"
@@ -684,6 +786,16 @@ const ModalAddSales = ({ itemEdit }) => {
                                     </option>
                                   </optgroup>
                                 </InputSelect>
+                              </div>
+                              <div className="input-wrap ">
+                                <InputText
+                                  label="Tracking Number"
+                                  type="text"
+                                  number="number"
+                                  name="sales_payment_tracking_number"
+                                  className="text-right !m-0"
+                                  disabled={mutation.isPending}
+                                />
                               </div>
                             </div>
                             <div className="flex justify-end">
@@ -746,8 +858,8 @@ const ModalAddSales = ({ itemEdit }) => {
       {isPrint && (
         <ModalSalesPrint
           setIsPrint={setIsPrint}
-          refno={itemEdit.sales_reference_no}
-          salesDate={itemEdit.sales_date}
+          itemEdit={itemEdit}
+          SalesData={SalesData}
         />
       )}
     </>

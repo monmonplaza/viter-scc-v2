@@ -41,7 +41,7 @@ const ModalAddDefectiveProduct = ({ itemEdit }) => {
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["defective-product"],
+        queryKey: ["defectiveProduct"],
       });
 
       // show error box
@@ -69,8 +69,11 @@ const ModalAddDefectiveProduct = ({ itemEdit }) => {
   const initVal = itemEdit
     ? {
         ...itemEdit,
-        defective_product_is_refund:
-          itemEdit?.defective_product_is_refund === 1 ? true : false,
+        searchReceiveProduct: `${itemEdit.product_name} ${
+          itemEdit.receiving_supply_barcode !== ""
+            ? `(${itemEdit.receiving_supply_barcode})`
+            : ""
+        }`,
       }
     : {
         defective_product_qty: "",
@@ -89,6 +92,8 @@ const ModalAddDefectiveProduct = ({ itemEdit }) => {
     }
   };
   React.useEffect(() => handleEscape(handleClose), []);
+
+  console.log("productData", productData);
 
   return (
     <WrapperModal>
@@ -117,8 +122,9 @@ const ModalAddDefectiveProduct = ({ itemEdit }) => {
               defective_product_receiving_supply_id:
                 productData?.receiving_supply_aid,
               defective_product_amount: productData?.receiving_supply_price,
+              receiving_supply_product_id:
+                productData?.receiving_supply_product_id,
             });
-            _;
           }}
         >
           {(props) => {
@@ -134,6 +140,7 @@ const ModalAddDefectiveProduct = ({ itemEdit }) => {
                         name="searchReceiveProduct"
                         mutation={mutation}
                         setIsRequiredYup={setIsRequiredProductYup}
+                        itemEdit={itemEdit}
                       />
                     </div>
 

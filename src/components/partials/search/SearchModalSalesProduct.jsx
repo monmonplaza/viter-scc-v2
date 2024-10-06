@@ -60,7 +60,7 @@ const SearchModalSalesProduct = ({
     props.searchProduct = `${item.product_name}`;
     setOnFocus(false);
     setData(item);
-    setSearch(`${item.product_name} (${item.sales_list_quantity})`);
+    setSearch(`${item.product_name} (${item.sales_list_total_qty})`);
     setSearchValues("");
   };
 
@@ -117,7 +117,7 @@ const SearchModalSalesProduct = ({
                   key={key}
                   onClick={() => handleClick(item)}
                 >
-                  {item.product_name} ({item.sales_list_quantity})
+                  {item.product_name} ({Number(item.sales_list_total_qty)})
                 </button>
               ))
             ) : (

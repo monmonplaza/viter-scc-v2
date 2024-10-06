@@ -15,9 +15,11 @@ import { setIsAnimating } from "@/components/store/StoreAction";
 import { StoreContext } from "@/components/store/StoreContext";
 import { PillBottle, Printer, X } from "lucide-react";
 import React from "react";
+import ModalSalesPrint from "./ModalSalesPrint";
 
 const ModalAddSales = ({ itemEdit, setIsView }) => {
   const { dispatch, store } = React.useContext(StoreContext);
+  const [isPrint, setIsPrint] = React.useState(false);
   let counter = 1;
   let totalAmount = 0;
   let paymentAmount = 0;
@@ -46,7 +48,6 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
 
   React.useEffect(() => handleEscape(handleClose), []);
 
-  console.log("itemEdit", itemEdit);
   return (
     <>
       <WrapperModal>
@@ -95,6 +96,7 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
                     <button
                       className="btn btn-accent md:text-left "
                       type="submit"
+                      onClick={() => setIsPrint(true)}
                     >
                       <Printer size={16} /> Print
                     </button>
@@ -220,6 +222,13 @@ const ModalAddSales = ({ itemEdit, setIsView }) => {
           </div>
         </div>
       </WrapperModal>
+      {isPrint && (
+        <ModalSalesPrint
+          setIsPrint={setIsPrint}
+          itemEdit={itemEdit}
+          SalesData={SalesData}
+        />
+      )}
     </>
   );
 };

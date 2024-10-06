@@ -1,13 +1,16 @@
 import {
   devBaseImgUrl,
+  formatDate,
   formatInPeso,
 } from "@/components/helpers/functions-general.jsx";
+import SearchNoData from "@/components/partials/icons/SearchNoData";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
 import { PrinterIcon } from "lucide-react";
 import React from "react";
 
-const ModalSalesPrint = ({ setIsPrint, refno, salesDate }) => {
+const ModalSalesPrint = ({ setIsPrint, itemEdit, SalesData }) => {
   const handleClose = () => setIsPrint(false);
+  let totalAmount = 0;
 
   const date = new Date();
   var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
@@ -54,9 +57,11 @@ const ModalSalesPrint = ({ setIsPrint, refno, salesDate }) => {
             </div>
 
             <div className="text-center mb-5">
-              <p className="mb-0">Reference No.: {refno}</p>
               <p className="mb-0">
-                {salesDate}
+                Reference No.: {itemEdit?.sales_reference_no}
+              </p>
+              <p className="mb-0">
+                {formatDate(itemEdit.sales_date)}
                 {/* {date.toLocaleString("ph-PH", { timeZone: "Asia/Manila" })} */}
               </p>
             </div>
@@ -68,111 +73,65 @@ const ModalSalesPrint = ({ setIsPrint, refno, salesDate }) => {
                   <h5 className="mb-0 ">QTY</h5>
                   <h5 className="mb-0 text-right">Price</h5>
                 </div>
-
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
-                <div className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 ">
-                  <p className="mb-0">Ballpen</p>
-                  <p className="mb-0">x3</p>
-                  <p className="mb-0 text-right">200</p>
-                </div>
+                {SalesData?.count > 0 ? (
+                  SalesData?.data.map((item, key) => {
+                    totalAmount +=
+                      Number(item.sales_list_price) *
+                      Number(item.sales_list_quantity);
+                    return (
+                      <div
+                        className="grid grid-cols-[3fr_20px_1fr] gap-2 py-1 "
+                        key={key}
+                      >
+                        <p className="mb-0">{item.product_name}</p>
+                        <p className="mb-0">{item.sales_list_quantity}</p>
+                        <p className="mb-0 text-right">
+                          {formatInPeso(
+                            Number(item.sales_list_price) *
+                              Number(item.sales_list_quantity)
+                          )}
+                        </p>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <SearchNoData />
+                )}
               </div>
 
               <div className="py-3 border-y border-line mb-5 space-y-1.5">
                 <ul className="text-xs flex justify-between w-full">
                   <li>Subtotal</li>
-                  <li>{formatInPeso(2000)}</li>
+                  <li>{formatInPeso(totalAmount)}</li>
                 </ul>
                 <ul className="text-xs flex justify-between w-full">
                   <li>Tax</li>
-                  <li>{formatInPeso(20)}</li>
+                  <li>{formatInPeso(0)}</li>
                 </ul>
                 <ul className="text-xs flex justify-between w-full">
                   <li className="font-bold text-base">Total</li>
-                  <li className="font-bold text-base">{formatInPeso(2020)}</li>
+                  <li className="font-bold text-base">
+                    {formatInPeso(totalAmount)}
+                  </li>
                 </ul>
               </div>
 
               <div className="py-3 mb-5  space-y-1.5">
                 <ul className="text-xs flex justify-between w-full">
                   <li>Cash</li>
-                  <li>{formatInPeso(2500)}</li>
+                  <li>{formatInPeso(itemEdit?.sales_payment_amount)}</li>
                 </ul>
 
                 <ul className="text-xs flex justify-between w-full">
                   <li>Change</li>
-                  <li>{formatInPeso(480)}</li>
+                  <li>
+                    {formatInPeso(
+                      Number(itemEdit?.sales_payment_amount) === 0
+                        ? 0
+                        : Number(itemEdit?.sales_payment_amount) -
+                            Number(totalAmount)
+                    )}
+                  </li>
                 </ul>
               </div>
             </div>

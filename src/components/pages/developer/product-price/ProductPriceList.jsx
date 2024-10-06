@@ -105,13 +105,15 @@ const ProductPriceList = ({ setItemEdit }) => {
                 <th className="w-counter">#</th>
                 <th className="w-[200px]">Product</th>
                 <th className="min-w-[8rem] text-right">Suplier price</th>
-                <th className="min-w-[8rem] text-right">SCC Member Price</th>
-                <th className="min-w-[10rem] text-right">
-                  SCC Member Whole Sale Price
+                <th className="min-w-[8rem] text-right"> Member Price</th>
+                <th className="min-w-[12rem] text-right">
+                  Member Whole Sale Price
                 </th>
                 <th className="min-w-[8rem] text-right">Price</th>
                 <th className="min-w-[10rem] text-right">Whole Sale Price</th>
-                <th>Remarks</th>
+                <th className="min-w-[10rem] text-center">Whole Sale Qty</th>
+                <th className="min-w-[10rem] text-right">Promo Price</th>
+                <th className="min-w-[10rem] ">Promo End Date</th>
               </tr>
             </thead>
 
@@ -186,7 +188,19 @@ const ProductPriceList = ({ setItemEdit }) => {
                             2
                           )}
                         </td>
-                        <td>{item.product_price_remarks}</td>
+
+                        <td className="text-center">
+                          {item.product_price_whole_sale_qty}{" "}
+                        </td>
+
+                        <td className="text-right">
+                          {pesoSign}
+                          {numberWithCommasToFixed(
+                            item.product_price_promo_amount,
+                            2
+                          )}
+                        </td>
+                        <td>{formatDate(item.product_price_promo_end_date)}</td>
 
                         <td className="table-action">
                           <ul>

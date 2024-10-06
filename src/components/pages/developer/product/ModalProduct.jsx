@@ -66,6 +66,7 @@ const ModalProduct = ({ itemEdit }) => {
     ? { ...itemEdit, product_name_old: itemEdit.product_name }
     : {
         product_aid: "",
+        product_barcode: "",
         product_name: "",
         product_description: "",
         product_category_id: "",
@@ -126,6 +127,14 @@ const ModalProduct = ({ itemEdit }) => {
                         label="Name"
                         type="text"
                         name="product_name"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="input-wrap">
+                      <InputText
+                        label="Barcode"
+                        type="text"
+                        name="product_barcode"
                         disabled={mutation.isPending}
                       />
                     </div>

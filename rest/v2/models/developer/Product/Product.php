@@ -6,6 +6,7 @@ class Product
     public $product_name;
     public $product_description;
     public $product_category_id;
+    public $product_barcode;
     public $product_is_active;
     public $product_datetime;
     public $product_created;
@@ -41,12 +42,14 @@ class Product
             $sql = "insert into {$this->tblProduct} ";
             $sql .= "( product_name, ";
             $sql .= "product_description, ";
+            $sql .= "product_barcode, ";
             $sql .= "product_category_id, ";
             $sql .= "product_is_active, ";
             $sql .= "product_datetime, ";
             $sql .= "product_created ) values ( ";
             $sql .= ":product_name, ";
             $sql .= ":product_description, ";
+            $sql .= ":product_barcode, ";
             $sql .= ":product_category_id, ";
             $sql .= ":product_is_active, ";
             $sql .= ":product_datetime, ";
@@ -55,6 +58,7 @@ class Product
             $query->execute([
                 "product_name" => $this->product_name,
                 "product_description" => $this->product_description,
+                "product_barcode" => $this->product_barcode,
                 "product_category_id" => $this->product_category_id,
                 "product_is_active" => $this->product_is_active,
                 "product_datetime" => $this->product_datetime,
@@ -171,6 +175,7 @@ class Product
         try {
             $sql = "update {$this->tblProduct} set ";
             $sql .= "product_name = :product_name, ";
+            $sql .= "product_barcode = :product_barcode, ";
             $sql .= "product_category_id = :product_category_id, ";
             $sql .= "product_description = :product_description, ";
             $sql .= "product_datetime = :product_datetime ";
@@ -178,6 +183,7 @@ class Product
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "product_name" => $this->product_name,
+                "product_barcode" => $this->product_barcode,
                 "product_category_id" => $this->product_category_id,
                 "product_description" => $this->product_description,
                 "product_datetime" => $this->product_datetime,
