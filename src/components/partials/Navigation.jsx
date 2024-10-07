@@ -82,6 +82,11 @@ const Navigation = ({ menu, submenu }) => {
       slug: "customers",
     },
     {
+      icon: <Users size={18} />,
+      text: "Petty Cash",
+      slug: "petty-cash",
+    },
+    {
       icon: <Settings size={18} />,
       text: "Settings",
       slug: "settings",

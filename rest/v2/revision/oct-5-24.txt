@@ -2,7 +2,8 @@
 CONTROLLERS  
     - rest/v2/controllers/developer/product/create.php
     - rest/v2/controllers/developer/product/update.php
-    - rest/v2/controllers/developer/sale-list/create.php
+    - rest/v2/controllers/developer/sale-list/create.php 
+    - 
   
 MODELS 
     - rest/v2/models/developer/Product/Product.php

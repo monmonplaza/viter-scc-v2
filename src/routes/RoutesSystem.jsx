@@ -5,6 +5,7 @@ import Customers from "@/components/pages/developer/customers/Customers";
 import DefectiveProduct from "@/components/pages/developer/defective-product/DefectiveProduct";
 import Inventory from "@/components/pages/developer/inventory/Inventory.jsx";
 import Overview from "@/components/pages/developer/overview/Overview.jsx";
+import PettyCash from "@/components/pages/developer/petty-cash/PettyCash";
 import ProductPrice from "@/components/pages/developer/product-price/ProductPrice";
 import Product from "@/components/pages/developer/product/Product.jsx";
 import Purchase from "@/components/pages/developer/purchase/Purchase";
@@ -134,6 +135,14 @@ export const routesSystem = [
     element: (
       <DeveloperProtectedRoute>
         <Purchase />
+      </DeveloperProtectedRoute>
+    ),
+  },
+  {
+    path: `${devNavUrl}/${urlSystem}/petty-cash`,
+    element: (
+      <DeveloperProtectedRoute>
+        <PettyCash />
       </DeveloperProtectedRoute>
     ),
   },

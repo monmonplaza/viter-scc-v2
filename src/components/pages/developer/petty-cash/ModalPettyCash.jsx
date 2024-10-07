@@ -22,7 +22,7 @@ import { Form, Formik } from "formik";
 import { File, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-const ModalProduct = ({ itemEdit }) => {
+const ModalPettyCash = ({ itemEdit }) => {
   const { dispatch, store } = React.useContext(StoreContext);
 
   const queryClient = useQueryClient();
@@ -235,4 +235,4 @@ const ModalProduct = ({ itemEdit }) => {
   );
 };
 
-export default ModalProduct;
+export default ModalPettyCash;
