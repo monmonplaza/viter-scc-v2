@@ -1,41 +1,25 @@
 <?php
 
-// Update Product SKU
-function checkUpdateProductSKUByLastInsertedId($object)
+// Update Total Petty Cash
+function checkUpdateTotalPettyCash($object)
 {
-    $query = $object->updateProductSKUByLastInsertedId();
-    checkQuery($query, "There's a problem processing your request. (update product sku)");
+    $query = $object->updateTotalPettyCash();
+    checkQuery($query, "There's a problem processing your request. (update total petty cash)");
     return $query;
 }
 
-// Read all
-function checkReadAllCategory($object)
+// Update Total And Reference no
+function checkUpdateTotalAndReference($object)
 {
-    $query = $object->readAllCategory();
-    checkQuery($query, "Empty records. (read all category)");
+    $query = $object->updateTotalAndReference();
+    checkQuery($query, "There's a problem processing your request. (update total and reference no.)");
     return $query;
 }
 
-// Create 
-function checkCreateInventoryLog($object)
+// Update Last id
+function checkUpdateLastId($object)
 {
-    $query = $object->createInventoryLog();
-    checkQuery($query, "There's a problem processing your request. (create inventory log)");
+    $query = $object->updateLastId();
+    checkQuery($query, "There's a problem processing your request. (update last id)");
     return $query;
-}
-
-// Delete Inventory Log 
-function checkDeleteInventoryLog($object)
-{
-    $query = $object->deleteInventoryLog();
-    checkQuery($query, "There's a problem processing your request. (delete inventory log)");
-    return $query;
-}
-
-// check association
-function isAssociatedReturnProduct($object)
-{
-    $query = $object->checkAssociationReturnProduct();
-    $count = $query->rowCount();
-    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }

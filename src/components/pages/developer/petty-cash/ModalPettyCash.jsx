@@ -5,7 +5,11 @@ import {
   InputText,
   InputTextArea,
 } from "@/components/helpers/FormInputs";
-import { handleEscape, ver } from "@/components/helpers/functions-general.jsx";
+import {
+  getDateNow,
+  handleEscape,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
 import SpinnerButton from "@/components/partials/spinners/SpinnerButton.jsx";
 import WrapperModal from "@/components/partials/wrapper/WrapperModal.jsx";
@@ -22,7 +26,7 @@ import { Form, Formik } from "formik";
 import { File, X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-const ModalPettyCash = ({ itemEdit }) => {
+const ModalPettyCash = ({ itemEdit, totalCount }) => {
   const { dispatch, store } = React.useContext(StoreContext);
 
   const queryClient = useQueryClient();
@@ -30,15 +34,15 @@ const ModalPettyCash = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/${ver}/product/${itemEdit.product_aid}`
-          : `/${ver}/product`,
+          ? `/${ver}/petty-cash/${itemEdit.petty_cash_aid}`
+          : `/${ver}/petty-cash`,
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["product"],
+        queryKey: ["petty-cash"],
       });
 
       // show error box
@@ -66,33 +70,19 @@ const ModalPettyCash = ({ itemEdit }) => {
   const initVal = itemEdit
     ? {
         ...itemEdit,
-        product_name_old: itemEdit.product_name,
-        is_generate_barcode: itemEdit.product_barcode !== "" ? true : false,
       }
     : {
-        product_aid: "",
-        product_name: "",
-        product_description: "",
-        product_category_id: "",
-        is_generate_barcode: false,
-        product_name_old: "",
+        petty_cash_date: getDateNow(),
+        petty_cash_in: 0,
+        petty_cash_out: 0,
+        is_cash_out: false,
       };
 
   const yupSchema = Yup.object({
-    product_name: Yup.string().required("Require"),
-    product_category_id: Yup.string().required("Require"),
-    product_description: Yup.string().required("Require"),
+    petty_cash_date: Yup.string().required("Require"),
+    petty_cash_in: Yup.string().required("Require"),
+    petty_cash_out: Yup.string().required("Require"),
   });
-
-  const {
-    isLoading: loadingCategory,
-    error: errorCategory,
-    data: category,
-  } = useQueryData(
-    `/${ver}/product/read-all-category`, // endpoint
-    "get", // method
-    "read-all-category" // key
-  );
 
   React.useEffect(() => handleEscape(handleClose), []);
 
@@ -102,8 +92,8 @@ const ModalPettyCash = ({ itemEdit }) => {
         <div className="modal-header ">
           <h3 className="flex items-center gap-2 !font-regular font-normal">
             <File size={16} />
-            {itemEdit ? "Edit " : "Add "}
-            Product
+            {itemEdit ? "Update " : " "}
+            Petty Cash
           </h3>
           <button type="button" onClick={handleClose}>
             <X size={20} />
@@ -117,90 +107,70 @@ const ModalPettyCash = ({ itemEdit }) => {
           }}
         >
           {(props) => {
+            if (props.values.is_cash_out === false) {
+              props.values.petty_cash_out = 0;
+            } else {
+              props.values.petty_cash_in = 0;
+            }
             return (
               <Form>
                 <div className=" modal-body  ">
                   <div className="modal-form">
                     {itemEdit && (
                       <p>
-                        <span className="font-bold">SKU:</span>{" "}
-                        {itemEdit?.product_sku}
+                        <span className="font-bold">Reference no.:</span>{" "}
+                        {itemEdit?.petty_cash_reference_no}
                       </p>
                     )}
                     <div className="input-wrap">
                       <InputText
-                        label="Name"
-                        type="text"
-                        name="product_name"
+                        label="Date"
+                        type="date"
+                        name="petty_cash_date"
                         disabled={mutation.isPending}
                       />
                     </div>
-
-                    <div className="flex my-5">
-                      <InputCheckbox
-                        label="Generate barcode?"
-                        type="checkbox"
-                        disabled={mutation.isLoading}
-                        name="is_generate_barcode"
-                        id="select_all"
-                      />
-                    </div>
-
-                    <div className="input-wrap">
-                      <InputTextArea
-                        label="Description"
-                        name="product_description"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-
-                    <div className="input-wrap">
-                      <InputSelect
-                        label="Category"
-                        name="product_category_id"
-                        disabled={mutation.isLoading || loadingCategory}
-                      >
-                        {loadingCategory ? (
-                          <option value="" hidden>
-                            Loading...
-                          </option>
-                        ) : errorCategory ? (
-                          <option value="" disabled>
-                            Error
-                          </option>
+                    {Number(totalCount) > 0 ? (
+                      <>
+                        <div className="flex my-5">
+                          <InputCheckbox
+                            label="Is cash out?"
+                            type="checkbox"
+                            disabled={mutation.isLoading}
+                            name="is_cash_out"
+                            id="select_all"
+                          />
+                        </div>
+                        {props.values.is_cash_out === false ? (
+                          <div className="input-wrap">
+                            <InputText
+                              label="Cash in"
+                              type="text"
+                              name="petty_cash_in"
+                              disabled={mutation.isPending}
+                            />
+                          </div>
                         ) : (
-                          <optgroup label="Select Category">
-                            <option value="" hidden></option>
-                            {category?.data.length > 0 ? (
-                              <>
-                                {category?.data.map((cItem, key) => {
-                                  return (
-                                    (cItem.category_is_active === 1 ||
-                                      (itemEdit &&
-                                        Number(cItem.category_aid) ===
-                                          Number(
-                                            itemEdit.product_category_id
-                                          ))) && (
-                                      <option
-                                        value={cItem.category_aid}
-                                        key={key}
-                                      >
-                                        {cItem.category_name} -{" "}
-                                        {cItem.category_description}
-                                      </option>
-                                    )
-                                  );
-                                })}
-                              </>
-                            ) : (
-                              <option value="" disabled>
-                                No data
-                              </option>
-                            )}
-                          </optgroup>
+                          <div className="input-wrap">
+                            <InputText
+                              label="Cash out"
+                              type="text"
+                              name="petty_cash_out"
+                              disabled={mutation.isPending}
+                            />
+                          </div>
                         )}
-                      </InputSelect>
-                    </div>
+                      </>
+                    ) : (
+                      <div className="input-wrap">
+                        <InputText
+                          label="Cash in"
+                          type="text"
+                          name="petty_cash_in"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="modal-action ">

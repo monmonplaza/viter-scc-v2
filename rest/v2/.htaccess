@@ -157,6 +157,12 @@ RewriteRule ^settings-category/([0-9]+)$ controllers/developer/settings/category
 RewriteRule ^settings-category/active/([0-9]+)$ controllers/developer/settings/category/active.php?categoryid=$1 [L]
 RewriteRule ^settings-category/page/([0-9]+)$ controllers/developer/settings/category/page.php?start=$1 [L]
 RewriteRule ^settings-category/search$ controllers/developer/settings/category/search.php [L]
+  
+### PETTY CASH ###
+RewriteRule ^petty-cash$ controllers/developer/petty-cash/petty-cash.php [L]
+RewriteRule ^petty-cash/([0-9]+)$ controllers/developer/petty-cash/petty-cash.php?pettycashid=$1 [L] 
+RewriteRule ^petty-cash/page/([0-9]+)$ controllers/developer/petty-cash/page.php?start=$1 [L]
+RewriteRule ^petty-cash/search$ controllers/developer/petty-cash/search.php [L]
  
 ### MODAL SEARCH ### 
 RewriteRule ^search-product$ controllers/developer/search/search-product.php [L] 

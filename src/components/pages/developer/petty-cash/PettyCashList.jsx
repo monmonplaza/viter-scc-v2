@@ -1,48 +1,37 @@
 import useTableActions from "@/components/custom-hooks/useTableActions.jsx";
-import { ver } from "@/components/helpers/functions-general.jsx";
+import {
+  formatDate,
+  formatInPeso,
+  ver,
+} from "@/components/helpers/functions-general.jsx";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite.jsx";
 import NoData from "@/components/partials/icons/Nodata.jsx";
 import ServerError from "@/components/partials/icons/ServerError.jsx";
 import LoaderTable from "@/components/partials/LoaderTable.jsx";
 import Loadmore from "@/components/partials/Loadmore.jsx";
-import ModalConfirm from "@/components/partials/modal/ModalConfirm.jsx";
 import ModalDelete from "@/components/partials/modal/ModalDelete.jsx";
 import Pill from "@/components/partials/Pill.jsx";
 import SearchBar from "@/components/partials/SearchBar.jsx";
 import SpinnerTable from "@/components/partials/spinners/SpinnerTable.jsx";
-import { setIsSearch } from "@/components/store/StoreAction.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import {
-  Archive,
-  ArchiveRestore,
-  Search,
-  SquarePen,
-  Trash,
-} from "lucide-react";
+import { SquarePen, Trash } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
+import ModalPettyCash from "./ModalPettyCash";
 
-const PettyCashList = ({ setItemEdit }) => {
+const PettyCashList = ({ setItemEdit, itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [page, setPage] = React.useState(1);
   const { ref, inView } = useInView();
   const [onSearch, setOnSearch] = React.useState(false);
-  const [isFilter, setIsFilter] = React.useState(false);
-  const [filterData, setFilterData] = React.useState("all");
   const search = React.useRef({ value: "" });
   let counter = 1;
+  let totalCashIn = 0;
+  let totalCashOut = 0;
+  let totalAmount = 0;
 
-  const {
-    handleRemove,
-    handleEdit,
-    handleArchive,
-    handleRestore,
-    handleSuspend,
-    aid,
-    data,
-    isActive,
-  } = useTableActions({
+  const { handleRemove, handleEdit, aid, data } = useTableActions({
     setItemEdit,
   });
 
@@ -55,16 +44,14 @@ const PettyCashList = ({ setItemEdit }) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["product", search.current.value, store.isSearch, filterData],
+    queryKey: ["petty-cash", search.current.value, store.isSearch],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/${ver}/product/search`, // search endpoint
-        `/${ver}/product/page/${pageParam}`, // list endpoint
+        `/${ver}/petty-cash/search`, // search endpoint
+        `/${ver}/petty-cash/page/${pageParam}`, // list endpoint
         store.isSearch, // search boolean, // search boolean
         {
           aid: "",
-          isFilter,
-          product_is_active: filterData,
           searchValue: search?.current?.value,
         }
       ),
@@ -77,18 +64,6 @@ const PettyCashList = ({ setItemEdit }) => {
     refetchOnWindowFocus: false,
   });
 
-  const handleChangefilterData = (e) => {
-    setFilterData(e.target.value);
-    setIsFilter(false);
-    dispatch(setIsSearch(false));
-    search.current.value = "";
-    if (e.target.value !== "all") {
-      setIsFilter(true);
-      dispatch(setIsSearch(true));
-    }
-    setPage(1);
-  };
-
   React.useEffect(() => {
     if (inView) {
       setPage((prev) => prev + 1);
@@ -99,19 +74,6 @@ const PettyCashList = ({ setItemEdit }) => {
   return (
     <>
       <div className="table-filter flex flex-col md:flex-row justify-between items-center gap-4 mb-1">
-        <div className="input-wrap filter w-full md:w-auto">
-          <select
-            name=""
-            id=""
-            value={filterData}
-            onChange={(e) => handleChangefilterData(e)}
-          >
-            <option value="all">All</option>
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-          </select>
-        </div>
-
         <SearchBar
           search={search}
           dispatch={dispatch}
@@ -120,11 +82,10 @@ const PettyCashList = ({ setItemEdit }) => {
           isFetching={isFetching}
           setOnSearch={setOnSearch}
           onSearch={onSearch}
-          isFilter={isFilter}
         />
       </div>
       <div className="relative">
-        {status !== "loading" && isFetching && <SpinnerTable />}
+        {isFetching && <SpinnerTable />}
 
         <div className="table-wrapper">
           <table
@@ -133,20 +94,20 @@ const PettyCashList = ({ setItemEdit }) => {
             <thead>
               <tr>
                 <th className="w-counter">#</th>
-                <th className="w-[90px]">Status</th>
-                <th className="w-[200px]">Name</th>
-                <th className="w-[200px]">Category</th>
-                <th className="w-[200px]">Barcode</th>
-                <th>SKU</th>
-                <th>Description</th>
+                <th className="w-[200px]">Date</th>
+                <th className="w-[200px]">Reference no.</th>
+                <th className="w-[200px] text-right">Cash In</th>
+                <th className="w-[200px] text-right">Cash Out</th>
+                <th className="min-w-[200px] text-right">Total Petty Cash</th>
               </tr>
             </thead>
 
             <tbody>
-              {(status === "loading" || result?.pages[0].data.length === 0) && (
+              {((!isFetching && status === "loading") ||
+                result?.pages[0].data.length === 0) && (
                 <tr>
                   <td colSpan="100%">
-                    {status === "loading" ? (
+                    {!isFetching && status === "loading" ? (
                       <LoaderTable count={30} cols={6} />
                     ) : (
                       <NoData />
@@ -166,82 +127,69 @@ const PettyCashList = ({ setItemEdit }) => {
               {result?.pages.map((page, key) => (
                 <React.Fragment key={key}>
                   {page.data.map((item, key) => {
+                    totalCashIn += Number(item.petty_cash_in);
+                    totalCashOut += Number(item.petty_cash_out);
+                    totalAmount +=
+                      Number(item.petty_cash_in) - Number(item.petty_cash_out);
                     return (
                       <tr key={key}>
-                        <td className="w-counter">{counter++}</td>
-                        <td>{<Pill isActive={item.product_is_active} />}</td>
+                        <td className="w-counter">{counter++}.</td>
 
-                        <td>{item.product_name}</td>
-                        <td>{item.category_name}</td>
-                        <td>{item.product_barcode}</td>
-                        <td>{item.product_sku}</td>
-
-                        <td>
-                          <p className="max-w-[500px] truncate mb-0">
-                            {item.product_description}
-                          </p>
+                        <td>{formatDate(item.petty_cash_date)}</td>
+                        <td>{item.petty_cash_reference_no}</td>
+                        <td className="text-right">
+                          {formatInPeso(item.petty_cash_in)}
                         </td>
-                        <td className="table-action">
-                          <ul>
-                            {item.product_is_active === 1 ? (
-                              <>
-                                <li>
-                                  <button
-                                    data-tooltip="Edit"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleEdit(item.product_aid, item)
-                                    }
-                                  >
-                                    <SquarePen size={14} />
-                                  </button>
-                                </li>
-
-                                <li>
-                                  <button
-                                    data-tooltip="Archive"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleArchive(item.product_aid, item)
-                                    }
-                                  >
-                                    <Archive size={14} />
-                                  </button>
-                                </li>
-                              </>
-                            ) : (
-                              <>
-                                <li>
-                                  <button
-                                    data-tooltip="Restore"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleRestore(item.product_aid, item)
-                                    }
-                                  >
-                                    <ArchiveRestore size={14} />
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    data-tooltip="Delete"
-                                    className="tooltip"
-                                    onClick={() =>
-                                      handleRemove(item.product_aid, item)
-                                    }
-                                  >
-                                    <Trash size={14} />
-                                  </button>
-                                </li>
-                              </>
-                            )}
-                          </ul>
+                        <td className="text-right">
+                          {formatInPeso(item.petty_cash_out)}
                         </td>
+                        <td className="text-right">
+                          {formatInPeso(item.petty_cash_total)}
+                        </td>
+
+                        {item.petty_cash_last_insert === 1 && (
+                          <td className="table-action">
+                            <ul>
+                              <li>
+                                <button
+                                  data-tooltip="Edit"
+                                  className="tooltip"
+                                  onClick={() =>
+                                    handleEdit(item.product_aid, item)
+                                  }
+                                >
+                                  <SquarePen size={14} />
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  data-tooltip="Delete"
+                                  className="tooltip"
+                                  onClick={() =>
+                                    handleRemove(item.petty_cash_aid, item)
+                                  }
+                                >
+                                  <Trash size={14} />
+                                </button>
+                              </li>
+                            </ul>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
                 </React.Fragment>
               ))}
+
+              {result?.pages[0].data.length > 0 && (
+                <tr className="hover:shadow-none font-bold">
+                  <td colSpan={4} className="text-right">
+                    {formatInPeso(totalCashIn)}
+                  </td>
+                  <td className="text-right">{formatInPeso(totalCashOut)}</td>
+                  <td className="text-right">{formatInPeso(totalAmount)}</td>
+                </tr>
+              )}
             </tbody>
           </table>
           <div className="loadmore flex justify-center flex-col items-center ">
@@ -253,7 +201,7 @@ const PettyCashList = ({ setItemEdit }) => {
               setPage={setPage}
               page={page}
               refView={ref}
-              isSearchOrFilter={store.isSearch || isFilter}
+              isSearchOrFilter={store.isSearch}
             />
           </div>
         </div>
@@ -261,17 +209,15 @@ const PettyCashList = ({ setItemEdit }) => {
 
       {store.isDelete && (
         <ModalDelete
-          mysqlApiDelete={`/${ver}/product/${aid}`}
-          queryKey="product"
-          item={data.product_name}
+          mysqlApiDelete={`/${ver}/petty-cash/${aid}`}
+          queryKey="petty-cash"
+          item={formatDate(data.petty_cash_date)}
         />
       )}
-      {store.isConfirm && (
-        <ModalConfirm
-          mysqlApiArchive={`/${ver}/product/active/${aid}`}
-          queryKey="product"
-          item={data.product_name}
-          active={isActive}
+      {store.isAdd && (
+        <ModalPettyCash
+          itemEdit={itemEdit}
+          totalCount={result?.pages[0].data.length}
         />
       )}
     </>

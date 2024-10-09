@@ -6,9 +6,10 @@ class PettyCash
     public $petty_cash_in;
     public $petty_cash_out;
     public $petty_cash_total;
+    public $petty_cash_last_insert;
+    public $petty_cash_reference_no;
     public $petty_cash_updated;
     public $petty_cash_created;
-    public $petty_cash_reference_no;
 
     public $connection;
     public $lastInsertedId;
@@ -32,26 +33,23 @@ class PettyCash
         try {
             $sql = "insert into {$this->tblPettyCash} ";
             $sql .= "( petty_cash_date, ";
-            $sql .= "petty_cash_reference_no, ";
             $sql .= "petty_cash_in, ";
             $sql .= "petty_cash_out, ";
-            $sql .= "petty_cash_total, ";
+            $sql .= "petty_cash_last_insert, ";
             $sql .= "petty_cash_updated, ";
             $sql .= "petty_cash_created ) values ( ";
             $sql .= ":petty_cash_date, ";
-            $sql .= ":petty_cash_reference_no, ";
             $sql .= ":petty_cash_in, ";
             $sql .= ":petty_cash_out, ";
-            $sql .= ":petty_cash_total, ";
+            $sql .= ":petty_cash_last_insert, ";
             $sql .= ":petty_cash_updated, ";
             $sql .= ":petty_cash_created ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "petty_cash_date" => $this->petty_cash_date,
-                "petty_cash_reference_no" => $this->petty_cash_reference_no,
                 "petty_cash_in" => $this->petty_cash_in,
                 "petty_cash_out" => $this->petty_cash_out,
-                "petty_cash_total" => $this->petty_cash_total,
+                "petty_cash_last_insert" => $this->petty_cash_last_insert,
                 "petty_cash_updated" => $this->petty_cash_updated,
                 "petty_cash_created" => $this->petty_cash_created,
             ]);
@@ -108,7 +106,7 @@ class PettyCash
             $sql .= "* ";
             $sql .= "from ";
             $sql .= "{$this->tblPettyCash} ";
-            $sql .= "and ( ";
+            $sql .= "where ( ";
             $sql .= "petty_cash_date like :petty_cash_date ";
             $sql .= "or MONTHNAME(petty_cash_date) like :month_date ";
             $sql .= ") ";
@@ -170,6 +168,85 @@ class PettyCash
         return $query;
     }
 
+    // update
+    public function updateTotalPettyCash()
+    {
+        try {
+            $sql = "update {$this->tblPettyCash} set ";
+            $sql .= "petty_cash_total = :petty_cash_total, ";
+            $sql .= "petty_cash_updated = :petty_cash_updated ";
+            $sql .= "where petty_cash_aid = :petty_cash_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "petty_cash_total" => $this->petty_cash_total,
+                "petty_cash_updated" => $this->petty_cash_updated,
+                "petty_cash_aid" => $this->lastInsertedId,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Total And Reference
+    public function updateTotalAndReference()
+    {
+        try {
+            $sql = "update {$this->tblPettyCash} set ";
+            $sql .= "petty_cash_reference_no = :petty_cash_reference_no, ";
+            $sql .= "petty_cash_total = :petty_cash_total, ";
+            $sql .= "petty_cash_updated = :petty_cash_updated ";
+            $sql .= "where petty_cash_aid = :petty_cash_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "petty_cash_reference_no" => $this->petty_cash_reference_no,
+                "petty_cash_total" => $this->petty_cash_total,
+                "petty_cash_updated" => $this->petty_cash_updated,
+                "petty_cash_aid" => $this->lastInsertedId,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update Total And Reference
+    public function updateLastId()
+    {
+        try {
+            $sql = "update {$this->tblPettyCash} set ";
+            $sql .= "petty_cash_last_insert = '1', ";
+            $sql .= "petty_cash_updated = :petty_cash_updated ";
+            $sql .= "where petty_cash_aid = :petty_cash_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "petty_cash_updated" => $this->petty_cash_updated,
+                "petty_cash_aid" => $this->petty_cash_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // active
+    public function active()
+    {
+        try {
+            $sql = "update {$this->tblPettyCash} set ";
+            $sql .= "petty_cash_last_insert = '0', ";
+            $sql .= "petty_cash_updated = :petty_cash_updated ";
+            $sql .= "where petty_cash_last_insert = '1' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "petty_cash_updated" => $this->petty_cash_updated,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
     // delete
     public function delete()
     {
@@ -196,6 +273,40 @@ class PettyCash
             $query->execute([
                 "petty_cash_in" => "{$this->petty_cash_in}",
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readTotalPettyCash()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "SUM(petty_cash_in) as cash_in, ";
+            $sql .= "SUM(petty_cash_out) as cash_out ";
+            $sql .= "from ";
+            $sql .= "{$this->tblPettyCash} ";
+            $sql .= "group by petty_cash_last_insert ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readLastId()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "petty_cash_aid ";
+            $sql .= "from ";
+            $sql .= "{$this->tblPettyCash} ";
+            $sql .= "order by petty_cash_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

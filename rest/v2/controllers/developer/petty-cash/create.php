@@ -2,33 +2,45 @@
 $conn = null;
 $conn = checkDbConnection();
 
-$product = new Product($conn);
+$pettyCash = new PettyCash($conn);
 
-if (array_key_exists("productid", $_GET)) {
+if (array_key_exists("pettycashid", $_GET)) {
     checkEndpoint();
 }
 
 checkPayload($data);
 
-$product->product_name = checkIndex($data, "product_name");
-$product->product_description = checkIndex($data, "product_description");
-$product->product_category_id = checkIndex($data, "product_category_id");
-$product->product_is_active = 1;
-$product->product_created = date("Y-m-d H:i:s");
-$product->product_datetime = date("Y-m-d H:i:s");
+$pettyCash->petty_cash_date = checkIndex($data, "petty_cash_date");
+$pettyCash->petty_cash_in = $data["petty_cash_in"];
+$pettyCash->petty_cash_out = $data["petty_cash_out"];
+$pettyCash->petty_cash_last_insert = 1;
+$pettyCash->petty_cash_created = date("Y-m-d H:i:s");
+$pettyCash->petty_cash_updated = date("Y-m-d H:i:s");
 
-$product->product_sku = rand(1000000, 9999999);
 
-$is_generate_barcode = checkIndex($data, "is_generate_barcode");
-if ($is_generate_barcode == true) {
-    $product->product_barcode = substr(intval($product->product_category_id) . date("m") . date("d") . date("H") . date("i") . date("s") .  rand(1000, 9999), 0, 12);
+checkActive($pettyCash);
+
+
+
+$query = checkCreate($pettyCash);
+
+$pettyCash->petty_cash_reference_no = substr($pettyCash->lastInsertedId . date("i") . date("m") . date("d") . date("H") . rand(10, 9999), 0, 9);
+$pettyCash->petty_cash_total = 0;
+$cash_in = 0;
+$cash_out = 0;
+
+
+$totaPettyCash = getResultData($pettyCash->readTotalPettyCash());
+if (count($totaPettyCash) > 0) {
+    for ($a = 0; $a < count($totaPettyCash); $a++) {
+        $cash_in += $totaPettyCash[$a]["cash_in"];
+        $cash_out += $totaPettyCash[$a]["cash_out"];
+    }
+    $total = (float)$cash_in - (float)$cash_out;
+    $pettyCash->petty_cash_total = $total;
 } else {
-    $product->product_barcode = "";
+    $pettyCash->petty_cash_total = $pettyCash->petty_cash_in;
 }
 
-isNameExist($product, $product->product_name);
-
-$query = checkCreate($product);
-checkCreateInventoryLog($product);
-checkUpdateProductSKUByLastInsertedId($product);
-returnSuccess($product, "product", $query);
+checkUpdateTotalAndReference($pettyCash);
+returnSuccess($pettyCash, "petty cash", $query);

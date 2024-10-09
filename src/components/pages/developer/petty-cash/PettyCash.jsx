@@ -35,15 +35,13 @@ const PettyCash = () => {
                 </button>
               </div>
 
-              <PettyCashList setItemEdit={setItemEdit} />
+              <PettyCashList setItemEdit={setItemEdit} itemEdit={itemEdit} />
             </div>
 
             <Footer />
           </div>
         </main>
       </div>
-
-      {store.isAdd && <ModalPettyCash itemEdit={itemEdit} />}
 
       {store.success && <ToastSuccess />}
       {store.validate && <ModalValidate />}

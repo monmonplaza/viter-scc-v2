@@ -3,6 +3,7 @@ import {
   Barcode,
   ClipboardList,
   Group,
+  HandCoins,
   LayoutDashboard,
   List,
   PillBottle,
@@ -82,7 +83,7 @@ const Navigation = ({ menu, submenu }) => {
       slug: "customers",
     },
     {
-      icon: <Users size={18} />,
+      icon: <HandCoins size={18} />,
       text: "Petty Cash",
       slug: "petty-cash",
     },
