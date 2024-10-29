@@ -118,14 +118,28 @@ const Account = () => {
   return (
     <>
       <div className="parent-wrap flex bg-secondary -ml-[250px] md:ml-0">
-        <aside>
-          <Navigation />
-        </aside>
+        {store.credentials?.data.role_is_cashier !== 1 && (
+          <aside>
+            <Navigation />
+          </aside>
+        )}
         <main className="w-full ">
           <div className="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
             <Header />
 
             <div className="main-wrapper bg-secondary">
+              {store.credentials?.data.role_is_cashier === 1 && (
+                <ul
+                  className="print:hidden my-2 flex items-center cursor-pointer pl-1 lg:pl-0 gap-2"
+                  onClick={() => navigate(-1)}
+                  title="Back"
+                >
+                  <li>
+                    <ArrowLeft />
+                  </li>
+                  <li>Back</li>
+                </ul>
+              )}
               <h1 className="my-5">Account</h1>
 
               <div className="bg-primary max-w-[500px] p-6">

@@ -1,0 +1,19 @@
+
+CONTROLLERS  
+    - rest/v2/controllers/developer/settings/company-info {NOTE: ALL FILES}
+  
+MODELS 
+    - rest/v2/models/developer/settings/CompanyInfo.php
+    - rest/v2/models/developer/settings/Developer.php
+    - rest/v2/models/developer/settings/User.php
+    - 
+  
+CORE
+    - rest/v2/core/functions.php
+
+HTACCESS
+    - rest/v2/.htaccess
+
+
+DB-BACKUP  
+    - rest/v2/db-backup/sccv2_company_info.sql

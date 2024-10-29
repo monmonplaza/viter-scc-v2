@@ -20,11 +20,13 @@ class Developer
     public $developer_search;
     public $tblDeveloper;
     public $tblRole;
+    public $tblCompanyInfo;
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblDeveloper = "sccv2_settings_developer";
         $this->tblRole = "sccv2_settings_role";
+        $this->tblCompanyInfo = "sccv2_company_info";
     }
 
     // create
@@ -395,6 +397,22 @@ class Developer
                 "developer_datetime" => $this->developer_datetime,
                 "developer_key" => $this->developer_key,
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // read all
+    public function readCompanyInfo()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "* ";
+            $sql .= "from ";
+            $sql .= "{$this->tblCompanyInfo} ";
+            $sql .= "order by company_info_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

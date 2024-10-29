@@ -721,12 +721,22 @@ function tokenUser(
             $result = checkLogin($object);
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
+            // adds on data
+            $companyInfo = getResultData($object->readCompanyInfo());
+            if (count($companyInfo) == 0) {
+                $company_info = array('company_info' => null);
+            } else {
+                $company_info = array('company_info' => $companyInfo);
+            }
+
             http_response_code(200);
             $returnData["data"] = array_merge(
                 (array)$row,
+                (array)$company_info,
                 array('user_key' => $decoded->data->data->user_password), // data from login
                 array('role' => $decoded->data->data->role_name),
             );
+
             $returnData["count"] = $result->rowCount();
             $returnData["success"] = true;
             $returnData["message"] = "Access granted.";

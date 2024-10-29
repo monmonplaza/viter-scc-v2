@@ -20,11 +20,14 @@ class User
     public $user_search;
     public $tblUser;
     public $tblRole;
+    public $tblCompanyInfo;
+
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblUser = "sccv2_settings_user";
         $this->tblRole = "sccv2_settings_role";
+        $this->tblCompanyInfo = "sccv2_company_info";
     }
 
     // create
@@ -437,6 +440,23 @@ class User
                 "user_datetime" => $this->user_datetime,
                 "user_key" => $this->user_key,
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readCompanyInfo()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "* ";
+            $sql .= "from ";
+            $sql .= "{$this->tblCompanyInfo} ";
+            $sql .= "order by company_info_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

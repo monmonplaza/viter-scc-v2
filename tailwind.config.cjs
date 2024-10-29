@@ -10,10 +10,10 @@ export default {
         semibold: ["poppins-semibold", "Arial", "sans-serif"],
       },
       textColor: {
-        accent: "rgba(var(--accent), <alpha-value>)",
+        accent: "rgba(var(--accent) / <alpha-value>)",
         light: "rgba(var(--light), <alpha-value>)",
         primary: "rgba(var(--primary), <alpha-value>)",
-        secondary: "rgba(var(--secondary), <alpha-value>)",
+        secondary: "rgba(var(--secondary) / <alpha-value>)",
         dark: "rgba(var(--dark), <alpha-value>)",
         line: "rgba(var(--line), <alpha-value>)",
         alert: "rgba(var(--alert), <alpha-value>)",
@@ -23,7 +23,7 @@ export default {
         body: "rgba(var(--body), <alpha-value>)",
       },
       backgroundColor: {
-        accent: "rgba(var(--accent), <alpha-value>)",
+        accent: "rgba(var(--accent) / <alpha-value>)",
         popup: "rgba(var(--popup), <alpha-value>)",
         light: "rgba(var(--light), <alpha-value>)",
         primary: "rgba(var(--primary), <alpha-value>)",
@@ -39,11 +39,11 @@ export default {
         subnav: "rgba(var(--subnav), <alpha-value>)",
       },
       borderColor: {
-        accent: "rgba(var(--accent), <alpha-value>)",
+        accent: "rgba(var(--accent) / <alpha-value>)",
         popup: "rgba(var(--popup), <alpha-value>)",
         light: "rgba(var(--light), <alpha-value>)",
         primary: "rgba(var(--primary), <alpha-value>)",
-        secondary: "rgba(var(--secondary), <alpha-value>)",
+        secondary: "rgba(var(--secondary) / <alpha-value>)",
         orange: "rgba(var(--orange), <alpha-value>)",
         dark: "rgba(var(--dark), <alpha-value>)",
         line: "rgba(var(--line), <alpha-value>)",
@@ -54,7 +54,7 @@ export default {
         body: "rgba(var(--body), <alpha-value>)",
       },
       stroke: {
-        accent: "rgba(var(--accent), <alpha-value>)",
+        accent: "rgba(var(--accent) / <alpha-value>)",
         success: "rgba(var(--success), <alpha-value>)",
       },
 

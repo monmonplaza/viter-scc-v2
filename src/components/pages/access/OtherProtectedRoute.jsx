@@ -1,6 +1,6 @@
 import {
   devNavUrl,
-  urlAdmin,
+  hexToRgb,
   ver,
 } from "@/components/helpers/functions-general.jsx";
 import { queryData } from "@/components/helpers/queryData.jsx";
@@ -23,6 +23,7 @@ const OtherProtectedRoute = ({ children }) => {
       const login = await queryData(`/${ver}/settings-user/token`, "post", {
         token: localhristoken.token,
       });
+      let company_info = false;
 
       const isUserKeyMatched = login.data.user_key === login.data.user_password;
 
@@ -37,6 +38,8 @@ const OtherProtectedRoute = ({ children }) => {
         setLoading(false);
         setIsAuth("456");
       } else {
+        company_info =
+          login.data.company_info !== null ? login.data.company_info : null;
         dispatch(setCredentials(login.data));
         setIsAuth("123");
         setLoading(false);
@@ -47,6 +50,28 @@ const OtherProtectedRoute = ({ children }) => {
         delete login.data.role_datetime;
         delete login.data.access_created;
         delete login.data.access_datetime;
+      }
+
+      if (company_info !== null) {
+        document
+          .querySelector(":root")
+          .style.setProperty(
+            "--secondary",
+            hexToRgb(company_info[0]?.company_info_color_secondary)
+          );
+        document
+          .querySelector(":root")
+          .style.setProperty(
+            "--accent",
+            hexToRgb(company_info[0]?.company_info_color_accent)
+          );
+      } else {
+        document
+          .querySelector(":root")
+          .style.setProperty("--accent", hexToRgb("#01596f"));
+        document
+          .querySelector(":root")
+          .style.setProperty("--secondary", hexToRgb("#ffffff"));
       }
 
       if (

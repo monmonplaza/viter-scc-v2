@@ -120,3 +120,30 @@ export const GetFocus = (id) => {
     obj.focus();
   }, []);
 };
+
+// fetch for uploading photo or file
+export const fetchFormData = (url, fd = {}) => {
+  const data = fetch(url, {
+    method: "post",
+    body: fd,
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error(error + " api endpoint error");
+    });
+  return data;
+};
+
+export const hexToRgb = (hex) => {
+  let result = "";
+
+  if (typeof hex !== "undefined" && hex !== "") {
+    result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    result = `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(
+      result[3],
+      16
+    )} `;
+  }
+
+  return result;
+};

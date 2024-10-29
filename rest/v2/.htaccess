@@ -9,13 +9,13 @@ Header set Access-Control-Allow-Origin *
 
 #################################### ALL FOR DEVELOPER #################################
 
+### UPLOAD PHOTO ###
+RewriteRule ^upload-photo$ core/upload-photo.php [L] 
 
 ### ACCOUNT CHANGE PASSWORD ### 
 RewriteRule ^account/developer/update-password$ controllers/developer/account/account-change-password.php [L] 
 RewriteRule ^account/admin/update-password$ controllers/admin/account/account-change-password.php [L] 
-
-
-
+ 
 ### PRODUCT ###
 RewriteRule ^product$ controllers/developer/product/product.php [L]
 RewriteRule ^product/([0-9]+)$ controllers/developer/product/product.php?productid=$1 [L]
@@ -174,3 +174,7 @@ RewriteRule ^search-sales-reference-no$ controllers/developer/search/search-sale
 RewriteRule ^search-sales-product$ controllers/developer/search/search-sales-product.php [L] 
 RewriteRule ^search-all-receive-product$ controllers/developer/search/search-all-receive-product.php [L] 
  
+### COMPANY INFO ###
+RewriteRule ^company-info$ controllers/developer/settings/company-info/company-info.php [L]
+RewriteRule ^company-info/([0-9]+)$ controllers/developer/settings/company-info/company-info.php?companyinfoid=$1 [L] 
+

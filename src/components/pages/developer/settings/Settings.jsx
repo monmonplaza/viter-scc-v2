@@ -3,7 +3,7 @@ import Header from "@/components/partials/Header.jsx";
 import Navigation from "@/components/partials/Navigation.jsx";
 import { StoreContext } from "@/components/store/StoreContext.jsx";
 import {
-  CogIcon,
+  Building2,
   Ruler,
   Settings2,
   Shapes,
@@ -17,6 +17,7 @@ import ProductCategory from "./product-category/ProductCategory.jsx";
 import Roles from "./roles/Roles.jsx";
 import Unit from "./unit/Unit.jsx";
 import User from "./user/User.jsx";
+import CompanyInfo from "./company-info/CompanyInfo.jsx";
 
 const Settings = () => {
   const { store } = React.useContext(StoreContext);
@@ -32,6 +33,7 @@ const Settings = () => {
       <User />,
       <Developer />,
       <ProductCategory />,
+      <CompanyInfo />,
     ];
 
     settingsLink = [
@@ -40,13 +42,15 @@ const Settings = () => {
       { label: "Users", icon: <UserRoundPen size={14} /> },
       { label: "Developer", icon: <SquareUserRound size={14} /> },
       { label: "Category", icon: <Shapes size={14} /> },
+      { label: "Company info", icon: <Building2 size={14} /> },
     ];
   } else {
-    settingPages = [<Unit />, <User />, <ProductCategory />];
+    settingPages = [<Unit />, <User />, <ProductCategory />, <CompanyInfo />];
     settingsLink = [
       { label: "Unit", icon: <Ruler size={14} /> },
       { label: "Users", icon: <UserRoundPen size={14} /> },
       { label: "Category", icon: <Shapes size={14} /> },
+      { label: "Company info", icon: <Building2 size={14} /> },
     ];
   }
 
