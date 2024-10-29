@@ -128,7 +128,7 @@ const ModalCompanyInfo = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            const address = `${values.street_name}^ ${values.city_name}^ ${values.province_name}^ ${values.postal_name}^ ${values.country_name}`;
+            const address = `${values.street_name}^${values.city_name}^${values.province_name}^${values.postal_name}^${values.country_name}`;
 
             mutation.mutate({
               ...values,
